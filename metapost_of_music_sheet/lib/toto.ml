@@ -1,3 +1,6 @@
-let f i j =
-    i + j
+let xxx a =  2*a
+
+
+let f i j = i+j
+
 
