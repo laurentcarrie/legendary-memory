@@ -1,0 +1,5 @@
+(tests
+ (names metapost_of_music_sheet test1 )
+ (libraries stdlib  yaml metapost_of_music_sheet)
+ (deps resources/music-sheet1.yml)
+ )
