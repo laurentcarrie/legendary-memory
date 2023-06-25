@@ -1,7 +1,1 @@
-let _ =
-    print_endline "passed"
-
-
-
-
-
+let _ = print_endline "passed"

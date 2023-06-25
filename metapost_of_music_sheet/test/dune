@@ -1,5 +1,10 @@
-(tests
- (names metapost_of_music_sheet test1 )
- (libraries metapost_of_music_sheet )
- (deps resources/music-sheet1.yml)
+;(include_subdirs unqualified)
+
+(test
+(name test1)
+ (modules test1)
+ (libraries toto)
+
+ ; (libraries metapost_of_music_sheet)
+ ; (deps resources/music-sheet1.yml)
  )
