@@ -11,5 +11,21 @@ let _ =
          In_channel.input_all)
   in
   let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in
-  let _ = Totolib.Emitter.emit stdout sheet in
+(*  let (filename,fout) = Filename.open_temp_file "utest-test2" ".mp" in *)
+    let filename = "test.mp" in
+    let fout = open_out filename in
+  let _ = Log.info "%s:%d name : %s" __FILE__ __LINE__ filename in
+  let _ = Totolib.Emitter.emit fout sheet in
+  let _ = close_out fout in
+  let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in
+  let data : string = In_channel.with_open_text filename In_channel.input_all in
+  let _ = Log.info "%s:%d %s" __FILE__ __LINE__ data in
+  let _ = Unix.mkdir "mps" 0o740 in
+  let status = Unix.system ("mpost --tex=latex " ^ filename) in
+  let () = match status with
+    | Unix.WEXITED 0 -> ()
+    | Unix.WEXITED i -> failwith ("wxited " ^ (string_of_int i))
+    | _ -> failwith "bad"
+    in
+
   ()
