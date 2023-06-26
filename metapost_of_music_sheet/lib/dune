@@ -2,8 +2,7 @@
 
 (library
  (name totolib)
- (modules toto sheet )
+ (modules toto sheet)
  ; (modules toto)
-   (preprocess
-   (pps ppx_deriving_yaml))
- )
+ (preprocess
+  (pps ppx_deriving_yaml)))

@@ -1,13 +1,8 @@
 ;(include_subdirs unqualified)
 
 (tests
-(names
-    test1
-    test2
-)
+ (names test1 test2)
  (modules test1 test2)
- (libraries totolib  )
-
+ (libraries totolib)
  ; (libraries metapost_of_music_sheet)
-  (deps resources/music-sheet1.yml)
- )
+ (deps resources/music-sheet1.yml))
