@@ -2,7 +2,7 @@
 
 (library
  (name totolib)
- (modules toto sheet)
+ (modules toto sheet emitter)
  ; (modules toto)
  (preprocess
   (pps ppx_deriving_yaml)))

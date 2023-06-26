@@ -1,8 +1,7 @@
-type section = {
-name:string ; rows: string list
-}   [@@deriving yaml]
+type section = { name : string; rows : string list } [@@deriving yaml]
 
-type sheet = { title : string; authors : string list ; sections : section list } [@@deriving yaml]
+type sheet = { title : string; authors : string list; sections : section list }
+[@@deriving yaml]
 
 let deserialize str =
   match Yaml.of_string str with
