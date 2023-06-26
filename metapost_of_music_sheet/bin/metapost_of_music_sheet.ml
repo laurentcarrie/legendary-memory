@@ -34,8 +34,8 @@ let () =
   (*    let _ = serialize_book v in *)
   (*    let str = "title: Cryptonomicon\nauthors:\n- Neal Stephenson" in *)
   (*    let _ = deserialize_book str in *)
-  let y = Toto.f 3 4 in
-  let _ = Toto.xxx 42 in
+  let y = Totolib.Toto.f 3 4 in
+  let _ = Totolib.Toto.xxx 42 in
   (*    let _ = Metapost_of_music_sheet.Sheet.deserialize_sheet "xxx"  in *)
   let _ = print_endline (string_of_int y) in
   print_endline "Hello, World yyy!"

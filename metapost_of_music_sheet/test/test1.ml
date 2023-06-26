@@ -3,9 +3,9 @@
 let _ =
   let s : string = Array.get Sys.argv 0 in
   let _ = print_endline s in
-  let x = Toto.xxx 67 in
+  let x = Totolib.Toto.xxx 67 in
   let _ = print_endline (string_of_int x) in
-  (*  let data = In_channel.with_open_text "resources/music-sheet1.yml" In_channel.input_all in *)
-  (*  let sheet = Metapost_of_music_sheet.Sheet.deserialize_sheet data in *)
-  (*    print_endline sheet *)
+  let data = In_channel.with_open_text "resources/music-sheet1.yml" In_channel.input_all in
+  let sheet = Totolib.Sheet.deserialize_sheet data in
+  let _ = print_endline sheet.title in
   ()

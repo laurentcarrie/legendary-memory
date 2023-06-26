@@ -1,7 +1,7 @@
 (executable
  (public_name metapost_of_music_sheet)
  (name metapost_of_music_sheet)
- (libraries toto)
+ (libraries totolib)
  ; (preprocess
  ;  (pps ppx_deriving_yaml))
  )
