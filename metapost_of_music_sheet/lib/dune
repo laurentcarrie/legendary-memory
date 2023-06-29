@@ -3,6 +3,7 @@
 (library
  (name totolib)
  (modules toto sheet emitter)
+ (libraries jingoo )
  ; (modules toto)
  (preprocess
   (pps ppx_deriving_yaml)))

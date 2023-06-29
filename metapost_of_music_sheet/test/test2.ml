@@ -15,7 +15,7 @@ let _ =
   let filename = "test.mp" in
   let fout = open_out filename in
   let _ = Log.info "%s:%d name : %s" __FILE__ __LINE__ filename in
-  let _ = Totolib.Emitter.emit fout sheet in
+  let _ = Totolib.Emitter.emit fout sheet "png" in
   let _ = close_out fout in
   let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in
   let data : string = In_channel.with_open_text filename In_channel.input_all in
@@ -28,5 +28,5 @@ let _ =
     | Unix.WEXITED i -> failwith ("wxited " ^ string_of_int i)
     | _ -> failwith "bad"
   in
-
-  ()
+  let _ = failwith "test" in
+      ()
