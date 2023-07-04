@@ -4,7 +4,7 @@ outputformat := "pdf";
 %outputtemplate := "a-%c.mps";
 %outputformat := "mps";
 
-for i:=1 step 1 until 30:
+for i:=1 step 1 until 2:
 	show(i) ;
 	beginfig(i);
 		numeric u;
