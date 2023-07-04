@@ -3,12 +3,12 @@ open Printf
 let draw_row_jingoo : string = {whatever|
 
 |whatever}
-;;
 
-
-let mp_jingoo : string = {whatever|
+let mp_jingoo : string =
+  {whatever|
 prologues:=3;
-outputtemplate := "mps/frame_%c.{{format}}";
+% outputtemplate := "mps/frame_%c.{{format}}";
+outputtemplate := "{{outputtemplate}}";
 outputformat := "{{format}}";
 input boxes ;
 input TEX ;
@@ -21,21 +21,58 @@ verbatimtex
 \begin{document}
 etex
 
-def drawrow(expr A,n,width,height) =
+vardef drawrow(suffix B)(expr A,width,height,n)(suffix chords) =
     color c ;
+    show(c) ;
+    show(A) ;
+    show(width);
+    show(height);
+    show(chords[0]) ;
+    %numeric n ;
+    %n := length(chords) ;
+    %draw chords0 withcolor (0,1,0) ;
+    %n:=2;
     c := (0,0,0) ;
-    pair B,C,D ;
-    B := A shifted (n*width,0) ;
-    C := B shifted (0,height) ;
-    D := A shifted (0,height) ;
-    draw A -- B -- C -- D -- cycle withcolor c ;
-    %draw origin -- (10cm,10cm) ;
-    %numeric i;
-    for i=1 step 1 until n-1 :
-        draw A shifted (i*width,0) -- D shifted (i*width,0) withcolor c ;
+    B0 := A ;
+    B1 := A shifted (n*width,0) ;
+    B2 := B1 shifted (0,-height) ;
+    B3 := A shifted (0,-height) ;
+    draw B0 -- B1 -- B2 -- B3 -- cycle withcolor c ;
+
+    for i=1 step 1 until n :
+        draw B0 shifted (i*width,0) -- B3 shifted (i*width,0) withcolor c ;
     endfor ;
 
+    path p ;
+    for i=0 step 1 until n-1:
+        pair box[] ;
+        box0 = B0 shifted (i*width,0) ;
+        box1 = box0 shifted (width,0) ;
+        box2 = box1 shifted (0,-height) ;
+        box3 = box0 shifted (0,-height) ;
+        box4 = .5[box0,box2] ;
+        p := chords[i] ;
+        draw p shifted box4 withcolor (1,0,0) ;
+        %dotlabel.urt("xx",box4) ;
+    endfor ;
+
+    %draw chords0 ;
+
+
 enddef ;
+
+vardef achord =
+    path p[] ;
+    p0 := (-1,-1) -- (0,1) -- (1,-1) ;
+    p
+enddef ;
+
+vardef bchord =
+    path p ;
+    p := (-3,-3) -- (3,0) -- (0,0);
+    p scaled 1cm
+enddef ;
+
 
 
 def mygrida(expr t)=
@@ -54,7 +91,14 @@ def mygrida(expr t)=
     width := {{width}} ;
     height := {{height}} ;
     A = (-3cm,3cm) ;
-    drawrow(A,4,width,height) ;
+
+    path chords[] ;
+    chords0 := (1,0)--(0,1) -- (-1,0) -- (0,-10) -- cycle  ;
+    chords1 := achord ;
+    show(chords) ;
+    pair B[] ;
+    drawrow(B)(A,width,height,2,chords) ;
+    %draw chords0 withcolor (0,1,0) ;
 
 
 enddef ;
@@ -65,29 +109,30 @@ beginfig(0);
 endfig;
 end.
 |whatever}
-;;
 
-
-let emit fout sheet format =
+let emit fout sheet format outputtemplate =
   let _ = fprintf fout "%%%s \n" sheet.Sheet.title in
-(*  let extension = match format with *)
-(*  | "png" -> "png" *)
-(*  |"mp" -> "mp" *)
-(*  |_-> failwith "bad format" *)
-(*  in *)
 
-(*    let range from until = *)
-(*        List.init (until - from) (fun i -> Jingoo.Jg_types.Tint (i + from)) *)
-(*    in *)
+  (*  let extension = match format with *)
+  (*  | "png" -> "png" *)
+  (*  |"mp" -> "mp" *)
+  (*  |_-> failwith "bad format" *)
+  (*  in *)
 
-    let result :string = Jingoo.Jg_template.from_string mp_jingoo
-    ~models:[
-    ("format", Jingoo.Jg_types.Tstr format);
-    ("width", Jingoo.Jg_types.Tstr "1cm" );
-    ("height", Jingoo.Jg_types.Tstr ".5cm" );
-    ("n",Jingoo.Jg_types.Tint 7)
-    ]
-
+  (*    let range from until = *)
+  (*        List.init (until - from) (fun i -> Jingoo.Jg_types.Tint (i + from)) *)
+  (*    in *)
+  let result : string =
+    Jingoo.Jg_template.from_string mp_jingoo
+      ~models:
+        [
+          ("format", Jingoo.Jg_types.Tstr format);
+          ("outputtemplate", Jingoo.Jg_types.Tstr outputtemplate);
+          ("width", Jingoo.Jg_types.Tstr "1cm");
+          ("height", Jingoo.Jg_types.Tstr ".5cm");
+          ("n", Jingoo.Jg_types.Tint 7);
+        ]
   in
+
   let _ = fprintf fout "%s\n" result in
   ()

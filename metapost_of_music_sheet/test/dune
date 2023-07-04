@@ -3,6 +3,6 @@
 (tests
  (names test1 test2)
  (modules test1 test2)
- (libraries totolib dolog jingoo )
+ (libraries totolib dolog jingoo)
  ; (libraries metapost_of_music_sheet)
  (deps resources/music-sheet1.yml))
