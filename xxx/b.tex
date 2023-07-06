@@ -6,25 +6,29 @@
 
 \begin{document}
 
-    \begin{center}
-        \includegraphics{a-10}
-        \end{center}
+%    \begin{center}
+%        \includegraphics{a-10}
+%    \end{center}
 
 %    \begin{center}
-%        \animategraphics[
-%            label=scene1,
-%            controls, loop,
-%            timeline=timeline.txt
-%        ]{2}{a-}{ 1 }{ 30 }
-%        \mediabutton[
-%        jsaction={
-%            if(anim[’scene1’].isPlaying)
-%            anim[’scene1’].pause();
-%            else
-%            anim[’scene1’].playFwd();
-%        }
-%        ]{\fbox{Play/Pause}}
+%        \includegraphics{orchard.png}
 %    \end{center}
+
+    \begin{center}
+        \animategraphics[
+            label=scene1,
+            controls, loop,
+            timeline=timeline.txt
+        ]{2}{bb}{ 1 }{ 2 }
+        \mediabutton[
+        jsaction={
+            if(anim[’scene1’].isPlaying)
+            anim[’scene1’].pause();
+            else
+            anim[’scene1’].playFwd();
+        }
+        ]{\fbox{Play/Pause}}
+    \end{center}
 
 
 \end{document}
