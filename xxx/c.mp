@@ -6,7 +6,7 @@ outputformat := "pdf";
 %outputtemplate := "a-%c.mps";
 %outputformat := "mps";
 
-input mp-tool.mpiv
+input TEX
 
 verbatimtex
 \documentclass{minimal}
@@ -27,8 +27,14 @@ beginfig(1);
 %    addto currentpicture also  p ;
 %    draw p ;
 
-    externalfigure "cover.jpg" scaled 10cm  ;
-    externalfigure "xorchard.png" scaled 2cm ;
+    picture A;
+    %A = TEX("\includegraphics[width=200pt]{screenshot.png}");
+    % alternative, if you like btex ... etex
+    %A = btex \includegraphics[width=200pt]{screenshot.png} etex;
+    A:=image(externalfigure "screenshot.png") ;
+
+
+    draw A scaled .5 ;
 
 
     draw (-1cm,-1cm) -- (1cm,1cm) ;
