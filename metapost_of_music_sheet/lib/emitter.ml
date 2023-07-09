@@ -52,9 +52,15 @@ vardef drawrow(suffix B)(expr A,width,height,n)(suffix chords) =
         box3 = box0 shifted (0,-height) ;
         box4 = .5[box0,box2] ;
         p := chords[i] ;
-        draw p shifted box4 withcolor (1,0,0) ;
+        %draw p shifted box4 withcolor (1,0,0) ;
         %dotlabel.urt("xx",box4) ;
     endfor ;
+
+
+
+    {% for chord in chords %}
+    {{ chord }}
+    {% endfor %}
 
     %draw chords0 ;
 
@@ -63,7 +69,7 @@ enddef ;
 
 vardef achord =
     path p[] ;
-    p0 := (-1,-1) -- (0,1) -- (1,-1) ;
+    p0 := (-1,-1) -- (0,1) ;
     p
 enddef ;
 
@@ -93,11 +99,11 @@ def mygrida(expr t)=
     A = (-3cm,3cm) ;
 
     path chords[] ;
-    chords0 := (1,0)--(0,1) -- (-1,0) -- (0,-10) -- cycle  ;
+    chords0 := achord  ;
     chords1 := achord ;
     show(chords) ;
     pair B[] ;
-    drawrow(B)(A,width,height,2,chords) ;
+    drawrow(B)(A,width,height,4,chords) ;
     %draw chords0 withcolor (0,1,0) ;
 
 

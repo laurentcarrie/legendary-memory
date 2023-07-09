@@ -17,11 +17,11 @@ let maintex : string =
 
 |whatever}
 
-let make_pdf () =
+let make_pdf path =
 
-  let sheet : Totolib.Sheet.sheet =
-    Totolib.Sheet.deserialize
-      (In_channel.with_open_text "resources/music-sheet1.yml"
+  let sheet : Sheet.sheet =
+    Sheet.deserialize
+      (In_channel.with_open_text path
          In_channel.input_all)
   in
   let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in
@@ -31,13 +31,13 @@ let make_pdf () =
   let write_mp () =
     let fout = open_out filename in
     let _ = Log.info "%s:%d name : %s" __FILE__ __LINE__ filename in
-    let _ = Totolib.Emitter.emit fout sheet "mps" "test2.mps" in
+    let _ = Emitter.emit fout sheet "mps" "test2.mps" in
     let _ = close_out fout in
-    let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in
-    let data : string =
-      In_channel.with_open_text filename In_channel.input_all
-    in
-    let _ = Log.info "%s:%d %s" __FILE__ __LINE__ data in
+(*    let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in *)
+(*    let data : string = *)
+(*      In_channel.with_open_text filename In_channel.input_all *)
+(*    in *)
+(*    let _ = Log.info "%s:%d %s" __FILE__ __LINE__ data in *)
     ()
   in
   let make_mps () =
@@ -70,6 +70,6 @@ let make_pdf () =
   let () = write_mp () in
   let () = make_mps () in
   let () = write_tex () in
-  let () = make_pdf () in
+  let () = _make_pdf () in
   let () = printf "test2 passed.\n" in
   ()
