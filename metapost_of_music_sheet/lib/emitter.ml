@@ -32,7 +32,8 @@ vardef drawchorda(expr t,S,background) =
     path p;
     interim ahlength := 12bp;
     interim ahangle := 25;
-    q := glyph "A" of "ec-lmb10" scaled .01 ;
+    q := glyph "A" of "ec-lmb10" ;
+    q := q scaled .01 ;
     q := q shifted ( S - center bbox q ) ;
     for item within q:
         p := pathpart item ;
