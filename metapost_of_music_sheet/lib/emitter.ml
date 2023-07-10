@@ -70,7 +70,8 @@ vardef draw_chord(expr chord,S,background) =
 enddef ;
 
 
-vardef drawrow(suffix B)(expr A,width,height,n,background)(suffix chords) =
+vardef draw_row(suffix B)(expr A,width,height,n,background)(suffix chords) =
+    save chord ;
     color c ;
     show(c) ;
     show(A) ;
@@ -100,18 +101,15 @@ vardef drawrow(suffix B)(expr A,width,height,n,background)(suffix chords) =
         box2 = box1 shifted (0,-height) ;
         box3 = box0 shifted (0,-height) ;
         box4 = .5[box0,box2] ;
-        p := chords[i] ;
         pair S ;
         S = .5(box0+box2) ;
         show("line 117");
         show(S) ;
         show("line 119");
         string chord ;
-        show(chords) ;
-        chord := "A";
+        chord := chords[i] ;
+        show(chord) ;
         draw_chord(chord,S,background) ;
-        %draw p shifted box4 withcolor (1,0,0) ;
-        %dotlabel.urt("xx",box4) ;
     endfor ;
 
     %draw chords0 ;
@@ -148,12 +146,11 @@ def mygrida(expr t)=
     A = (-3cm,3cm) ;
 
     string chords[] ;
-    chords0 := "a"  ;
-    chords1 := "b" ;
+    chords0 := "A"  ;
+    chords1 := "B" ;
     show(chords) ;
     pair B[] ;
-    drawrow(B)(A,width,height,2,background,chords) ;
-    %draw chords0 withcolor (0,1,0) ;
+    draw_row(B)(A,width,height,2,background,chords) ;
 
 
 enddef ;
