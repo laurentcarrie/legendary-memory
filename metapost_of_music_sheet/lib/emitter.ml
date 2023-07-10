@@ -25,24 +25,21 @@ fontmapfile "=lm-ec.map";
 
 
 vardef glyph_of_chord (expr chord)=
+    save p ;
     picture p ;
-    if chord="A":
-        p:=glyph "A" of "ec-lmr10" ;
-    else:
-        p:=glyph "?" of "ec-lmr10" ;
-    fi ;
-
+    if chord="A": p:=glyph "A" of "ec-lmr10" ; fi;
+    if chord="B": p:=glyph "B" of "ec-lmr10" ; fi;
     p
 enddef ;
 
 
-vardef drawchorda(expr t,S,background) =
+vardef draw_chord(expr chord,S,background) =
     save q,p ;
     picture q;
     path p;
     interim ahlength := 12bp;
     interim ahangle := 25;
-    q := glyph "A" of "ec-lmb10" ;
+    q := glyph_of_chord (chord) ;
     q := q scaled .01 ;
     q := q shifted ( S - center bbox q ) ;
     for item within q:
@@ -79,9 +76,9 @@ vardef drawrow(suffix B)(expr A,width,height,n,background)(suffix chords) =
     show(A) ;
     show(width);
     show(height);
-    %show(chords[0]) ;
+    show(chords[0]) ;
     %numeric n ;
-    %n := length(chords) ;
+    %n := length chords ;
     %draw chords0 withcolor (0,1,0) ;
     %n:=2;
     c := (0,0,0) ;
@@ -104,14 +101,14 @@ vardef drawrow(suffix B)(expr A,width,height,n,background)(suffix chords) =
         box3 = box0 shifted (0,-height) ;
         box4 = .5[box0,box2] ;
         p := chords[i] ;
-        transform t ;
         pair S ;
         S = .5(box0+box2) ;
         show("line 117");
         show(S) ;
         show("line 119");
-        t = identity  scaled 1cm   ;
-        drawchorda(t,S,background) ;
+        string chord ;
+        chord := "A";
+        draw_chord(chord,S,background) ;
         %draw p shifted box4 withcolor (1,0,0) ;
         %dotlabel.urt("xx",box4) ;
     endfor ;
