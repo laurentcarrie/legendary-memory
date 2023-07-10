@@ -24,6 +24,16 @@ etex
 fontmapfile "=lm-ec.map";
 
 
+vardef glyph_of_chord (expr chord)=
+    picture p ;
+    if chord="A":
+        p:=glyph "A" of "ec-lmr10" ;
+    else:
+        p:=glyph "?" of "ec-lmr10" ;
+    fi ;
+
+    p
+enddef ;
 
 
 vardef drawchorda(expr t,S,background) =
