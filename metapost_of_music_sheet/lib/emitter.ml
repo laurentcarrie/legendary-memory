@@ -44,12 +44,6 @@ vardef draw_chord(expr chord,S,background) =
     q := q shifted ( S - center bbox q ) ;
     for item within q:
         p := pathpart item ;
-        show("XXXXXXXXXXXXXXXXXXXXXXXX");
-        show(turningnumber p) ;
-        %draw p withcolor (.6,.9,.6) withpen pencircle scaled .5;
-
-        %drawarrow p withcolor (.6,.9,.6) withpen pencircle scaled .5;
-        %draw p withcolor (.6,.9,.6) withpen pencircle scaled .5;
         if turningnumber p = 1:
             fill p withcolor red ;
         else:
@@ -73,15 +67,6 @@ enddef ;
 vardef draw_row(suffix B)(expr A,width,height,n,background)(suffix chords) =
     save chord ;
     color c ;
-    show(c) ;
-    show(A) ;
-    show(width);
-    show(height);
-    show(chords[0]) ;
-    %numeric n ;
-    %n := length chords ;
-    %draw chords0 withcolor (0,1,0) ;
-    %n:=2;
     c := (0,0,0) ;
     B0 := A ;
     B1 := A shifted (n*width,0) ;
@@ -93,7 +78,6 @@ vardef draw_row(suffix B)(expr A,width,height,n,background)(suffix chords) =
         draw B0 shifted (i*width,0) -- B3 shifted (i*width,0) withcolor c ;
     endfor ;
 
-    string p ;
     for i=0 step 1 until n-1:
         pair box[] ;
         box0 = B0 shifted (i*width,0) ;
@@ -103,17 +87,11 @@ vardef draw_row(suffix B)(expr A,width,height,n,background)(suffix chords) =
         box4 = .5[box0,box2] ;
         pair S ;
         S = .5(box0+box2) ;
-        show("line 117");
-        show(S) ;
-        show("line 119");
         string chord ;
         chord := chords[i] ;
         show(chord) ;
         draw_chord(chord,S,background) ;
     endfor ;
-
-    %draw chords0 ;
-
 
 enddef ;
 
