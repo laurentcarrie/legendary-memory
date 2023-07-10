@@ -21,13 +21,54 @@ verbatimtex
 \begin{document}
 etex
 
-vardef drawrow(suffix B)(expr A,width,height,n)(suffix chords) =
+fontmapfile "=lm-ec.map";
+
+
+
+
+vardef drawchorda(expr t,S,background) =
+    save q,p ;
+    picture q;
+    path p;
+    interim ahlength := 12bp;
+    interim ahangle := 25;
+    q := glyph "A" of "ec-lmb10" scaled .01 ;
+    q := q shifted ( S - center bbox q ) ;
+    for item within q:
+        p := pathpart item ;
+        show("XXXXXXXXXXXXXXXXXXXXXXXX");
+        show(turningnumber p) ;
+        %draw p withcolor (.6,.9,.6) withpen pencircle scaled .5;
+
+        %drawarrow p withcolor (.6,.9,.6) withpen pencircle scaled .5;
+        %draw p withcolor (.6,.9,.6) withpen pencircle scaled .5;
+        if turningnumber p = 1:
+            fill p withcolor red ;
+        else:
+            fill p withcolor background ;
+        fi;
+        for j=0 upto length p:
+            pickup pencircle scaled .01;
+            %draw (point j of p -- precontrol j of p)   dashed evenly withcolor blue;
+            %draw (point j of p -- postcontrol j of p)  dashed evenly withcolor blue;
+            pickup pencircle scaled .03;
+            %draw precontrol j of p withcolor red;
+            %draw postcontrol j of p withcolor red;
+            pickup pencircle scaled .02;
+            %draw point j of p withcolor black;
+        endfor ;
+    endfor ;
+
+enddef ;
+
+
+vardef drawrow(suffix B)(expr A,width,height,n,background)(suffix chords) =
     color c ;
     show(c) ;
     show(A) ;
     show(width);
     show(height);
-    show(chords[0]) ;
+    %show(chords[0]) ;
     %numeric n ;
     %n := length(chords) ;
     %draw chords0 withcolor (0,1,0) ;
@@ -43,7 +84,7 @@ vardef drawrow(suffix B)(expr A,width,height,n)(suffix chords) =
         draw B0 shifted (i*width,0) -- B3 shifted (i*width,0) withcolor c ;
     endfor ;
 
-    path p ;
+    string p ;
     for i=0 step 1 until n-1:
         pair box[] ;
         box0 = B0 shifted (i*width,0) ;
@@ -52,26 +93,23 @@ vardef drawrow(suffix B)(expr A,width,height,n)(suffix chords) =
         box3 = box0 shifted (0,-height) ;
         box4 = .5[box0,box2] ;
         p := chords[i] ;
+        transform t ;
+        pair S ;
+        S = .5(box0+box2) ;
+        show("line 117");
+        show(S) ;
+        show("line 119");
+        t = identity  scaled 1cm   ;
+        drawchorda(t,S,background) ;
         %draw p shifted box4 withcolor (1,0,0) ;
         %dotlabel.urt("xx",box4) ;
     endfor ;
-
-
-
-    {% for chord in chords %}
-    {{ chord }}
-    {% endfor %}
 
     %draw chords0 ;
 
 
 enddef ;
 
-vardef achord =
-    path p[] ;
-    p0 := (-1,-1) -- (0,1) ;
-    p
-enddef ;
 
 vardef bchord =
     path p ;
@@ -87,7 +125,9 @@ def mygrida(expr t)=
     path p ;
     p := (-margin,-margin) -- (-margin,margin) -- (margin,margin) --
     (margin,-margin)  -- cycle ;
-    fill p withcolor (.8,.7,.7) ;
+    color background ;
+    background := (.8,.7,.7) ;
+    fill p withcolor background ;
     label(decimal t,(-margin,-margin)/2) ;
     %%draw textext("cycle " & decimal t) shifted (-margin,-margin)/2  ;
 
@@ -98,12 +138,12 @@ def mygrida(expr t)=
     height := {{height}} ;
     A = (-3cm,3cm) ;
 
-    path chords[] ;
-    chords0 := achord  ;
-    chords1 := achord ;
+    string chords[] ;
+    chords0 := "a"  ;
+    chords1 := "b" ;
     show(chords) ;
     pair B[] ;
-    drawrow(B)(A,width,height,4,chords) ;
+    drawrow(B)(A,width,height,2,background,chords) ;
     %draw chords0 withcolor (0,1,0) ;
 
 
