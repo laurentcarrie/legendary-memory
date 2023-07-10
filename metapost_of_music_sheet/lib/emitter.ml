@@ -104,7 +104,7 @@ enddef ;
 
 
 
-def mygrida(expr t)=
+def my_grid(expr t)=
     u:=.2cm ;
     margin:=4cm ;
     path p ;
@@ -124,8 +124,9 @@ def mygrida(expr t)=
     A = (-3cm,3cm) ;
 
     string chords[] ;
-    chords0 := "A"  ;
-    chords1 := "B" ;
+    {% for i in in chords %}
+    chords{{i}} := "A"  ;
+    {% endfor %}
     show(chords) ;
     pair B[] ;
     draw_row(B)(A,width,height,2,background,chords) ;
@@ -135,7 +136,7 @@ enddef ;
 
 
 beginfig(0);
-    mygrida (0) ;
+    my_grid (0) ;
 endfig;
 end.
 |whatever}
