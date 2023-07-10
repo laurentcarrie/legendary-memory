@@ -107,6 +107,7 @@ vardef drawrow(suffix B)(expr A,width,height,n,background)(suffix chords) =
         show(S) ;
         show("line 119");
         string chord ;
+        show(chords) ;
         chord := "A";
         draw_chord(chord,S,background) ;
         %draw p shifted box4 withcolor (1,0,0) ;
