@@ -38,5 +38,3 @@ m)
   echo "bad command"
   exit 1
 esac
-
-

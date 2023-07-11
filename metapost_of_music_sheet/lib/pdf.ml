@@ -18,11 +18,8 @@ let maintex : string =
 |whatever}
 
 let make_pdf path =
-
   let sheet : Sheet.sheet =
-    Sheet.deserialize
-      (In_channel.with_open_text path
-         In_channel.input_all)
+    Sheet.deserialize (In_channel.with_open_text path In_channel.input_all)
   in
   let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in
   (*  let (filename,fout) = Filename.open_temp_file "utest-test2" ".mp" in *)
@@ -33,11 +30,11 @@ let make_pdf path =
     let _ = Log.info "%s:%d name : %s" __FILE__ __LINE__ filename in
     let _ = Emitter.emit fout sheet "mps" "test2.mps" in
     let _ = close_out fout in
-(*    let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in *)
-(*    let data : string = *)
-(*      In_channel.with_open_text filename In_channel.input_all *)
-(*    in *)
-(*    let _ = Log.info "%s:%d %s" __FILE__ __LINE__ data in *)
+    (*    let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in *)
+    (*    let data : string = *)
+    (*      In_channel.with_open_text filename In_channel.input_all *)
+    (*    in *)
+    (*    let _ = Log.info "%s:%d %s" __FILE__ __LINE__ data in *)
     ()
   in
   let make_mps () =

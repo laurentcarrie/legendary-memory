@@ -1,11 +1,9 @@
 open Printf
+module Log = Dolog.Log
 
-let draw_row_jingoo : string = {whatever|
-
-|whatever}
-
-let mp_jingoo : string =
+let sheet_jingoo : string =
   {whatever|
+
 prologues:=3;
 % outputtemplate := "mps/frame_%c.{{format}}";
 outputtemplate := "{{outputtemplate}}";
@@ -101,8 +99,7 @@ vardef draw_row(suffix B)(expr A,width,height,n,background)(suffix chords) =
     endfor ;
 
 enddef ;
-
-def my_grid(expr t)=
+beginfig(0);
     u:=.2cm ;
     margin:=4cm ;
     path p ;
@@ -111,35 +108,34 @@ def my_grid(expr t)=
     color background ;
     background := (.8,.7,.7) ;
     fill p withcolor background ;
-    label(decimal t,(-margin,-margin)/2) ;
+    %label(decimal t,(-margin,-margin)/2) ;
     %%draw textext("cycle " & decimal t) shifted (-margin,-margin)/2  ;
 
     numeric n,width,height ;
-    n := {{n}} ;
+    % n := {{n}} ;
     pair A ;
-    width := {{width}} ;
-    height := {{height}} ;
-    A = (-3cm,3cm) ;
+    %width := {{width}} ;
+    %height := {{height}} ;
 
-    string chords[] ;
-    {% for c in chords %}
-    chords{{loop.index0}} := "{{c}}" ;     {% endfor %}
-    show(chords) ;
-    pair B[] ;
-    draw_row(B)(A,width,height,{{n}},background,chords) ;
+    {{ sections }}
 
-
-enddef ;
-
-
-beginfig(0);
-    my_grid (0) ;
+    %A = (-3cm,3cm) shifted (0,{{counter_row}}*-3cm);
+    %string chords[] ;
 endfig;
 end.
 |whatever}
 
+let section_jingoo : string =
+  {whatever|
+% section {{section.name}}
+    {% for c in row %}
+    chords{{loop.index0}} := "{{c}}" ;     {% endfor %}
+    pair B[] ;
+|whatever}
+
 let emit fout sheet format outputtemplate =
-  let _ = fprintf fout "%%%s \n" sheet.Sheet.title in
+  let _ = format in
+  let _ = outputtemplate in
 
   (*  let extension = match format with *)
   (*  | "png" -> "png" *)
@@ -150,23 +146,52 @@ let emit fout sheet format outputtemplate =
   (*    let range from until = *)
   (*        List.init (until - from) (fun i -> Jingoo.Jg_types.Tint (i + from)) *)
   (*    in *)
-  let sections : Sheet.section list = sheet.Sheet.sections in
-  let section : Sheet.section = List.hd sections in
-  let rows : Sheet.row list = section.Sheet.rows in
-  let row : Sheet.row = List.hd rows in
-  let chords : Sheet.chord list =  row in
-  let result : string =
-    Jingoo.Jg_template.from_string mp_jingoo
-      ~models:
-        [
-          ("format", Jingoo.Jg_types.Tstr format);
-          ("outputtemplate", Jingoo.Jg_types.Tstr outputtemplate);
-          ("width", Jingoo.Jg_types.Tstr "1cm");
-          ("height", Jingoo.Jg_types.Tstr ".5cm");
-          ("n", Jingoo.Jg_types.Tint (List.length chords));
-          ("chords",let f c = Jingoo.Jg_types.Tstr c in Jingoo.Jg_types.Tlist (List.map f chords)) ;
-        ]
+  (*  let emit_row row counter_row = *)
+  (*    let result : string = *)
+  (*      Jingoo.Jg_template.from_string sheet_jingoo *)
+  (*        ~models: *)
+  (*          [ *)
+  (*            ("format", Jingoo.Jg_types.Tstr format); *)
+  (*            ("outputtemplate", Jingoo.Jg_types.Tstr outputtemplate); *)
+  (*            ("width", Jingoo.Jg_types.Tstr "1cm"); *)
+  (*            ("height", Jingoo.Jg_types.Tstr ".5cm"); *)
+  (*            ("n", Jingoo.Jg_types.Tint (List.length row)); *)
+  (*            ("counter_row", Jingoo.Jg_types.Tint counter_row); *)
+  (*            ( "row", *)
+  (*              let f c = Jingoo.Jg_types.Tstr c in *)
+  (*              Jingoo.Jg_types.Tlist (List.map f row) ); *)
+  (*          ] *)
+  (*    in *)
+  (*    result *)
+  (*  in *)
+  let emit_row _ = "% row\n " in
+  let emit_section section =
+    let result = "% SECTION " ^ section.Sheet.name ^ "\n" in
+    let rows : string =
+      List.fold_left (fun acc row -> acc ^ emit_row row) "" section.Sheet.rows
+    in
+    let result = result ^ rows in
+    result
   in
 
-  let _ = fprintf fout "%s\n" result in
-  ()
+  let emit_sheet sheet =
+    let sections : string =
+      List.fold_left
+        (fun acc section -> acc ^ emit_section section)
+        "" sheet.Sheet.sections
+    in
+    let _ = Log.info "sections : %s" sections in
+    let result =
+      Jingoo.Jg_template.from_string sheet_jingoo
+        ~models:
+          [
+            ("format", Jingoo.Jg_types.Tstr format);
+            ("outputtemplate", Jingoo.Jg_types.Tstr outputtemplate);
+            ("width", Jingoo.Jg_types.Tstr "1cm");
+            ("sections", Jingoo.Jg_types.Tstr sections);
+          ]
+    in
+    result
+  in
+  let result = emit_sheet sheet in
+  fprintf fout "%s" result
