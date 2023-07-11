@@ -1,4 +1,8 @@
-type section = { name : string; rows : string list } [@@deriving yaml]
+type chord = string [@@deriving yaml]
+
+type row = chord list [@@deriving yaml]
+
+type section = { name : string; rows : row list } [@@deriving yaml]
 
 type sheet = { title : string; authors : string list; sections : section list }
 [@@deriving yaml]

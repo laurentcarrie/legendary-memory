@@ -4,7 +4,11 @@ authors:
 sections:
   - name: intro
     rows:
-      - a
+      -
+        - D
+        - C
   - name: verse 1
     rows:
-      - b
+      -
+        - V
+        - D

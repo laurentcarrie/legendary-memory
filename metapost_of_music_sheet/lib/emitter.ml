@@ -27,8 +27,15 @@ fontmapfile "=lm-ec.map";
 vardef glyph_of_chord (expr chord)=
     save p ;
     picture p ;
-    if chord="A": p:=glyph "A" of "ec-lmr10" ; fi;
-    if chord="B": p:=glyph "B" of "ec-lmr10" ; fi;
+    if     chord="A": p:=glyph "A" of "ec-lmr10" ;
+    elseif chord="B": p:=glyph "B" of "ec-lmr10" ;
+    elseif chord="C": p:=glyph "C" of "ec-lmr10" ;
+    elseif chord="D": p:=glyph "D" of "ec-lmr10" ;
+    elseif chord="E": p:=glyph "E" of "ec-lmr10" ;
+    elseif chord="F": p:=glyph "F" of "ec-lmr10" ;
+    elseif chord="G": p:=glyph "G" of "ec-lmr10" ;
+    else: p:=glyph "X" of "ec-lmr10" ; fi;
+
     p
 enddef ;
 
@@ -95,15 +102,6 @@ vardef draw_row(suffix B)(expr A,width,height,n,background)(suffix chords) =
 
 enddef ;
 
-
-vardef bchord =
-    path p ;
-    p := (-3,-3) -- (3,0) -- (0,0);
-    p scaled 1cm
-enddef ;
-
-
-
 def my_grid(expr t)=
     u:=.2cm ;
     margin:=4cm ;
@@ -124,12 +122,11 @@ def my_grid(expr t)=
     A = (-3cm,3cm) ;
 
     string chords[] ;
-    {% for i in in chords %}
-    chords{{i}} := "A"  ;
-    {% endfor %}
+    {% for c in chords %}
+    chords{{loop.index0}} := "{{c}}" ;     {% endfor %}
     show(chords) ;
     pair B[] ;
-    draw_row(B)(A,width,height,2,background,chords) ;
+    draw_row(B)(A,width,height,{{n}},background,chords) ;
 
 
 enddef ;
@@ -153,6 +150,11 @@ let emit fout sheet format outputtemplate =
   (*    let range from until = *)
   (*        List.init (until - from) (fun i -> Jingoo.Jg_types.Tint (i + from)) *)
   (*    in *)
+  let sections : Sheet.section list = sheet.Sheet.sections in
+  let section : Sheet.section = List.hd sections in
+  let rows : Sheet.row list = section.Sheet.rows in
+  let row : Sheet.row = List.hd rows in
+  let chords : Sheet.chord list =  row in
   let result : string =
     Jingoo.Jg_template.from_string mp_jingoo
       ~models:
@@ -161,7 +163,8 @@ let emit fout sheet format outputtemplate =
           ("outputtemplate", Jingoo.Jg_types.Tstr outputtemplate);
           ("width", Jingoo.Jg_types.Tstr "1cm");
           ("height", Jingoo.Jg_types.Tstr ".5cm");
-          ("n", Jingoo.Jg_types.Tint 7);
+          ("n", Jingoo.Jg_types.Tint (List.length chords));
+          ("chords",let f c = Jingoo.Jg_types.Tstr c in Jingoo.Jg_types.Tlist (List.map f chords)) ;
         ]
   in
 
