@@ -13,6 +13,8 @@ clean() {
   rm -f *.aux
   rm -f mpxerr.tex
   rm -f mptextmp.mp
+  rm -rf *.png
+  rm -rf yy*.tex
 }
 
 make(){
