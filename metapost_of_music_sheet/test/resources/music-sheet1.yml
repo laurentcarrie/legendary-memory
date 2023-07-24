@@ -1,14 +1,35 @@
-title: Torn
+title: Ironic
 authors:
-  - Natalie Imbruglia
+  - Alanis Morissette
 sections:
   - name: intro
     rows:
       -
-        - D
+        - EM7
+        - BM7
+        - EM7
+        - BM7
+  - name: couplet 1
+    rows:
+      -
+        - G-
+        - Eb
+        - G-
+        - Eb
+      -
+        - G-
+        - G-
+        - E7
+        - G-
+      -
         - C
-  - name: verse 1
+  - name: chorus
     rows:
       -
         - V
+        - D
+      -
+        - A
+        - B
+        - C
         - D

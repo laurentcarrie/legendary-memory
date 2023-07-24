@@ -5,9 +5,13 @@ let maintex : string =
   {whatever|
 \documentclass[11pt]{article}
 \usepackage{graphicx}
-
+\usepackage{unicode-math}
+    \setmainfont{XITS}
+    \setmathfont{XITS Math}
+\usepackage{luamplib}
+\usepackage{xcolor}
 \begin{document}
-
+\section{section 1}
     \begin{center}
       \includegraphics[width=\linewidth]{test2}
     \end{center}
@@ -29,6 +33,7 @@ let make_pdf path =
     let fout = open_out filename in
     let _ = Log.info "%s:%d name : %s" __FILE__ __LINE__ filename in
     let _ = Emitter.emit fout sheet "mps" "test2.mps" in
+(*    let _ = Emitter.emit fout sheet "png" "test2.png" in *)
     let _ = close_out fout in
     (*    let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in *)
     (*    let data : string = *)
@@ -42,7 +47,7 @@ let make_pdf path =
     let status = Unix.system ("mpost --tex=latex " ^ filename) in
     match status with
     | Unix.WEXITED 0 -> ()
-    | Unix.WEXITED i -> failwith ("wxited " ^ string_of_int i)
+    | Unix.WEXITED i -> failwith ("mpost wxited " ^ string_of_int i)
     | _ -> failwith "bad"
   in
   let write_tex () =
@@ -58,7 +63,7 @@ let make_pdf path =
     let () =
       match status with
       | Unix.WEXITED 0 -> ()
-      | Unix.WEXITED i -> failwith ("wexited " ^ string_of_int i)
+      | Unix.WEXITED i -> failwith ("lualatex exited with code " ^ string_of_int i)
       | _ -> failwith "bad"
     in
     ()
