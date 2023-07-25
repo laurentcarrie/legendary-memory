@@ -15,17 +15,33 @@ clean() {
   rm -f mptextmp.mp
   rm -rf *.png
   rm -rf yy*.tex
+
+  rm -rf mps
+  mkdir mps
+
+  rm -rf pdftex
+  mkdir pdftex
 }
 
 make(){
+  mpost --mem=metafun --tex=lualatex clock.mp
+  rm -f timeline.txt
+  touch timeline.txt
 
-  seq 359 | while read counter
+
+  MAX=10
+
+  seq $MAX | while read counter
   do
       echo $counter
-      cat xx.tex | sed "s/@I@/$counter/g" > yy$counter.tex
+      cat clock.tex | sed "s/@I@/$counter/g" > pdftex/clock-$counter.tex
+      (cd pdftex && lualatex clock-$counter.tex)
+      echo "::$counter" >> pdftex/timeline.txt
   done
-  mpost --mem=metafun --tex=lualatex clock.mp
-#  lualatex b.tex
+  cat anim.tex | sed "s/@MAX@/$MAX/g" > pdftex/anim.tex
+  (cd pdftex && lualatex anim.tex )
+  mv pdftex/anim.pdf .
+  rm -rf mps pdftex
 }
 
 case $1 in

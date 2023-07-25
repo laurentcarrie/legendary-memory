@@ -1,17 +1,18 @@
-%! Author = laurent
-%! Date = 24/07/2023
-
-% Preamble
-\documentclass[11pt]{article}
-
-% Packages
-\usepackage{amsmath}
+\documentclass[border=5mm]{standalone}
+\usepackage{luamplib}
 \usepackage{graphicx}
-
-% Document
+\mplibtextextlabel{enable}
 \begin{document}
+\begin{mplibcode}
 
 
-\includegraphics{clock.png}
-    
+beginfig(@I@);
+
+    picture A;
+    A = TEX("\includegraphics[width=200pt]{../mps/clock-@I@.mps}");
+
+    draw A;
+endfig;
+
+\end{mplibcode}
 \end{document}
