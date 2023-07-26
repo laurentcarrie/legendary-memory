@@ -41,7 +41,7 @@ make(){
   cat anim.tex | sed "s/@MAX@/$MAX/g" > pdftex/anim.tex
   (cd pdftex && lualatex anim.tex )
   mv pdftex/anim.pdf .
-  rm -rf mps pdftex
+  # rm -rf mps pdftex
 }
 
 case $1 in

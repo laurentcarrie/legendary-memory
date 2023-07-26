@@ -2,7 +2,12 @@ type chord = string [@@deriving yaml]
 type row = chord list [@@deriving yaml]
 type section = { name : string; rows : row list } [@@deriving yaml]
 
-type sheet = { title : string; authors : string list; sections : section list }
+type sheet = {
+  title : string;
+  authors : string list;
+  path : string;
+  sections : section list;
+}
 [@@deriving yaml]
 
 let deserialize str =

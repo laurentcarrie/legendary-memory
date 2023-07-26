@@ -1,3 +1,5 @@
+module Log = Dolog.Log
+
 (* (* Define a record *) *)
 (* (* `[@@deriving yaml]` generates a bunch of functions, one being `book_to_yaml` to convert the record into a Yaml type, another `book_of_yaml` to convert Yaml type to record *) *)
 (* type book = { *)
@@ -30,12 +32,9 @@
 (*  | Error `Msg e -> print_endline ("Error - parsing: " ^ e) *)
 
 let () =
-  (*    let (v: book) = { title = "Cryptonomicon"; authors = [ "Neal Stephenson" ] } in *)
-  (*    let _ = serialize_book v in *)
-  (*    let str = "title: Cryptonomicon\nauthors:\n- Neal Stephenson" in *)
-  (*    let _ = deserialize_book str in *)
-  let y = Totolib.Toto.f 3 4 in
-  let _ = Totolib.Toto.xxx 42 in
-  (*    let _ = Metapost_of_music_sheet.Sheet.deserialize_sheet "xxx"  in *)
-  let _ = print_endline (string_of_int y) in
-  print_endline "Hello, World yyy!"
+  Log.set_log_level Log.DEBUG;
+  Log.set_output stdout;
+  Log.color_on ();
+  let yaml_filename = Array.get Sys.argv 1 in
+  let _ = Metapost_of_music_sheet.Pdf.make_pdf yaml_filename in
+  ()

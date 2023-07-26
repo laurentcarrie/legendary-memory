@@ -1,6 +1,8 @@
 title: Ironic
 authors:
   - Alanis Morissette
+path:
+  alanis-morissette/ironic
 sections:
   - name: intro
     rows:

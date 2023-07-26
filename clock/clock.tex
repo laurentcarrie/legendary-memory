@@ -8,10 +8,14 @@
 
 beginfig(@I@);
 
-    picture A;
+    picture A,B;
     A = TEX("\includegraphics[width=200pt]{../mps/clock-@I@.mps}");
+    numeric n ;
+    n:=3 * @I@ ;
+    %B = TEX("\includegraphics[width=200pt]{../cover.jpg}") scaled .1 rotated n ;
 
     draw A;
+    %draw B ;
 endfig;
 
 \end{mplibcode}

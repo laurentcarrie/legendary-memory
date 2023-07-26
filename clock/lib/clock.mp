@@ -38,5 +38,3 @@ vardef clock(expr hours, minutes) = image(
     fill fullcircle scaled 5;
     fill fullcircle scaled 3 withcolor .4 white;
 ) enddef;
-
-

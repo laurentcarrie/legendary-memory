@@ -205,7 +205,7 @@ A := A shifted (0,-height) ;
 |whatever}
 
 let section_jingoo : string =
-{whatever|
+  {whatever|
 % SECTION {{name}}
 A := A shifted (0,-section_spacing) ;
 label.urt(btex \rmfamily \textit{ {{name}} } etex,A) ;
@@ -305,9 +305,7 @@ let emit fout sheet format outputtemplate =
     let result =
       Str.global_replace (Str.regexp_string "&amp;quot;") "\"" result
     in
-    let result =
-      Str.global_replace (Str.regexp_string "&quot;") "\"" result
-      in
+    let result = Str.global_replace (Str.regexp_string "&quot;") "\"" result in
     result
   in
   let result = emit_sheet sheet in

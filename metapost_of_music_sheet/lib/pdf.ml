@@ -13,7 +13,7 @@ let maintex : string =
 \begin{document}
 \section{section 1}
     \begin{center}
-      \includegraphics[width=\linewidth]{test2}
+      \includegraphics[width=\linewidth]{ {{mpsname}} }
     \end{center}
 
 
@@ -21,19 +21,23 @@ let maintex : string =
 
 |whatever}
 
-let make_pdf path =
+let make_pdf yaml_filename =
   let sheet : Sheet.sheet =
-    Sheet.deserialize (In_channel.with_open_text path In_channel.input_all)
+    Sheet.deserialize
+      (In_channel.with_open_text yaml_filename In_channel.input_all)
   in
   let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in
   (*  let (filename,fout) = Filename.open_temp_file "utest-test2" ".mp" in *)
-  let filename = "test2.mp" in
+  let mp_filename = sprintf "%s.mp" sheet.Sheet.path in
 
   let write_mp () =
-    let fout = open_out filename in
-    let _ = Log.info "%s:%d name : %s" __FILE__ __LINE__ filename in
-    let _ = Emitter.emit fout sheet "mps" "test2.mps" in
-(*    let _ = Emitter.emit fout sheet "png" "test2.png" in *)
+    let fout = open_out mp_filename in
+    let _ = Log.info "%s:%d name : %s" __FILE__ __LINE__ mp_filename in
+    let _ =
+      Emitter.emit fout sheet "mps"
+        (sprintf "%s.mps" (Filename.basename sheet.Sheet.path))
+    in
+    (*    let _ = Emitter.emit fout sheet "png" "test2.png" in *)
     let _ = close_out fout in
     (*    let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in *)
     (*    let data : string = *)
@@ -44,26 +48,45 @@ let make_pdf path =
   in
   let make_mps () =
     let _ = Unix.mkdir "mps" 0o740 in
-    let status = Unix.system ("mpost --tex=latex " ^ filename) in
+    let command =
+      sprintf "( cd $(dirname %s) && mpost --tex=latex $(basename %s) )"
+        sheet.Sheet.path sheet.Sheet.path
+    in
+    let _ = Log.info "%s:%d command : %s" __FILE__ __LINE__ command in
+    let status = Unix.system command in
     match status with
     | Unix.WEXITED 0 -> ()
     | Unix.WEXITED i -> failwith ("mpost wxited " ^ string_of_int i)
     | _ -> failwith "bad"
   in
   let write_tex () =
-    let result : string = Jingoo.Jg_template.from_string maintex ~models:[] in
-    let fout = open_out "test2.tex" in
+    let result : string =
+      Jingoo.Jg_template.from_string maintex
+        ~models:
+          [
+            ( "mpsname",
+              Jingoo.Jg_types.Tstr (Filename.basename sheet.Sheet.path) );
+          ]
+    in
+
+    let fout = open_out (sprintf "%s.tex" sheet.Sheet.path) in
     let _ = fprintf fout "%s\n" result in
     let _ = close_out fout in
     ()
   in
 
   let _make_pdf () =
-    let status = Unix.system "lualatex test2" in
+    let command =
+      sprintf "( cd $(dirname %s) && lualatex $(basename %s) )" sheet.Sheet.path
+        sheet.Sheet.path
+    in
+    let _ = Log.info "%s:%d command : %s" __FILE__ __LINE__ command in
+    let status = Unix.system command in
     let () =
       match status with
       | Unix.WEXITED 0 -> ()
-      | Unix.WEXITED i -> failwith ("lualatex exited with code " ^ string_of_int i)
+      | Unix.WEXITED i ->
+          failwith ("lualatex exited with code " ^ string_of_int i)
       | _ -> failwith "bad"
     in
     ()
