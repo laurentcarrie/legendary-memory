@@ -70,18 +70,20 @@ vardef make_flat(expr chord)=
     path p ;
 
     if is_flat:
-        numeric u ;
-        u := .07cm ;
+        numeric u,n ;
+        u := 10 ;
         pair a[] ;
 
-        a[0] := (0,0);
-        a[1] := (1,0) ;
-        a[2] := (1,.35) ;
-        a[3] := (0,.35) ;
+        n:=4 ;
+        a[0] := (1,0);
+        a[1] := (0,0) ;
+        a[2] := (.2,0) ;
+        a[3] := (.2,.2) ;
+        a[4] := (0,.2) ;
 
-        p := a[0] -- a[1] -- a[2] -- a[3] -- cycle ;
+        p := a[0] for i=1 step 1 until n: -- a[i] endfor -- cycle ;
+
         p := p scaled u  ;
-        p := p shifted (.22cm,.1cm) ;
     else:
         p := fullcircle scaled 0 ;
     fi;
@@ -97,7 +99,7 @@ vardef make_sharp(expr chord)=
     else:
         is_sharp:=false ;
     fi;
-
+    save p ;
     path p ;
 
     if is_sharp:
@@ -107,7 +109,7 @@ vardef make_sharp(expr chord)=
         pair a[] ;
 
         pair h ; % horizontal
-        h := (1,0) ;
+        h := (.5,0) ;
         pair o ; % oblique
         o := h rotated 80 ;
         pair hh,vv ; % small side
@@ -162,6 +164,8 @@ vardef make_sharp(expr chord)=
 
         path p ;
         p := a[0] for i=1 step 1 until n: -- a[i] endfor -- cycle ;
+        p := p scaled 2 ;
+        p := p shifted (6,2) ;
 
     else:
         p := fullcircle scaled 0 ;
@@ -178,6 +182,10 @@ vardef make_minor(expr chord)=
         is_minor:=true;
     elseif (length chord>1) and ( substring(1,2) of chord = "-" ):
         is_minor:=true ;
+    elseif (length chord>2) and ( substring(2,3) of chord = "m" ):
+        is_minor:=true;
+    elseif (length chord>2) and ( substring(2,3) of chord = "-" ):
+        is_minor:=true ;
     else:
         is_minor:=false ;
     fi;
@@ -190,13 +198,13 @@ vardef make_minor(expr chord)=
         pair a[] ;
 
         a[0] := (0,0);
-        a[1] := (1,0) ;
-        a[2] := (1,.35) ;
+        a[1] := (1.2,0) ;
+        a[2] := (1.2,.35) ;
         a[3] := (0,.35) ;
 
         p := a[0] -- a[1] -- a[2] -- a[3] -- cycle ;
         p := p scaled u  ;
-        p := p shifted (.22cm,.1cm) ;
+        p := p shifted (.22cm,.15cm) ;
     else:
         p := fullcircle scaled 0 ;
     fi;
@@ -219,7 +227,7 @@ vardef make_major_seven(expr chord)=
 
     if is_seven:
         numeric u ;
-        u := .07cm ;
+        u := 2 ;
         %pickup pencircle scaled 1e-10;
         pair a[] ;
 
@@ -244,7 +252,7 @@ vardef make_major_seven(expr chord)=
         p2 := p2 -- p1 -- cycle  ;
 
 
-        p2 := p2 scaled u  shifted (.2cm,.1cm);
+        p2 := p2 scaled u  shifted (.2cm,.12cm);
     else:
         p2 := fullcircle scaled 0 ;
     fi;
