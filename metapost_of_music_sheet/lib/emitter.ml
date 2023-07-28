@@ -103,16 +103,66 @@ vardef make_sharp(expr chord)=
     if is_sharp:
         numeric u ;
         u := .07cm ;
+
         pair a[] ;
 
-        a[0] := (0,0);
-        a[1] := (1,0) ;
-        a[2] := (1,.35) ;
-        a[3] := (0,.35) ;
+        pair h ; % horizontal
+        h := (1,0) ;
+        pair o ; % oblique
+        o := h rotated 80 ;
+        pair hh,vv ; % small side
+        hh := (.2,0) ;
+        vv := hh rotated 90 ;
+        pair hhh,vvv ; % between bars
+        hhh := (.2,0) ;
+        vvv := hhh rotated 90 ;
 
-        p := a[0] -- a[1] -- a[2] -- a[3] -- cycle ;
-        p := p scaled u  ;
-        p := p shifted (.22cm,.1cm) ;
+        n:=27 ;
+
+        a0 = (0,0) ;
+        a1 = a0 +  h ;
+        a2 - a1 = o ;
+        a3 = a2 + hh  ;
+        a4 = a3 - o ;
+        a5 = a4 + hhh ;
+        a6 = a5 + o ;
+        a7 = a6 + hh ;
+        a8 = a7 - o ;
+        a9 = a8 + h ;
+
+        a10 = a9 - vv ;
+        a16 - a15 = a8-a7 ;
+
+        ypart a11 = ypart a10 = ypart a26 = ypart a27;
+        ypart a24 = ypart a25 = ypart a12 = ypart a13;
+        ypart a23 = ypart a22 = ypart a19 = ypart a18 = ypart a15 = ypart a14 ;
+        ypart a21 = ypart a20 = ypart a17 = ypart a16 ;
+
+        xpart a13 = xpart a14 = xpart a10 ;
+
+        a27-a0 = a23-a24 = -vv ;
+        a24 = a27 - vvv ;
+
+        a11 = whatever [a8,a7] ;
+        a12 = whatever [a8,a7] ;
+        a15 = whatever [a8,a7] ;
+        a16 = whatever [a8,a7] ;
+
+        a17 = whatever [a5,a6] ;
+        a18 = whatever [a5,a6] ;
+
+        a19 = whatever [a4,a3] ;
+        a20 = whatever [a4,a3] ;
+
+        a26 = whatever [a1,a2] ;
+        a25 = whatever [a1,a2] ;
+        a22 = whatever [a1,a2] ;
+        a21 = whatever [a1,a2] ;
+
+
+        path p ;
+        p := a[0] for i=1 step 1 until n: -- a[i] endfor -- cycle ;
+
     else:
         p := fullcircle scaled 0 ;
     fi;
