@@ -57,11 +57,109 @@ vardef glyph_of_chord (expr chord)=
     p
 enddef ;
 
+vardef make_flat(expr chord)=
+    save is_flat;
+    boolean is_flat ;
+
+    if (length chord>1) and ( substring(1,2) of chord = "b" ):
+        is_flat:=true;
+    else:
+        is_flat:=false ;
+    fi;
+
+    path p ;
+
+    if is_flat:
+        numeric u ;
+        u := .07cm ;
+        pair a[] ;
+
+        a[0] := (0,0);
+        a[1] := (1,0) ;
+        a[2] := (1,.35) ;
+        a[3] := (0,.35) ;
+
+        p := a[0] -- a[1] -- a[2] -- a[3] -- cycle ;
+        p := p scaled u  ;
+        p := p shifted (.22cm,.1cm) ;
+    else:
+        p := fullcircle scaled 0 ;
+    fi;
+    p
+enddef;
+
+vardef make_sharp(expr chord)=
+    save is_sharp;
+    boolean is_sharp ;
+
+    if (length chord>1) and ( substring(1,2) of chord = "#" ):
+        is_sharp:=true;
+    else:
+        is_sharp:=false ;
+    fi;
+
+    path p ;
+
+    if is_sharp:
+        numeric u ;
+        u := .07cm ;
+        pair a[] ;
+
+        a[0] := (0,0);
+        a[1] := (1,0) ;
+        a[2] := (1,.35) ;
+        a[3] := (0,.35) ;
+
+        p := a[0] -- a[1] -- a[2] -- a[3] -- cycle ;
+        p := p scaled u  ;
+        p := p shifted (.22cm,.1cm) ;
+    else:
+        p := fullcircle scaled 0 ;
+    fi;
+    p
+enddef;
+
+
+vardef make_minor(expr chord)=
+    save is_minor;
+    boolean is_minor ;
+
+    if (length chord>1) and ( substring(1,2) of chord = "m" ):
+        is_minor:=true;
+    elseif (length chord>1) and ( substring(1,2) of chord = "-" ):
+        is_minor:=true ;
+    else:
+        is_minor:=false ;
+    fi;
+
+    path p ;
+
+    if is_minor:
+        numeric u ;
+        u := .07cm ;
+        pair a[] ;
+
+        a[0] := (0,0);
+        a[1] := (1,0) ;
+        a[2] := (1,.35) ;
+        a[3] := (0,.35) ;
+
+        p := a[0] -- a[1] -- a[2] -- a[3] -- cycle ;
+        p := p scaled u  ;
+        p := p shifted (.22cm,.1cm) ;
+    else:
+        p := fullcircle scaled 0 ;
+    fi;
+    p
+enddef;
+
 vardef make_major_seven(expr chord)=
-    %save is_seven ;
+    save is_seven ;
     boolean is_seven ;
 
     if (length chord>2) and ( substring(1,3) of chord = "M7" ):
+        is_seven:=true;
+    elseif (length chord>3) and ( substring(2,4) of chord = "M7" ):
         is_seven:=true;
     else:
         is_seven:=false ;
@@ -108,6 +206,14 @@ vardef make_seven(expr chord)=
     boolean is_seven ;
     if (length chord>1) and ( substring(1,2) of chord = "7" ):
         is_seven:=true;
+    elseif (length chord>2) and ( substring(1,3) of chord = "m7" ):
+        is_seven:=true;
+    elseif (length chord>2) and ( substring(1,3) of chord = "-7" ):
+        is_seven:=true;
+    elseif (length chord>3) and ( substring(2,4) of chord = "m7" ):
+        is_seven:=true;
+    elseif (length chord>3) and ( substring(2,4) of chord = "-7" ):
+        is_seven:=true;
     else:
         is_seven:=false ;
     fi;
@@ -146,7 +252,7 @@ vardef make_seven(expr chord)=
 
         p2 := p2 scaled 1cm ;
 
-        p2 := p2 shifted (.20cm,.03cm) ;
+        p2 := p2 shifted (.32cm,.03cm) ;
 
 
         %p2 := fullcircle scaled 2 ;
@@ -171,9 +277,8 @@ vardef draw_chord(expr chord,S,background) =
     for item within q:
         p := pathpart item ;
         if turningnumber p = 1:
-            fill p withcolor red ;
+            fill p withcolor black ;
         else:
-            %fill p withcolor background ;
             unfill p ;
         fi;
         for j=0 upto length p:
@@ -191,11 +296,19 @@ vardef draw_chord(expr chord,S,background) =
     path other ;
 
     other := make_seven(chord) transformed t ;
-    fill other withcolor blue ;
+    fill other withcolor black ;
+
+    other := make_flat(chord) transformed t ;
+    fill other withcolor black ;
+
+    other := make_sharp(chord) transformed t ;
+    fill other withcolor black ;
 
     other := make_major_seven(chord) transformed t ;
-    fill other withcolor green ;
+    fill other withcolor black ;
 
+    other := make_minor(chord) transformed t ;
+    fill other withcolor black ;
 
 enddef ;
 

@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+set -e
+#set -x
+
+pdf=XX/YY.pdf
+mkdir -p $(dirname $pdf)
+
+../bin/metapost_of_music_sheet.exe resources/test.yml
+
+test -f $pdf  || ( echo "$pdf not found" && false )
+echo FOUND : $pdf
+
+count=$(ls $(dirname $pdf) | wc --lines )
+echo $count
+
+test $count -eq 1  || ( echo "more than one file : $count" && false )
+
+
+echo DONE

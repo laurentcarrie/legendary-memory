@@ -47,7 +47,9 @@ let make_pdf yaml_filename =
     ()
   in
   let make_mps () =
-    let _ = Unix.mkdir "mps" 0o740 in
+    let _ = if not (Sys.file_exists "mps") then
+        Unix.mkdir "mps" 0o740
+    in
     let command =
       sprintf "( cd $(dirname %s) && mpost --tex=latex $(basename %s) )"
         sheet.Sheet.path sheet.Sheet.path

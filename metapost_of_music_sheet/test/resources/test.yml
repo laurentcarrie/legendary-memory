@@ -1,0 +1,28 @@
+title: Ironic
+authors:
+  - Alanis Morissette
+path:
+  XX/YY
+sections:
+  - name: intro
+    rows:
+      -
+        - A
+        - A7
+        - AM7
+        - Am
+        - Am7
+  - name: couplet 1
+    rows:
+      -
+        - Ab
+        - Ab7
+        - AbM7
+        - Abm
+        - Abm7
+      -
+        - A#
+        - A#7
+        - A#M7
+        - A#m
+        - A#m7

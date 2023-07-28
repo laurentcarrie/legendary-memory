@@ -18,3 +18,9 @@
  (action
   (run ./ironic.sh))
  (deps resources/alanis-morissette-ironic.yml))
+
+(rule
+ (alias runtest)
+ (action
+  (run ./test.sh))
+ (deps resources/test.yml))
