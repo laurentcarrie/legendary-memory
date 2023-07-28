@@ -57,43 +57,30 @@ vardef glyph_of_chord (expr chord)=
     p
 enddef ;
 
-vardef make_seven(expr chord)=
+vardef make_major_seven(expr chord)=
     %save is_seven ;
     boolean is_seven ;
-    if     chord="A7": is_seven:=true ;
-    elseif chord="B7": is_seven:=true ;
-    elseif chord="C7": is_seven:=true ;
-    elseif chord="D7": is_seven:=true ;
-    elseif chord="E7": is_seven:=true ;
-    elseif chord="F7": is_seven:=true ;
-    elseif chord="G7": is_seven:=true ;
-    else:              is_seven:=false;
+
+    if (length chord>2) and ( substring(1,3) of chord = "M7" ):
+        is_seven:=true;
+    else:
+        is_seven:=false ;
     fi;
+
+    path p[] ;
 
     if is_seven:
         numeric u ;
-        u := .15 cm;
+        u := .07cm ;
         %pickup pencircle scaled 1e-10;
         pair a[] ;
 
-
-        a[0] := (0,1)  ;
-        a[1] := (.25,.98) ;
-        a[2]=(0.5,1.1) ;
-        a[3]=(.4,.5)  ;
-        a[4]=(0,0)   ;
-
-
-        path p[] ;
-
-        a[0] := (.5,.5)  ;
+        a[0] := (0,0);
         a[1] := (1,0) ;
-        a[2]=(0,0) ;
-        a[3]=(.5,.5)  ;
-        a[4]=(0,0)   ;
+        a[2] :=  a[1] rotated 60 ;
+        a[3] := (0,0) ;
 
 
-        path p[] ;
 
         p1 := a[0] -- a[1] -- a[2] -- a[3] ;
         transform tt ;
@@ -103,27 +90,26 @@ vardef make_seven(expr chord)=
         tt := identity shifted (  center bbox p1 ) ;
         p2 := p2 transformed tt ;
 
-        p1 := p1 scaled u shifted (.25cm,.06cm) ;
-        p2 := p2 scaled u shifted (.25cm,.06cm) ;
+        p1 := p1 scaled u  ;
+        p2 := p2 scaled u ;
         p2 := reverse p2 ;
         p2 := p2 -- p1 -- cycle  ;
 
 
-        p := p scaled u shifted (.25cm,.06cm) ;
+        p2 := p2 scaled u  shifted (.2cm,.1cm);
     else:
-        p := fullcircle scaled 0 ;
+        p2 := fullcircle scaled 0 ;
     fi;
-    p
+    p2
 enddef;
 
-vardef make_major_seven(expr chord)=
+vardef make_seven(expr chord)=
     save is_seven ;
     boolean is_seven ;
-    if (length chord>2) and ( substring(1,3) of chord = "M7" ):
+    if (length chord>1) and ( substring(1,2) of chord = "7" ):
         is_seven:=true;
     else:
         is_seven:=false ;
-    %if     substring(1,3) of chord="M7": is_seven:=true ;
     fi;
 
     path p[] ;
@@ -133,11 +119,11 @@ vardef make_major_seven(expr chord)=
 
         pair a[] ;
         numeric u ;
-        u := 1.6mm ;
+        u := .5mm ;
 
-        a[0] := (0,1)  ;
+        a[0] := (-.2,1)  ;
         a[1] := (.25,.98) ;
-        a[2]=(0.5,1.1) ;
+        a[2]=(0.5,1) ;
         a[3]=(.4,.5)  ;
         a[4]=(0,0)   ;
 
@@ -145,24 +131,25 @@ vardef make_major_seven(expr chord)=
         path p[] ;
 
         p1 := a[0]{1,-1} ... a[1] ... a[2]{dir -65} ... a[3] ... a[4] ;
+        p1 := p1 scaled .13 ;
         transform tt ;
         tt := identity shifted (  - center bbox p1 ) ;
         p2 := p1 transformed tt ;
-        p2 := p2 scaled .7 ;
+        p2 := p2 scaled .5 ;
         tt := identity shifted (  center bbox p1 ) ;
         p2 := p2 transformed tt ;
 
-        p1 := p1 scaled u shifted (.25cm,.06cm) ;
-        p2 := p2 scaled u shifted (.25cm,.06cm) ;
+        p1 := p1 scaled u ;
+        p2 := p2 scaled u ;
         p2 := reverse p2 ;
         p2 := p2 -- p1 -- cycle  ;
 
-        %p2 := p2 scaled 1 ;
+        p2 := p2 scaled 1cm ;
 
-        p2 := p2 shifted (0,-.0mm) ;
+        p2 := p2 shifted (.20cm,.03cm) ;
 
 
-        %p := fullcircle scaled 2 ;
+        %p2 := fullcircle scaled 2 ;
     else:
         p2 := fullcircle scaled 0 ;
     fi;
@@ -204,7 +191,7 @@ vardef draw_chord(expr chord,S,background) =
     path other ;
 
     other := make_seven(chord) transformed t ;
-    fill other withcolor red ;
+    fill other withcolor blue ;
 
     other := make_major_seven(chord) transformed t ;
     fill other withcolor green ;
