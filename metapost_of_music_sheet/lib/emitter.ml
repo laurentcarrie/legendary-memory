@@ -21,77 +21,142 @@ etex
 
 %fontmapfile "=lm-ec.map";
 
+% freehand_segment and freehand_path
+% https://raw.githubusercontent.com/thruston/Drawing-with-Metapost/master/Drawing-with-Metapost.pdf
+% chapter 8.4.1
+def freehand_segment(expr p) =
+    point 0 of p {direction 0 of p rotated (1+.4*normaldeviate)} ..
+    point 1 of p {direction 1 of p rotated (1+.4*normaldeviate)}
+enddef;
 
-vardef base_glyph_of_chord (expr chord)=
+def freehand_path(expr p) =
+    freehand_segment(subpath(0,1) of p)
+    for i=1 upto length(p)-1:
+    & freehand_segment(subpath(i,i+1) of p)
+    endfor
+    if cycle p: & cycle fi
+enddef;
+
+vardef glyph_of_chord (expr chord)=
     save p ;
     picture p ;
     string font ;
     %font = "ec-lmr10" ;
     %font = "t5-qcrri" ;
     font := "eurm10";
-    if     chord="A": p:=glyph "A" of font ;
-    elseif chord="B": p:=glyph "B" of font ;
-    elseif chord="C": p:=glyph "C" of font ;
-    elseif chord="D": p:=glyph "D" of font ;
-    elseif chord="E": p:=glyph "E" of font ;
-    elseif chord="F": p:=glyph "F" of font ;
-    elseif chord="G": p:=glyph "G" of font ;
+    if     substring(0,1) of chord="A": p:=glyph "A" of font ;
+    elseif substring(0,1) of chord="B": p:=glyph "B" of font ;
+    elseif substring(0,1) of chord="C": p:=glyph "C" of font ;
+    elseif substring(0,1) of chord="D": p:=glyph "D" of font ;
+    elseif substring(0,1) of chord="E": p:=glyph "E" of font ;
+    elseif substring(0,1) of chord="F": p:=glyph "F" of font ;
+    elseif substring(0,1) of chord="G": p:=glyph "G" of font ;
     else:             p:=glyph "X" of font ;
     fi;
 
     p
 enddef ;
 
-vardef make_minor(expr chord)=
-    save p ;
-    picture p[] ;
-    p := base_glyph_of_chord(chord)  ;
-    picture p2 ;
-    p2 := image (
-        draw (0,0) -- (1cm,1cm) withcolor (0,1,0) ;
-        ) ;
-    addto p also p2 ;
+vardef make_seven(expr chord)=
+    %save is_seven ;
+    boolean is_seven ;
+    if     chord="A7": is_seven:=true ;
+    elseif chord="B7": is_seven:=true ;
+    elseif chord="C7": is_seven:=true ;
+    elseif chord="D7": is_seven:=true ;
+    elseif chord="E7": is_seven:=true ;
+    elseif chord="F7": is_seven:=true ;
+    elseif chord="G7": is_seven:=true ;
+    else:              is_seven:=false;
+    fi;
 
+    if is_seven:
+        numeric u ;
+        u := .15 cm;
+        %pickup pencircle scaled 1e-10;
+        pair a[] ;
+
+
+        a[0] := (0,1)  ;
+        a[1] := (.25,.98) ;
+        a[2]=(0.5,1.1) ;
+        a[3]=(.4,.5)  ;
+        a[4]=(0,0)   ;
+
+
+        path p[] ;
+        p1 := a[0]{1,-1} ... a[1] ... a[2]{dir -65} ... a[3] ... a[4] ;
+        transform tt ;
+        tt := identity shifted (  - center bbox p1 ) ;
+        p2 := p1 transformed tt ;
+        p2 := p2 scaled .7 ;
+        tt := identity shifted (  center bbox p1 ) ;
+        p2 := p2 transformed tt ;
+
+        p1 := p1 scaled u shifted (.25cm,.06cm) ;
+        p2 := p2 scaled u shifted (.25cm,.06cm) ;
+        p2 := reverse p2 ;
+        p2 := p2 -- p1 -- cycle  ;
+
+        p := p scaled u shifted (.25cm,.06cm) ;
+    else:
+        p := fullcircle scaled 0 ;
+    fi;
     p
-enddef ;
+enddef;
 
-vardef make_major_sept(expr chord)=
-    save p ;
-    picture p,q ;
-    p := base_glyph_of_chord(chord)  ;
-    path a ;
-    a := (-3cm,-3cm) -- (3cm,3cm) -- cycle ;
-    %addto p contour fullcircle scaled .1cm   ;
-    p := image(draw fullcircle scaled .01cm withcolor blue) ;
-    %draw p ;
-    p
-enddef ;
+vardef make_major_seven(expr chord)=
+    save is_seven ;
+    boolean is_seven ;
+    if (length chord>2) and ( substring(1,3) of chord = "M7" ):
+        is_seven:=true;
+    else:
+        is_seven:=false ;
+    %if     substring(1,3) of chord="M7": is_seven:=true ;
+    fi;
+
+    path p[] ;
+
+    if is_seven:
+        pickup pencircle scaled .1;
+
+        pair a[] ;
+        numeric u ;
+        u := 1.6mm ;
+
+        a[0] := (0,1)  ;
+        a[1] := (.25,.98) ;
+        a[2]=(0.5,1.1) ;
+        a[3]=(.4,.5)  ;
+        a[4]=(0,0)   ;
 
 
-vardef glyph_of_chord (expr chord)=
-    save p ;
-    picture p ;
+        path p[] ;
 
-    if     chord="Am": p:=make_minor("A");
-    elseif chord="Bm": p:=make_minor("B");
-    elseif chord="Cm": p:=make_minor("C");
-    elseif chord="Dm": p:=make_minor("D");
-    elseif chord="Em": p:=make_minor("E");
-    elseif chord="Fm": p:=make_minor("F");
-    elseif chord="Gm": p:=make_minor("G");
+        p1 := a[0]{1,-1} ... a[1] ... a[2]{dir -65} ... a[3] ... a[4] ;
+        transform tt ;
+        tt := identity shifted (  - center bbox p1 ) ;
+        p2 := p1 transformed tt ;
+        p2 := p2 scaled .7 ;
+        tt := identity shifted (  center bbox p1 ) ;
+        p2 := p2 transformed tt ;
 
-    elseif chord="AM7": p:=make_major_sept("A");
-    elseif chord="BM7": p:=make_major_sept("B");
-    elseif chord="CM7": p:=make_major_sept("C");
-    elseif chord="DM7": p:=make_major_sept("D");
-    elseif chord="EM7": p:=make_major_sept("E");
-    elseif chord="FM7": p:=make_major_sept("F");
-    elseif chord="GM7": p:=make_major_sept("G");
+        p1 := p1 scaled u shifted (.25cm,.06cm) ;
+        p2 := p2 scaled u shifted (.25cm,.06cm) ;
+        p2 := reverse p2 ;
+        p2 := p2 -- p1 -- cycle  ;
 
-    else:               p:=base_glyph_of_chord(chord)  ; fi;
+        %p2 := p2 scaled 1 ;
 
-    p
-enddef ;
+        p2 := p2 shifted (0,-.0mm) ;
+
+
+        %p := fullcircle scaled 2 ;
+    else:
+        p2 := fullcircle scaled 0 ;
+    fi;
+    p2
+enddef;
 
 
 vardef draw_chord(expr chord,S,background) =
@@ -102,7 +167,9 @@ vardef draw_chord(expr chord,S,background) =
     interim ahangle := 25;
     q := glyph_of_chord (chord) ;
     q := q scaled .01 scaled .8 ;
-    q := q shifted ( S - center bbox q ) ;
+    transform t ;
+    t = identity shifted ( S - center bbox q ) ;
+    q := q transformed t ;
     for item within q:
         p := pathpart item ;
         if turningnumber p = 1:
@@ -123,6 +190,15 @@ vardef draw_chord(expr chord,S,background) =
         endfor ;
     endfor ;
 
+    path other ;
+
+    other := make_seven(chord) transformed t ;
+    fill other withcolor red ;
+
+    other := make_major_seven(chord) transformed t ;
+    fill other withcolor green ;
+
+
 enddef ;
 
 
@@ -134,10 +210,10 @@ vardef draw_row(expr A,width,height,n,background)(suffix chords) =
     B1 := A shifted (n*width,0) ;
     B2 := B1 shifted (0,-height) ;
     B3 := A shifted (0,-height) ;
-    draw B0 -- B1 -- B2 -- B3 -- cycle withcolor c ;
+    draw freehand_path(B0 -- B1 -- B2 -- B3 -- cycle) withcolor c ;
 
     for i=1 step 1 until n :
-        draw B0 shifted (i*width,0) -- B3 shifted (i*width,0) withcolor c ;
+        draw freehand_path(B0 shifted (i*width,0) -- B3 shifted (i*width,0)) withcolor c ;
     endfor ;
 
     for i=0 step 1 until n-1:
