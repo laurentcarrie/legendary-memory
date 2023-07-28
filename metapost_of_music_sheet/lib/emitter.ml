@@ -85,7 +85,17 @@ vardef make_seven(expr chord)=
 
 
         path p[] ;
-        p1 := a[0]{1,-1} ... a[1] ... a[2]{dir -65} ... a[3] ... a[4] ;
+
+        a[0] := (.5,.5)  ;
+        a[1] := (1,0) ;
+        a[2]=(0,0) ;
+        a[3]=(.5,.5)  ;
+        a[4]=(0,0)   ;
+
+
+        path p[] ;
+
+        p1 := a[0] -- a[1] -- a[2] -- a[3] ;
         transform tt ;
         tt := identity shifted (  - center bbox p1 ) ;
         p2 := p1 transformed tt ;
@@ -97,6 +107,7 @@ vardef make_seven(expr chord)=
         p2 := p2 scaled u shifted (.25cm,.06cm) ;
         p2 := reverse p2 ;
         p2 := p2 -- p1 -- cycle  ;
+
 
         p := p scaled u shifted (.25cm,.06cm) ;
     else:
