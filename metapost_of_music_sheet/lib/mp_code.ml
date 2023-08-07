@@ -220,7 +220,7 @@ enddef;
 
 let make_major : string =
   {whatever|
-
+  
 
 vardef make_major_seven(expr chord)=
     save is_seven ;
