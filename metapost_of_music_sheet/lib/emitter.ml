@@ -1,6 +1,11 @@
 open Printf
 module Log = Dolog.Log
 
+let clean_string data =
+  let data = Str.global_replace (Str.regexp_string "&amp;quot;") "\"" data in
+  let data = Str.global_replace (Str.regexp_string "&quot;") "\"" data in
+  data
+
 let sheet_jingoo : string =
   {whatever|
 
@@ -57,7 +62,7 @@ vardef glyph_of_chord (expr chord)=
     p
 enddef ;
 
-vardef make_flat(expr chord)=
+vardef make_flat(suffix ret)(expr chord)=
     save is_flat;
     boolean is_flat ;
 
@@ -71,23 +76,29 @@ vardef make_flat(expr chord)=
 
     if is_flat:
         numeric u,n ;
-        u := 10 ;
+        u := 2 ;
         pair a[] ;
 
-        n:=4 ;
-        a[0] := (1,0);
-        a[1] := (0,0) ;
-        a[2] := (.2,0) ;
-        a[3] := (.2,.2) ;
-        a[4] := (0,.2) ;
+        n:=3 ;
+        a[0] := (2.8,0.4);
+        a[1] := (3,0.4) ;
+        a[2] := (3,2.6) ;
+        a[3] := (2.8,2.6) ;
+        a[4] := (3,.4) ;
+        a[5] := (3,2.6) ;
 
-        p := a[0] for i=1 step 1 until n: -- a[i] endfor -- cycle ;
+        p := a[0] for i=1 step 1 until n: -- a[i] endfor  ;
+
+        path q ;
+        q := a[4] -- a[5] ;
+
+        p := p -- q -- cycle  ;
 
         p := p scaled u  ;
     else:
         p := fullcircle scaled 0 ;
     fi;
-    p
+    ret[0] := p ;
 enddef;
 
 vardef make_sharp(expr chord)=
@@ -321,6 +332,21 @@ vardef make_seven(expr chord)=
 enddef;
 
 
+vardef draw_bati(expr p) =
+    %save p ;
+    %path p ;
+    for j=0 upto length p:
+            pickup pencircle scaled .05;
+            draw (point j of p -- precontrol j of p)   dashed evenly withcolor blue;
+            draw (point j of p -- postcontrol j of p)  dashed evenly withcolor blue;
+            pickup pencircle scaled .05;
+            draw precontrol j of p withcolor red;
+            draw postcontrol j of p withcolor red;
+            pickup pencircle scaled .05;
+            draw point j of p withcolor black;
+    endfor;
+enddef ;
+
 vardef draw_chord(expr chord,S,background) =
     save q,p ;
     picture q;
@@ -334,21 +360,14 @@ vardef draw_chord(expr chord,S,background) =
     q := q transformed t ;
     for item within q:
         p := pathpart item ;
+
+        pickup pencircle scaled .001;
         if turningnumber p = 1:
-            fill p withcolor black ;
+            draw p withcolor black ;
         else:
-            unfill p ;
+            draw p withcolor (0,1,0) ;
         fi;
-        for j=0 upto length p:
-            %pickup pencircle scaled .01;
-            %draw (point j of p -- precontrol j of p)   dashed evenly withcolor blue;
-            %draw (point j of p -- postcontrol j of p)  dashed evenly withcolor blue;
-            %pickup pencircle scaled .03;
-            %draw precontrol j of p withcolor red;
-            %draw postcontrol j of p withcolor red;
-            %pickup pencircle scaled .02;
-            %draw point j of p withcolor black;
-        endfor ;
+        %draw_bati(p) ;
     endfor ;
 
     path other ;
@@ -356,11 +375,23 @@ vardef draw_chord(expr chord,S,background) =
     other := make_seven(chord) transformed t ;
     fill other withcolor black ;
 
-    other := make_flat(chord) transformed t ;
-    fill other withcolor black ;
+    path otherp[] ;
+    make_flat(otherp)(chord) ;
+    %other := otherp0 transformed t ;
+    %draw other withcolor (.5,1,1) ;
+    %draw_bati(other) ;
+    numeric i ;
+    i:=1 ;
+    forever:
+        if known otherp[i]:
+            %draw_bati(otherp[i] transformed t) ;
+            i := i+1 ;
+        fi;
+        exitif unknown otherp[i] ;
+    endfor ;
 
     other := make_sharp(chord) transformed t ;
-    fill other withcolor black ;
+    pickup pencircle scaled .001;
 
     other := make_major_seven(chord) transformed t ;
     fill other withcolor black ;
@@ -409,7 +440,7 @@ beginfig(0);
     (margin,-margin)  -- cycle ;
     color background ;
     background := (.8,.7,.7) ;
-    fill p withcolor background ;
+    %fill p withcolor background ;
     %label(decimal t,(-margin,-margin)/2) ;
     %%draw textext("cycle " & decimal t) shifted (-margin,-margin)/2  ;
 
@@ -432,9 +463,12 @@ beginfig(0);
 
     {{ sections }}
 
-    %A = (-3cm,3cm) shifted (0,{{counter_row}}*-3cm);
-    %string chords[] ;
+    {{ after_sections }}
+
 endfig;
+
+{{ other }}
+
 end.
 |whatever}
 
@@ -461,35 +495,6 @@ label.urt(btex \rmfamily \textit{ {{name}} } etex,A) ;
 let emit fout sheet format outputtemplate =
   let _ = format in
   let _ = outputtemplate in
-
-  (*  let extension = match format with *)
-  (*  | "png" -> "png" *)
-  (*  |"mp" -> "mp" *)
-
-  (*  |_-> failwith "bad format" *)
-  (*  in *)
-
-  (*    let range from until = *)
-  (*        List.init (until - from) (fun i -> Jingoo.Jg_types.Tint (i + from)) *)
-  (*    in *)
-  (*  let emit_row row counter_row = *)
-  (*    let result : string = *)
-  (*      Jingoo.Jg_template.from_string sheet_jingoo *)
-  (*        ~models: *)
-  (*          [ *)
-  (*            ("format", Jingoo.Jg_types.Tstr format); *)
-  (*            ("outputtemplate", Jingoo.Jg_types.Tstr outputtemplate); *)
-  (*            ("width", Jingoo.Jg_types.Tstr "1cm"); *)
-  (*            ("height", Jingoo.Jg_types.Tstr ".5cm"); *)
-  (*            ("n", Jingoo.Jg_types.Tint (List.length row)); *)
-  (*            ("counter_row", Jingoo.Jg_types.Tint counter_row); *)
-  (*            ( "row", *)
-  (*              let f c = Jingoo.Jg_types.Tstr c in *)
-  (*              Jingoo.Jg_types.Tlist (List.map f row) ); *)
-  (*          ] *)
-  (*    in *)
-  (*    result *)
-  (*  in *)
   let emit_row row =
     (*    let env = Jingoo.Jg_types.std_env in *)
     (*    let env = { env with autoescape=false} in *)
@@ -535,23 +540,18 @@ let emit fout sheet format outputtemplate =
         "" sheet.Sheet.sections
     in
     let _ = Log.info "sections : %s" sections in
-    let result =
-      Jingoo.Jg_template.from_string sheet_jingoo
-        ~models:
-          [
-            ("format", Jingoo.Jg_types.Tstr format);
-            ("outputtemplate", Jingoo.Jg_types.Tstr outputtemplate);
-            ("width", Jingoo.Jg_types.Tstr "1cm");
-            ("height", Jingoo.Jg_types.Tstr ".3cm");
-            ("section_spacing", Jingoo.Jg_types.Tstr ".5cm");
-            ("sections", Jingoo.Jg_types.Tstr sections);
-          ]
-    in
-    let result =
-      Str.global_replace (Str.regexp_string "&amp;quot;") "\"" result
-    in
-    let result = Str.global_replace (Str.regexp_string "&quot;") "\"" result in
-    result
+    Jingoo.Jg_template.from_string sheet_jingoo
+      ~models:
+        [
+          ("format", Jingoo.Jg_types.Tstr format);
+          ("outputtemplate", Jingoo.Jg_types.Tstr outputtemplate);
+          ("width", Jingoo.Jg_types.Tstr "1cm");
+          ("height", Jingoo.Jg_types.Tstr ".3cm");
+          ("section_spacing", Jingoo.Jg_types.Tstr ".5cm");
+          ("sections", Jingoo.Jg_types.Tstr sections);
+          ("after_sections", Jingoo.Jg_types.Tstr "");
+          ("other", Jingoo.Jg_types.Tstr "");
+        ]
   in
-  let result = emit_sheet sheet in
+  let result = clean_string (emit_sheet sheet) in
   fprintf fout "%s" result

@@ -1,26 +1,13 @@
 ;(include_subdirs unqualified)
 
-;(tests
-; (names make_major_sept)
-; (modules test2)
-; (libraries metapost_of_music_sheet dolog jingoo)
-; ; (libraries metapost_of_music_sheet)
-; (deps resources/music-sheet1.yml))
-
-(rule
- (alias runtest)
- (action
-  (run ./clock.sh))
- (deps resources/alanis-morissette-ironic.yml))
-
-(rule
- (alias runtest)
- (action
-  (run ./ironic.sh))
- (deps resources/alanis-morissette-ironic.yml))
-
-(rule
- (alias runtest)
- (action
-  (run ./test.sh))
- (deps resources/test.yml))
+;(rule
+; (alias runtest)
+; (action
+;  (run ./clock.sh))
+; (deps resources/alanis-morissette-ironic.yml))
+;
+;(rule
+; (alias runtest)
+; (action
+;  (run ./ironic.sh))
+; (deps resources/alanis-morissette-ironic.yml))

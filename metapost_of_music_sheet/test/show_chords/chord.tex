@@ -1,0 +1,33 @@
+\documentclass[border=5mm]{standalone}
+\usepackage{luamplib}
+\usepackage{graphicx}
+\mplibtextextlabel{enable}
+\begin{document}
+
+    \begin{mplibcode}
+
+beginfig(0);
+    picture A,B;
+    B = TEX("\includegraphics[width=300pt]{/home/laurent/Pictures/Screenshots/flat.png}");
+    A = TEX("\includegraphics[width=300pt]{mps/chord-1.mps}");
+    numeric n ;
+    draw B scaled .2 shifted (200,60) ;
+    draw A;
+endfig;
+
+\end{mplibcode}
+
+%\begin{mplibcode}
+%
+%beginfig(0);
+%    picture A,B;
+%    A = TEX("\includegraphics[width=200pt]{mps/chord-2.mps}");
+%    numeric n ;
+%    draw A;
+%endfig;
+%
+%\end{mplibcode}
+
+
+
+\end{document}

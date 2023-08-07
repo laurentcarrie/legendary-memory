@@ -32,7 +32,7 @@ module Log = Dolog.Log
 (*  | Error `Msg e -> print_endline ("Error - parsing: " ^ e) *)
 
 let () =
-  Log.set_log_level Log.DEBUG;
+  Log.set_log_level Log.INFO;
   Log.set_output stdout;
   Log.color_on ();
   let yaml_filename = Array.get Sys.argv 1 in

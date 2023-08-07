@@ -52,46 +52,46 @@ sections:
     rows:
       -
         - Ab
-        - A7b
-        - AM7b
-        - Amb
-        - Am7b
+        - Ab7
+        - AbM7
+        - Abm
+        - Abm7
       -
         - Bb
-        - B7b
-        - BM7b
-        - Bmb
-        - Bm7b
+        - Bb7
+        - BbM7
+        - Bbm
+        - Bbm7
       -
         - Cb
-        - C7b
-        - CM7b
-        - Cmb
-        - Cm7b
+        - Cb7
+        - CbM7
+        - Cbm
+        - Cbm7
       -
         - Db
-        - D7b
-        - DM7b
-        - Dmb
-        - Dm7b
+        - Db7
+        - DbM7
+        - Dbm
+        - Dbm7
       -
         - Eb
-        - E7b
-        - EM7b
-        - Emb
-        - Em7b
+        - Eb7
+        - EbM7
+        - Ebm
+        - Ebm7
       -
         - Fb
-        - F7b
-        - FM7b
-        - Fmb
-        - Fm7b
+        - Fb7
+        - FbM7
+        - Fbm
+        - Fbm7
       -
         - Gb
-        - G7b
-        - GM7b
-        - Gmb
-        - Gm7b
+        - Gb7
+        - GbM7
+        - Gbm
+        - Gbm7
   - name: sharp
     rows:
       -

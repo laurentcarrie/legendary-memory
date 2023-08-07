@@ -1,7 +1,7 @@
 (executable
  (public_name metapost_of_music_sheet)
  (name metapost_of_music_sheet)
- (libraries metapost_of_music_sheet jingoo)
+ (libraries metapost_of_music_sheet jingoo core)
  ; (preprocess
  ;  (pps ppx_deriving_yaml))
  )
