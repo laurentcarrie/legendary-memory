@@ -21,7 +21,7 @@ repos:
   - repo: local
     hooks:
       - id: generate
-        name: format
+        name: generate ml files from mp
         entry: bash metapost_of_music_sheet/lib/ml_of_mp.sh
         language: system
         pass_filenames: false

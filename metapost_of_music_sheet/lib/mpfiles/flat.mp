@@ -1,4 +1,5 @@
-vardef make_flat(suffix ret)(expr chord)= save is_flat;
+vardef make_flat(suffix ret)(expr chord)=
+    save is_flat;
 	boolean is_flat ;
 	if (length chord>1) and ( substring(1,2) of chord = "b" ): is_flat:=true;
 	else: is_flat:=false ;

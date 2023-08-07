@@ -1,6 +1,7 @@
 let make_flat : string =
   {whatever|
-  vardef make_flat(suffix ret)(expr chord)= save is_flat;
+  vardef make_flat(suffix ret)(expr chord)=
+    save is_flat;
 	boolean is_flat ;
 	if (length chord>1) and ( substring(1,2) of chord = "b" ): is_flat:=true;
 	else: is_flat:=false ;
@@ -218,11 +219,9 @@ let make_minor : string =
 enddef;
   |whatever}
 
-let make_major : string =
+let make_major_seven : string =
   {whatever|
-  
-
-vardef make_major_seven(expr chord)=
+  vardef make_major_seven(expr chord)=
     save is_seven ;
     boolean is_seven ;
 
@@ -389,14 +388,14 @@ let make_draw_chord : string =
 
     path other ;
 
-    other := make_seven(chord) transformed t ;
-    fill other withcolor black ;
+    %other := make_seven(chord) transformed t ;
+    %fill other withcolor black ;
 
     path otherp[] ;
     make_flat(otherp)(chord) ;
-    %other := otherp0 transformed t ;
-    %draw other withcolor (.5,1,1) ;
-    %draw_bati(other) ;
+    other := otherp0 transformed t ;
+    draw other withcolor (.5,1,1) ;
+    draw_bati(other) ;
     numeric i ;
     i:=1 ;
     forever:
@@ -407,14 +406,14 @@ let make_draw_chord : string =
         exitif unknown otherp[i] ;
     endfor ;
 
-    other := make_sharp(chord) transformed t ;
-    pickup pencircle scaled .001;
+    %other := make_sharp(chord) transformed t ;
+    %pickup pencircle scaled .001;
 
-    other := make_major_seven(chord) transformed t ;
-    fill other withcolor black ;
+    %other := make_major_seven(chord) transformed t ;
+    %fill other withcolor black ;
 
-    other := make_minor(chord) transformed t ;
-    fill other withcolor black ;
+    %other := make_minor(chord) transformed t ;
+    %fill other withcolor black ;
 
 enddef ;
   |whatever}

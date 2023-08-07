@@ -23,14 +23,14 @@ vardef draw_chord(expr chord,S,background) =
 
     path other ;
 
-    other := make_seven(chord) transformed t ;
-    fill other withcolor black ;
+    %other := make_seven(chord) transformed t ;
+    %fill other withcolor black ;
 
     path otherp[] ;
     make_flat(otherp)(chord) ;
-    %other := otherp0 transformed t ;
-    %draw other withcolor (.5,1,1) ;
-    %draw_bati(other) ;
+    other := otherp0 transformed t ;
+    draw other withcolor (.5,1,1) ;
+    draw_bati(other) ;
     numeric i ;
     i:=1 ;
     forever:
@@ -41,13 +41,13 @@ vardef draw_chord(expr chord,S,background) =
         exitif unknown otherp[i] ;
     endfor ;
 
-    other := make_sharp(chord) transformed t ;
-    pickup pencircle scaled .001;
+    %other := make_sharp(chord) transformed t ;
+    %pickup pencircle scaled .001;
 
-    other := make_major_seven(chord) transformed t ;
-    fill other withcolor black ;
+    %other := make_major_seven(chord) transformed t ;
+    %fill other withcolor black ;
 
-    other := make_minor(chord) transformed t ;
-    fill other withcolor black ;
+    %other := make_minor(chord) transformed t ;
+    %fill other withcolor black ;
 
 enddef ;

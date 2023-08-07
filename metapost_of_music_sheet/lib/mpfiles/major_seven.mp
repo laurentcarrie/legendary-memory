@@ -1,5 +1,3 @@
-
-
 vardef make_major_seven(expr chord)=
     save is_seven ;
     boolean is_seven ;

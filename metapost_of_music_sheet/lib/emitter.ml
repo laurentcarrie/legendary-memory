@@ -4,15 +4,12 @@ module Log = Dolog.Log
 let clean_string data =
   let data = Str.global_replace (Str.regexp_string "&amp;quot;") "\"" data in
   let data = Str.global_replace (Str.regexp_string "&quot;") "\"" data in
+  let data = Str.global_replace (Str.regexp_string "&gt;") ">" data in
   data
 
 let sheet_jingoo : string =
   {whatever|
 
-YYY
-{{vardefmakeflat}}
-"{{format}}"
-YYYx
 prologues:=3;
 outputtemplate := "{{outputtemplate}}";
 outputformat := "{{format}}";
@@ -34,11 +31,33 @@ etex
 
 % YYYYYYYYYYYYYYYYYYYYYYYY
 
+
+% -- vardef draw_bati
+{{vardef_make_draw_bati}}
+
+
 % -- vardef make_flat
 {{vardef_make_flat}}
 
 % -- vardef make_sharp
 {{vardef_make_sharp}}
+
+% -- vardef make_major_seven
+{{vardef_make_major_seven}}
+
+% -- vardef make_seven
+{{vardef_make_seven}}
+
+% -- vardef make_minor
+{{vardef_make_minor}}
+
+
+% -- vardef glyph_of_chord
+{{vardef_make_glyph_of_chord}}
+
+
+% -- vardef draw_chord
+{{vardef_make_draw_chord}}
 
 
 
@@ -154,7 +173,6 @@ let emit fout sheet format outputtemplate =
     Jingoo.Jg_template.from_string sheet_jingoo
       ~models:
         [
-          ("vardefmakeflat", Jingoo.Jg_types.Tstr "ZZZZZZZZZZZZZZZZZZZZZ");
           ("format", Jingoo.Jg_types.Tstr format);
           ("outputtemplate", Jingoo.Jg_types.Tstr outputtemplate);
           ("width", Jingoo.Jg_types.Tstr "1cm");
@@ -163,6 +181,7 @@ let emit fout sheet format outputtemplate =
           ("sections", Jingoo.Jg_types.Tstr sections);
           ("after_sections", Jingoo.Jg_types.Tstr "");
           ("other", Jingoo.Jg_types.Tstr "");
+          ("vardef_make_flat", Jingoo.Jg_types.Tstr Mp_code.make_flat);
           ("vardef_make_sharp", Jingoo.Jg_types.Tstr Mp_code.make_sharp);
         ]
   in

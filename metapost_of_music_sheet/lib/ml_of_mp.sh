@@ -55,15 +55,21 @@ conclusion() {
   if test "x$new_data" != "x$old_data"; then
     echo "code has changed"
     echo "$new_data" >$mlfile
+    echo "$old_data" >${mlfile}.old
     exit 1
   else
     echo "code has not changed"
   fi
 
+
 }
 
 preamble
-for s in flat sharp seven minor major draw_bati glyph_of_chord draw_row draw_chord ; do
+
+what="flat sharp seven minor major_seven draw_bati glyph_of_chord draw_row draw_chord"
+#what=flat sharp seven minor major draw_bati glyph_of_chord draw_row draw_chord
+
+for s in $what ; do
   generate_one_mlfile $s
 done
 conclusion

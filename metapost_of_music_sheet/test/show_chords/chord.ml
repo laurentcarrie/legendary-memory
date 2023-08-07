@@ -7,7 +7,7 @@ beginfig(1) ;
 
 pair O ;
 O := (0,0) ;
-% draw_chord("Ab",O,background) ;
+draw_chord("Ab",O,background) ;
 
 dotlabeldiam:=.1bp ;
 dotlabel.top(btex \tiny{O} etex,O) scaled .1 withcolor red ;
@@ -65,6 +65,26 @@ let main () =
           ("outputformat", Jingoo.Jg_types.Tstr "mps");
           ("after_sections", Jingoo.Jg_types.Tstr "");
           ("other", Jingoo.Jg_types.Tstr other);
+          ( "vardef_make_flat",
+            Jingoo.Jg_types.Tstr Metapost_of_music_sheet.Mp_code.make_flat );
+          ( "vardef_make_sharp",
+            Jingoo.Jg_types.Tstr Metapost_of_music_sheet.Mp_code.make_sharp );
+          ( "vardef_make_draw_chord",
+            Jingoo.Jg_types.Tstr Metapost_of_music_sheet.Mp_code.make_draw_chord
+          );
+          ( "vardef_make_glyph_of_chord",
+            Jingoo.Jg_types.Tstr
+              Metapost_of_music_sheet.Mp_code.make_glyph_of_chord );
+          ( "vardef_make_seven",
+            Jingoo.Jg_types.Tstr Metapost_of_music_sheet.Mp_code.make_seven );
+          ( "vardef_make_major_seven",
+            Jingoo.Jg_types.Tstr
+              Metapost_of_music_sheet.Mp_code.make_major_seven );
+          ( "vardef_make_minor",
+            Jingoo.Jg_types.Tstr Metapost_of_music_sheet.Mp_code.make_minor );
+          ( "vardef_make_draw_bati",
+            Jingoo.Jg_types.Tstr Metapost_of_music_sheet.Mp_code.make_draw_bati
+          );
         ]
   in
   let result = Metapost_of_music_sheet.Emitter.clean_string result in
