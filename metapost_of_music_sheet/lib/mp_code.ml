@@ -11,18 +11,17 @@ let make_flat : string =
 		u := 2 ;
 		pair a[] ;
 		n:=3 ;
-		a[0] := (2.8,0.4);
-		a[1] := (3,0.4) ;
-		a[2] := (3,2.6) ;
-		a[3] := (2.8,2.6) ;
-		a[4] := (3,.4) ;
-		a[5] := (3,2.6) ;
-		p := a[0] for i=1 step 1 until n: -- a[i] endfor ;
-		path q ;
-		q := a[4] -- a[5] ;
-		p := p -- q -- cycle ;
-		p := p scaled u ;
-	else: p := fullcircle scaled 0 ;
+		a0 := (0,0) ;
+		a1 := a0 shifted (0,4.5) ;
+		a2 := a1 shifted (.18,0) ;
+		a3 := a2 shifted (0,-2.43) ;
+		a4 - a3 = dir (30) scaled .8 ;
+		a5 - a4 = dir (-30) scaled .9 ;
+		a6 - a5 = dir (-90) scaled .8 ;
+		p := a0 -- a1 -- a2 -- a3 -- a4 {dir 20} .. a5  .. a6 .. cycle  ;
+		p := p shifted (.22cm,0) ;
+	else:
+	    p := fullcircle scaled 0 ;
 	fi;
 	ret[0] := p ;
 enddef;
@@ -282,8 +281,8 @@ let make_draw_bati : string =
             pickup pencircle scaled .05;
             draw precontrol j of p withcolor red;
             draw postcontrol j of p withcolor red;
-            pickup pencircle scaled .05;
-            draw point j of p withcolor black;
+            pickup pencircle scaled .15;
+            draw point j of p withcolor green;
     endfor;
 enddef ;
   |whatever}
@@ -394,10 +393,10 @@ let make_draw_chord : string =
     path otherp[] ;
     make_flat(otherp)(chord) ;
     other := otherp0 transformed t ;
-    draw other withcolor (.5,1,1) ;
-    draw_bati(other) ;
+    draw other withcolor (0,0,0) ;
+    %draw_bati(other) ;
     numeric i ;
-    i:=1 ;
+    i:=0 ;
     forever:
         if known otherp[i]:
             %draw_bati(otherp[i] transformed t) ;

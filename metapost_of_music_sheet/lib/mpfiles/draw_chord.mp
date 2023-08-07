@@ -29,10 +29,10 @@ vardef draw_chord(expr chord,S,background) =
     path otherp[] ;
     make_flat(otherp)(chord) ;
     other := otherp0 transformed t ;
-    draw other withcolor (.5,1,1) ;
-    draw_bati(other) ;
+    draw other withcolor (0,0,0) ;
+    %draw_bati(other) ;
     numeric i ;
-    i:=1 ;
+    i:=0 ;
     forever:
         if known otherp[i]:
             %draw_bati(otherp[i] transformed t) ;

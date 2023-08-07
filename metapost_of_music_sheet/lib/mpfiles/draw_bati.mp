@@ -8,7 +8,7 @@ vardef draw_bati(expr p) =
             pickup pencircle scaled .05;
             draw precontrol j of p withcolor red;
             draw postcontrol j of p withcolor red;
-            pickup pencircle scaled .05;
-            draw point j of p withcolor black;
+            pickup pencircle scaled .15;
+            draw point j of p withcolor green;
     endfor;
 enddef ;

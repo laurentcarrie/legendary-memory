@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-set -x
+#set -x
 
 echo "make ml of mp"
 
@@ -12,8 +12,6 @@ mlfile=$here/mp_code.ml
 
 generate_one_mlfile() {
   cd $here/mpfiles
-  set -e
-  set -x
 
   name=$1
 
