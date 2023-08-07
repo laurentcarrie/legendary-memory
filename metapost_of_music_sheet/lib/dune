@@ -2,7 +2,7 @@
 
 (library
  (name metapost_of_music_sheet)
- (modules sheet emitter pdf)
+ (modules sheet emitter pdf mp_code)
  (libraries jingoo dolog)
  ; (modules toto)
  (preprocess

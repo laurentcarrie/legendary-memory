@@ -20,6 +20,15 @@ repos:
 
   - repo: local
     hooks:
+      - id: generate
+        name: format
+        entry: bash metapost_of_music_sheet/lib/ml_of_mp.sh
+        language: system
+        pass_filenames: false
+
+
+  - repo: local
+    hooks:
       - id: format
         name: format
         entry: dune build @fmt --auto-promote --root metapost_of_music_sheet -j 1
