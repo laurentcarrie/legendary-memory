@@ -7,7 +7,7 @@ beginfig(1) ;
 
 pair O ;
 O := (0,0) ;
-draw_chord("Ab",O,background) ;
+% draw_chord("Ab",O,background) ;
 
 dotlabeldiam:=.1bp ;
 dotlabel.top(btex \tiny{O} etex,O) scaled .1 withcolor red ;

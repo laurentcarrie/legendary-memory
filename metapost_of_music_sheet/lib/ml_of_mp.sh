@@ -63,8 +63,7 @@ conclusion() {
 }
 
 preamble
-for s in flat sharp ; do
-  echo $s
+for s in flat sharp seven minor major draw_bati glyph_of_chord draw_row draw_chord ; do
   generate_one_mlfile $s
 done
 conclusion
