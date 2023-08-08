@@ -1,7 +1,8 @@
-vardef make_seven(expr chord)=
-    save is_seven ;
+vardef make_seven(suffix ret)(expr chord)=
     boolean is_seven ;
     if (length chord>1) and ( substring(1,2) of chord = "7" ):
+        is_seven:=true;
+    elseif (length chord>2) and ( substring(2,3) of chord = "7" ):
         is_seven:=true;
     elseif (length chord>2) and ( substring(1,3) of chord = "m7" ):
         is_seven:=true;
@@ -15,46 +16,25 @@ vardef make_seven(expr chord)=
         is_seven:=false ;
     fi;
 
-    path p[] ;
+	if is_seven:
+	    numeric u,n ;
+		u := 2 ;
+		pair a[] ;
+		n:=3 ;
+		a0 := (6.6,2.9) ;
+		a1 - a0 = dir(70) scaled 2 ;
+		a2 - a1 = dir(180) scaled 1 ;
+		a3 - a2 = dir(90) scaled .4 ;
 
-    if is_seven:
-        pickup pencircle scaled .1;
+		a4 = .5(a3+a5) shifted (0,-.05) ;
 
-        pair a[] ;
-        numeric u ;
-        u := .5mm ;
-
-        a[0] := (-.2,1)  ;
-        a[1] := (.25,.98) ;
-        a[2]=(0.5,1) ;
-        a[3]=(.4,.5)  ;
-        a[4]=(0,0)   ;
-
-
-        path p[] ;
-
-        p1 := a[0]{1,-1} ... a[1] ... a[2]{dir -65} ... a[3] ... a[4] ;
-        p1 := p1 scaled .13 ;
-        transform tt ;
-        tt := identity shifted (  - center bbox p1 ) ;
-        p2 := p1 transformed tt ;
-        p2 := p2 scaled .5 ;
-        tt := identity shifted (  center bbox p1 ) ;
-        p2 := p2 transformed tt ;
-
-        p1 := p1 scaled u ;
-        p2 := p2 scaled u ;
-        p2 := reverse p2 ;
-        p2 := p2 -- p1 -- cycle  ;
-
-        p2 := p2 scaled 1cm ;
-
-        p2 := p2 shifted (.32cm,.03cm) ;
+		a5 - a3 = dir(0) scaled 1.7 ;
+		.8 * xpart (a5 - a1) =  xpart (a6 - a0) ;
+		a6 - a0 = whatever * dir(0) ;
+		ret0 := a0 -- a1 -- a2{dir 180} .. a3{dir 0} .. a4 .. {dir 0}a5 -- a6 {dir(-110)} .. cycle ;
+        %ret0 := reverse ret0 ;
 
 
-        %p2 := fullcircle scaled 2 ;
-    else:
-        p2 := fullcircle scaled 0 ;
-    fi;
-    p2
+	fi;
+
 enddef;

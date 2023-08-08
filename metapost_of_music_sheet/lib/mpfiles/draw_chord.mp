@@ -1,4 +1,34 @@
+vardef draw_one(suffix p)(expr t,background) =
+    numeric i,tn ;
+    i:=0 ;
+    pickup pencircle scaled .05;
+    forever:
+        if known p[i]:
+            pickup pencircle scaled .05;
+            show "turning number" ;
+            show turningnumber p[i] ;
+            tn := turningnumber p[i] ;
+            %tn := tn - 2 * ( tn div 2 ) ;
+            show tn ;
+            if tn = 1 :
+                fill p[i] transformed t withcolor green ;
+            elseif tn = -1:
+                fill p[i] transformed t withcolor blue ;
+            else:
+                fill p[i] transformed t withcolor red ;
+            fi;
+            draw_bati(p[i] transformed t) ;
+            i := i+1 ;
+        fi;
+        exitif unknown p[i] ;
+    endfor ;
+enddef ;
+
+
 vardef draw_chord(expr chord,S,background) =
+    boolean do_draw_bati ;
+    do_draw_bati := false ;
+
     save q,p ;
     picture q;
     path p;
@@ -14,35 +44,27 @@ vardef draw_chord(expr chord,S,background) =
 
         pickup pencircle scaled .001;
         if turningnumber p = 1:
-            draw p withcolor black ;
+            fill p withcolor black ;
         else:
-            draw p withcolor (0,1,0) ;
+            fill p withcolor background ;
         fi;
-        %draw_bati(p) ;
+        if do_draw_bati :
+            draw_bati(p) ;
+        fi ;
     endfor ;
 
     path other ;
 
-    %other := make_seven(chord) transformed t ;
-    %fill other withcolor black ;
-
     path otherp[] ;
     make_flat(otherp)(chord) ;
-    other := otherp0 transformed t ;
-    draw other withcolor (0,0,0) ;
-    %draw_bati(other) ;
-    numeric i ;
-    i:=0 ;
-    forever:
-        if known otherp[i]:
-            %draw_bati(otherp[i] transformed t) ;
-            i := i+1 ;
-        fi;
-        exitif unknown otherp[i] ;
-    endfor ;
+    draw_one(otherp)(t,background) ;
 
-    %other := make_sharp(chord) transformed t ;
-    %pickup pencircle scaled .001;
+    make_sharp(otherp)(chord) ;
+    draw_one(otherp)(t,background) ;
+
+    make_seven(otherp)(chord) ;
+    draw_one(otherp)(t,background) ;
+
 
     %other := make_major_seven(chord) transformed t ;
     %fill other withcolor black ;

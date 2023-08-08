@@ -6,30 +6,47 @@ let make_flat : string =
 	if (length chord>1) and ( substring(1,2) of chord = "b" ): is_flat:=true;
 	else: is_flat:=false ;
 	fi;
-	path p ;
-	if is_flat: numeric u,n ;
+	path p[] ;
+	if is_flat:
+	    numeric u,n ;
 		u := 2 ;
 		pair a[] ;
 		n:=3 ;
 		a0 := (0,0) ;
 		a1 := a0 shifted (0,4.5) ;
-		a2 := a1 shifted (.18,0) ;
+		a2 := a1 shifted (.28,0) ;
 		a3 := a2 shifted (0,-2.43) ;
 		a4 - a3 = dir (30) scaled .8 ;
 		a5 - a4 = dir (-30) scaled .9 ;
 		a6 - a5 = dir (-90) scaled .8 ;
-		p := a0 -- a1 -- a2 -- a3 -- a4 {dir 20} .. a5  .. a6 .. cycle  ;
-		p := p shifted (.22cm,0) ;
-	else:
-	    p := fullcircle scaled 0 ;
+		p0 := a0 -- a1 -- a2 -- a3 -- a4 {dir 20} .. a5  .. a6 .. cycle  ;
+
+		pair b[] ;
+		b0 := a3 shifted (0,-.2) ;
+		b1 - b0 = dir(30) scaled .6 ;
+		b2 - b1 = dir(-30) scaled .6 ;
+		b3 - b2 = dir(-90) scaled .6 ;
+		b4 - b0 = whatever * dir(90) ;
+		b4 - a0 = whatever * dir(45) ;
+		p1 := b0 -- b1 {dir 20} .. b2 .. b3 .. b4 -- cycle ;
+
+
+		p0 := p0 shifted (.22cm,0) ;
+		%ret0 := reverse ret0 ;
+		p1 := p1 shifted (.22cm,0) ;
+		p1 := reverse p1 ;
+
+		ret0 := p0 ;
+		ret1 := p1 ;
+
 	fi;
-	ret[0] := p ;
+
 enddef;
   |whatever}
 
 let make_sharp : string =
   {whatever|
-  vardef make_sharp(expr chord)=
+  vardef make_sharp(suffix ret)(expr chord)=
 	save is_sharp;
 	boolean is_sharp ;
 
@@ -38,8 +55,6 @@ let make_sharp : string =
 	else:
 		is_sharp:=false ;
 	fi;
-	save p ;
-	path p ;
 
 	if is_sharp:
 		numeric u ;
@@ -100,26 +115,23 @@ let make_sharp : string =
 		a22 = whatever [a1,a2] ;
 		a21 = whatever [a1,a2] ;
 
+		ret0 := a[0] for i=1 step 1 until n: -- a[i] endfor -- cycle ;
+		ret0 := ret0 scaled 2 ;
+		ret0 := ret0 shifted (6,2) ;
 
-		path p ;
-		p := a[0] for i=1 step 1 until n: -- a[i] endfor -- cycle ;
-		p := p scaled 2 ;
-		p := p shifted (6,2) ;
-
-	else:
-		p := fullcircle scaled 0 ;
+		ret1 :=
 	fi;
-	p
 
 enddef;
   |whatever}
 
 let make_seven : string =
   {whatever|
-  vardef make_seven(expr chord)=
-    save is_seven ;
+  vardef make_seven(suffix ret)(expr chord)=
     boolean is_seven ;
     if (length chord>1) and ( substring(1,2) of chord = "7" ):
+        is_seven:=true;
+    elseif (length chord>2) and ( substring(2,3) of chord = "7" ):
         is_seven:=true;
     elseif (length chord>2) and ( substring(1,3) of chord = "m7" ):
         is_seven:=true;
@@ -133,48 +145,27 @@ let make_seven : string =
         is_seven:=false ;
     fi;
 
-    path p[] ;
+	if is_seven:
+	    numeric u,n ;
+		u := 2 ;
+		pair a[] ;
+		n:=3 ;
+		a0 := (6.6,2.9) ;
+		a1 - a0 = dir(70) scaled 2 ;
+		a2 - a1 = dir(180) scaled 1 ;
+		a3 - a2 = dir(90) scaled .4 ;
 
-    if is_seven:
-        pickup pencircle scaled .1;
+		a4 = .5(a3+a5) shifted (0,-.05) ;
 
-        pair a[] ;
-        numeric u ;
-        u := .5mm ;
-
-        a[0] := (-.2,1)  ;
-        a[1] := (.25,.98) ;
-        a[2]=(0.5,1) ;
-        a[3]=(.4,.5)  ;
-        a[4]=(0,0)   ;
-
-
-        path p[] ;
-
-        p1 := a[0]{1,-1} ... a[1] ... a[2]{dir -65} ... a[3] ... a[4] ;
-        p1 := p1 scaled .13 ;
-        transform tt ;
-        tt := identity shifted (  - center bbox p1 ) ;
-        p2 := p1 transformed tt ;
-        p2 := p2 scaled .5 ;
-        tt := identity shifted (  center bbox p1 ) ;
-        p2 := p2 transformed tt ;
-
-        p1 := p1 scaled u ;
-        p2 := p2 scaled u ;
-        p2 := reverse p2 ;
-        p2 := p2 -- p1 -- cycle  ;
-
-        p2 := p2 scaled 1cm ;
-
-        p2 := p2 shifted (.32cm,.03cm) ;
+		a5 - a3 = dir(0) scaled 1.7 ;
+		.8 * xpart (a5 - a1) =  xpart (a6 - a0) ;
+		a6 - a0 = whatever * dir(0) ;
+		ret0 := a0 -- a1 -- a2{dir 180} .. a3{dir 0} .. a4 .. {dir 0}a5 -- a6 {dir(-110)} .. cycle ;
+        %ret0 := reverse ret0 ;
 
 
-        %p2 := fullcircle scaled 2 ;
-    else:
-        p2 := fullcircle scaled 0 ;
-    fi;
-    p2
+	fi;
+
 enddef;
   |whatever}
 
@@ -362,7 +353,37 @@ enddef ;
 
 let make_draw_chord : string =
   {whatever|
-  vardef draw_chord(expr chord,S,background) =
+  vardef draw_one(suffix p)(expr t,background) =
+    numeric i,tn ;
+    i:=0 ;
+    pickup pencircle scaled .05;
+    forever:
+        if known p[i]:
+            pickup pencircle scaled .05;
+            show "turning number" ;
+            show turningnumber p[i] ;
+            tn := turningnumber p[i] ;
+            %tn := tn - 2 * ( tn div 2 ) ;
+            show tn ;
+            if tn = 1 :
+                fill p[i] transformed t withcolor green ;
+            elseif tn = -1:
+                fill p[i] transformed t withcolor blue ;
+            else:
+                fill p[i] transformed t withcolor red ;
+            fi;
+            draw_bati(p[i] transformed t) ;
+            i := i+1 ;
+        fi;
+        exitif unknown p[i] ;
+    endfor ;
+enddef ;
+
+
+vardef draw_chord(expr chord,S,background) =
+    boolean do_draw_bati ;
+    do_draw_bati := false ;
+
     save q,p ;
     picture q;
     path p;
@@ -378,35 +399,27 @@ let make_draw_chord : string =
 
         pickup pencircle scaled .001;
         if turningnumber p = 1:
-            draw p withcolor black ;
+            fill p withcolor black ;
         else:
-            draw p withcolor (0,1,0) ;
+            fill p withcolor background ;
         fi;
-        %draw_bati(p) ;
+        if do_draw_bati :
+            draw_bati(p) ;
+        fi ;
     endfor ;
 
     path other ;
 
-    %other := make_seven(chord) transformed t ;
-    %fill other withcolor black ;
-
     path otherp[] ;
     make_flat(otherp)(chord) ;
-    other := otherp0 transformed t ;
-    draw other withcolor (0,0,0) ;
-    %draw_bati(other) ;
-    numeric i ;
-    i:=0 ;
-    forever:
-        if known otherp[i]:
-            %draw_bati(otherp[i] transformed t) ;
-            i := i+1 ;
-        fi;
-        exitif unknown otherp[i] ;
-    endfor ;
+    draw_one(otherp)(t,background) ;
 
-    %other := make_sharp(chord) transformed t ;
-    %pickup pencircle scaled .001;
+    make_sharp(otherp)(chord) ;
+    draw_one(otherp)(t,background) ;
+
+    make_seven(otherp)(chord) ;
+    draw_one(otherp)(t,background) ;
+
 
     %other := make_major_seven(chord) transformed t ;
     %fill other withcolor black ;

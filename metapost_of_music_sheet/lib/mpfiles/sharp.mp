@@ -1,4 +1,4 @@
-vardef make_sharp(expr chord)=
+vardef make_sharp(suffix ret)(expr chord)=
 	save is_sharp;
 	boolean is_sharp ;
 
@@ -7,8 +7,6 @@ vardef make_sharp(expr chord)=
 	else:
 		is_sharp:=false ;
 	fi;
-	save p ;
-	path p ;
 
 	if is_sharp:
 		numeric u ;
@@ -69,15 +67,11 @@ vardef make_sharp(expr chord)=
 		a22 = whatever [a1,a2] ;
 		a21 = whatever [a1,a2] ;
 
+		ret0 := a[0] for i=1 step 1 until n: -- a[i] endfor -- cycle ;
+		ret0 := ret0 scaled 2 ;
+		ret0 := ret0 shifted (6,2) ;
 
-		path p ;
-		p := a[0] for i=1 step 1 until n: -- a[i] endfor -- cycle ;
-		p := p scaled 2 ;
-		p := p shifted (6,2) ;
-
-	else:
-		p := fullcircle scaled 0 ;
+		ret1 :=
 	fi;
-	p
 
 enddef;

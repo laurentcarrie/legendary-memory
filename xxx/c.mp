@@ -45,7 +45,6 @@ beginfig(1);
     % Add a label
     label("My External Image", (2.5u, 1.5u));
 
-    label("origin",origin)
 endfig;
 
 end.
