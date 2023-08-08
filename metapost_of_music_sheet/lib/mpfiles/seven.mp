@@ -32,7 +32,7 @@ vardef make_seven(suffix ret)(expr chord)=
 		.8 * xpart (a5 - a1) =  xpart (a6 - a0) ;
 		a6 - a0 = whatever * dir(0) ;
 		ret0 := a0 -- a1 -- a2{dir 180} .. a3{dir 0} .. a4 .. {dir 0}a5 -- a6 {dir(-110)} .. cycle ;
-        %ret0 := reverse ret0 ;
+        ret0 := reverse ret0 ;
 
 
 	fi;

@@ -30,9 +30,9 @@ vardef make_flat(suffix ret)(expr chord)=
 
 
 		p0 := p0 shifted (.22cm,0) ;
-		%ret0 := reverse ret0 ;
+		p0 := reverse p0 ;
 		p1 := p1 shifted (.22cm,0) ;
-		p1 := reverse p1 ;
+		%p1 := reverse p1 ;
 
 		ret0 := p0 ;
 		ret1 := p1 ;

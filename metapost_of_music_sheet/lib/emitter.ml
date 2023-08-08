@@ -173,16 +173,33 @@ let emit fout sheet format outputtemplate =
     Jingoo.Jg_template.from_string sheet_jingoo
       ~models:
         [
-          ("format", Jingoo.Jg_types.Tstr format);
-          ("outputtemplate", Jingoo.Jg_types.Tstr outputtemplate);
-          ("width", Jingoo.Jg_types.Tstr "1cm");
-          ("height", Jingoo.Jg_types.Tstr ".3cm");
-          ("section_spacing", Jingoo.Jg_types.Tstr ".5cm");
-          ("sections", Jingoo.Jg_types.Tstr sections);
+          ("width", Jingoo.Jg_types.Tint 20);
+          ("height", Jingoo.Jg_types.Tint 20);
+          ("section_spacing", Jingoo.Jg_types.Tint 20);
+          ("outputtemplate", Jingoo.Jg_types.Tstr "mps/chord-%c.mps");
+          ("outputformat", Jingoo.Jg_types.Tstr "mps");
           ("after_sections", Jingoo.Jg_types.Tstr "");
           ("other", Jingoo.Jg_types.Tstr "");
-          ("vardef_make_flat", Jingoo.Jg_types.Tstr Mp_code.make_flat);
-          ("vardef_make_sharp", Jingoo.Jg_types.Tstr Mp_code.make_sharp);
+          ( "vardef_make_flat",
+            Jingoo.Jg_types.Tstr Mp_code.make_flat );
+          ( "vardef_make_sharp",
+            Jingoo.Jg_types.Tstr Mp_code.make_sharp );
+          ( "vardef_make_draw_chord",
+            Jingoo.Jg_types.Tstr Mp_code.make_draw_chord
+          );
+          ( "vardef_make_glyph_of_chord",
+            Jingoo.Jg_types.Tstr
+              Mp_code.make_glyph_of_chord );
+          ( "vardef_make_seven",
+            Jingoo.Jg_types.Tstr Mp_code.make_seven );
+          ( "vardef_make_major_seven",
+            Jingoo.Jg_types.Tstr
+              Mp_code.make_major_seven );
+          ( "vardef_make_minor",
+            Jingoo.Jg_types.Tstr Mp_code.make_minor );
+          ( "vardef_make_draw_bati",
+            Jingoo.Jg_types.Tstr Mp_code.make_draw_bati
+          );
         ]
   in
   let result = clean_string (emit_sheet sheet) in

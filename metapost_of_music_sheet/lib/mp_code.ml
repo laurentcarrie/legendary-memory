@@ -32,9 +32,9 @@ let make_flat : string =
 
 
 		p0 := p0 shifted (.22cm,0) ;
-		%ret0 := reverse ret0 ;
+		p0 := reverse p0 ;
 		p1 := p1 shifted (.22cm,0) ;
-		p1 := reverse p1 ;
+		%p1 := reverse p1 ;
 
 		ret0 := p0 ;
 		ret1 := p1 ;
@@ -161,7 +161,7 @@ let make_seven : string =
 		.8 * xpart (a5 - a1) =  xpart (a6 - a0) ;
 		a6 - a0 = whatever * dir(0) ;
 		ret0 := a0 -- a1 -- a2{dir 180} .. a3{dir 0} .. a4 .. {dir 0}a5 -- a6 {dir(-110)} .. cycle ;
-        %ret0 := reverse ret0 ;
+        ret0 := reverse ret0 ;
 
 
 	fi;
@@ -365,10 +365,10 @@ let make_draw_chord : string =
             tn := turningnumber p[i] ;
             %tn := tn - 2 * ( tn div 2 ) ;
             show tn ;
-            if tn = 1 :
-                fill p[i] transformed t withcolor green ;
+            if (tn = 1) or (tn = 0) :
+                fill p[i] transformed t withcolor black ;
             elseif tn = -1:
-                fill p[i] transformed t withcolor blue ;
+                fill p[i] transformed t withcolor background ;
             else:
                 fill p[i] transformed t withcolor red ;
             fi;

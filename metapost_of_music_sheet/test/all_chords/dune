@@ -1,0 +1,5 @@
+(rule
+ (alias runtest)
+ (action
+  (run ./all_chords.sh))
+ (deps all_chords.yml))

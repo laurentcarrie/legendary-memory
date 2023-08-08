@@ -6,8 +6,4 @@
 ;  (run ./clock.sh))
 ; (deps resources/alanis-morissette-ironic.yml))
 ;
-;(rule
-; (alias runtest)
-; (action
-;  (run ./ironic.sh))
-; (deps resources/alanis-morissette-ironic.yml))
+

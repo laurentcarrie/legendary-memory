@@ -10,7 +10,7 @@ vardef draw_one(suffix p)(expr t,background) =
             tn := turningnumber p[i] ;
             %tn := tn - 2 * ( tn div 2 ) ;
             show tn ;
-            if tn = 1 :
+            if (tn = 1) or (tn = 0) :
                 fill p[i] transformed t withcolor black ;
             elseif tn = -1:
                 fill p[i] transformed t withcolor background ;
