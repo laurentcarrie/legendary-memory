@@ -11,9 +11,9 @@ vardef draw_one(suffix p)(expr t,background) =
             %tn := tn - 2 * ( tn div 2 ) ;
             show tn ;
             if tn = 1 :
-                fill p[i] transformed t withcolor green ;
+                fill p[i] transformed t withcolor black ;
             elseif tn = -1:
-                fill p[i] transformed t withcolor blue ;
+                fill p[i] transformed t withcolor background ;
             else:
                 fill p[i] transformed t withcolor red ;
             fi;
