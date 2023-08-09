@@ -15,11 +15,12 @@ let pdf_of_tex path =
   in
   ()
 
-let mps_of_mp filename =
-  let _ = if not (Sys.file_exists "mps") then Unix.mkdir "mps" 0o740 in
+let mps_of_mp sheet  =
+  let mps_dir = sheet.Sheet.path ^ "/mps" in
+  let _ = if not (Sys.file_exists mps_dir ) then Unix.mkdir mps_dir 0o740 in
   let command =
-    sprintf "( cd $(dirname %s) && mpost --tex=latex $(basename %s) )" filename
-      filename
+    sprintf "( cd $(dirname %s) && mpost --tex=latex $(basename %s) )" sheet.Sheet.path
+      sheet.Sheet.path
   in
   let _ = Log.info "%s:%d command : %s" __FILE__ __LINE__ command in
   let status = Unix.system command in
@@ -56,7 +57,7 @@ let tex_of_mps path mpsname =
     Jingoo.Jg_template.from_string maintex
       ~models:[ ("mpsname", Jingoo.Jg_types.Tstr mpsname) ]
   in
-  let fout = open_out path in
+  let fout = open_out (path^".tex") in
   let _ = fprintf fout "%s\n" result in
   let _ = close_out fout in
   ()
@@ -69,7 +70,7 @@ let make_pdf yaml_filename =
   let _ = Log.info "%s:%d %s" __FILE__ __LINE__ sheet.title in
   (*  let (filename,fout) = Filename.open_temp_file "utest-test2" ".mp" in *)
   let mp_filename = sprintf "%s.mp" sheet.Sheet.path in
-  let mps_filename = sprintf "%s.mps" sheet.Sheet.path in
+(*  let mps_filename = sprintf "%s.mps" sheet.Sheet.path in *)
 
   let write_mp () =
     let fout = open_out mp_filename in
@@ -83,8 +84,8 @@ let make_pdf yaml_filename =
   in
 
   let () = write_mp () in
-  let () = mps_of_mp sheet.Sheet.path in
-  let () = tex_of_mps sheet.Sheet.path mps_filename in
-  let () = pdf_of_tex sheet.Sheet.path in
-  let () = printf "test2 passed.\n" in
+(*  let () = mps_of_mp sheet in *)
+(*  let () = tex_of_mps sheet.Sheet.path mps_filename in *)
+(*  let () = pdf_of_tex sheet.Sheet.path in *)
+(*  let () = printf "test2 passed.\n" in *)
   ()
