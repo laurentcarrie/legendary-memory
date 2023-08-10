@@ -1,8 +1,8 @@
 title: all chords
 authors:
   - test engine
-path:
-  XX/YY
+#path:
+#  XX/YY
 sections:
   - name: normal
     rows:

@@ -3,7 +3,7 @@
 set -e
 #set -x
 
-pdf=XX/all.pdf
+pdf=chords_all.pdf
 mkdir -p $(dirname $pdf)
 
 ../../bin/metapost_of_music_sheet.exe all_chords.yml

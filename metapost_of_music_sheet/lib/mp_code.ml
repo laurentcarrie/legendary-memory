@@ -119,7 +119,6 @@ let make_sharp : string =
 		ret0 := ret0 scaled 2 ;
 		ret0 := ret0 shifted (6,2) ;
 
-		ret1 :=
 	fi;
 
 enddef;

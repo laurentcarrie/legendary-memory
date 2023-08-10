@@ -1,11 +1,10 @@
 ;(include_subdirs unqualified)
 
 (library
- (name metapost_of_music_sheet_lib)
+ (name Metapost_of_music_sheet)
+ (public_name metapost_of_music_sheet)
  (modules sheet emitter pdf mp_code)
  (libraries jingoo dolog)
  ; (modules toto)
  (preprocess
   (pps ppx_deriving_yaml)))
-
-(documentation)

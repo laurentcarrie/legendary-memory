@@ -5,6 +5,7 @@ let clean_string data =
   let data = Str.global_replace (Str.regexp_string "&amp;quot;") "\"" data in
   let data = Str.global_replace (Str.regexp_string "&quot;") "\"" data in
   let data = Str.global_replace (Str.regexp_string "&gt;") ">" data in
+  let data = Str.global_replace (Str.regexp_string "&amp;") "&" data in
   data
 
 let sheet_jingoo : string =
@@ -55,9 +56,11 @@ etex
 % -- vardef glyph_of_chord
 {{vardef_make_glyph_of_chord}}
 
-
 % -- vardef draw_chord
 {{vardef_make_draw_chord}}
+
+% -- vardef draw_row
+{{vardef_make_draw_row}}
 
 
 
@@ -91,6 +94,9 @@ beginfig(0);
     section_spacing := {{section_spacing}} ;
 
     {{ sections }}
+
+%    draw_chord("A",A,background) ;
+%    draw_chord("B",A shifted(width,0),background) ;
 
     {{ after_sections }}
 
@@ -148,7 +154,7 @@ let emit fout sheet format outputtemplate =
 
   let emit_section section =
     let result_rows = List.map emit_row section.Sheet.rows in
-    let () = Log.info "result_rows : '%s'" (List.hd result_rows) in
+    (*    let () = Log.info "result_rows : '%s'" (List.hd result_rows) in *)
     let result =
       Jingoo.Jg_template.from_string section_jingoo
         ~models:
@@ -168,38 +174,32 @@ let emit fout sheet format outputtemplate =
         (fun acc section -> acc ^ emit_section section)
         "" sheet.Sheet.sections
     in
-    let _ = Log.info "sections : %s" sections in
-    let _ = Log.info "XXXXXXXXXXXXXXXXXXXX %s" Mp_code.make_flat in
+    (*    let _ = Log.info "sections : %s" sections in *)
+    (*    let _ = Log.info "XXXXXXXXXXXXXXXXXXXX %s" Mp_code.make_flat in *)
+    let _ = sections in
     Jingoo.Jg_template.from_string sheet_jingoo
       ~models:
         [
           ("width", Jingoo.Jg_types.Tint 20);
           ("height", Jingoo.Jg_types.Tint 20);
           ("section_spacing", Jingoo.Jg_types.Tint 20);
-          ("outputtemplate", Jingoo.Jg_types.Tstr "mps/chord-%c.mps");
+          ("outputtemplate", Jingoo.Jg_types.Tstr "mps/main-%c.mps");
           ("outputformat", Jingoo.Jg_types.Tstr "mps");
+          ("sections", Jingoo.Jg_types.Tstr sections);
           ("after_sections", Jingoo.Jg_types.Tstr "");
           ("other", Jingoo.Jg_types.Tstr "");
-          ( "vardef_make_flat",
-            Jingoo.Jg_types.Tstr Mp_code.make_flat );
-          ( "vardef_make_sharp",
-            Jingoo.Jg_types.Tstr Mp_code.make_sharp );
+          ("vardef_make_flat", Jingoo.Jg_types.Tstr Mp_code.make_flat);
+          ("vardef_make_sharp", Jingoo.Jg_types.Tstr Mp_code.make_sharp);
+          ("vardef_make_draw_row", Jingoo.Jg_types.Tstr Mp_code.make_draw_row);
           ( "vardef_make_draw_chord",
-            Jingoo.Jg_types.Tstr Mp_code.make_draw_chord
-          );
+            Jingoo.Jg_types.Tstr Mp_code.make_draw_chord );
           ( "vardef_make_glyph_of_chord",
-            Jingoo.Jg_types.Tstr
-              Mp_code.make_glyph_of_chord );
-          ( "vardef_make_seven",
-            Jingoo.Jg_types.Tstr Mp_code.make_seven );
+            Jingoo.Jg_types.Tstr Mp_code.make_glyph_of_chord );
+          ("vardef_make_seven", Jingoo.Jg_types.Tstr Mp_code.make_seven);
           ( "vardef_make_major_seven",
-            Jingoo.Jg_types.Tstr
-              Mp_code.make_major_seven );
-          ( "vardef_make_minor",
-            Jingoo.Jg_types.Tstr Mp_code.make_minor );
-          ( "vardef_make_draw_bati",
-            Jingoo.Jg_types.Tstr Mp_code.make_draw_bati
-          );
+            Jingoo.Jg_types.Tstr Mp_code.make_major_seven );
+          ("vardef_make_minor", Jingoo.Jg_types.Tstr Mp_code.make_minor);
+          ("vardef_make_draw_bati", Jingoo.Jg_types.Tstr Mp_code.make_draw_bati);
         ]
   in
   let result = clean_string (emit_sheet sheet) in

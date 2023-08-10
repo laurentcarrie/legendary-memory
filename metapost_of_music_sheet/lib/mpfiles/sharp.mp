@@ -71,7 +71,6 @@ vardef make_sharp(suffix ret)(expr chord)=
 		ret0 := ret0 scaled 2 ;
 		ret0 := ret0 shifted (6,2) ;
 
-		ret1 :=
 	fi;
 
 enddef;
