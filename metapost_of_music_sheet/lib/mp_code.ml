@@ -326,6 +326,8 @@ let make_draw_row : string =
     B1 := A shifted (n*width,0) ;
     B2 := B1 shifted (0,-height) ;
     B3 := A shifted (0,-height) ;
+    pickup pencircle scaled .05;
+
     draw freehand_path(B0 -- B1 -- B2 -- B3 -- cycle) withcolor c ;
 
     for i=1 step 1 until n :
@@ -352,7 +354,10 @@ enddef ;
 
 let make_draw_chord : string =
   {whatever|
-  vardef draw_one(suffix p)(expr t,background) =
+  numeric ratio ;
+ratio = .5 * .1 ;
+
+vardef draw_one(suffix p)(expr t,background) =
     numeric i,tn ;
     i:=0 ;
     pickup pencircle scaled .05;
@@ -371,7 +376,7 @@ let make_draw_chord : string =
             else:
                 fill p[i] transformed t withcolor red ;
             fi;
-            draw_bati(p[i] transformed t) ;
+            %draw_bati(p[i] transformed t) ;
             i := i+1 ;
         fi;
         exitif unknown p[i] ;
@@ -389,10 +394,10 @@ vardef draw_chord(expr chord,S,background) =
     interim ahlength := 12bp;
     interim ahangle := 25;
     q := glyph_of_chord (chord) ;
-    q := q scaled .01 scaled .8 ;
+    q := q scaled .01 ;
     transform t ;
-    t = identity shifted ( S - center bbox q ) ;
-    q := q transformed t ;
+    t = identity scaled ratio shifted ( S - center bbox q ) ;
+    q := q transformed t  ;
     for item within q:
         p := pathpart item ;
 

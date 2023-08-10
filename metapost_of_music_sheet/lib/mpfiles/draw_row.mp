@@ -6,6 +6,8 @@ vardef draw_row(expr A,width,height,n,background)(suffix chords) =
     B1 := A shifted (n*width,0) ;
     B2 := B1 shifted (0,-height) ;
     B3 := A shifted (0,-height) ;
+    pickup pencircle scaled .05;
+
     draw freehand_path(B0 -- B1 -- B2 -- B3 -- cycle) withcolor c ;
 
     for i=1 step 1 until n :

@@ -1,3 +1,6 @@
+numeric ratio ;
+ratio = .5 * .1 ;
+
 vardef draw_one(suffix p)(expr t,background) =
     numeric i,tn ;
     i:=0 ;
@@ -17,7 +20,7 @@ vardef draw_one(suffix p)(expr t,background) =
             else:
                 fill p[i] transformed t withcolor red ;
             fi;
-            draw_bati(p[i] transformed t) ;
+            %draw_bati(p[i] transformed t) ;
             i := i+1 ;
         fi;
         exitif unknown p[i] ;
@@ -35,10 +38,10 @@ vardef draw_chord(expr chord,S,background) =
     interim ahlength := 12bp;
     interim ahangle := 25;
     q := glyph_of_chord (chord) ;
-    q := q scaled .01 scaled .8 ;
+    q := q scaled .01 ;
     transform t ;
-    t = identity shifted ( S - center bbox q ) ;
-    q := q transformed t ;
+    t = identity scaled ratio shifted ( S - center bbox q ) ;
+    q := q transformed t  ;
     for item within q:
         p := pathpart item ;
 

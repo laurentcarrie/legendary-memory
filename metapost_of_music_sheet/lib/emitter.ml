@@ -122,7 +122,7 @@ let section_jingoo : string =
   {whatever|
 % SECTION {{name}}
 A := A shifted (0,-section_spacing) ;
-label.urt(btex \rmfamily \textit{ {{name}} } etex,A) ;
+% label.urt(btex \rmfamily \textit{ {{name}} } etex,A) ;
 {% for row in rows %}%{{row}}
 {% endfor %}
 |whatever}
@@ -180,8 +180,8 @@ let emit fout sheet format outputtemplate =
     Jingoo.Jg_template.from_string sheet_jingoo
       ~models:
         [
-          ("width", Jingoo.Jg_types.Tint 20);
-          ("height", Jingoo.Jg_types.Tint 20);
+          ("width", Jingoo.Jg_types.Tint 1);
+          ("height", Jingoo.Jg_types.Tint 1);
           ("section_spacing", Jingoo.Jg_types.Tint 20);
           ("outputtemplate", Jingoo.Jg_types.Tstr "mps/main-%c.mps");
           ("outputformat", Jingoo.Jg_types.Tstr "mps");
