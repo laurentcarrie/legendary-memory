@@ -11,6 +11,8 @@ type sheet = {
   authors : string list;
   (*  path : string; *)
   sections : section list;
+  cell_width:int ;
+  cell_height:int ;
 }
 
 val deserialize : string -> sheet
