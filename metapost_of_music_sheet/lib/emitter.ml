@@ -182,8 +182,8 @@ let emit fout sheet format outputtemplate =
     Jingoo.Jg_template.from_string sheet_jingoo
       ~models:
         [
-          ("cell_width", Jingoo.Jg_types.Tint 10);
-          ("cell_height", Jingoo.Jg_types.Tint 10);
+          ("cell_width", Jingoo.Jg_types.Tint sheet.Sheet.cell_width);
+          ("cell_height", Jingoo.Jg_types.Tint sheet.Sheet.cell_height);
           ("section_spacing", Jingoo.Jg_types.Tint 20);
           ("outputtemplate", Jingoo.Jg_types.Tstr "mps/main-%c.mps");
           ("outputformat", Jingoo.Jg_types.Tstr "mps");
