@@ -4,6 +4,10 @@ authors:
 #path:
 #  XX/YY
 sections:
+  - name: single
+    rows:
+      -
+        - A
   - name: normal
     rows:
       -

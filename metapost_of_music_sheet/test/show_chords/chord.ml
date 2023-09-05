@@ -55,9 +55,9 @@ let main () =
     Jingoo.Jg_template.from_string Metapost_of_music_sheet.Emitter.sheet_jingoo
       ~models:
         [
-          ("width", Jingoo.Jg_types.Tint 8);
-          ("height", Jingoo.Jg_types.Tint 8);
-          ("section_spacing", Jingoo.Jg_types.Tint 20);
+          ("cell_width", Jingoo.Jg_types.Tint 200);
+          ("cell_height", Jingoo.Jg_types.Tint 200);
+          ("section_spacing", Jingoo.Jg_types.Tint 2);
           ("outputtemplate", Jingoo.Jg_types.Tstr "mps/chord-%c.mps");
           ("outputformat", Jingoo.Jg_types.Tstr "mps");
           ("after_sections", Jingoo.Jg_types.Tstr "");

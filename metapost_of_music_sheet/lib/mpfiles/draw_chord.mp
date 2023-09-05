@@ -39,8 +39,10 @@ vardef draw_chord(expr chord,S,background) =
     interim ahangle := 25;
     q := glyph_of_chord (chord) ;
     q := q scaled .01 ;
+    fill fullcircle scaled 3 shifted (center bbox q) withcolor green ;
     transform t ;
-    t = identity scaled ratio shifted ( S - center bbox q ) ;
+    t = identity shifted ( S - center bbox q ) ;
+    % t = identity scaled ratio shifted ( S - center bbox q ) ;
     q := q transformed t  ;
     for item within q:
         p := pathpart item ;

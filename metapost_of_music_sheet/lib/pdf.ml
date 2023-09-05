@@ -45,9 +45,9 @@ let maintex : string =
 \usepackage{xcolor}
 \begin{document}
 \section{section 1xxx}
-    \begin{center}
-      \includegraphics[width=\linewidth]{ {{mpsname}} }
-    \end{center}
+    %\begin{center}
+      \includegraphics{ {{mpsname}} }
+    %\end{center}
 
 
 \end{document}

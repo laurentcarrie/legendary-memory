@@ -13,7 +13,7 @@ let sheet_jingoo : string =
 
 prologues:=3;
 outputtemplate := "{{outputtemplate}}";
-outputformat := "{{format}}";
+outputformat := "{{outputformat}}";
 input boxes ;
 input TEX ;
 verbatimtex
@@ -68,11 +68,13 @@ beginfig(0);
     u:=.2cm ;
     margin:=4cm ;
     path p ;
-    p := (-margin,-margin) -- (-margin,margin) -- (margin,margin) --
-    (margin,-margin)  -- cycle ;
+%    p := (-margin,-margin) -- (-margin,margin) -- (margin,margin) --
+%    (margin,-margin)  -- cycle ;
+%    p := (-margin,-margin) -- (-margin,margin) -- (margin,margin) --
+%    (margin,-margin)  -- cycle ;
     color background ;
     background := (.8,.7,.7) ;
-    %fill p withcolor background ;
+%    fill p withcolor background ;
     %label(decimal t,(-margin,-margin)/2) ;
     %%draw textext("cycle " & decimal t) shifted (-margin,-margin)/2  ;
 
@@ -80,7 +82,7 @@ beginfig(0);
     %label(btex \rmfamily Pythagorean addition : $a$ etex, origin);
     %label(btex \sffamily Pythagorean addition : $a$ etex, origin shifted (0,-1cm));
 
-    numeric n,width,height ;
+    numeric n,cell_width,cell_height ;
     pair A,B[] ;
     B0=origin ;
     B1=origin ;
@@ -88,15 +90,15 @@ beginfig(0);
     B3=origin ;
     B4=origin ;
     string chords[] ;
-    A := (-3cm,3cm) ;
-    width := {{width}} ;
-    height := {{height}} ;
+    A := (0cm,0cm) ;
+    cell_width := {{cell_width}} ;
+    cell_height := {{cell_height}} ;
     section_spacing := {{section_spacing}} ;
 
     {{ sections }}
 
 %    draw_chord("A",A,background) ;
-%    draw_chord("B",A shifted(width,0),background) ;
+%    draw_chord("B",A shifted(cell_width,0),background) ;
 
     {{ after_sections }}
 
@@ -114,15 +116,15 @@ n:={{n}} ;
 {% for chord in chords %}
 chords{{loop.index0}}:="{{chord}}" ;
 {% endfor %}
-draw_row(A,width,height,n,background)(chords) ;
-A := A shifted (0,-height) ;
+draw_row(A,cell_width,cell_height,n,background)(chords) ;
+A := A shifted (0,-cell_height) ;
 |whatever}
 
 let section_jingoo : string =
   {whatever|
 % SECTION {{name}}
 A := A shifted (0,-section_spacing) ;
-label.urt(btex \rmfamily \textit{ {{name}} } etex,A) ;
+%label.ulft(btex \rmfamily \textit{ {{name}} } etex,A) ;
 {% for row in rows %}%{{row}}
 {% endfor %}
 |whatever}
@@ -180,8 +182,8 @@ let emit fout sheet format outputtemplate =
     Jingoo.Jg_template.from_string sheet_jingoo
       ~models:
         [
-          ("width", Jingoo.Jg_types.Tint 1);
-          ("height", Jingoo.Jg_types.Tint 1);
+          ("cell_width", Jingoo.Jg_types.Tint 10);
+          ("cell_height", Jingoo.Jg_types.Tint 10);
           ("section_spacing", Jingoo.Jg_types.Tint 20);
           ("outputtemplate", Jingoo.Jg_types.Tstr "mps/main-%c.mps");
           ("outputformat", Jingoo.Jg_types.Tstr "mps");
