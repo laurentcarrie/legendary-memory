@@ -122,7 +122,7 @@ let section_jingoo : string =
   {whatever|
 % SECTION {{name}}
 A := A shifted (0,-section_spacing) ;
-% label.urt(btex \rmfamily \textit{ {{name}} } etex,A) ;
+label.urt(btex \rmfamily \textit{ {{name}} } etex,A) ;
 {% for row in rows %}%{{row}}
 {% endfor %}
 |whatever}

@@ -44,7 +44,7 @@ let maintex : string =
 \usepackage{luamplib}
 \usepackage{xcolor}
 \begin{document}
-\section{section 1}
+\section{section 1xxx}
     \begin{center}
       \includegraphics[width=\linewidth]{ {{mpsname}} }
     \end{center}
