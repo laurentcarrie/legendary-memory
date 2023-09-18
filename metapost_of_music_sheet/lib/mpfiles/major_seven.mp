@@ -14,22 +14,23 @@ vardef make_major_seven(suffix ret)(expr chord)=
 		u := 2 ;
 		pair a[] ;
 		path p[] ;
-		a0 := (0,0) ;
-		a1 - a0 = dir(0) scaled 1 ;
-		a2 - a0 = dir(60) scaled 1 ;
+		a0 := dir(90) scaled 1 ;
+		a1 := dir(210) scaled 1 ;
+		a2 := dir(330) scaled 1 ;
 		p0 := a0 -- a1 -- a2 -- cycle ;
         %p0 := reverse p0 ;
 
 
-        p0 := p0 scaled 1.2 ;
-        p1 := p0 scaled 1.2 ;
+        p0 := p0 scaled 2.2 ;
+        p1 := p0 scaled 0.8 ;
+        p1 := reverse p1 ;
 
 
-        p0 := p0 shifted (4.2,0) ;
-        p1 := p1 shifted (4.2,0) ;
+        p0 := p0 shifted (5.4,2) ;
+        p1 := p1 shifted (5.4,2) ;
 
         ret0 := p0 scaled chord_glyph_scale ;
-        %ret1 := p0 scaled chord_glyph_scale ;
+        ret1 := p1 scaled chord_glyph_scale ;
 
 	fi;
 
