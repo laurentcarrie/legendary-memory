@@ -11,8 +11,9 @@ type sheet = {
   authors : string list;
   (*  path : string; *)
   sections : section list;
-  cell_width : int;
-  cell_height : int;
+  cell_width : float;
+  cell_height : float;
+  chord_glyph_scale : float;
 }
 
 val deserialize : string -> sheet

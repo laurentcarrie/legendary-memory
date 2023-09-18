@@ -2,7 +2,9 @@ vardef make_seven(suffix ret)(expr chord)=
     boolean is_seven ;
     if (length chord>1) and ( substring(1,2) of chord = "7" ):
         is_seven:=true;
-    elseif (length chord>2) and ( substring(2,3) of chord = "7" ):
+    elseif (length chord>2) and (substring(1,2) of chord = "b") and ( substring(2,3) of chord = "7" ):
+        is_seven:=true;
+    elseif (length chord>2) and (substring(1,2) of chord = "#") and ( substring(2,3) of chord = "7" ):
         is_seven:=true;
     elseif (length chord>2) and ( substring(1,3) of chord = "m7" ):
         is_seven:=true;
@@ -15,7 +17,6 @@ vardef make_seven(suffix ret)(expr chord)=
     else:
         is_seven:=false ;
     fi;
-
 	if is_seven:
 	    numeric u,n ;
 		u := 2 ;
@@ -33,6 +34,10 @@ vardef make_seven(suffix ret)(expr chord)=
 		a6 - a0 = whatever * dir(0) ;
 		ret0 := a0 -- a1 -- a2{dir 180} .. a3{dir 0} .. a4 .. {dir 0}a5 -- a6 {dir(-110)} .. cycle ;
         ret0 := reverse ret0 ;
+
+        ret0 := ret0 scaled 1.2 shifted (-3,-1.5) ;
+
+        ret0 := ret0 scaled chord_glyph_scale ;
 
 
 	fi;

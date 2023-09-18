@@ -1,5 +1,5 @@
 vardef make_flat(suffix ret)(expr chord)=
-    save is_flat;
+    save is_flat,t;
 	boolean is_flat ;
 	if (length chord>1) and ( substring(1,2) of chord = "b" ): is_flat:=true;
 	else: is_flat:=false ;
@@ -28,14 +28,17 @@ vardef make_flat(suffix ret)(expr chord)=
 		b4 - a0 = whatever * dir(45) ;
 		p1 := b0 -- b1 {dir 20} .. b2 .. b3 .. b4 -- cycle ;
 
+        transform t ;
+		t := identity shifted (0.18cm,-.2cm) ;
+		%t := identity ;
 
-		p0 := p0 shifted (.22cm,0) ;
+		p0 := p0 transformed t ;
 		p0 := reverse p0 ;
-		p1 := p1 shifted (.22cm,0) ;
+		p1 := p1 transformed t ;
 		%p1 := reverse p1 ;
 
-		ret0 := p0 ;
-		ret1 := p1 ;
+		ret0 := p0 scaled chord_glyph_scale ;
+		ret1 := p1 scaled chord_glyph_scale ;
 
 	fi;
 

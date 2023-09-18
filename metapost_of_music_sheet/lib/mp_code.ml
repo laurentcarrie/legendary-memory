@@ -1,7 +1,7 @@
 let make_flat : string =
   {whatever|
   vardef make_flat(suffix ret)(expr chord)=
-    save is_flat;
+    save is_flat,t;
 	boolean is_flat ;
 	if (length chord>1) and ( substring(1,2) of chord = "b" ): is_flat:=true;
 	else: is_flat:=false ;
@@ -30,14 +30,17 @@ let make_flat : string =
 		b4 - a0 = whatever * dir(45) ;
 		p1 := b0 -- b1 {dir 20} .. b2 .. b3 .. b4 -- cycle ;
 
+        transform t ;
+		t := identity shifted (0.18cm,-.2cm) ;
+		%t := identity ;
 
-		p0 := p0 shifted (.22cm,0) ;
+		p0 := p0 transformed t ;
 		p0 := reverse p0 ;
-		p1 := p1 shifted (.22cm,0) ;
+		p1 := p1 transformed t ;
 		%p1 := reverse p1 ;
 
-		ret0 := p0 ;
-		ret1 := p1 ;
+		ret0 := p0 scaled chord_glyph_scale ;
+		ret1 := p1 scaled chord_glyph_scale ;
 
 	fi;
 
@@ -47,77 +50,46 @@ enddef;
 let make_sharp : string =
   {whatever|
   vardef make_sharp(suffix ret)(expr chord)=
-	save is_sharp;
+    save is_sharp,t;
 	boolean is_sharp ;
-
-	if (length chord>1) and ( substring(1,2) of chord = "#" ):
-		is_sharp:=true;
-	else:
-		is_sharp:=false ;
+	if (length chord>1) and ( substring(1,2) of chord = "#" ): is_sharp:=true;
+	else: is_sharp:=false ;
 	fi;
-
+	path p[] ;
 	if is_sharp:
-		numeric u ;
-		u := .07cm ;
-
+	    numeric u,n ;
+		u := 3.2 ;
+		v := .5 ;
 		pair a[] ;
+		n:=3 ;
+		a0 := (0,0) ;
+		a1 := (u,0) ;
+		a2 := (u,v) ;
+		a3 := (0,v) ;
+		p0 := a0 -- a1 -- a2 -- a3 -- cycle  ;
+		p1 := p0 shifted (0,-1.2) ;
 
-		pair h ; % horizontal
-		h := (.5,0) ;
-		pair o ; % oblique
-		o := h rotated 80 ;
-		pair hh,vv ; % small side
-		hh := (.2,0) ;
-		vv := hh rotated 90 ;
-		pair hhh,vvv ; % between bars
-		hhh := (.2,0) ;
-		vvv := hhh rotated 90 ;
+		pair b[] ;
+		b0 = (0.5,-3) ;
+		b1 = b0 shifted (.5,0) ;
+		b2 = b1 shifted (1,5) ;
+		b3-b0 = b2-b1 ;
+		p2 = b0 -- b1 -- b2 -- b3 -- cycle ;
+		p3 = p2 shifted (1.0,0) ;
 
-		n:=27 ;
+        transform t ;
 
-		a0 = (0,0) ;
-		a1 = a0 +  h ;
-		a2 - a1 = o ;
-		a3 = a2 + hh  ;
-		a4 = a3 - o ;
-		a5 = a4 + hhh ;
-		a6 = a5 + o ;
-		a7 = a6 + hh ;
-		a8 = a7 - o ;
-		a9 = a8 + h ;
+		t := identity scaled .8 shifted (4.0,-3) ;
 
-		a10 = a9 - vv ;
-		a16 - a15 = a8-a7 ;
+		p0 := p0 transformed t ;
+		p1 := p1 transformed t ;
+		p2 := p2 transformed t ;
+		p3 := p3 transformed t ;
 
-		ypart a11 = ypart a10 = ypart a26 = ypart a27;
-		ypart a24 = ypart a25 = ypart a12 = ypart a13;
-		ypart a23 = ypart a22 = ypart a19 = ypart a18 = ypart a15 = ypart a14 ;
-		ypart a21 = ypart a20 = ypart a17 = ypart a16 ;
-
-		xpart a13 = xpart a14 = xpart a10 ;
-
-		a27-a0 = a23-a24 = -vv ;
-		a24 = a27 - vvv ;
-
-		a11 = whatever [a8,a7] ;
-		a12 = whatever [a8,a7] ;
-		a15 = whatever [a8,a7] ;
-		a16 = whatever [a8,a7] ;
-
-		a17 = whatever [a5,a6] ;
-		a18 = whatever [a5,a6] ;
-
-		a19 = whatever [a4,a3] ;
-		a20 = whatever [a4,a3] ;
-
-		a26 = whatever [a1,a2] ;
-		a25 = whatever [a1,a2] ;
-		a22 = whatever [a1,a2] ;
-		a21 = whatever [a1,a2] ;
-
-		ret0 := a[0] for i=1 step 1 until n: -- a[i] endfor -- cycle ;
-		ret0 := ret0 scaled 2 ;
-		ret0 := ret0 shifted (6,2) ;
+		ret0 := p0 scaled chord_glyph_scale ;
+		ret1 := p1 scaled chord_glyph_scale ;
+		ret2 := p2 scaled chord_glyph_scale ;
+		ret3 := p3 scaled chord_glyph_scale ;
 
 	fi;
 
@@ -130,7 +102,9 @@ let make_seven : string =
     boolean is_seven ;
     if (length chord>1) and ( substring(1,2) of chord = "7" ):
         is_seven:=true;
-    elseif (length chord>2) and ( substring(2,3) of chord = "7" ):
+    elseif (length chord>2) and (substring(1,2) of chord = "b") and ( substring(2,3) of chord = "7" ):
+        is_seven:=true;
+    elseif (length chord>2) and (substring(1,2) of chord = "#") and ( substring(2,3) of chord = "7" ):
         is_seven:=true;
     elseif (length chord>2) and ( substring(1,3) of chord = "m7" ):
         is_seven:=true;
@@ -143,7 +117,6 @@ let make_seven : string =
     else:
         is_seven:=false ;
     fi;
-
 	if is_seven:
 	    numeric u,n ;
 		u := 2 ;
@@ -162,6 +135,10 @@ let make_seven : string =
 		ret0 := a0 -- a1 -- a2{dir 180} .. a3{dir 0} .. a4 .. {dir 0}a5 -- a6 {dir(-110)} .. cycle ;
         ret0 := reverse ret0 ;
 
+        ret0 := ret0 scaled 1.2 shifted (-3,-1.5) ;
+
+        ret0 := ret0 scaled chord_glyph_scale ;
+
 
 	fi;
 
@@ -170,92 +147,85 @@ enddef;
 
 let make_minor : string =
   {whatever|
-  vardef make_minor(expr chord)=
-    save is_minor;
-    boolean is_minor ;
+  vardef make_minor(suffix ret)(expr chord)=
+    save is_minor,t;
+	boolean is_minor ;
+	if (length chord>1) and ( substring(1,2) of chord = "m" ): is_minor:=true;
+	elseif (length chord>2) and ( substring(1,2) of chord = "b" ) and ( substring(2,3) of chord = "m" ) : is_minor:=true;
+	elseif (length chord>2) and ( substring(1,2) of chord = "#" ) and ( substring(2,3) of chord = "m" ) : is_minor:=true;
+	else: is_minor:=false ;
+	fi;
+	path p[] ;
+	if is_minor:
+	    numeric u,n ;
+		u := 2 ;
+		v := 1 ;
+		pair a[] ;
+		n:=3 ;
+		a0 := (0,0) ;
+		a1 := (u,0) ;
+		a2 := (u,v) ;
+		a3 := (0,v) ;
+		p0 := a0 -- a1 -- a2 -- a3 -- cycle  ;
 
-    if (length chord>1) and ( substring(1,2) of chord = "m" ):
-        is_minor:=true;
-    elseif (length chord>1) and ( substring(1,2) of chord = "-" ):
-        is_minor:=true ;
-    elseif (length chord>2) and ( substring(2,3) of chord = "m" ):
-        is_minor:=true;
-    elseif (length chord>2) and ( substring(2,3) of chord = "-" ):
-        is_minor:=true ;
-    else:
-        is_minor:=false ;
-    fi;
+        transform t ;
+		t := identity shifted (5,0) ;
 
-    path p ;
+		p0 := p0 transformed t ;
 
-    if is_minor:
-        numeric u ;
-        u := .07cm ;
-        pair a[] ;
+		ret0 := p0 scaled chord_glyph_scale ;
 
-        a[0] := (0,0);
-        a[1] := (1.2,0) ;
-        a[2] := (1.2,.35) ;
-        a[3] := (0,.35) ;
+	fi;
 
-        p := a[0] -- a[1] -- a[2] -- a[3] -- cycle ;
-        p := p scaled u  ;
-        p := p shifted (.22cm,.15cm) ;
-    else:
-        p := fullcircle scaled 0 ;
-    fi;
-    p
 enddef;
   |whatever}
 
 let make_major_seven : string =
   {whatever|
-  vardef make_major_seven(expr chord)=
-    save is_seven ;
-    boolean is_seven ;
-
-    if (length chord>2) and ( substring(1,3) of chord = "M7" ):
-        is_seven:=true;
-    elseif (length chord>3) and ( substring(2,4) of chord = "M7" ):
-        is_seven:=true;
-    else:
-        is_seven:=false ;
-    fi;
-
-    path p[] ;
-
-    if is_seven:
-        numeric u ;
-        u := 2 ;
-        %pickup pencircle scaled 1e-10;
-        pair a[] ;
-
-        a[0] := (0,0);
-        a[1] := (1,0) ;
-        a[2] :=  a[1] rotated 60 ;
-        a[3] := (0,0) ;
+  vardef make_major_seven(suffix ret)(expr chord)=
+    save is_major_seven,t;
+	boolean is_major_seven ;
+	if (length chord>2) and ( substring(1,3) of chord = "M7" ): is_major_seven:=true;
+	elseif (length chord>3) and ( substring(1,2) of chord = "b" ) and ( substring(2,4) of chord = "M7" ) : is_major_seven:=true;
+	elseif (length chord>3) and ( substring(1,2) of chord = "#" ) and ( substring(2,4) of chord = "M7" ) : is_major_seven:=true;
+	else: is_major_seven:=false ;
+	fi;
 
 
+	path p[] ;
+	if is_major_seven:
+	    numeric u,n ;
+		u := 2 ;
+		v := 1 ;
+		pair a[] ;
+		a0 := (0,0) ;
+		a1 := (u,0) ;
+		a2 := (u,v) ;
+		a3 := (0,v) ;
+		p0 := a0 -- a1 -- a2 -- a3 -- cycle  ;
 
-        p1 := a[0] -- a[1] -- a[2] -- a[3] ;
-        transform tt ;
-        tt := identity shifted (  - center bbox p1 ) ;
-        p2 := p1 transformed tt ;
-        p2 := p2 scaled .7 ;
-        tt := identity shifted (  center bbox p1 ) ;
-        p2 := p2 transformed tt ;
+		pair b[];
+        b0 := (0,0) ;
+        b1 := (1,0) ;
+        b2 := (u/2,2) ;
+        b3-b0 = b2-b1 ;
+		p1 := b0 -- b1 -- b2 -- b3 -- cycle  ;
 
-        p1 := p1 scaled u  ;
-        p2 := p2 scaled u ;
-        p2 := reverse p2 ;
-        p2 := p2 -- p1 -- cycle  ;
+		p2 := a1 -- b1 -- b2 -- b3 -- cycle  ;
 
 
-        p2 := p2 scaled u  shifted (.2cm,.12cm);
-    else:
-        p2 := fullcircle scaled 0 ;
-    fi;
-    p2
+        transform t ;
+		t := identity shifted (5,0) ;
+
+		p0 := p0 transformed t ;
+		p1 := p1 transformed t ;
+
+		ret0 := p0 scaled chord_glyph_scale ;
+		ret1 := p1 scaled chord_glyph_scale ;
+
+
+	fi;
+
 enddef;
   |whatever}
 
@@ -345,7 +315,7 @@ let make_draw_row : string =
         S = .5(box0+box2) ;
         string chord ;
         chord := chords[i] ;
-        fill fullcircle scaled 1 shifted S withcolor red ;
+        %fill fullcircle scaled 1 shifted S withcolor red ;
         %show(chord) ;
         draw_chord(chord,S,background) ;
     endfor ;
@@ -395,10 +365,10 @@ vardef draw_chord(expr chord,S,background) =
     interim ahlength := 12bp;
     interim ahangle := 25;
     q := glyph_of_chord (chord) ;
-    q := q scaled .01 ;
-    fill fullcircle scaled 3 shifted (center bbox q) withcolor green ;
-    transform t ;
+    q := q scaled (chord_glyph_scale *.01) ;
+    transform t,tt ;
     t = identity shifted ( S - center bbox q ) ;
+    tt = identity shifted S ;
     % t = identity scaled ratio shifted ( S - center bbox q ) ;
     q := q transformed t  ;
     for item within q:
@@ -419,20 +389,21 @@ vardef draw_chord(expr chord,S,background) =
 
     path otherp[] ;
     make_flat(otherp)(chord) ;
-    draw_one(otherp)(t,background) ;
+    draw_one(otherp)(tt,background) ;
 
     make_sharp(otherp)(chord) ;
-    draw_one(otherp)(t,background) ;
+    draw_one(otherp)(tt,background) ;
 
     make_seven(otherp)(chord) ;
-    draw_one(otherp)(t,background) ;
+    draw_one(otherp)(tt,background) ;
+
+    make_major_seven(otherp)(chord) ;
+    draw_one(otherp)(tt,background) ;
+
+    make_minor(otherp)(chord) ;
+    draw_one(otherp)(tt,background) ;
 
 
-    %other := make_major_seven(chord) transformed t ;
-    %fill other withcolor black ;
-
-    %other := make_minor(chord) transformed t ;
-    %fill other withcolor black ;
 
 enddef ;
   |whatever}

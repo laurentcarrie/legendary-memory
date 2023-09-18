@@ -28,6 +28,8 @@ etex
 %fontmapfile "=lm-ec.map";
 
 
+numeric  chord_glyph_scale ;
+chord_glyph_scale:={{chord_glyph_scale}} ;
 
 
 % YYYYYYYYYYYYYYYYYYYYYYYY
@@ -73,7 +75,8 @@ beginfig(0);
 %    p := (-margin,-margin) -- (-margin,margin) -- (margin,margin) --
 %    (margin,-margin)  -- cycle ;
     color background ;
-    background := (.8,.7,.7) ;
+    %background := (.8,.7,.7) ;
+    background := (1,1,1) ;
 %    fill p withcolor background ;
     %label(decimal t,(-margin,-margin)/2) ;
     %%draw textext("cycle " & decimal t) shifted (-margin,-margin)/2  ;
@@ -182,8 +185,10 @@ let emit fout sheet format outputtemplate =
     Jingoo.Jg_template.from_string sheet_jingoo
       ~models:
         [
-          ("cell_width", Jingoo.Jg_types.Tint sheet.Sheet.cell_width);
-          ("cell_height", Jingoo.Jg_types.Tint sheet.Sheet.cell_height);
+          ("cell_width", Jingoo.Jg_types.Tfloat sheet.Sheet.cell_width);
+          ("cell_height", Jingoo.Jg_types.Tfloat sheet.Sheet.cell_height);
+          ( "chord_glyph_scale",
+            Jingoo.Jg_types.Tfloat sheet.Sheet.chord_glyph_scale );
           ("section_spacing", Jingoo.Jg_types.Tint 20);
           ("outputtemplate", Jingoo.Jg_types.Tstr "mps/main-%c.mps");
           ("outputformat", Jingoo.Jg_types.Tstr "mps");

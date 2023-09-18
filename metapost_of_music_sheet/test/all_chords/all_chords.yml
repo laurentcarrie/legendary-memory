@@ -2,14 +2,16 @@ title: all chords
 authors:
   - test engine
 cell_width: 20
-cell_height: 10
+cell_height: 20
+chord_glyph_scale: 1
+
 #path:
 #  XX/YY
 sections:
   - name: single
     rows:
       -
-        - A
+        - AM7
   - name: normal
     rows:
       -

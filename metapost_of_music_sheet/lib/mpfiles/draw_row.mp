@@ -25,7 +25,7 @@ vardef draw_row(expr A,cell_width,cell_height,n,background)(suffix chords) =
         S = .5(box0+box2) ;
         string chord ;
         chord := chords[i] ;
-        fill fullcircle scaled 1 shifted S withcolor red ;
+        %fill fullcircle scaled 1 shifted S withcolor red ;
         %show(chord) ;
         draw_chord(chord,S,background) ;
     endfor ;

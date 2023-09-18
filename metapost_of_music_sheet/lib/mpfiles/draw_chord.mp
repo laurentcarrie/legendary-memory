@@ -38,10 +38,10 @@ vardef draw_chord(expr chord,S,background) =
     interim ahlength := 12bp;
     interim ahangle := 25;
     q := glyph_of_chord (chord) ;
-    q := q scaled .01 ;
-    fill fullcircle scaled 3 shifted (center bbox q) withcolor green ;
-    transform t ;
+    q := q scaled (chord_glyph_scale *.01) ;
+    transform t,tt ;
     t = identity shifted ( S - center bbox q ) ;
+    tt = identity shifted S ;
     % t = identity scaled ratio shifted ( S - center bbox q ) ;
     q := q transformed t  ;
     for item within q:
@@ -62,19 +62,20 @@ vardef draw_chord(expr chord,S,background) =
 
     path otherp[] ;
     make_flat(otherp)(chord) ;
-    draw_one(otherp)(t,background) ;
+    draw_one(otherp)(tt,background) ;
 
     make_sharp(otherp)(chord) ;
-    draw_one(otherp)(t,background) ;
+    draw_one(otherp)(tt,background) ;
 
     make_seven(otherp)(chord) ;
-    draw_one(otherp)(t,background) ;
+    draw_one(otherp)(tt,background) ;
+
+    make_major_seven(otherp)(chord) ;
+    draw_one(otherp)(tt,background) ;
+
+    make_minor(otherp)(chord) ;
+    draw_one(otherp)(tt,background) ;
 
 
-    %other := make_major_seven(chord) transformed t ;
-    %fill other withcolor black ;
-
-    %other := make_minor(chord) transformed t ;
-    %fill other withcolor black ;
 
 enddef ;

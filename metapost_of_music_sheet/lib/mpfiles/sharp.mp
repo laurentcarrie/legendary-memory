@@ -1,75 +1,44 @@
 vardef make_sharp(suffix ret)(expr chord)=
-	save is_sharp;
+    save is_sharp,t;
 	boolean is_sharp ;
-
-	if (length chord>1) and ( substring(1,2) of chord = "#" ):
-		is_sharp:=true;
-	else:
-		is_sharp:=false ;
+	if (length chord>1) and ( substring(1,2) of chord = "#" ): is_sharp:=true;
+	else: is_sharp:=false ;
 	fi;
-
+	path p[] ;
 	if is_sharp:
-		numeric u ;
-		u := .07cm ;
-
+	    numeric u,n ;
+		u := 3.2 ;
+		v := .5 ;
 		pair a[] ;
+		n:=3 ;
+		a0 := (0,0) ;
+		a1 := (u,0) ;
+		a2 := (u,v) ;
+		a3 := (0,v) ;
+		p0 := a0 -- a1 -- a2 -- a3 -- cycle  ;
+		p1 := p0 shifted (0,-1.2) ;
 
-		pair h ; % horizontal
-		h := (.5,0) ;
-		pair o ; % oblique
-		o := h rotated 80 ;
-		pair hh,vv ; % small side
-		hh := (.2,0) ;
-		vv := hh rotated 90 ;
-		pair hhh,vvv ; % between bars
-		hhh := (.2,0) ;
-		vvv := hhh rotated 90 ;
+		pair b[] ;
+		b0 = (0.5,-3) ;
+		b1 = b0 shifted (.5,0) ;
+		b2 = b1 shifted (1,5) ;
+		b3-b0 = b2-b1 ;
+		p2 = b0 -- b1 -- b2 -- b3 -- cycle ;
+		p3 = p2 shifted (1.0,0) ;
 
-		n:=27 ;
+        transform t ;
 
-		a0 = (0,0) ;
-		a1 = a0 +  h ;
-		a2 - a1 = o ;
-		a3 = a2 + hh  ;
-		a4 = a3 - o ;
-		a5 = a4 + hhh ;
-		a6 = a5 + o ;
-		a7 = a6 + hh ;
-		a8 = a7 - o ;
-		a9 = a8 + h ;
+		t := identity scaled .8 shifted (4.0,-3) ;
 
-		a10 = a9 - vv ;
-		a16 - a15 = a8-a7 ;
+		p0 := p0 transformed t ;
+		p1 := p1 transformed t ;
+		p2 := p2 transformed t ;
+		p3 := p3 transformed t ;
 
-		ypart a11 = ypart a10 = ypart a26 = ypart a27;
-		ypart a24 = ypart a25 = ypart a12 = ypart a13;
-		ypart a23 = ypart a22 = ypart a19 = ypart a18 = ypart a15 = ypart a14 ;
-		ypart a21 = ypart a20 = ypart a17 = ypart a16 ;
-
-		xpart a13 = xpart a14 = xpart a10 ;
-
-		a27-a0 = a23-a24 = -vv ;
-		a24 = a27 - vvv ;
-
-		a11 = whatever [a8,a7] ;
-		a12 = whatever [a8,a7] ;
-		a15 = whatever [a8,a7] ;
-		a16 = whatever [a8,a7] ;
-
-		a17 = whatever [a5,a6] ;
-		a18 = whatever [a5,a6] ;
-
-		a19 = whatever [a4,a3] ;
-		a20 = whatever [a4,a3] ;
-
-		a26 = whatever [a1,a2] ;
-		a25 = whatever [a1,a2] ;
-		a22 = whatever [a1,a2] ;
-		a21 = whatever [a1,a2] ;
-
-		ret0 := a[0] for i=1 step 1 until n: -- a[i] endfor -- cycle ;
-		ret0 := ret0 scaled 2 ;
-		ret0 := ret0 shifted (6,2) ;
+		ret0 := p0 scaled chord_glyph_scale ;
+		ret1 := p1 scaled chord_glyph_scale ;
+		ret2 := p2 scaled chord_glyph_scale ;
+		ret3 := p3 scaled chord_glyph_scale ;
 
 	fi;
 
