@@ -21,14 +21,14 @@ vardef make_major_seven(suffix ret)(expr chord)=
         %p0 := reverse p0 ;
 
 
-        p0 := p0 scaled 2.8 ;
+        p0 := p0 scaled 1.2 ;
         p1 := p0 scaled 1.2 ;
 
 
         p0 := p0 shifted (4.2,0) ;
         p1 := p1 shifted (4.2,0) ;
 
-        ret0 := p1 scaled chord_glyph_scale ;
+        ret0 := p0 scaled chord_glyph_scale ;
         %ret1 := p0 scaled chord_glyph_scale ;
 
 	fi;
