@@ -1,7 +1,7 @@
 title: all chords
 authors:
   - test engine
-cell_width: 20
+cell_width: 30
 cell_height: 20
 chord_glyph_scale: 1
 
@@ -11,7 +11,7 @@ sections:
   - name: single
     rows:
       -
-        - AM7
+        - AM7 Bb
   - name: normal
     rows:
       -

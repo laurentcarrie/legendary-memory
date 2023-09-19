@@ -1,6 +1,8 @@
-type chord = string
-type bar = { chords : chord list }
-type row = { bars : bar list }
+(**
+ sheet data model
+*)
+
+type row = string list
 type section = { name : string; rows : row list }
 
 type sheet = {
@@ -12,3 +14,11 @@ type sheet = {
   cell_height : float;
   chord_glyph_scale : float;
 }
+
+val deserialize : string -> sheet
+(**
+    deserialize a string to yaml
+*)
+
+val serialize : sheet -> string
+val sheet_of_input : sheet -> Sheet.sheet

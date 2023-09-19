@@ -1,0 +1,24 @@
+title: La Rue
+authors:
+  - Eiffel
+cell_width: 40
+cell_height: 20
+chord_glyph_scale: 1
+
+#path:
+#  XX/YY
+sections:
+  - name: intro
+    rows:
+      -
+        - C#m7
+        - C#m7
+        - C#m7
+        - C#m7
+
+  - name: couplet
+    rows:
+      -
+        - C#m7 A
+        - C#m7
+

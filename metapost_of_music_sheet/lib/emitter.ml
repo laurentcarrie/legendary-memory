@@ -1,7 +1,10 @@
 open Printf
 module Log = Dolog.Log
+module SetInt = Set.Make (Int)
 
 let clean_string data =
+  let data = Str.global_replace (Str.regexp_string "&amp;lt;") "<" data in
+  let data = Str.global_replace (Str.regexp_string "&amp;gt;") ">" data in
   let data = Str.global_replace (Str.regexp_string "&amp;quot;") "\"" data in
   let data = Str.global_replace (Str.regexp_string "&quot;") "\"" data in
   let data = Str.global_replace (Str.regexp_string "&gt;") ">" data in
@@ -119,7 +122,17 @@ n:={{n}} ;
 {% for chord in chords %}
 chords{{loop.index0}}:="{{chord}}" ;
 {% endfor %}
-draw_row(A,cell_width,cell_height,n,background)(chords) ;
+{% for i in barindex %}
+barindex{{loop.index0}}:={{i}} ;
+{% endfor %}
+{% for i in nbchordsinbar %}
+nbchordsinbar{{loop.index0}}:={{i}} ;
+{% endfor %}
+{% for i in indexinbar %}
+indexinbar{{loop.index0}}:={{i}} ;
+{% endfor %}
+
+draw_row(A,cell_width,cell_height,n,background)(chords,barindex,nbchordsinbar,indexinbar) ;
 A := A shifted (0,-cell_height) ;
 |whatever}
 
@@ -127,6 +140,8 @@ let section_jingoo : string =
   {whatever|
 % SECTION {{name}}
 A := A shifted (0,-section_spacing) ;
+draw fullcircle scaled 2 shifted A withcolor red ;
+label.urt(btex \rmfamily \textit{ {{name}} } etex,A) ;
 %label.ulft(btex \rmfamily \textit{ {{name}} } etex,A) ;
 {% for row in rows %}%{{row}}
 {% endfor %}
@@ -137,23 +152,81 @@ let emit fout sheet format outputtemplate =
   let _ = outputtemplate in
   let emit_row row =
     (*    let env = Jingoo.Jg_types.std_env in *)
-    (*    let env = { env with autoescape=false} in *)
+    (*    let env = { env with autoescape = false } in *)
     let result =
+      (* we need the list of chords, with the list of the bar number of each chord *)
+      let _, nbchordsinbar, indexinbar, chordlist, barindexlist =
+        List.fold_left
+          (fun acc bar ->
+            let ( barindex,
+                  current_nbchordsinbar,
+                  current_indexinbar,
+                  current_chords,
+                  current_barindex ) =
+              acc
+            in
+            let added_chords = bar.Sheet.chords in
+            let added_barindex =
+              List.map (fun _ -> barindex) bar.Sheet.chords
+            in
+            let added_nbchordsinbar =
+              List.map (fun _ -> List.length bar.Sheet.chords) bar.Sheet.chords
+            in
+            let added_indexinbar = List.mapi (fun i _ -> i) bar.Sheet.chords in
+            ( barindex + 1,
+              List.concat [ current_nbchordsinbar; added_nbchordsinbar ],
+              List.concat [ current_indexinbar; added_indexinbar ],
+              List.concat [ current_chords; added_chords ],
+              List.concat [ current_barindex; added_barindex ] ))
+          (0, [], [], [], []) row.Sheet.bars
+      in
+      Log.info "%d %d %d %d"
+        (List.length nbchordsinbar)
+        (List.length indexinbar) (List.length chordlist)
+        (List.length barindexlist);
+
+      let si = SetInt.empty in
+      let si =
+        List.fold_right SetInt.add
+          [
+            List.length nbchordsinbar;
+            List.length indexinbar;
+            List.length chordlist;
+            List.length barindexlist;
+          ]
+          si
+      in
+      SetInt.iter (fun value -> Log.info "-----------------> %d" value) si;
+      if SetInt.cardinal si != 1 then failwith "internal error";
+
+      List.iter
+        (fun (i, c) -> Log.info "bar %d ; chord %s" i c)
+        (List.combine barindexlist chordlist);
+
+      List.iter (fun i -> Log.info "indexinbar %d" i) indexinbar;
+
       Jingoo.Jg_template.from_string row_jingoo (*      ~env:env *)
         ~models:
           [
-            ("n", Jingoo.Jg_types.Tint (List.length row));
+            ("n", Jingoo.Jg_types.Tint (List.length chordlist));
             ( "chords",
               Jingoo.Jg_types.Tlist
                 (List.map
                    (fun s ->
                      Jingoo.Jg_types.Tstr (Jingoo.Jg_utils.escape_html s))
-                   row) );
+                   chordlist) );
+            ( "barindex",
+              Jingoo.Jg_types.Tlist
+                (List.map (fun s -> Jingoo.Jg_types.Tint s) barindexlist) );
+            ( "nbchordsinbar",
+              Jingoo.Jg_types.Tlist
+                (List.map (fun s -> Jingoo.Jg_types.Tint s) nbchordsinbar) );
+            ( "indexinbar",
+              Jingoo.Jg_types.Tlist
+                (List.map (fun s -> Jingoo.Jg_types.Tint s) indexinbar) );
           ]
     in
-    let result =
-      Str.global_replace (Str.regexp_string "&amp;quot;") "" result
-    in
+    let result = clean_string result in
     result
   in
 

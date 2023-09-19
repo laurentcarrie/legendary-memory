@@ -280,7 +280,7 @@ enddef ;
 
 let make_draw_row : string =
   {whatever|
-  vardef draw_row(expr A,cell_width,cell_height,n,background)(suffix chords) =
+  vardef draw_row(expr A,cell_width,cell_height,n,background)(suffix chords,barindex,nbchordsinbar,indexinbar) =
     save chord ;
     color c ;
     c := (0,0,0) ;
@@ -298,13 +298,22 @@ let make_draw_row : string =
 
     for i=0 step 1 until n-1:
         pair box[] ;
-        box0 = B0 shifted (i*cell_width,0) ;
+        bar := barindex[i] ;
+        nbchordsinbar := nbchordsinbar[i] ;
+        indexinbar := indexinbar[i] ;
+        box0 = B0 shifted (bar*cell_width,0) ;
         box1 = box0 shifted (cell_width,0) ;
         box2 = box1 shifted (0,-cell_height) ;
         box3 = box0 shifted (0,-cell_height) ;
         box4 = .5[box0,box2] ;
         pair S ;
-        S = .5(box0+box2) ;
+        numeric subboxwidth ;
+        show("indexinbar") ;
+        show(indexinbar) ;
+        show("nbchordsinbar") ;
+        show(nbchordsinbar) ;
+        subboxwidth = cell_width / nbchordsinbar ;
+        S = .5[box0 shifted (indexinbar*subboxwidth,0),box3 shifted ((indexinbar+1)*subboxwidth,0)] ;
         string chord ;
         chord := chords[i] ;
         %fill fullcircle scaled 1 shifted S withcolor red ;
