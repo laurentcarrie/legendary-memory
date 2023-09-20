@@ -8,7 +8,7 @@ texfiles:
   - lyrics.tex
 lilypondfiles:
   - solo.ly
-
+wavfiles: []
 #path:
 #  XX/YY
 sections:

@@ -3,7 +3,11 @@ open Printf
 module Log = Dolog.Log
 
 let normalized_title sheet =
-  String.substr_replace_all sheet.Sheet.title ~pattern:" " ~with_:"_"
+  List.fold_left
+    ~f:(fun ret (pattern, with_) ->
+      String.substr_replace_all ret ~pattern ~with_)
+    ~init:sheet.Sheet.title
+    [ (" ", "_"); ("'", "_") ]
 
 let generate_texlib sheet =
   let data = Tex_code.make_preamble in
@@ -159,7 +163,12 @@ let make_pdf yaml_filename =
       (Stdlib.Filename.dirname yaml_filename)
   in
   Log.info "%s:%d %s" Stdlib.__FILE__ Stdlib.__LINE__ sheet.Sheet.title;
-  Unix.mkdir sheet.Sheet.tmpdir 0o740;
+  let () =
+    try
+      Unix.mkdir sheet.Sheet.tmpdir 0o740;
+      ()
+    with _ -> ()
+  in
   (*  let (filename,fout) = Filename.open_temp_file "utest-test2" ".mp" in *)
   let mp_filename = sheet.Sheet.tmpdir ^ "/main.mp" in
 

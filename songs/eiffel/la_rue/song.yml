@@ -5,6 +5,8 @@ cell_width: 60
 cell_height: 30
 chord_glyph_scale: 2
 texfiles: []
+lilypondfiles: []
+wavfiles: []
 
 sections:
   - name: intro
