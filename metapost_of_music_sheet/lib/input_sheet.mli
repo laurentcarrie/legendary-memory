@@ -14,6 +14,7 @@ type sheet = {
   cell_height : float;
   chord_glyph_scale : float;
   texfiles : string list;
+  lilypondfiles : string list;
 }
 
 val deserialize : string -> sheet
@@ -22,4 +23,4 @@ val deserialize : string -> sheet
 *)
 
 val serialize : sheet -> string
-val sheet_of_input : sheet -> Sheet.sheet
+val sheet_of_input : sheet -> string -> Sheet.sheet

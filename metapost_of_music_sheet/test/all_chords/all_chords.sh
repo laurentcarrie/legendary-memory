@@ -4,7 +4,7 @@ set -e
 #set -x
 
 here=$(dirname $(realpath $0))
-pdf=$here/tmp/main.pdf
+pdf=$here/all_chords.pdf
 #mkdir -p $(dirname $pdf)
 
 

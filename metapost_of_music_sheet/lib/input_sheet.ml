@@ -12,6 +12,7 @@ type sheet = {
   cell_height : float;
   chord_glyph_scale : float;
   texfiles : string list;
+  lilypondfiles : string list;
 }
 [@@deriving yaml]
 
@@ -29,7 +30,7 @@ let serialize v =
   | Ok s -> s
   | Error (`Msg e) -> failwith e
 
-let sheet_of_input input =
+let sheet_of_input input srcdir =
   let row_of_row row =
     {
       Sheet.bars =
@@ -53,7 +54,9 @@ let sheet_of_input input =
       cell_height = input.cell_height;
       chord_glyph_scale = input.chord_glyph_scale;
       texfiles = List.append input.texfiles [ "main.tex" ];
+      lilypondfiles = input.lilypondfiles;
       tmpdir = "tmp";
+      srcdir;
     }
   in
   (*  let () = Log.info "%s" output in *)

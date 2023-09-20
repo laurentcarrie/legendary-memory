@@ -8,11 +8,13 @@ exe=${here}/metapost_of_music_sheet/_build/default/bin/metapost_of_music_sheet.e
 
 echo "" > $here/test.txt
 
+input=$(realpath $1)
+
 mkdir -p $here/tmp
 rm -rf $here/tmp/*
 (
   cd $here/tmp ;
-  $exe $1| tee $here/test.txt
+  $exe $input | tee $here/test.txt
 )
 
 echo DONE

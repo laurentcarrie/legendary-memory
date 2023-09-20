@@ -3,7 +3,7 @@
 (library
  (name Metapost_of_music_sheet)
  (public_name metapost_of_music_sheet)
- (modules sheet emitter pdf mp_code input_sheet)
+ (modules sheet emitter pdf mp_code input_sheet tex_code ly_code)
  (libraries jingoo dolog base core_unix)
  ; (modules toto)
  (preprocess

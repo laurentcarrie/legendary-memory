@@ -1,9 +1,13 @@
-title: La Rue
+title: Smoke On The Water
 authors:
-  - Eiffel
+  - Deep Purple
 cell_width: 60
 cell_height: 30
 chord_glyph_scale: 2
+texfiles:
+  - lyrics.tex
+lilypondfiles:
+  - solo.ly
 
 #path:
 #  XX/YY

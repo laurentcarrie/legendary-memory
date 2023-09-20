@@ -20,9 +20,25 @@ repos:
 
   - repo: local
     hooks:
-      - id: generate
+      - id: generate-mp
         name: generate ml files from mp
         entry: bash metapost_of_music_sheet/lib/ml_of_mp.sh
+        language: system
+        pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: generate-tex
+        name: generate ml files from tex
+        entry: bash metapost_of_music_sheet/lib/ml_of_tex.sh
+        language: system
+        pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: generate-ly
+        name: generate ml files from ly
+        entry: bash metapost_of_music_sheet/lib/ml_of_ly.sh
         language: system
         pass_filenames: false
 

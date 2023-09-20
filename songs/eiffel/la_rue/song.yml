@@ -6,8 +6,6 @@ cell_height: 30
 chord_glyph_scale: 2
 texfiles: []
 
-#path:
-#  XX/YY
 sections:
   - name: intro
     rows:

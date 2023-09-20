@@ -1,20 +1,34 @@
-
 \documentclass[11pt]{article}
-\usepackage[margin=0.5in]{geometry}
+
+\input{preamble}
+\usepackage{pdfpages}
+
+%\usepackage[margin=0.5in]{geometry}
 \usepackage{graphicx}
 \usepackage{unicode-math}
-    \setmainfont{XITS}
-    \setmathfont{XITS Math}
+\setmainfont{XITS}
+\setmathfont{XITS Math}
 \usepackage{luamplib}
 \usepackage{xcolor}
+
+
+
 \begin{document}
-\section*{intro}
-      \includegraphics{ mps/main-0 }
+    \begin{center}
+        \songtitle{Smoke On The Water}{Deep Purple}
+    \end{center}
+    \section*{intro}
+    \includegraphics{mps/main-0}
+    \input{lyrics}
 
-\newpage
+    \includepdf[pages={-}]{solo}
 
-\section*{paroles}
-\input{lyrics}
+
+%    \newpage{
+%%    \pagecolor{olive}
+%    \includepdf[pages={-}]{solo}
+%    }
+
 
 \end{document}
 
