@@ -3,10 +3,12 @@
 set -e
 #set -x
 
-pdf=main.pdf
-mkdir -p $(dirname $pdf)
+here=$(dirname $(realpath $0))
+pdf=$here/tmp/main.pdf
+#mkdir -p $(dirname $pdf)
 
-../../bin/metapost_of_music_sheet.exe all_chords.yml
+
+../../bin/metapost_of_music_sheet.exe $here/all_chords.yml
 
 test -f $pdf  || ( echo "$pdf not found" && false )
 echo FOUND : $pdf

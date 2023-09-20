@@ -11,6 +11,7 @@ type sheet = {
   cell_width : float;
   cell_height : float;
   chord_glyph_scale : float;
+  texfiles : string list;
 }
 [@@deriving yaml]
 
@@ -51,6 +52,8 @@ let sheet_of_input input =
       cell_width = input.cell_width;
       cell_height = input.cell_height;
       chord_glyph_scale = input.chord_glyph_scale;
+      texfiles = List.append input.texfiles [ "main.tex" ];
+      tmpdir = "tmp";
     }
   in
   (*  let () = Log.info "%s" output in *)

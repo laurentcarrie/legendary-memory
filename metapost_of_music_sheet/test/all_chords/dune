@@ -2,4 +2,4 @@
  (alias runtest)
  (action
   (run ./all_chords.sh))
- (deps all_chords.yml))
+ (deps all_chords.yml main.tex))

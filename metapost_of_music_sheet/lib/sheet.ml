@@ -11,4 +11,6 @@ type sheet = {
   cell_width : float;
   cell_height : float;
   chord_glyph_scale : float;
+  texfiles : string list;
+  tmpdir : string;
 }
