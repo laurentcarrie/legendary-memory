@@ -15,6 +15,29 @@ let generate_lylib sheet =
   Out_channel.with_open_text (sheet.Sheet.tmpdir ^ "/macros.ly") (fun t ->
       Out_channel.output_string t data)
 
+let generate_wavs_from_lilypond sheet =
+  Log.info "WAV";
+  let run_fluidsynth filename =
+    let command =
+      sprintf
+        "(cd %s &&  fluidsynth --gain 4 -F %s \
+         /usr/share/sounds/sf2/FluidR3_GM.sf2 %s.midi)"
+        sheet.Sheet.tmpdir filename
+        (Stdlib.Filename.remove_extension filename)
+    in
+    Log.info "%s:%d command : %s" Stdlib.__FILE__ Stdlib.__LINE__ command;
+    let status = Unix.system command in
+    let () =
+      match status with
+      | Unix.WEXITED 0 -> ()
+      | Unix.WEXITED i ->
+          failwith ("fluidsynth exited with code " ^ Int.to_string i)
+      | _ -> failwith "bad"
+    in
+    ()
+  in
+  List.iter ~f:run_fluidsynth sheet.Sheet.wavfiles
+
 let generate_pdfs_from_lilypond sheet =
   let run_lilypond filename =
     let command =
@@ -180,6 +203,7 @@ let make_pdf yaml_filename =
   generate_texlib sheet;
   generate_lylib sheet;
   generate_pdfs_from_lilypond sheet;
+  generate_wavs_from_lilypond sheet;
   pdf_of_tex sheet;
   (*  let () = printf "test2 passed.\n" in *)
   ()

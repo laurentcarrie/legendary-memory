@@ -2,6 +2,7 @@
 
 set -e
 set -x
+set -o pipefail
 
 here=$(dirname $(realpath $0))
 exe=${here}/metapost_of_music_sheet/_build/default/bin/metapost_of_music_sheet.exe

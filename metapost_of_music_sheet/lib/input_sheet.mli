@@ -15,6 +15,7 @@ type sheet = {
   chord_glyph_scale : float;
   texfiles : string list;
   lilypondfiles : string list;
+  wavfiles : string list;
 }
 
 val deserialize : string -> sheet

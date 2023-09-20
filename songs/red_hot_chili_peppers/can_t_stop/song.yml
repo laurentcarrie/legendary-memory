@@ -1,6 +1,6 @@
-title: Smoke On The Water
+title: Can't Stop
 authors:
-  - Deep Purple
+  - Red Hot Chili Peppers
 cell_width: 60
 cell_height: 30
 chord_glyph_scale: 2
@@ -8,8 +8,6 @@ texfiles:
   - lyrics.tex
 lilypondfiles:
   - solo.ly
-wavfiles:
-  - solo.wav
 
 #path:
 #  XX/YY

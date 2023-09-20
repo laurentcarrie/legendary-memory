@@ -17,6 +17,7 @@ type sheet = {
   chord_glyph_scale : float;
   texfiles : string list;
   lilypondfiles : string list;
+  wavfiles : string list;
   srcdir : string;
   tmpdir : string;
 }
