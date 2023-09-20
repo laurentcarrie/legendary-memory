@@ -1,3 +1,5 @@
 .idea/
 metapost_of_music_sheet/_build/
 /metapost_of_music_sheet/lib/mp_code.ml.old
+/metapost_of_music_sheet/lib/ly_code.ml.old
+/metapost_of_music_sheet/lib/tex_code.ml.old
