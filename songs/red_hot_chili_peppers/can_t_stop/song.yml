@@ -9,10 +9,10 @@ texfiles:
 lilypondfiles:
   - solo.ly
   - intro.ly
-  - couplet.ly
+  - riff_a.ly
 wavfiles:
   - intro.wav
-  - couplet.wav
+  - riff_a.wav
 #path:
 #  XX/YY
 sections:
