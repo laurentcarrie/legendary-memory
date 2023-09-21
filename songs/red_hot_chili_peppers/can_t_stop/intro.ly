@@ -38,19 +38,19 @@ drumbarshh = {
 
 
 
-%\score {
-%    <<
-%    \new TabStaff {
-%        \tempo 4 = \song_tempo
-%        \tabFullNotation
-%        \override Score.BarNumber.break-visibility = ##(#t #t #t)
-%       \repeat percent 8 {\lead}
-%    }
+\score {
+    <<
+    \new TabStaff {
+        \tempo 4 = \song_tempo
+        \tabFullNotation
+        \override Score.BarNumber.break-visibility = ##(#t #t #t)
+       \repeat percent 8 {\lead}
+    }
 
-%    >>
+    >>
 
-%   % \layout {}
-%}
+   % \layout {}
+}
 
 
 \score {
@@ -71,8 +71,6 @@ drumbarshh = {
             }
         >>
         }
-    \layout {}
-
        \midi {
             \tempo 4 = \song_tempo
     }

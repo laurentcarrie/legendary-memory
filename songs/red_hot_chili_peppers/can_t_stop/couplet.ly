@@ -5,10 +5,20 @@ song_tempo = 100
 lead = {
   \absolute  {
     \override Score.SpacingSpanner.shortest-duration-space = #4.0
-    d16\5 e8\5 d16\5
-    e8\5 d16\5 e16\5
-    e16\5 d16\5 e8\5
-    d16\5 e16\5 r8
+
+    % bar 1
+    e16\5 e16\5 d'8\3
+    e'8\3 e16\5 e16\5
+    e16\5 d'16\3 \deadNote d'16\3 e'16\3~
+    e'16\3 e16\5 e16\5 e16\5
+
+    % bar 2
+    d8\4 d'8\3
+    e'8\3 d16\4 d16\4
+    d16\4 d'16\3 \deadNote d'16\3 e'16\3~
+    e'16\3 < a,\5 \deadNote d\4 e'\3 >16 d16\4 d16\4
+
+    % bar 3
     }
 
 }
@@ -39,23 +49,6 @@ drumbarshh = {
 
 
 
-\paper {
-    #(include-special-characters)
-    indent = 0\mm
-    line-width = 180\mm
-    oddHeaderMarkup = ""
-    evenHeaderMarkup = ""
-    oddFooterMarkup = ""
-    evenFooterMarkup = ""
-
-    #(add-text-replacements!
-    '(
-    ("100" . "hundred")
-    ("dpi" . "dots per inch")
-    ))
-
-}
-
 
 \score {
     <<
@@ -63,7 +56,7 @@ drumbarshh = {
         \tempo 4 = \song_tempo
         \tabFullNotation
         \override Score.BarNumber.break-visibility = ##(#t #t #t)
-        \repeat percent 8 {\lead}
+        \lead
     }
 
     >>
@@ -83,7 +76,7 @@ drumbarshh = {
                 >>
 
             \new Staff {
-                  \repeat unfold 8 {\lead}
+                  \lead
                   \set Staff.midiMinimumVolume = #0.9
                   \set Staff.midiMaximumVolume = #0.9
                   \set Staff.midiInstrument = "electric guitar (clean)"

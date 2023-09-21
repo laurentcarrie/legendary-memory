@@ -150,7 +150,8 @@ sections:
         - G#M7
         - G#m
         - G#m7
-texfiles: []
-lilypondfiles: []
+texfiles:
+  - a.tex
+lilypondfiles:
+  - a.ly
 wavfiles: []
-lytexfiles: []

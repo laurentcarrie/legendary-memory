@@ -10,10 +10,9 @@ lilypondfiles:
   - solo.ly
   - intro.ly
   - couplet.ly
-lytexfiles:
-  - intro.lytex
 wavfiles:
   - intro.wav
+  - couplet.wav
 #path:
 #  XX/YY
 sections:

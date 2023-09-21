@@ -1,6 +1,7 @@
 open Base
 open Printf
 module Log = Dolog.Log
+open Helpers
 
 let normalized_title sheet =
   List.fold_left
@@ -8,9 +9,6 @@ let normalized_title sheet =
       String.substr_replace_all ret ~pattern ~with_)
     ~init:sheet.Sheet.title
     [ (" ", "_"); ("'", "_") ]
-
-let src_file_name sheet filename = sheet.Sheet.srcdir ^ "/" ^ filename
-let build_file_name sheet filename = sheet.Sheet.tmpdir ^ "/" ^ filename
 
 let generate_texlib sheet =
   let data = Tex_code.make_preamble in
@@ -57,35 +55,6 @@ let install_lyfiles sheet =
         Out_channel.output_string t data)
   in
   List.iter ~f:cp sheet.Sheet.lilypondfiles
-
-let generate_pdfs_from_lilypond sheet =
-  let run_lilypond ~command ~filename =
-    let command =
-      (*    sprintf "( cd $(dirname %s) && lualatex $(basename %s) )" path path *)
-      sprintf
-        "cp %s/%s %s/. && (cd %s  && %s %s || true ) &&  (cd %s  && %s %s ) "
-        sheet.Sheet.srcdir filename sheet.Sheet.tmpdir
-        (* cd *) sheet.Sheet.tmpdir command filename (* cd *) sheet.Sheet.tmpdir
-        command filename
-    in
-    Log.info "%s:%d command : %s" Stdlib.__FILE__ Stdlib.__LINE__ command;
-    let status = Unix.system command in
-    let () =
-      match status with
-      | Unix.WEXITED 0 -> ()
-      | Unix.WEXITED i ->
-          failwith ("lilypond exited with code " ^ Int.to_string i)
-      | _ -> failwith "bad"
-    in
-    ()
-  in
-  List.iter
-    ~f:(fun filename -> run_lilypond ~command:"lilypond-book --pdf" ~filename)
-    sheet.Sheet.lytexfiles;
-  List.iter
-    ~f:(fun filename -> run_lilypond ~command:"lilypond" ~filename)
-    sheet.Sheet.lilypondfiles;
-  ()
 
 let pdf_of_tex sheet =
   let rec run () =
@@ -236,7 +205,7 @@ let make_pdf yaml_filename =
   generate_texlib sheet;
   generate_lylib sheet;
   install_lyfiles sheet;
-  generate_pdfs_from_lilypond sheet;
+  Lilypond.of_lilypond sheet;
   generate_wavs_from_lilypond sheet;
   pdf_of_tex sheet;
   (*  let () = printf "test2 passed.\n" in *)

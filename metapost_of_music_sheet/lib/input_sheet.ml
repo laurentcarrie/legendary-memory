@@ -13,7 +13,6 @@ type sheet = {
   chord_glyph_scale : float;
   texfiles : string list;
   lilypondfiles : string list;
-  lytexfiles : string list;
   wavfiles : string list;
 }
 [@@deriving yaml]
@@ -57,7 +56,6 @@ let sheet_of_input input srcdir =
       chord_glyph_scale = input.chord_glyph_scale;
       texfiles = List.append input.texfiles [ "main.tex" ];
       lilypondfiles = input.lilypondfiles;
-      lytexfiles = input.lytexfiles;
       wavfiles = input.wavfiles;
       tmpdir = "tmp";
       srcdir;
