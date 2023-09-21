@@ -1,0 +1,5 @@
+%\begin{lilypond}[quote,fragment,staffsize=26]
+%  c'4 d' e' f' g'2 g'
+%\end{lilypond}
+
+\lilypondfile{intro.ly}

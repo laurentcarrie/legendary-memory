@@ -17,7 +17,7 @@ f_all() {
     cd $here/tmp
     rm -f stdout.txt
     rm -f stderr.txt
-    find $here -name song.yml | while read f; do
+    find $here -name song.yml | grep "$1" | while read f; do
       echo $f
       ($exe $f 1>>stdout.txt 2>>stderr.txt && echo SUCCESS) || echo FAILED
     done
@@ -40,7 +40,8 @@ f_one() {
 
 case $1 in
   all)
-    f_all
+    shift
+    f_all $1
     ;;
   one)
     shift
