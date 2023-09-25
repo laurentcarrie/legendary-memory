@@ -140,7 +140,7 @@ let section_jingoo : string =
   {whatever|
 % SECTION {{name}}
 A := A shifted (0,-section_spacing) ;
-draw fullcircle scaled 2 shifted A withcolor red ;
+%draw fullcircle scaled 2 shifted A withcolor red ;
 label.urt(btex \rmfamily \textit{ {{name}} } etex,A) ;
 %label.ulft(btex \rmfamily \textit{ {{name}} } etex,A) ;
 {% for row in rows %}%{{row}}
