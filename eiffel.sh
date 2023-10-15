@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -e
-set -x 
+set -x
 
 here=$(dirname $(realpath $0))
 exe=${here}/metapost_of_music_sheet/_build/default/bin/metapost_of_music_sheet.exe
@@ -16,5 +16,3 @@ rm -rf $here/tmp/*
 )
 
 echo DONE
-
-

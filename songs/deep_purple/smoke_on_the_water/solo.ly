@@ -1,4 +1,4 @@
-\version "2.20.0"
+\version "2.23.1"
 \include "macros.ly"
 song_tempo = 114
 
@@ -92,15 +92,17 @@ lead = {
 
     \set Score.currentBarNumber = 1
     % mes 1
-    g'2\3 r4 \myrelease d''16\2 c''4\2
+    g'2\3 r4 d''8\2\^ c''8\2
     |
 
     % mes 2
-    bes'8\2  g'8~\3 g'4\3 c''8\2 r8 r8 d'8\4
-    |
+    %\grace c'8\2 \preBendHold d'8\2 \bendHold \^ g'8~\3 \^ g'8\3 ais'8\2 r8 r4 d'8\4
+        bes'8\2  g'8~\3 g'4\3 c''8\2 r8 r8 d'8\4
+|
 
     % mes 3
-    f'8\3 g'8\3 bes'8\2 \mypull bes'16\2 c''8~\2 c''4\2 bes'8\2 a'8\2
+%   f'8\3 g'8\3 bes'8\2 \mypull bes'16\2 c''8~\2 c''4\2 bes'8\2 a'8\2
+    f'8\3 g'8\3 bes'8\2  \grace bes'8\2 \^ c''8\2 c''4\2 \bendHold \^ bes'8\2  a'8\2
     |
 
     % mes 4
@@ -108,7 +110,8 @@ lead = {
     |
 
     % mes 5
-    f'8\3 g'8\2 fis'8\3 g'8~\2 \mypull f'16\3 g'4\3 r8 g'8\2
+%   f'8\3 g'8\2 fis'8\3 g'8~\2 \mypull f'16\3 g'4\3 r8 g'8\2
+    f'8\3 g'8\2 \grace f'8\3 \^ g'8\2 g'8~\2 g'4\2 r8 g'8\2
     |
 
     % mes 6
