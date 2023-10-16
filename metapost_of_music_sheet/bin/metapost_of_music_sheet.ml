@@ -37,5 +37,7 @@ let () =
   Log.color_on ();
   let _ = Log.info "begin work" in
   let yaml_filename = Array.get Sys.argv 1 in
-  let _ = Metapost_of_music_sheet.Pdf.make_pdf yaml_filename in
+  (*  let _ = Metapost_of_music_sheet.Pdf.make_pdf yaml_filename in *)
+  let _ = Metapost_of_music_sheet.Makefile.make_makefile yaml_filename in
+
   ()

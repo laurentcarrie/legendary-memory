@@ -13,7 +13,8 @@
   ly_code
   command
   lilypond
-  helpers)
+  helpers
+  makefile)
  (libraries jingoo dolog base core_unix)
  ; (modules toto)
  (preprocess
