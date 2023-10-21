@@ -1,11 +1,8 @@
-.PHONY: all install clean
 
-########################################################################
-# Subdirectories.
-# You may want to include some subdirectories in this project.
-# If so, define the subdirectory targets and uncomment this section.
-#
-
-.SUBDIRS: eiffel
-
-
+.PHONY: all install clean pdf
+.SUBDIRS: \
+	/home/laurent/work/legendary-memory/songs/eiffel/la_rue \
+	/home/laurent/work/legendary-memory/songs/estelle/american_boy \
+	/home/laurent/work/legendary-memory/songs/red_hot_chili_peppers/can_t_stop \
+	/home/laurent/work/legendary-memory/songs/placebo/special_k \
+	/home/laurent/work/legendary-memory/songs/deep_purple/smoke_on_the_water \

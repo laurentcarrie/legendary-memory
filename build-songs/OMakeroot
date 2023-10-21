@@ -1,17 +1,8 @@
-srcdir = Dir(../songs)
-
-
-
-srcdir = ../songs
-prefix = xx
-DefineCommandVars()
-
-public.srcdir = $(dir $(srcdir))
-
-CREATE_SUBDIRS=true
-
-vmount(-c,$(srcdir),songs)
-
-mkdir -p $(prefix)
-
-.SUBDIRS: .
+srcdir = /home/laurent/work/legendary-memory/songs 
+prefix = xx 
+DefineCommandVars() 
+public.srcdir = $(dir $(srcdir)) 
+CREATE_SUBDIRS=true 
+vmount(-c,$(srcdir),songs) 
+mkdir -p $(prefix) 
+.SUBDIRS: . 

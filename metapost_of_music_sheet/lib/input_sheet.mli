@@ -9,6 +9,7 @@ type sheet = {
   title : string;
   authors : string list;
   (*  path : string; *)
+  pdf : string;
   sections : section list;
   cell_width : float;
   cell_height : float;
