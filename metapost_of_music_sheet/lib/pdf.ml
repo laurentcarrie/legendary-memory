@@ -12,7 +12,9 @@ let normalized_title sheet =
 
 let generate_texlib sheet =
   let data = Tex_code.make_preamble in
-  Out_channel.with_open_text (sheet.Sheet.tmpdir ^ "/preamble.tex") (fun t ->
+  let filename = sheet.Sheet.tmpdir ^ "/preamble.tex" in
+  let _ = Log.info "write %s" filename in
+  Out_channel.with_open_text filename (fun t ->
       Out_channel.output_string t data)
 
 let generate_lylib sheet =
@@ -145,6 +147,15 @@ let maintex : string =
 (*  let _ = close_out fout in *)
 (*  () *)
 
+let write_mp sheet =
+  let mp_filename = sheet.Sheet.tmpdir ^ "/main.mp" in
+
+  let fout = Stdio.Out_channel.create mp_filename in
+  Log.info "%s:%d writing name : %s" Stdlib.__FILE__ Stdlib.__LINE__ mp_filename;
+  let _ = Emitter.emit fout sheet "mps" (sheet.Sheet.tmpdir ^ "/main.mps") in
+  let _ = Stdio.Out_channel.close fout in
+  ()
+
 let make_pdf yaml_filename =
   Log.info "deserialize %s" yaml_filename;
   let input_sheet : Input_sheet.sheet =
@@ -152,8 +163,9 @@ let make_pdf yaml_filename =
       (In_channel.with_open_text yaml_filename In_channel.input_all)
   in
   let sheet =
-    Input_sheet.sheet_of_input input_sheet
-      (Stdlib.Filename.dirname yaml_filename)
+    Input_sheet.sheet_of_input ~input:input_sheet
+      ~srcdir:(Stdlib.Filename.dirname yaml_filename)
+      ~tmpdir:"tmp"
   in
   Log.info "%s:%d %s" Stdlib.__FILE__ Stdlib.__LINE__ sheet.Sheet.title;
   let () =

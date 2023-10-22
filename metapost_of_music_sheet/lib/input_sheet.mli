@@ -25,4 +25,6 @@ val deserialize : string -> sheet
 *)
 
 val serialize : sheet -> string
-val sheet_of_input : sheet -> string -> Sheet.sheet
+
+val sheet_of_input :
+  input:sheet -> srcdir:string -> tmpdir:string -> Sheet.sheet

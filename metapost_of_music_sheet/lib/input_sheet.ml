@@ -32,7 +32,7 @@ let serialize v =
   | Ok s -> s
   | Error (`Msg e) -> failwith e
 
-let sheet_of_input input srcdir =
+let sheet_of_input ~input ~srcdir ~tmpdir =
   let row_of_row row =
     {
       Sheet.bars =
@@ -59,7 +59,7 @@ let sheet_of_input input srcdir =
       texfiles = List.append input.texfiles [ "main.tex" ];
       lilypondfiles = input.lilypondfiles;
       wavfiles = input.wavfiles;
-      tmpdir = "tmp";
+      tmpdir;
       srcdir;
     }
   in
