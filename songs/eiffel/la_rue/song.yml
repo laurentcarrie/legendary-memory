@@ -1,0 +1,25 @@
+title: La Rue
+authors:
+  - Eiffel
+pdf: eiffel-la-rue.pdf
+cell_width: 60
+cell_height: 30
+chord_glyph_scale: 2
+texfiles: []
+lilypondfiles: []
+wavfiles: []
+
+sections:
+  - name: intro
+    rows:
+      -
+        - C#m7
+        - C#m7
+        - C#m7
+        - C#m7
+
+  - name: couplet
+    rows:
+      -
+        - C#m7 A
+        - C#m7

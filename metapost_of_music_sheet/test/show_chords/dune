@@ -1,0 +1,6 @@
+(test
+ (name chord)
+ (modules chord)
+ (libraries Metapost_of_music_sheet dolog jingoo core)
+ ; (libraries metapost_of_music_sheet)
+ (deps chord.tex))

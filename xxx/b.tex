@@ -1,0 +1,34 @@
+\documentclass[11pt]{article}
+\usepackage{animate}
+\usepackage{graphicx}
+\usepackage{media9}
+\usepackage{luamplib}
+
+\begin{document}
+
+%    \begin{center}
+%        \includegraphics{a-10}
+%    \end{center}
+
+%    \begin{center}
+%        \includegraphics{orchard.png}
+%    \end{center}
+
+    \begin{center}
+        \animategraphics[
+            label=scene1,
+            controls, loop,
+            timeline=timeline.txt
+        ]{2}{bb}{ 1 }{ 2 }
+        \mediabutton[
+        jsaction={
+            if(anim[’scene1’].isPlaying)
+            anim[’scene1’].pause();
+            else
+            anim[’scene1’].playFwd();
+        }
+        ]{\fbox{Play/Pause}}
+    \end{center}
+
+
+\end{document}

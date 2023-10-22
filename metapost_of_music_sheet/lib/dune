@@ -1,0 +1,22 @@
+;(include_subdirs unqualified)
+
+(library
+ (name Metapost_of_music_sheet)
+ (public_name metapost_of_music_sheet)
+ (modules
+  sheet
+  emitter
+  pdf
+  mp_code
+  input_sheet
+  tex_code
+  ly_code
+  command
+  lilypond
+  helpers
+  makefile
+  util)
+ (libraries jingoo dolog base core_unix)
+ ; (modules toto)
+ (preprocess
+  (pps ppx_deriving_yaml)))

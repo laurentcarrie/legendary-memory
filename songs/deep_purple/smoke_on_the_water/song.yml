@@ -1,0 +1,30 @@
+title: Smoke On The Water
+authors:
+  - Deep Purple
+cell_width: 60
+cell_height: 30
+chord_glyph_scale: 2
+pdf: smoke-on-the-water.pdf
+texfiles:
+  - lyrics.tex
+lilypondfiles:
+  - solo.ly
+wavfiles:
+  - solo.wav
+
+#path:
+#  XX/YY
+sections:
+  - name: intro
+    rows:
+      -
+        - C#m7
+        - C#m7
+        - C#m7
+        - C#m7
+
+  - name: couplet
+    rows:
+      -
+        - C#m7 A
+        - C#m7

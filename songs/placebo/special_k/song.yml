@@ -1,0 +1,27 @@
+title: Special K
+authors:
+  - Placebo
+pdf: special-k-placebo.pdf
+cell_width: 60
+cell_height: 30
+chord_glyph_scale: 2
+texfiles:
+  - lyrics.tex
+lilypondfiles:
+  - solo.ly
+  - intro.ly
+  - riff_a.ly
+  - riff_b.ly
+wavfiles:
+  - intro.wav
+  - riff_a.wav
+#path:
+#  XX/YY
+sections:
+  - name: refrain
+    rows:
+      -
+        - G
+        - D
+        - Bm7
+        - CM7
