@@ -13,6 +13,12 @@ let mkdir_p p =
   in
   attempt p
 
+let relative_to dira dirb =
+  let start = String.length dira + 1 in
+  let l = String.length dirb - String.length dira - 1 in
+  let ret = String.sub dirb ~pos:start ~len:l in
+  ret
+
 let get_all_songs rootdir =
   let rec scan f acc =
     let b : string = Stdlib.Filename.basename f in
@@ -28,13 +34,17 @@ let get_all_songs rootdir =
   scan rootdir []
 
 let write_omakefile rootdir yaml_filename =
-  let _ = Log.info "write omakefile %s %s" rootdir yaml_filename in
-  let p = buildroot ^ "/" ^ yaml_filename in
-  let makefile_name =
-    buildroot ^ "/" ^ Stdlib.Filename.dirname yaml_filename ^ "/OMakefile"
-  in
+  let rel = relative_to rootdir yaml_filename in
+  let relpath = Stdlib.Filename.dirname rel in
+  let _ = Log.info "rootdir : %s" rootdir in
+  let _ = Log.info "yaml_filename : %s" yaml_filename in
+  let _ = Log.info "relative : %s" relpath in
+  let _ = Log.info "buildroot : %s" buildroot in
+
+  (*  let _ = Log.info "write omakefile %s %s" rootdir yaml_filename in *)
+  let makefile_name = buildroot ^ "/songs/" ^ relpath ^ "/OMakefile" in
   let _ = Log.info "omakefile is %s" makefile_name in
-  let d = Stdlib.Filename.dirname p in
+  let d = Stdlib.Filename.dirname makefile_name in
   let _ = Log.info "dirname is %s" d in
   let _ = mkdir_p d in
 
@@ -69,15 +79,18 @@ let write_omakeroot buildroot rootdir =
      vmount(-c,$(srcdir),songs) \n\
      mkdir -p $(prefix) \n\
      .SUBDIRS: . \n"
-    "/home/laurent/work/legendary-memory/songs";
+    rootdir;
 
   Stdlib.close_out fout
 
-let write_top_omakefile l =
+let write_top_omakefile rootdir l =
   let fout = Stdlib.open_out (buildroot ^ "/OMakefile") in
   let paths =
     List.fold_left
-      ~f:(fun acc s -> sprintf "%s\n\t%s \\" acc (Stdlib.Filename.dirname s))
+      ~f:(fun acc s ->
+        let r = "songs/" ^ relative_to rootdir (Stdlib.Filename.dirname s) in
+
+        sprintf "%s\n\t%s \\" acc r)
       ~init:"" l
   in
   fprintf fout "\n.PHONY: all install clean pdf\n.SUBDIRS: \\%s" paths;
@@ -88,7 +101,7 @@ let make_makefile rootdir =
   mkdir_p buildroot;
   let l : string list = get_all_songs rootdir in
   let () = write_omakeroot buildroot rootdir in
-  let () = write_top_omakefile l in
+  let () = write_top_omakefile rootdir l in
   let _ = List.map ~f:(fun f -> write_omakefile rootdir f) l in
   ()
 
