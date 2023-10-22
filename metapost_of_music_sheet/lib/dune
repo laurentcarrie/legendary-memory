@@ -14,7 +14,8 @@
   command
   lilypond
   helpers
-  makefile)
+  makefile
+  util)
  (libraries jingoo dolog base core_unix)
  ; (modules toto)
  (preprocess

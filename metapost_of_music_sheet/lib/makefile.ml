@@ -110,7 +110,7 @@ let write_omakeroot buildroot rootdir =
   let _ = rootdir in
   fprintf fout
     "srcdir = %s \n\
-     prefix = xx \n\
+     prefix = delivery \n\
      DefineCommandVars() \n\
      public.srcdir = $(dir $(srcdir)) \n\
      CREATE_SUBDIRS=true \n\
@@ -132,7 +132,21 @@ let write_top_omakefile buildroot sheets =
         sprintf "%s\n\t%s \\" acc r)
       ~init:"" sheets
   in
-  fprintf fout "\n.PHONY: all install clean pdf\n.SUBDIRS: \\%s" paths;
+  fprintf fout "\n.PHONY: all install clean pdf delivery\n.SUBDIRS: \\%s\n\n"
+    paths;
+
+  fprintf fout "delivery:\\\n";
+  fprintf fout "%s\n"
+    (Util.join
+       (List.map
+          ~f:(fun sheet ->
+            "\t"
+            ^ relative_to buildroot sheet.Sheet.tmpdir
+            ^ "/" ^ sheet.Sheet.pdf)
+          sheets)
+       " \\\n");
+  fprintf fout "\trm -rf delivery \n\tmkdir delivery\n\tcp $^ delivery/. \n";
+
   Stdlib.close_out fout
 
 let write_lytexfiles sheet =
