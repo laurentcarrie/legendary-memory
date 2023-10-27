@@ -1,0 +1,8 @@
+;(include_subdirs unqualified)
+
+;(rule
+; (alias runtest)
+; (action
+;  (run ./clock.sh))
+; (deps resources/alanis-morissette-ironic.yml))
+;

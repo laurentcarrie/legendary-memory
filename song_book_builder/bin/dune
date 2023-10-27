@@ -1,0 +1,7 @@
+(executable
+ (public_name song_book_builder)
+ (name song_book_builder)
+ (libraries song_book_builder jingoo core base)
+ ; (preprocess
+ ;  (pps ppx_deriving_yaml))
+ )

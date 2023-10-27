@@ -1,0 +1,24 @@
+;(include_subdirs unqualified)
+
+(library
+ (name Song_book_builder)
+ (public_name song_book_builder)
+ (modules
+  sheet
+  emitter
+  pdf
+  mp_code
+  input_sheet
+  tex_code
+  ly_code
+  sh_code
+  command
+  lilypond
+  helpers
+  makefile
+  scan
+  util)
+ (libraries jingoo dolog base core_unix)
+ ; (modules toto)
+ (preprocess
+  (pps ppx_deriving_yaml)))

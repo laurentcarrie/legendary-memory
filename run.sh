@@ -1,54 +1,20 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 set -x
-set -o pipefail
 
 here=$(dirname $(realpath $0))
-exe=${here}/metapost_of_music_sheet/_build/default/bin/metapost_of_music_sheet.exe
 
-echo "" >$here/test.txt
+pre-commit run --all-files
 
-mkdir -p $here/tmp
-rm -rf $here/tmp/*
+exe=$here/song_book_builder/_build/default/bin/song_book_builder.exe
+builddir=$here/build-songs
+songs=$here/songs
+test -d $songs
 
-f_all() {
-  (
-    cd $here/tmp
-    rm -f stdout.txt
-    rm -f stderr.txt
-    find $here -name song.yml | grep "$1" | while read f; do
-      echo $f
-      ($exe $f 1>>stdout.txt 2>>stderr.txt && echo SUCCESS) || echo FAILED
-    done
 
-    #$exe $input | tee $here/test.txt
-  )
-}
+dune build @fmt --auto-promote --root $here/song_book_builder
+dune build --root $here/song_book_builder
+test -f $exe
 
-f_one() {
-  (
-    input=$(realpath $1)
-    echo $input
-    cd $here/tmp
-    rm -f stdout.txt
-    rm -f stderr.txt
-    echo $exe
-    ($exe ${input}/song.yml && echo SUCCESS) || echo FAILED
-  )
-}
-
-case $1 in
-  all)
-    shift
-    f_all $1
-    ;;
-  one)
-    shift
-    f_one $1
-    ;;
-  *)
-    echo "bad command"
-esac
-
-echo DONE
+$exe $builddir $songs
