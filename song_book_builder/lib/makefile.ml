@@ -297,13 +297,13 @@ let make_makefile buildroot rootdir =
   (*  let _ : unit list = *)
   (*    List.map ~f:(fun sheet -> write_lytexfiles sheet) sheets *)
   (*  in *)
-  let _ : unit list =
+  let (_ : unit list) =
     List.map ~f:(fun sheet -> Pdf.generate_texlib sheet) sheets
   in
-  let _ : unit list =
+  let (_ : unit list) =
     List.map ~f:(fun sheet -> Pdf.generate_lylib sheet) sheets
   in
-  let _ : unit list = List.map ~f:(fun sheet -> Pdf.write_mp sheet) sheets in
+  let (_ : unit list) = List.map ~f:(fun sheet -> Pdf.write_mp sheet) sheets in
   ()
 
 (*  let input_sheet : Input_sheet.sheet = *)

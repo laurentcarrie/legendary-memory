@@ -1,6 +1,6 @@
 let make_macros : string =
   {whatever|
-  
+
 
 comma = #(define-event-function (parser location xy)
           (pair?)

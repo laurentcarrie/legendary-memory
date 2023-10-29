@@ -11,14 +11,16 @@ GREY="\e[37m"
 NC='\033[0m' # No Color
 workdir=$(dirname $(realpath $1))
 
-echo "\lilypondfile{$1.ly}" > $1.lytex
+rm $1.lytex
+#echo "\version \"2.24.2\"" > $1.lytex
+echo "\lilypondfile{$1.ly}" >> $1.lytex
 
 fstdout=$1.lytex.stdout
 fstderr=$1.lytex.stderr
 
 printf "${GREY}building lilypond in${NC} ${CYAN}$workdir/$1$NC\n"
-lilypond-book --latex-program=lualatex $1.lytex  1> $fstdout 2> $fstderr || true
-lilypond-book --latex-program=lualatex $1.lytex  1>> $fstdout 2>> $fstderr
+lilypond-book --pdf --latex-program=lualatex $1.lytex  1> $fstdout 2> $fstderr || true
+lilypond-book --pdf --latex-program=lualatex $1.lytex  1>> $fstdout 2>> $fstderr
 if test "x$?" = "0" ; then
   #rm $1.lytex
   printf "${GREY}building lilypond in${NC} ${GREEN}$workdir/$1$NC done\n"
@@ -52,15 +54,15 @@ GREEN='\033[0;32m'
 CYAN='\033[0;36m'
 GREY="\e[37m"
 NC='\033[0m' # No Color
-workdir=$(dirname $(realpath $1))
+workdir=$(dirname $(realpath $1.tex))
 printf "${GREY}building pdf in${NC} ${CYAN}$workdir$NC\n"
 
 i="0"
 while [ $i -lt 4 ]
 do
-lualatex $1 1> $1.pdf.stdout.log 2> $1.pdf.stderr.log
+lualatex $1.tex 1> $1.pdf.stdout.log 2> $1.pdf.stderr.log
 test -f main.log
-count=$(cat $1.log | grep Rerun | wc --lines)
+count=$(cat $1.log | grep Rerun | wc -l)
 if test "x$count" = "x0" ; then
     break
 fi
