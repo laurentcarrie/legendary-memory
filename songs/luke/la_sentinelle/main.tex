@@ -1,0 +1,30 @@
+\documentclass[11pt]{article}
+
+\input{preamble}
+\usepackage{pdfpages}
+
+%\usepackage[margin=0.5in]{geometry}
+\usepackage{graphicx}
+\usepackage{unicode-math}
+\setmainfont{XITS}
+\setmathfont{XITS Math}
+\usepackage{luamplib}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\usepackage{import}
+\input{data}
+
+\begin{document}
+    \makesongtitle
+
+%    \section*{intro}
+%    \input{intro}
+%
+%
+    \begin{multicols}{2}
+        \section*{lyrics}
+        \input{lyrics}
+    \end{multicols}
+    \subimport{couplet1.output/}{couplet1}
+
+\end{document}

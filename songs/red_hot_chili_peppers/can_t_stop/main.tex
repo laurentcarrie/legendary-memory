@@ -11,23 +11,21 @@
 \usepackage{luamplib}
 \usepackage{xcolor}
 \usepackage{todonotes}
-
-
+\usepackage{import}
+\input{data}
 
 \begin{document}
-    \begin{center}
-        \songtitle{Can't Stop}{Red Hot Chili Peppers}
-    \end{center}
+    \makesongtitle
     \section*{intro}
-    \input{intro}
+    \subimport{intro.output/}{intro}
 
 
     \section{riff A}
-    \input{riff_a}
+    \subimport{riff_a.output/}{riff_a}
 
     la derni\`ere fois :
 
-    \input{riff_b}
+    \subimport{riff_b.output/}{riff_b}
 
 
     \section{refrain}

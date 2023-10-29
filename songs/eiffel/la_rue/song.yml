@@ -1,7 +1,5 @@
 title: La Rue
-authors:
-  - Eiffel
-pdf: eiffel-la-rue.pdf
+author: Eiffel
 cell_width: 60
 cell_height: 30
 chord_glyph_scale: 2

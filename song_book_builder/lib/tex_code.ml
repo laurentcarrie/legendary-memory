@@ -94,7 +94,8 @@ let make_preamble : string =
 \newcommand{\pont}[2]{\basecouplet{\lolocolorpont}{#1}{#2}}
 
 
-\newcommand{\songtitle}[2] {
+\newcommand{\xxmakesongtitle}[2] {
+\begin{center}
     {
         \Fontskrivan\bfseries\slshape
         \fontsize{60pt}{50pt}\selectfont
@@ -109,6 +110,8 @@ let make_preamble : string =
         \color{orange}
         #2
     }\\
+\end{center}
+
 }
 
 

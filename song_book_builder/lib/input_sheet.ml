@@ -5,9 +5,10 @@ type section = { name : string; rows : row list } [@@deriving yaml]
 
 type sheet = {
   title : string;
-  authors : string list;
+  author : string;
+  transpose_from : string option;
+  transpose_to : string option;
   (*  path : string; *)
-  pdf : string;
   sections : section list;
   cell_width : float;
   cell_height : float;
@@ -32,25 +33,53 @@ let serialize v =
   | Ok s -> s
   | Error (`Msg e) -> failwith e
 
+let pdf_name_of_input input =
+  let s = input.author ^ "--@--" ^ input.title in
+  let s =
+    String.map
+      (fun x -> match x with ' ' | '\'' | '/' -> '-' | '.' -> '-' | _ -> x)
+      s
+  in
+  let s = String.lowercase_ascii s in
+  let s = s ^ ".pdf" in
+  s
+
 let sheet_of_input ~input ~srcdir ~tmpdir =
-  let row_of_row row =
+  let row_of_row ~row ~transpose =
     {
       Sheet.bars =
-        List.map (fun s -> { Sheet.chords = String.split_on_char ' ' s }) row;
+        List.map
+          (fun s ->
+            {
+              Sheet.chords =
+                List.map
+                  (fun chord -> Transpose.transpose_chord ~chord ~transpose)
+                  (String.split_on_char ' ' s);
+            })
+          row;
     }
+  in
+
+  let transpose =
+    match (input.transpose_from, input.transpose_to) with
+    | None, None -> None
+    | Some i, Some j -> Some (i, j)
+    | _ -> failwith "bad transpose_from or transpose_to fields"
   in
 
   let output =
     {
       Sheet.title = input.title;
-      authors = input.authors;
-      pdf = input.pdf;
+      author = input.author;
+      pdf = pdf_name_of_input input;
+      transpose;
       sections =
         List.map
           (fun section ->
             {
               Sheet.name = section.name;
-              rows = List.map row_of_row section.rows;
+              rows =
+                List.map (fun row -> row_of_row ~row ~transpose) section.rows;
             })
           input.sections;
       cell_width = input.cell_width;

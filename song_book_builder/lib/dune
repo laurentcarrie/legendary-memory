@@ -17,7 +17,8 @@
   helpers
   makefile
   scan
-  util)
+  util
+  transpose)
  (libraries jingoo dolog base core_unix)
  ; (modules toto)
  (preprocess

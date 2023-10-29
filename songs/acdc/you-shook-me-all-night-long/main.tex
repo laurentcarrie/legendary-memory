@@ -1,0 +1,15 @@
+%\documentclass[a4paper, 12 pt, showframe, french]{scrartcl}
+\documentclass[a4paper, 10 pt]{memoir}
+\input{preamble}
+\usepackage{import}
+\input{chords.tex}
+\input{data}
+
+\begin{document}
+    \makesongtitle
+    \begin{multicols}{2}
+    \input{lyrics.tex}
+    \end{multicols}
+    \section*{solo}
+    \subimport{solo.output/}{solo}
+\end{document}
