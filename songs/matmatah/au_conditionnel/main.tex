@@ -1,0 +1,18 @@
+%\documentclass[a4paper, 12 pt, showframe, french]{scrartcl}
+\documentclass[a4paper, 10 pt]{memoir}
+\usepackage{import}
+\input{preamble}
+
+
+\begin{document}
+    \begin{center}
+        \songtitle{Au Conditionnel}{Matmatah}
+    \end{center}
+    \begin{multicols}{2}
+        \input{lyrics.tex}
+    \end{multicols}
+%    \subimport{intro.output/}{intro}
+    \subimport{solo.output/}{solo}
+
+\end{document}
+

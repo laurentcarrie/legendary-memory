@@ -1,0 +1,35 @@
+title: Au Conditionnel
+authors:
+  - Pixies
+pdf: au-conditionnel--@--matmatah.pdf
+cell_width: 60
+cell_height: 30
+chord_glyph_scale: 2
+texfiles:
+  - lyrics.tex
+lilypondfiles:
+  - solo.ly
+#  - intro.ly1
+
+wavfiles:
+  - basse.wav
+#  - riff_a.wav
+#path:
+#  XX/YY
+sections:
+  - name: couplet
+    rows:
+      -
+        - G#m
+        - B
+        - E
+        - G#m
+        - E
+  - name: refrain
+    rows:
+      -
+        - G#m
+        - B
+        - E
+        - G#
+        - E
