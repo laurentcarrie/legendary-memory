@@ -4,10 +4,12 @@ authors:
 cell_width: 60
 cell_height: 30
 chord_glyph_scale: 2
-pdf: song-for-jedi@dyonisos.pdf
+pdf: song-for-jedi--@--dyonisos.pdf
 texfiles:
   - lyrics.tex
-lilypondfiles: []
+lilypondfiles:
+  - intro.ly
+  - intro2.ly
 #  - solo.ly
 wavfiles: []
 #  - solo.wav
@@ -15,24 +17,10 @@ wavfiles: []
 #path:
 #  XX/YY
 sections:
-  - name: intro 1
-    rows:
-      -
-        - E
-        - E
-  - name: intro 2
-    rows:
-      -
-        - E
-        - E
-        - E
-        - E
-      -
-        - E
-        - E
-        - E
-        - E
-
+  - name: 'intro 1 : E 2 (g) + 8 mesures (gbd)'
+    rows: []
+  - name: 'intro 2 : E 8 mesures'
+    rows: []
   - name: couplet
     rows:
       -
