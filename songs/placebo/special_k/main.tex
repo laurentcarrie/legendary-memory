@@ -12,6 +12,7 @@
 \usepackage{xcolor}
 \usepackage{todonotes}
 \usepackage{textcomp}
+\usepackage{import}
 
 
 
@@ -23,15 +24,15 @@
 
     \textrightarrow capo case 1
 
-    \input{intro}
+    \subimport{intro.output/}{intro}
 
 
     \section{riff A}
-    \input{riff_a}
+    \subimport{riff_a.output/}{riff_a}
 
     la derni\`ere fois :
 
-    \input{riff_b}
+    \subimport{riff_b.output/}{riff_b}
 
 
     \section{refrain}

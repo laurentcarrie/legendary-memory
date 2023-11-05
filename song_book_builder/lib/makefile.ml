@@ -137,7 +137,9 @@ let write_omakefile sheet =
       ~f:(fun acc s -> acc ^ " " ^ s)
       ~init:""
       (List.map
-         ~f:(fun s -> Stdlib.Filename.chop_extension s ^ ".tex")
+         ~f:(fun s ->
+           let s2 = Stdlib.Filename.chop_extension s in
+           s2 ^ ".output/" ^ s2 ^ ".tex")
          sheet.Sheet.lilypondfiles)
   in
 
@@ -189,8 +191,9 @@ let write_omakefile sheet =
   List.iter
     ~f:(fun f ->
       let f = Stdlib.Filename.chop_extension f in
-      fprintf fout "%s.tex : %s.ly\n\tbash $(buildroot)/make_lytex.sh %s \n\n" f
-        f f)
+      fprintf fout
+        "%s.output/%s.tex : %s.ly\n\tbash $(buildroot)/make_lytex.sh %s \n\n" f
+        f f f)
     sheet.Sheet.lilypondfiles;
 
   (* wav files *)

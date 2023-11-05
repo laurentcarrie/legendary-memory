@@ -5,6 +5,9 @@ set -x
 
 here=$(dirname $(realpath $0))
 
+
+
+
 pre-commit run --all-files
 
 exe=$here/song_book_builder/_build/default/bin/song_book_builder.exe
