@@ -1,0 +1,42 @@
+title: Song For Jedi
+authors:
+  - Dionysos
+cell_width: 60
+cell_height: 30
+chord_glyph_scale: 2
+pdf: song-for-jedi@dyonisos.pdf
+texfiles:
+  - lyrics.tex
+lilypondfiles: []
+#  - solo.ly
+wavfiles: []
+#  - solo.wav
+
+#path:
+#  XX/YY
+sections:
+  - name: intro 1
+    rows:
+      -
+        - E
+        - E
+  - name: intro 2
+    rows:
+      -
+        - E
+        - E
+        - E
+        - E
+      -
+        - E
+        - E
+        - E
+        - E
+
+  - name: couplet
+    rows:
+      -
+        - E
+        - F#m C#m
+        - E
+        - F#m C#m

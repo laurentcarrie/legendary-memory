@@ -2,7 +2,7 @@ let make_make_lytex : string =
   {whatever|#!/bin/bash
 
 #set -e
-set -x
+#set -x
 
 RED="\e[31m\e[47m"
 GREEN='\033[0;32m\e[46m'
