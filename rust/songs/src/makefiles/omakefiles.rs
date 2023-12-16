@@ -113,6 +113,30 @@ mps/main-{i}.mps  : main.mp
         )?;
     }
 
+    write!(output,"midi : ")? ;
+    for w in &song.wavfiles {
+        let name = w.replace(".wav","");
+        write!(output," {name}.midi ",name=name)?;
+    }
+    writeln!(output,"")? ;
+
+    for w in &song.wavfiles {
+        let name = w.replace(".wav", "");
+        write!(output,  "
+
+wav : {name}.wav
+
+midi : {name}.midi
+
+{name}.wav {name}.midi : {name}.ly
+    bash $(buildroot)/make_wav.sh {name}
+ ", name = name)?;
+    }
+
+
+
+
+
     //
     // mps/main-0.mps  : main.mp
     // mkdir -p mps

@@ -71,6 +71,7 @@ pub fn decode_song(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Song, Erro
         title: uconf.title,
         builddir: song_builddir,
         lilypondfiles: uconf.lilypondfiles,
+        wavfiles:uconf.wavfiles,
         sections: uconf.sections.iter().map(section_of_usection).collect(),
         chord_glyph_scale: uconf.chord_glyph_scale.unwrap_or(2),
         outputformat: uconf.outputformat.unwrap_or("mps".to_string()),
