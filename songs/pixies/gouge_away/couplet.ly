@@ -1,7 +1,9 @@
 \storePredefinedDiagram
   #default-fret-table
+  %\transpose g f {
   \chordmode { gis:m }
   #guitar-tuning
+  %}
   % "The diagram definition can be either a fret-diagram-terse
   % definition string..."
   #"4;6;6;4;4;x;"

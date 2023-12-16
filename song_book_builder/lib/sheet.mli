@@ -9,8 +9,9 @@ type section = { name : string; rows : row list }
 
 type sheet = {
   title : string;
-  authors : string list;
+  author : string;
   pdf : string;
+  transpose : (string * string) option;
   sections : section list;
   cell_width : float;
   cell_height : float;

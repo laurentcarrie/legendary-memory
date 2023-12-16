@@ -1,9 +1,9 @@
 title: Gouge Away
-authors:
-  - Pixies
-pdf: gouge-away-pixies.pdf
+author: Pixies
 cell_width: 60
 cell_height: 30
+transpose_from: G#
+transpose_to: F#
 chord_glyph_scale: 2
 texfiles:
   - lyrics.tex
@@ -13,6 +13,7 @@ lilypondfiles:
   - refrain.ly
   - couplet.ly
   - basse.ly
+  - grille.ly
 #  - riff_b.ly
 wavfiles:
   - basse.wav

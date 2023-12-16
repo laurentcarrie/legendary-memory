@@ -1,10 +1,8 @@
 title: Smoke On The Water
-authors:
-  - Deep Purple
+author:  Deep Purple
 cell_width: 60
 cell_height: 30
 chord_glyph_scale: 2
-pdf: smoke-on-the-water.pdf
 texfiles:
   - lyrics.tex
 lilypondfiles:

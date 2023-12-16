@@ -125,6 +125,18 @@ let builddir_of_yaml_filename buildroot rootdir yaml_filename =
   let _ = Log.info "buildroot : %s" buildroot in
   buildroot ^ "/songs/" ^ relpath
 
+let write_tex_data sheet =
+  let texname = sheet.Sheet.tmpdir ^ "/data.tex" in
+  let fout = Stdlib.open_out texname in
+  fprintf fout "%% import preamble first\n";
+  fprintf fout "\\def\\songtitle{%s}\n" sheet.Sheet.title;
+  fprintf fout "\\def\\songauthor{%s}\n" sheet.Sheet.author;
+  fprintf fout
+    "\\newcommand{\\makesongtitle}{\\xxmakesongtitle{\\songtitle}{\\songauthor}}\n";
+
+  Stdlib.close_out fout;
+  ()
+
 let write_omakefile sheet =
   let makefile_name = sheet.Sheet.tmpdir ^ "/OMakefile" in
   (*  let _ = Log.info "omakefile is %s" makefile_name in *)
@@ -137,7 +149,9 @@ let write_omakefile sheet =
       ~f:(fun acc s -> acc ^ " " ^ s)
       ~init:""
       (List.map
-         ~f:(fun s -> Stdlib.Filename.chop_extension s ^ ".tex")
+         ~f:(fun s ->
+           let s2 = Stdlib.Filename.chop_extension s in
+           s2 ^ ".output/" ^ s2 ^ ".tex")
          sheet.Sheet.lilypondfiles)
   in
 
@@ -189,8 +203,9 @@ let write_omakefile sheet =
   List.iter
     ~f:(fun f ->
       let f = Stdlib.Filename.chop_extension f in
-      fprintf fout "%s.tex : %s.ly\n\tbash $(buildroot)/make_lytex.sh %s \n\n" f
-        f f)
+      fprintf fout
+        "%s.output/%s.tex : %s.ly\n\tbash $(buildroot)/make_lytex.sh %s \n\n" f
+        f f f)
     sheet.Sheet.lilypondfiles;
 
   (* wav files *)
@@ -297,13 +312,16 @@ let make_makefile buildroot rootdir =
   (*  let _ : unit list = *)
   (*    List.map ~f:(fun sheet -> write_lytexfiles sheet) sheets *)
   (*  in *)
-  let _ : unit list =
+  let (_ : unit list) =
     List.map ~f:(fun sheet -> Pdf.generate_texlib sheet) sheets
   in
-  let _ : unit list =
+  let (_ : unit list) =
     List.map ~f:(fun sheet -> Pdf.generate_lylib sheet) sheets
   in
-  let _ : unit list = List.map ~f:(fun sheet -> Pdf.write_mp sheet) sheets in
+  let (_ : unit list) = List.map ~f:(fun sheet -> Pdf.write_mp sheet) sheets in
+  let (_ : unit list) =
+    List.map ~f:(fun sheet -> write_tex_data sheet) sheets
+  in
   ()
 
 (*  let input_sheet : Input_sheet.sheet = *)

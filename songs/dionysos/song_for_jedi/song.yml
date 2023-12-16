@@ -1,0 +1,28 @@
+title: Song For Jedi
+author: Dionysos
+cell_width: 60
+cell_height: 30
+chord_glyph_scale: 2
+texfiles:
+  - lyrics.tex
+lilypondfiles:
+  - intro.ly
+  - intro2.ly
+#  - solo.ly
+wavfiles: []
+#  - solo.wav
+
+#path:
+#  XX/YY
+sections:
+  - name: 'intro 1 : E 2 (g) + 8 mesures (gbd)'
+    rows: []
+  - name: 'intro 2 : E 8 mesures'
+    rows: []
+  - name: couplet
+    rows:
+      -
+        - E
+        - F#m C#m
+        - E
+        - F#m C#m

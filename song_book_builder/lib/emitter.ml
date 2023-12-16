@@ -19,6 +19,7 @@ outputtemplate := "{{outputtemplate}}";
 outputformat := "{{outputformat}}";
 input boxes ;
 input TEX ;
+%verbatimtex \nofiles etex;
 verbatimtex
 \documentclass{article}
 %%\usepackage{lmodern}
@@ -141,7 +142,7 @@ let section_jingoo : string =
 % SECTION {{name}}
 A := A shifted (0,-section_spacing) ;
 %draw fullcircle scaled 2 shifted A withcolor red ;
-label.urt(btex \rmfamily \textit{ {{name}} } etex,A) ;
+label.urt(btex {{name}}   etex,A) ;
 %label.ulft(btex \rmfamily \textit{ {{name}} } etex,A) ;
 {% for row in rows %}%{{row}}
 {% endfor %}

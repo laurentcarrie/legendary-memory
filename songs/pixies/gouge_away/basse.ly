@@ -1,15 +1,15 @@
-\version "2.20.0"
+\version "2.24.2"
 \include "macros.ly"
 song_tempo = 132
 
 lead = {
   \absolute  {
     \override Score.SpacingSpanner.shortest-duration-space = #4.0
-    gis,8\6  gis,8\6 gis,8\6 gis,8\6 gis,8\6 gis,8\6 gis,8\6 gis,8\6 |
-    b,8\5  b,8\5 b,8\5 b,8\5 b,8\5 b,8\5 b,8\5 b,8\5 |
-    e8\4  e8\4 e8\4 e8\4 e8\4 e8\4 e8\4 e8\4 |
-    gis,8\6  gis,8\6 gis,8\6 gis,8\6 gis,8\6 gis,8\6 gis,8\6 gis,8\6 |
-    e8\4  e8\4 e8\4 e8\4 e8\4 e8\4 e8\4 e8\4 |
+    gis,,8\4  gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 |
+    b,,8\3  b,,8\3 b,,8\3 b,,8\3 b,,8\3 b,,8\3 b,,8\3 b,,8\3 |
+    e,8\2  e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 |
+    gis,,8\4  gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 |
+    e,8\2  e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 |
     }
 
 }
@@ -38,19 +38,23 @@ drumbarshh = {
 }
 
 
-
 \score {
     <<
     \new TabStaff {
+        \set Staff.stringTunings = #bass-tuning
+
+        \clef bass
+
         \tempo 4 = \song_tempo
         \tabFullNotation
         \override Score.BarNumber.break-visibility = ##(#t #t #t)
-       \repeat percent 3 {\lead}
+        \transpose g f { \lead }
+       %\repeat percent 3 {\lead}
     }
 
     >>
 
-   % \layout {}
+   \layout {}
 }
 
 

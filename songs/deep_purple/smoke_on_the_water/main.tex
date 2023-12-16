@@ -10,19 +10,20 @@
 \setmathfont{XITS Math}
 \usepackage{luamplib}
 \usepackage{xcolor}
+\usepackage{import}
 
 
 
 \begin{document}
-    \begin{center}
-        \songtitle{Smoke On The Water}{Deep Purple}
-    \end{center}
+    \input{data}
+    \makesongtitle
     \section*{intro}
 %    \includegraphics{mps/main-0}
     \input{lyrics}
 
 %    \includepdf[pages={-}]{solo}
-    \input{solo}
+    %\input{solo.output/solo}
+    \subimport{solo.output/}{solo}
 
 %    \newpage{
 %%    \pagecolor{olive}
