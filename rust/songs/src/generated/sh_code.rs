@@ -94,6 +94,7 @@ pub fn make_make_wav() -> String {
 set -e
 #set -x
 
+
 RED="\e[31m\e[47m"
 GREEN='\033[0;32m'
 CYAN='\033[0;36m'
@@ -103,8 +104,14 @@ workdir=$(dirname $(realpath $1))
 
 printf "building ${CYAN}$workdir/$1.wav$NC ...\n"
 
-lilypond $1 1>$1.wav.stdout 2>$1.wav.stderr
-fluidsynth --gain 4 -F $1.wav /usr/share/sounds/sf2/FluidR3_GM.sf2  $1.midi 1>>$1.wav.stdout 2>>$1.wav.stderr
+printf "${CYAN}lilypond $1$NC ...\n"
+rm -f $1.midi
+lilypond $1 1>$1.wav.stdout 2>$1.wav.stderr || true
+test -f $1.midi
+printf "${CYAN}fluidsynth $1.midi$NC ...\n"
+rm -f $1.wav
+fluidsynth --gain 4 -F $1.wav /usr/share/sounds/sf2/FluidR3_GM.sf2  $1.midi 1>>$1.wav.stdout 2>>$1.wav.stderr || true
+test -f $1.wav
 
 printf "building ${GREEN}$workdir/$1.wav$NC done.\n""###;
     ret.to_string()

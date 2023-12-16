@@ -9,8 +9,8 @@ lilypondfiles:
   - solo.ly
 #  - intro.ly1
 
-wavfiles:
-  - basse.wav
+wavfiles: []
+#  - basse.wav
 #  - riff_a.wav
 #path:
 #  XX/YY

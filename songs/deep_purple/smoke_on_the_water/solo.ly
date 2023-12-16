@@ -298,7 +298,7 @@ drumbarshh = {
                   \set Staff.midiMinimumVolume = #0.2
                   \set Staff.midiMaximumVolume = #0.2
                   %\set Staff.midiInstrument = "electric guitar (clean)"
-                  \set Staff.midiInstrument = "bass"
+                  %\set Staff.midiInstrument = "bass"
                   %\set Staff.midiInstrument = "clarinet"
             }
             \new Staff {

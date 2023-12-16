@@ -4,7 +4,32 @@ use std::fs::File;
 use std::io::{Error, Write};
 use std::path::PathBuf;
 
-use crate::config::model::Song;
+use crate::config::model::{Song, World};
+
+pub fn generate_refresh_sh(exepath: &PathBuf, world: &World) -> Result<(), Error> {
+    println!("generate refresh.sh in {}", world.builddir.display());
+    let mut p: PathBuf = world.builddir.clone();
+    let _ = fs::create_dir_all(&p)?;
+    p.push("refresh.sh");
+    let mut output = File::create(p)?;
+    write!(
+        output,
+        r###"
+#!/bin/bash
+
+set -e
+set -x
+
+{exepath} {srcdir} {builddir}
+
+    "###,
+        exepath = exepath.display(),
+        srcdir = world.srcdir.display(),
+        builddir = world.builddir.display()
+    )?;
+
+    Ok(())
+}
 
 pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
     println!("generate Omakefile in {}", song.builddir.display());
@@ -55,10 +80,10 @@ main.pdf : main.tex mps/main-0.mps "
     write!(
         output,
         "
-    bash $(buildroot)/make_pdf.sh main
+\tbash $(buildroot)/make_pdf.sh main
 
 {pdfname}.pdf : main.pdf
-    cp main.pdf $@
+\tcp main.pdf $@
 "
     )?;
 
@@ -66,8 +91,8 @@ main.pdf : main.tex mps/main-0.mps "
         output,
         "
 mps/main-0.mps  : main.mp
-    mkdir -p mps
-    bash $(buildroot)/make_mpost.sh main.mp
+\tmkdir -p mps
+\tbash $(buildroot)/make_mpost.sh main.mp
 
 "
     )?;
@@ -77,7 +102,7 @@ mps/main-0.mps  : main.mp
             output,
             "
 {name}.output/{name}.tex : {name}.ly
-    bash $(buildroot)/make_lytex.sh {name}
+\tbash $(buildroot)/make_lytex.sh {name}
 
 ",
             name = f
@@ -90,8 +115,8 @@ mps/main-0.mps  : main.mp
             output,
             "
 mps/main-{i}.mps  : main.mp
-    mkdir -p mps
-    bash $(buildroot)/make_mpost.sh main.mp
+\tmkdir -p mps
+\tbash $(buildroot)/make_mpost.sh main.mp
 
 ",
             i = i
@@ -105,37 +130,36 @@ mps/main-{i}.mps  : main.mp
             output,
             "
 {f2}.output/{f2}.tex : {f}
-    bash $(buildroot)/make_lytex.sh {f2}
+\tbash $(buildroot)/make_lytex.sh {f2}
 
- ",
+",
             f2 = f2,
             f = f
         )?;
     }
 
-    write!(output,"midi : ")? ;
+    write!(output, "midi : ")?;
     for w in &song.wavfiles {
-        let name = w.replace(".wav","");
-        write!(output," {name}.midi ",name=name)?;
+        let name = w.replace(".wav", "");
+        write!(output, " {name}.midi ", name = name)?;
     }
-    writeln!(output,"")? ;
+    writeln!(output, "")?;
 
     for w in &song.wavfiles {
         let name = w.replace(".wav", "");
-        write!(output,  "
-
+        write!(
+            output,
+            "
 wav : {name}.wav
 
 midi : {name}.midi
 
 {name}.wav {name}.midi : {name}.ly
-    bash $(buildroot)/make_wav.sh {name}
- ", name = name)?;
+\tbash $(buildroot)/make_wav.sh {name}
+",
+            name = name
+        )?;
     }
-
-
-
-
 
     //
     // mps/main-0.mps  : main.mp

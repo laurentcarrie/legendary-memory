@@ -143,5 +143,7 @@ drumbarshh = {
 
     >>
 
+   \midi {}
+
    \layout {}
 }

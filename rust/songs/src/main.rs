@@ -9,7 +9,7 @@ use crate::config::world::make;
 use crate::generated::generate::generate;
 // use crate::makefiles::omakeroot::generate_omakeroot ;
 use crate::emitter::xxx::fff;
-use crate::makefiles::omakefiles::generate_song_omakefile;
+use crate::makefiles::omakefiles::{generate_refresh_sh, generate_song_omakefile};
 use crate::makefiles::omakeroot::{generate_omakeroot, generate_root_omakefile};
 
 pub mod config;
@@ -22,6 +22,7 @@ fn main() -> Result<(), Error> {
     let root = &args[1];
     let buildroot = &args[2];
     let _ = fs::create_dir_all(&buildroot)?;
+    let exepath: PathBuf = Path::new(&args[0]).canonicalize().expect("exepath");
     let srcdir: PathBuf = Path::new(root).canonicalize().expect("root");
     let builddir: PathBuf = Path::new(buildroot).canonicalize().expect("buildroot");
     let _ = fs::create_dir_all(&buildroot)?;
@@ -32,6 +33,7 @@ fn main() -> Result<(), Error> {
     // let s = root2.into_os_string() ;
 
     let world: World = make(&srcdir, &builddir);
+    generate_refresh_sh(&exepath, &world);
     generate_omakeroot(&world)?;
     generate_root_omakefile(&world)?;
     // world
