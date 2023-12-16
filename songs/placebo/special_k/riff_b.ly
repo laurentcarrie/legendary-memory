@@ -1,5 +1,5 @@
 \version "2.20.0"
-\include "macros.ly"
+\include "../../../macros.ly"
 song_tempo = 90
 
 lead = {
@@ -32,14 +32,14 @@ lead = {
     b'16\1 g'16\2
     <\deadNote b'\1 \deadNote g'\2 \deadNote e'\3>16
     <\deadNote b'\1 \deadNote g'\2 \deadNote e'\3>16
-    }
+  }
 
 }
 
 drumbar =  \drummode {  bd4 sn4  bd4 sn4 }
 
 drumbars = {
-\repeat unfold 8 { \drumbar | }
+  \repeat unfold 8 { \drumbar | }
 }
 
 
@@ -64,40 +64,40 @@ drumbarshh = {
 
 
 \score {
-    <<
+  <<
     \new TabStaff {
-        \tempo 4 = \song_tempo
-        \tabFullNotation
-        \override Score.BarNumber.break-visibility = ##(#t #t #t)
-        \lead
+      \tempo 4 = \song_tempo
+      \tabFullNotation
+      \override Score.BarNumber.break-visibility = ##(#t #t #t)
+      \lead
     }
 
-    >>
+  >>
 
-    \layout {}
+  \layout {}
 }
 
 
 \score {
-        \unfoldRepeats {
-        <<
-            \new DrumStaff
-                \tempo 4 = \song_tempo
-                <<
-                    \new DrumVoice {  \drumbarshh }
-                    \new DrumVoice {  \drumbars }
-                >>
+  \unfoldRepeats {
+    <<
+      \new DrumStaff
+      \tempo 4 = \song_tempo
+      <<
+        \new DrumVoice {  \drumbarshh }
+        \new DrumVoice {  \drumbars }
+      >>
 
-            \new Staff {
-                  \lead
-                  \set Staff.midiMinimumVolume = #0.9
-                  \set Staff.midiMaximumVolume = #0.9
-                  \set Staff.midiInstrument = "electric guitar (clean)"
-            }
-        >>
-        }
+      \new Staff {
+        \lead
+        \set Staff.midiMinimumVolume = #0.9
+        \set Staff.midiMaximumVolume = #0.9
+        \set Staff.midiInstrument = "electric guitar (clean)"
+      }
+    >>
+  }
 
-       \midi {
-            \tempo 4 = \song_tempo
-    }
+  \midi {
+    \tempo 4 = \song_tempo
+  }
 }

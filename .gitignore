@@ -1,9 +1,12 @@
 .idea/
+build-rust/
 song_book_builder/_build/
 /song_book_builder/lib/mp_code.ml.old
 /song_book_builder/lib/ly_code.ml.old
 /song_book_builder/lib/tex_code.ml.old
 /build-songs/
 /rust/songs/target/
-/build-rust/
+/build-rustxx/
 *.rs.old
+indent.log
+*~

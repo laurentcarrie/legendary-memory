@@ -9,7 +9,7 @@ lilypondfiles: []
 wavfiles: []
 sections:
 #  - name: 'intro ( couplet 1 )'
-  - name: 'intro ( couplet 1 )'
+  - name: intro
     rows:
       -
         - A
@@ -22,7 +22,7 @@ sections:
         - D
         - Dm
 
-  - name: 'couplet 1 ( refrain 1 ) ; couplet 2 ( refrain 2 ) '
+  - name: xxx
   #- name: "x"
     rows:
       -
@@ -45,7 +45,7 @@ sections:
         - F#m
         - G
         - D E
-  - name: 'refrain 1 ( couplet 2 ) ; refrain 2 ( pont 1 ) '
+  - name: yyy
     rows:
       -
         - A
@@ -71,7 +71,7 @@ sections:
         - D
         - Dm
 
-  - name: "pont 1 ( solo ) "
+  - name: zzz
     rows:
       -
         - A
@@ -79,7 +79,7 @@ sections:
         - D
         - E
 
-  - name: "solo ( pont 2 )"
+  - name: www
     rows:
       -
         - A
@@ -102,7 +102,7 @@ sections:
         - D
         - E
 
-  - name: "pont 2"
+  - name: zzz
     rows:
       -
         - F#m

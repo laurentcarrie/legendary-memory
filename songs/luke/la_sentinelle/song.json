@@ -1,0 +1,47 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "La Sentinelle",
+  "author": "Luke",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [
+    "couplet1.ly"
+  ],
+  "sections": [
+    {
+      "name": "couplet",
+      "rows": [
+        [
+          "G#m",
+          "B",
+          "E",
+          "G#m",
+          "E"
+        ]
+      ]
+    },
+    {
+      "name": "refrain",
+      "rows": [
+        [
+          "G#m",
+          "B",
+          "E",
+          "G#",
+          "E"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [
+    "couplet1.wav"
+  ],
+  "digest": "49f1af86788f51294d66807d9939cd80",
+  "date": "2024-06-15"
+}

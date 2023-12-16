@@ -1,0 +1,38 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "Can't Stop",
+  "author": "Red Hot Chili Peppers",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [
+    "solo.ly",
+    "intro.ly",
+    "riff_a.ly",
+    "riff_b.ly"
+  ],
+  "sections": [
+    {
+      "name": "refrain",
+      "rows": [
+        [
+          "G",
+          "D",
+          "Bm7",
+          "CM7"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [
+    "intro.wav",
+    "riff_a.wav"
+  ],
+  "digest": "4292faf4aa765104d75f979864b31e4f",
+  "date": "2024-06-15"
+}

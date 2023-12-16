@@ -1,18 +1,42 @@
-use crate::config::config::normalize;
 use std::fs;
 use std::fs::File;
 use std::io::{Error, Write};
 use std::path::PathBuf;
 
-use crate::config::model::Song;
+use crate::config::model::{Song, World};
+use crate::helpers::helpers::pdfname_of_song;
+
+pub fn generate_refresh_sh(exepath: &PathBuf, world: &World) -> Result<(), Error> {
+    println!("generate refresh.sh in {}", world.builddir.display());
+    let mut p: PathBuf = world.builddir.clone();
+    let _ = fs::create_dir_all(&p)?;
+    p.push("refresh.sh");
+    let mut output = File::create(p)?;
+    write!(
+        output,
+        r###"
+#!/bin/bash
+
+set -e
+set -x
+
+{exepath} {srcdir} {builddir}
+
+    "###,
+        exepath = exepath.display(),
+        srcdir = world.srcdir.display(),
+        builddir = world.builddir.display()
+    )?;
+
+    Ok(())
+}
 
 pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
     println!("generate Omakefile in {}", song.builddir.display());
     let mut p: PathBuf = song.builddir.clone();
     let _ = fs::create_dir_all(&p)?;
+    let pdfname = pdfname_of_song(&song);
     p.push("OMakefile");
-    let pdfname = &song.author;
-    let pdfname = normalize(&(pdfname.to_owned() + &"--@--".to_string() + &song.title));
     let mut output = File::create(p)?;
     // dbg!(&output);
     // {
@@ -25,8 +49,8 @@ pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
         output,
         ".PHONY: pdf wav midi clean
 clean:
-    bash  $(buildroot)/make_clean.sh
-    rm -rf  "
+\tbash  $(buildroot)/make_clean.sh
+\trm -rf  "
     )?;
 
     for f in &song.lilypondfiles {
@@ -39,8 +63,12 @@ clean:
 
 pdf : {pdfname}.pdf
 
-main.pdf : main.tex mps/main-0.mps "
+main.pdf : main.tex"
     )?;
+
+    for section in song.sections.iter() {
+        write!(output, " mps/{name}-0.mps ", name = section.name)?;
+    }
 
     for f in &song.lilypondfiles {
         let f2 = f.replace(".ly", "");
@@ -55,48 +83,49 @@ main.pdf : main.tex mps/main-0.mps "
     write!(
         output,
         "
-    bash $(buildroot)/make_pdf.sh main
+\tbash $(buildroot)/make_pdf.sh main
 
 {pdfname}.pdf : main.pdf
-    cp main.pdf $@
+\tcp main.pdf $@
 "
     )?;
 
-    write!(
-        output,
-        "
-mps/main-0.mps  : main.mp
+    for section in song.sections.iter() {
+        write!(
+            output,
+            r###"
+mps/{name}-0.mps  : {name}.mp
     mkdir -p mps
-    bash $(buildroot)/make_mpost.sh main.mp
+    bash $(buildroot)/make_mpost.sh {name}.mp
 
-"
-    )?;
+"###,
+            name = section.name
+        )?;
+    }
 
     for f in &song.lilypondfiles {
         write!(
             output,
             "
 {name}.output/{name}.tex : {name}.ly
-    bash $(buildroot)/make_lytex.sh {name}
+\tbash $(buildroot)/make_lytex.sh {name}
 
 ",
             name = f
         )?;
     }
 
-    let mut i = 0;
-    for f in &song.sections {
+    for (index, _section) in song.sections.iter().enumerate() {
         write!(
             output,
-            "
-mps/main-{i}.mps  : main.mp
+            r###"
+mps/main-{index}.mps  : main.mp
     mkdir -p mps
     bash $(buildroot)/make_mpost.sh main.mp
 
-",
-            i = i
+"###,
+            index = index
         )?;
-        i = i + 1;
     }
 
     for f in &song.lilypondfiles {
@@ -105,11 +134,34 @@ mps/main-{i}.mps  : main.mp
             output,
             "
 {f2}.output/{f2}.tex : {f}
-    bash $(buildroot)/make_lytex.sh {f2}
+\tbash $(buildroot)/make_lytex.sh {f2}
 
- ",
+",
             f2 = f2,
             f = f
+        )?;
+    }
+
+    write!(output, "midi : ")?;
+    for w in &song.wavfiles {
+        let name = w.replace(".wav", "");
+        write!(output, " {name}.midi ", name = name)?;
+    }
+    writeln!(output, "")?;
+
+    for w in &song.wavfiles {
+        let name = w.replace(".wav", "");
+        write!(
+            output,
+            "
+wav : {name}.wav
+
+midi : {name}.midi
+
+{name}.wav {name}.midi : {name}.ly
+\tbash $(buildroot)/make_wav.sh {name}
+",
+            name = name
         )?;
     }
 

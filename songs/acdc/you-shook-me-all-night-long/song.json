@@ -1,0 +1,20 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "You Shook Me All Night Long",
+  "author": "AC/DC",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [
+    "solo.ly"
+  ],
+  "sections": [],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [],
+  "digest": "afd63392dff60a1ba1fe9079a42df214",
+  "date": "2024-06-15"
+}

@@ -8,56 +8,56 @@ ma = {
 }
 
 mg = {
-    <g,\6 d\5 g\4>8
-    <g,\6 d\5 g\4>8
-    <g,\6 d\5 g\4>8
-    r8
-    <g,\6 d\5 g\4>8
-    <g,\6 d\5 g\4>8
-    <g,\6 d\5 g\4>8
-    r8
+  <g,\6 d\5 g\4>8
+  <g,\6 d\5 g\4>8
+  <g,\6 d\5 g\4>8
+  r8
+  <g,\6 d\5 g\4>8
+  <g,\6 d\5 g\4>8
+  <g,\6 d\5 g\4>8
+  r8
 }
 mc = {
-    <c\5 g\4 c'\3>8
-    <c\5 g\4 c'\3>8
-    <c\5 g\4 c'\3>8
-    r8
+  <c\5 g\4 c'\3>8
+  <c\5 g\4 c'\3>8
+  <c\5 g\4 c'\3>8
+  r8
 
-    <c\5 g\4 c'\3>8
-    <c\5 g\4 c'\3>8
-    <c\5 g\4 c'\3>8
-    r8
+  <c\5 g\4 c'\3>8
+  <c\5 g\4 c'\3>8
+  <c\5 g\4 c'\3>8
+  r8
 }
 mf = {
-    <f,\6 c\5 f\4>8
-    <f,\6 c\5 f\4>8
-    <f,\6 c\5 f\4>8
-    r8
-    <f,\6 c\5 f\4>8
-    <f,\6 c\5 f\4>8
-    <f,\6 c\5 f\4>8
-    r8
+  <f,\6 c\5 f\4>8
+  <f,\6 c\5 f\4>8
+  <f,\6 c\5 f\4>8
+  r8
+  <f,\6 c\5 f\4>8
+  <f,\6 c\5 f\4>8
+  <f,\6 c\5 f\4>8
+  r8
 }
 
 lignea = {
-    \mg | \mg | \mc | \mg |
+  \mg | \mg | \mc | \mg |
 }
 
 ligneb = {
-    \mc | \mc | \mf | \mf |
+  \mc | \mc | \mf | \mf |
 }
 
 
 
 rhythm = {
-% une mesure pour la levée
-r1 |
-\mg
-\lignea
-\lignea
-\lignea
-\lignea
-\ligneb
+  % une mesure pour la levée
+  r1 |
+  \mg
+  \lignea
+  \lignea
+  \lignea
+  \lignea
+  \ligneb
 }
 
 
@@ -73,14 +73,14 @@ lead = {
     |
     g'8\1 d'8\2 f'8~\2  f'8~\2 d'8\3 ais8\3 g8\4
 
-    }
+  }
 
 }
 
 drumbar =  \drummode {  bd4 sn4  bd4 sn4 }
 
 drumbars = {
-\repeat unfold 30 { \drumbar | }
+  \repeat unfold 30 { \drumbar | }
 }
 
 
@@ -102,16 +102,16 @@ drumbarshh = {
 
 
 \score {
-    <<
+  <<
     \new TabStaff {
-        \tempo 4 = \song_tempo
-        \tabFullNotation
-        \override Score.BarNumber.break-visibility = ##(#t #t #t)
-        \lead
-       %\repeat percent 3 {\lead}
+      \tempo 4 = \song_tempo
+      \tabFullNotation
+      \override Score.BarNumber.break-visibility = ##(#t #t #t)
+      \lead
+      %\repeat percent 3 {\lead}
     }
 
-    >>
+  >>
 
-   \layout {}
+  \layout {}
 }

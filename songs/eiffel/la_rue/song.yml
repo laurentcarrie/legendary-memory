@@ -1,9 +1,10 @@
 title: La Rue
 author: Eiffel
-cell_width: 60
-cell_height: 30
-chord_glyph_scale: 2
-texfiles: []
+cell_width: 40
+cell_height: 20
+chord_glyph_scale: 1
+texfiles:
+  - lyrics.tex
 lilypondfiles: []
 wavfiles: []
 
@@ -19,5 +20,15 @@ sections:
   - name: couplet
     rows:
       -
-        - C#m7 A
         - C#m7
+        - C#m7
+        - C#m7 E
+        - B
+      -
+        - C#m7
+        - C#m7
+        - A E
+        - C#
+      -
+        - A E
+        - C#
