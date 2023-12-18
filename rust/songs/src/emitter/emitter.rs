@@ -22,7 +22,20 @@ use std::io::{Error, Write};
 use std::path::PathBuf;
 
 fn write_row(mut output: &File, row: &Row) -> Result<(), Error> {
-    writeln!(output, "n:={length} ;", length = row.bars.len())?;
+    writeln!(output, "% write row from emitter.rs")?;
+    let nbchords: usize = row
+        .bars
+        .iter()
+        .map(|b| b.chords.len())
+        .fold(0, |acc, i| acc + i);
+
+    // for b in &row.bars {
+    //     println!("---> {n}", n = b.chords.len());
+    // }
+    // println!("sum is {nbchords}", nbchords = nbchords);
+
+    writeln!(output, "nbbars:={nbbars} ;", nbbars = row.bars.len())?;
+    writeln!(output, "nbchords:={nbchords} ;", nbchords = nbchords)?;
     let mut counter_chord = 0;
     let mut counter_bar = 0;
     for bar in &row.bars {
@@ -60,7 +73,7 @@ fn write_row(mut output: &File, row: &Row) -> Result<(), Error> {
     writeln!(
         output,
         "
-draw_row(A,cell_width,cell_height,n,background)(chords,barindex,nbchordsinbar,indexinbar) ;
+draw_row(A,cell_width,cell_height,nbbars,nbchords,background)(chords,barindex,nbchordsinbar,indexinbar) ;
 A := A shifted (0,-cell_height) ;
 "
     )?;

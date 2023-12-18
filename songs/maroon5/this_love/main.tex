@@ -10,25 +10,20 @@
 \setmathfont{XITS Math}
 \usepackage{luamplib}
 \usepackage{xcolor}
+\usepackage{todonotes}
 \usepackage{import}
-
-
+\input{data}
 
 \begin{document}
-    \input{data}
     \makesongtitle
-    \section*{intro}
-    \includegraphics{mps/main-0}
-    \input{lyrics}
+\section*{couplet}
+      \includegraphics{ mps/main-0 }
 
-%    \includepdf[pages={-}]{solo}
-    %\input{solo.output/solo}
-    \subimport{solo.output/}{solo}
-
-%    \newpage{
-%%    \pagecolor{olive}
-%    \includepdf[pages={-}]{solo}
-%    }
+\newpage
 
 
+\section*{lyrics}
+\begin{multicols}{2}
+\input{lyrics}
+\end{multicols}
 \end{document}

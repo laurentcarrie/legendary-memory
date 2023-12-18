@@ -15,6 +15,7 @@ use crate::makefiles::omakeroot::{generate_omakeroot, generate_root_omakefile};
 pub mod config;
 pub mod emitter;
 pub mod generated;
+pub mod helpers;
 pub mod makefiles;
 fn main() -> Result<(), Error> {
     fff();
@@ -33,7 +34,7 @@ fn main() -> Result<(), Error> {
     // let s = root2.into_os_string() ;
 
     let world: World = make(&srcdir, &builddir);
-    generate_refresh_sh(&exepath, &world);
+    generate_refresh_sh(&exepath, &world)?;
     generate_omakeroot(&world)?;
     generate_root_omakefile(&world)?;
     // world
@@ -46,7 +47,7 @@ fn main() -> Result<(), Error> {
     }
 
     generate_song_omakefile(&world.songs[0])?;
-    generate(&world);
+    generate(&world)?;
 
     // println!("SUCCESS !");
 

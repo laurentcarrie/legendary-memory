@@ -5,6 +5,7 @@ use std::io::{Error, Write};
 use std::path::PathBuf;
 
 use crate::config::model::World;
+use crate::helpers::helpers::pdfname_of_song;
 
 pub fn f() {}
 
@@ -66,22 +67,25 @@ pub fn generate_root_omakefile(world: &World) -> Result<(), Error> {
 "
     )?;
 
-    // songs/eiffel/la_rue \
-    // songs/jolene/au_conditionnel \
-    // songs/pixies/gouge_away \
-    // songs/aerosmith/crazy \
-    // songs/matmatah/au_conditionnel \
-    // songs/luke/la_sentinelle \
-    // songs/estelle/american_boy \
-    // songs/acdc/you-shook-me-all-night-long \
-    // songs/red_hot_chili_peppers/can_t_stop \
-    // songs/placebo/special_k \
-    // songs/dionysos/song_for_jedi \
-    // songs/deep_purple/smoke_on_the_water \
-    //
-    // delivery:\
-    // songs/deep_purple/smoke_on_the_water/deep-purple--@--smoke-on-the-water.pdf \
-    // songs/dionysos/song_for_jedi/dionysos--@--song-for-jedi.pdf \
-
+    write!(output, "delivery:\\\n")?;
+    for song in &world.songs {
+        write!(
+            output,
+            "{}",
+            format!(
+                "\t{p}/{pdfname}.pdf \\\n",
+                p = song.builddir.display(),
+                pdfname = pdfname_of_song(&song)
+            )
+        )?;
+    }
+    write!(
+        output,
+        "
+\trm -rf delivery
+\tmkdir delivery
+\tcp $^ delivery/.
+"
+    )?;
     Ok(())
 }

@@ -1,20 +1,20 @@
-vardef draw_row(expr A,cell_width,cell_height,n,background)(suffix chords,barindex,nbchordsinbar,indexinbar) =
+vardef draw_row(expr A,cell_width,cell_height,nbbars,nbchords,background)(suffix chords,barindex,nbchordsinbar,indexinbar) =
     save chord ;
     color c ;
     c := (0,0,0) ;
     B0 := A ;
-    B1 := A shifted (n*cell_width,0) ;
+    B1 := A shifted (nbbars*cell_width,0) ;
     B2 := B1 shifted (0,-cell_height) ;
     B3 := A shifted (0,-cell_height) ;
     pickup pencircle scaled .05;
 
     draw freehand_path(B0 -- B1 -- B2 -- B3 -- cycle) withcolor c ;
 
-    for i=1 step 1 until n :
+    for i=1 step 1 until nbbars :
         draw freehand_path(B0 shifted (i*cell_width,0) -- B3 shifted (i*cell_width,0)) withcolor c ;
     endfor ;
 
-    for i=0 step 1 until n-1:
+    for i=0 step 1 until nbchords-1:
         pair box[] ;
         bar := barindex[i] ;
         nbchordsinbar := nbchordsinbar[i] ;

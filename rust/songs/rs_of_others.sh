@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-set -x
+#set -x
 
 echo "make rs of sh"
 
@@ -69,7 +69,7 @@ conclusion() {
 
 }
 
-what="make_lytex make_mpost make_pdf make_wav make_clean"
+what="make_lytex make_mpost make_pdf make_wav make_clean colors"
 shsrcdir=$here/others/shfiles
 extension=sh
 outfile_tmp=$here/src/generated/sh_code.rs.tmp

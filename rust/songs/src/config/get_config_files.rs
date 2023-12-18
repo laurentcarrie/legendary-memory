@@ -1,5 +1,3 @@
-//use walkdir::{DirEntry, WalkDir};
-use std::ffi::OsString;
 use std::path::PathBuf;
 use std::vec::Vec;
 use walkdir::WalkDir;

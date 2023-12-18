@@ -1,10 +1,10 @@
-use crate::config::config::normalize;
 use std::fs;
 use std::fs::File;
 use std::io::{Error, Write};
 use std::path::PathBuf;
 
 use crate::config::model::{Song, World};
+use crate::helpers::helpers::pdfname_of_song;
 
 pub fn generate_refresh_sh(exepath: &PathBuf, world: &World) -> Result<(), Error> {
     println!("generate refresh.sh in {}", world.builddir.display());
@@ -35,9 +35,8 @@ pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
     println!("generate Omakefile in {}", song.builddir.display());
     let mut p: PathBuf = song.builddir.clone();
     let _ = fs::create_dir_all(&p)?;
+    let pdfname = pdfname_of_song(&song);
     p.push("OMakefile");
-    let pdfname = &song.author;
-    let pdfname = normalize(&(pdfname.to_owned() + &"--@--".to_string() + &song.title));
     let mut output = File::create(p)?;
     // dbg!(&output);
     // {
@@ -110,7 +109,7 @@ mps/main-0.mps  : main.mp
     }
 
     let mut i = 0;
-    for f in &song.sections {
+    for _ in &song.sections {
         write!(
             output,
             "
