@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
+    <title>hello-wasm example</title>
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+    <script id="the_script_1"></script>
+</head>
+<body>
+<script type="module">
+    import init, {greet} from "./pkg/hello_wasm.js";
+    import {blahblah} from "./index.js" ;
+
+    init().then(() => {
+        // greet("WebAssembly");
+        blahblah();
+    });
+</script>
+<div style="background-color: aquamarine; align-content: center">
+    <span id="guess" style="font-family:courier;"/>
+</div>
+<div id='div_plot_1'></div>
+
+</body>
+</html>

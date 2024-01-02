@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        body {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+    <title>hello-wasm example</title>
+</head>
+<body>
+<pre id="game-of-life-canvas"></pre>
+<script type="module">
+    import init, { greet } from "./pkg/hello_wasm.js";
+    init().then(() => {
+//        greet("WebAssembly");
+    });
+</script>
+<script type="module">
+    import init, { greet } from "./index.js";
+    init().then(() => {
+//        greet("WebAssembly");
+    });
+</script>
+
+</body>
+</html>
