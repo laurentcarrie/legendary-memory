@@ -1,13 +1,11 @@
-title: Song For Jedi
-author: Dionysos
+title: Argent Trop Cher
+author: Téléphone
 cell_width: 60
 cell_height: 30
 chord_glyph_scale: 2
 texfiles:
   - lyrics.tex
-lilypondfiles:
-  - intro.ly
-  - intro2.ly
+lilypondfiles: []
 #  - solo.ly
 wavfiles: []
 #  - solo.wav

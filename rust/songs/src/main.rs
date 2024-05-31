@@ -1,3 +1,4 @@
+use std::arch::x86_64::__cpuid;
 use std::io::Error;
 use std::path::Path;
 use std::path::PathBuf;
@@ -17,14 +18,22 @@ pub mod emitter;
 pub mod generated;
 pub mod helpers;
 pub mod makefiles;
+
+fn usage(prog: &str) -> String {
+    return format!("usage : {prog} <srcdir> <builddir>", prog = prog);
+}
 fn main() -> Result<(), Error> {
     fff();
     let args: Vec<String> = env::args().collect();
-    let root = &args[1];
-    let buildroot = &args[2];
+    let (sourceroot, buildroot) = match (args.get(1), args.get(2)) {
+        (Some(x), Some(y)) => (x, y),
+        _ => {
+            panic!("{}", usage(&args[0]));
+        }
+    };
     let _ = fs::create_dir_all(&buildroot)?;
     let exepath: PathBuf = Path::new(&args[0]).canonicalize().expect("exepath");
-    let srcdir: PathBuf = Path::new(root).canonicalize().expect("root");
+    let srcdir: PathBuf = Path::new(sourceroot).canonicalize().expect("root");
     let builddir: PathBuf = Path::new(buildroot).canonicalize().expect("buildroot");
     let _ = fs::create_dir_all(&buildroot)?;
 

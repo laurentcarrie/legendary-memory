@@ -5,5 +5,5 @@ song_book_builder/_build/
 /song_book_builder/lib/tex_code.ml.old
 /build-songs/
 /rust/songs/target/
-/build-rust/
+/build-rustxx/
 *.rs.old

@@ -17,7 +17,7 @@ generate_one_outfile() {
   outfile=$5
 
   shfile=$shsrcdir/$name.$extension
-  printf "$shfile\n"
+  #printf "$shfile\n"
 
   test -f $shfile
 

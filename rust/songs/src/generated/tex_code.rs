@@ -91,6 +91,9 @@ pub fn make_preamble() -> String {
 \newcommand{\refrain}[2]{\basecouplet{\lolocolorrefrain}{#1}{#2}}
 \newcommand{\lolocolorpont}{PeachPuff1}
 \newcommand{\pont}[2]{\basecouplet{\lolocolorpont}{#1}{#2}}
+\newcommand{\lolocolorsolo}{PeachPuff1}
+\newcommand{\solo}[2]{\basecouplet{\lolocolorsolo}{#1}{#2}}
+
 
 
 \newcommand{\xxmakesongtitle}[2] {
