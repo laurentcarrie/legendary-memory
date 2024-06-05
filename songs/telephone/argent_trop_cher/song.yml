@@ -1,7 +1,7 @@
 title: Argent Trop Cher
 author: Téléphone
-cell_width: 60
-cell_height: 30
+cell_width: 50
+cell_height: 20
 chord_glyph_scale: 2
 texfiles:
   - lyrics.tex
@@ -13,9 +13,9 @@ wavfiles: []
 #path:
 #  XX/YY
 sections:
-  - name: 'intro 1 : E 2 (g) + 8 mesures (gbd)'
+  - name: intro-1
     rows: []
-  - name: 'intro 2 : E 8 mesures'
+  - name: intro-2
     rows: []
   - name: couplet
     rows:

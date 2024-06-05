@@ -101,7 +101,7 @@ label.urt(btex {name}   etex,A) ;
     Ok(())
 }
 
-pub fn write_mp(song: &Song) -> Result<(), Error> {
+pub fn write_mp(section: &Section) -> Result<(), Error> {
     let data = format!(
         r###"
 prologues:=3;
@@ -201,24 +201,24 @@ section_spacing :=  {section_spacing} ;
         section_spacing = song.section_spacing,
     );
 
-    let mut p: PathBuf = song.builddir.clone();
-    let _ = fs::create_dir_all(&p)?;
-    p.push("main.mp");
-    println!("write {}", p.display());
-    let mut output = File::create(p)?;
-    writeln!(output, "{}", &data)?;
-    for section in &song.sections {
+    for (index, section) in song.sections.iter().enumerate() {
+        let mut p: PathBuf = song.builddir.clone();
+        let _ = fs::create_dir_all(&p)?;
+        p.push(format!("{name}.mp", name = section.name));
+        println!("write {}", p.display());
+        let mut output = File::create(p)?;
+        writeln!(output, "{}", &data)?;
+        println!("INDEX {}", index);
         write_section(&output, &section)?;
+        //    {{ after_sections }}
+
+        writeln!(output, "endfig;")?;
+
+        //{{ other }}
+
+        writeln!(output, "end.")?;
+        writeln!(output, "")?;
     }
-
-    //    {{ after_sections }}
-
-    writeln!(output, "endfig;")?;
-
-    //{{ other }}
-
-    writeln!(output, "end.")?;
-    writeln!(output, "")?;
 
     Ok(())
 }

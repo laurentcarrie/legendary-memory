@@ -49,8 +49,8 @@ pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
         output,
         ".PHONY: pdf wav midi clean
 clean:
-    bash  $(buildroot)/make_clean.sh
-    rm -rf  "
+\tbash  $(buildroot)/make_clean.sh
+\trm -rf  "
     )?;
 
     for f in &song.lilypondfiles {
@@ -63,8 +63,12 @@ clean:
 
 pdf : {pdfname}.pdf
 
-main.pdf : main.tex mps/main-0.mps "
+main.pdf : main.tex"
     )?;
+
+    for section in song.sections.iter() {
+        write!(output, " mps/{name}-0.mps ", name = section.name)?;
+    }
 
     for f in &song.lilypondfiles {
         let f2 = f.replace(".ly", "");
@@ -86,15 +90,18 @@ main.pdf : main.tex mps/main-0.mps "
 "
     )?;
 
-    write!(
-        output,
-        "
-mps/main-0.mps  : main.mp
-\tmkdir -p mps
-\tbash $(buildroot)/make_mpost.sh main.mp
+    for (index, section) in song.sections.iter().enumerate() {
+        write!(
+            output,
+            r###"
+mps/{name}-0.mps  : {name}.mp
+    mkdir -p mps
+    bash $(buildroot)/make_mpost.sh {name}.mp
 
-"
-    )?;
+"###,
+            name = section.name
+        )?;
+    }
 
     for f in &song.lilypondfiles {
         write!(
@@ -108,19 +115,17 @@ mps/main-0.mps  : main.mp
         )?;
     }
 
-    let mut i = 0;
-    for _ in &song.sections {
+    for (index, _section) in song.sections.iter().enumerate() {
         write!(
             output,
-            "
-mps/main-{i}.mps  : main.mp
-\tmkdir -p mps
-\tbash $(buildroot)/make_mpost.sh main.mp
+            r###"
+mps/main-{index}.mps  : main.mp
+    mkdir -p mps
+    bash $(buildroot)/make_mpost.sh main.mp
 
-",
-            i = i
+"###,
+            index = index
         )?;
-        i = i + 1;
     }
 
     for f in &song.lilypondfiles {

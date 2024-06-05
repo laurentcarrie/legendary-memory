@@ -10,7 +10,7 @@ wavfiles: []
 #path:
 #  XX/YY
 sections:
-  - name: couplet / refrain
+  - name: couplet-refrain
     rows:
       -
         - C#

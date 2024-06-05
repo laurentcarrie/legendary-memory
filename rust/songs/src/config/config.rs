@@ -65,9 +65,7 @@ pub fn decode_song(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Song, Erro
         sections: uconf.sections.iter().map(section_of_usection).collect(),
         chord_glyph_scale: uconf.chord_glyph_scale.unwrap_or(2),
         outputformat: uconf.outputformat.unwrap_or("mps".to_string()),
-        outputtemplate: uconf
-            .outputtemplate
-            .unwrap_or("mps/main-%c.mps".to_string()),
+        outputtemplate: uconf.outputtemplate.unwrap_or("mps/%s-%c.mps".to_string()),
         section_spacing: uconf.section_spacing.unwrap_or(20),
     };
     Ok(song)
