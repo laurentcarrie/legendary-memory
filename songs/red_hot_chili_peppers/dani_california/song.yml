@@ -16,3 +16,23 @@ sections:
         - Dm Am
         - Am G
         - Dm Am
+
+  - name: add-d
+    rows:
+      -
+        - Dm
+
+  - name: refrain
+    rows:
+      -
+        - F G
+        - Dm G
+        - F G
+        - Dm G
+      -
+        - F G
+        - Dm G
+        - F G
+        - Dm G
+      -
+        - Dm
