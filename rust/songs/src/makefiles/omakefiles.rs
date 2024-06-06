@@ -90,7 +90,7 @@ main.pdf : main.tex"
 "
     )?;
 
-    for (index, section) in song.sections.iter().enumerate() {
+    for section in song.sections.iter() {
         write!(
             output,
             r###"

@@ -107,8 +107,10 @@ pub fn generate(world: &World) -> Result<(), Error> {
         write!(output, "{}", data)?;
     }
     {
-        for song in &world.songs {
-            write_mp(&song)?;
+        for song in world.songs.iter() {
+            for section in song.sections.iter() {
+                write_mp(&section, &song)?;
+            }
         }
     }
     Ok(())

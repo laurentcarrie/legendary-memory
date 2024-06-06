@@ -14,7 +14,12 @@ wavfiles: []
 #  XX/YY
 sections:
   - name: intro-1
-    rows: []
+    rows:
+      -
+        - E
+        - F#m C#m
+        - E
+        - F#m C#m
   - name: intro-2
     rows: []
   - name: couplet
