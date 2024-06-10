@@ -5,7 +5,9 @@ cell_height: 30
 chord_glyph_scale: 2
 texfiles:
   - lyrics.tex
-lilypondfiles: []
+lilypondfiles:
+  - couplet.ly
+  - refrain.ly
 wavfiles: []
 
 sections:

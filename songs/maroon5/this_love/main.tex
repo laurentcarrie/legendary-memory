@@ -16,14 +16,19 @@
 
 \begin{document}
     \makesongtitle
-\section*{couplet}
-      \includegraphics{ mps/couplet-0 }
+    \section*{couplet}
+%    \includegraphics{ mps/couplet-0 }
 
-\newpage
+    \subimport{couplet.output/}{couplet}
+    \section*{refrain}
+
+%    \subimport{refrain.output/}{refrain}
+
+    \newpage
 
 
-\section*{lyrics}
-\begin{multicols}{2}
-\input{lyrics}
-\end{multicols}
+    \section*{lyrics}
+    \begin{multicols}{2}
+        \input{lyrics}
+    \end{multicols}
 \end{document}
