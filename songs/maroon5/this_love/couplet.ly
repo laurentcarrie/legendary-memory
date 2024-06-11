@@ -12,7 +12,7 @@ lead = {
   \absolute  {
     \override Score.SpacingSpanner.shortest-duration-space = #4.0
     %
-    \set Score.currentBarNumber = 1
+    %\set Score.currentBarNumber = 1
     |
     % mesure 1
     <g\4 d'\3 f'\2 b'\1>8

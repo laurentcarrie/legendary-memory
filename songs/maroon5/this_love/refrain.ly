@@ -12,9 +12,9 @@ lead = {
   \absolute  {
     \override Score.SpacingSpanner.shortest-duration-space = #4.0
 
-    \repeat volta 3 {
+    %\repeat volta 3 {
       \bar ".|:"
-      \set Score.currentBarNumber = 1
+      %\set Score.currentBarNumber = 1
       |
       % mesure 1
       < c'\4 ees'\3 g'\2 c''\1>8
@@ -28,7 +28,7 @@ lead = {
       r8
 
       < c'\4 ees'\3 aes'\2 c''\1>16
-      q16
+      < c'\4 ees'\3 aes'\2 c''\1>16
       %< c'\4 ees'\3 aes'\2 c''\1>16
       < \deadNote c'\4 \deadNote ees'\3 \deadNote aes'\2 \deadNote c''\1>16
       < \deadNote c'\4 \deadNote ees'\3 \deadNote aes'\2 \deadNote c''\1>16
@@ -53,7 +53,44 @@ lead = {
 
       ^\markup { \bold "3×" }
     }
-  }
+
+    |
+    < c'\4 ees'\3 bes'\2 c''\1 >8
+    < c'\4 ees'\3 bes'\2 c''\1 >8
+
+    < \deadNote c'\4 \deadNote ees'\3 \deadNote bes'\2 \deadNote c''\1 >16
+    < c'\4 ees'\3 bes'\2 c''\1 >16
+    r8
+
+    < c'\4 ees'\3 a'\2 c''\1 >8
+    r8
+
+    < c'\4 ees'\3 a'\2 c''\1 >16
+    < c'\4 ees'\3 a'\2 c''\1 >16
+    < \deadNote c'\4 \deadNote ees'\3 \deadNote a'\2 \deadNote c''\1 >16
+    < \deadNote c'\4 \deadNote ees'\3 \deadNote a'\2 \deadNote c''\1 >16
+
+    |
+    % mesure Ab G
+    <aes\5 c'\4 ees'\3 aes'\2 c''\1> 8
+    <aes\5 c'\4 ees'\3 aes'\2 c''\1> 8
+
+    <\deadNote aes\5 \deadNote c'\4 \deadNote ees'\3 \deadNote aes'\2 \deadNote c''\1> 16
+    <aes\5 c'\4 ees'\3 aes'\2 c''\1> 16
+    r8
+
+    <\deadNote g\4 \deadNote b\3 \deadNote d'\2>16
+    <\deadNote g\4 \deadNote b\3 \deadNote d'\2>16
+    <g\4 b\3 d'\2>8
+
+    <\deadNote g\4 \deadNote b\3 \deadNote d'\2>16
+    <g\4 b\3 d'\2>8.
+
+
+
+    |
+
+  %}
 }
 
 \paper {
@@ -67,7 +104,7 @@ lead = {
 
   #(add-text-replacements!
     '(
-       ("100" . "hundred")
+       %("100" . "hundred")
        ("dpi" . "dots per inch")
        ))
 
