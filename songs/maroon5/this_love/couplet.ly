@@ -4,7 +4,7 @@ song_tempo = 100
 
 
 song_chords = \chordmode {
-g1:7 | c1:m7 | f1:m7 | aes:dim |
+  g1:7 | c1:m7 | f1:m7 | aes:dim |
 }
 
 
@@ -71,41 +71,41 @@ lead = {
 
     |
 
-}
+  }
 }
 
 \paper {
-    #(include-special-characters)
-    indent = 0\mm
-    line-width = 180\mm
-    oddHeaderMarkup = ""
-    evenHeaderMarkup = ""
-    oddFooterMarkup = ""
-    evenFooterMarkup = ""
+  #(include-special-characters)
+  indent = 0\mm
+  line-width = 180\mm
+  oddHeaderMarkup = ""
+  evenHeaderMarkup = ""
+  oddFooterMarkup = ""
+  evenFooterMarkup = ""
 
-    #(add-text-replacements!
+  #(add-text-replacements!
     '(
-    ("100" . "hundred")
-    ("dpi" . "dots per inch")
-    ))
+       ("100" . "hundred")
+       ("dpi" . "dots per inch")
+       ))
 
 }
 
 
 \score {
-    <<
+  <<
     \new ChordNames {
-        \song_chords
-        }
-
-    \new TabStaff {
-        \tempo 4 = \song_tempo
-        \tabFullNotation
-        \override Score.BarNumber.break-visibility = ##(#t #t #t)
-        \lead
+      \song_chords
     }
 
-    >>
+    \new TabStaff {
+      \tempo 4 = \song_tempo
+      \tabFullNotation
+      \override Score.BarNumber.break-visibility = ##(#t #t #t)
+      \lead
+    }
 
-    \layout {}
+  >>
+
+  \layout {}
 }

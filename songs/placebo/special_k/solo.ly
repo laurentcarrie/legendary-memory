@@ -8,69 +8,69 @@ ma = {
 }
 
 mg = {
-    <g,\6 d\5 g\4>8
-    <g,\6 d\5 g\4>8
-    <g,\6 d\5 g\4>8
-    r8
-    <g,\6 d\5 g\4>8
-    <g,\6 d\5 g\4>8
-    <g,\6 d\5 g\4>8
-    r8
+  <g,\6 d\5 g\4>8
+  <g,\6 d\5 g\4>8
+  <g,\6 d\5 g\4>8
+  r8
+  <g,\6 d\5 g\4>8
+  <g,\6 d\5 g\4>8
+  <g,\6 d\5 g\4>8
+  r8
 }
 mc = {
-    <c\5 g\4 c'\3>8
-    <c\5 g\4 c'\3>8
-    <c\5 g\4 c'\3>8
-    r8
+  <c\5 g\4 c'\3>8
+  <c\5 g\4 c'\3>8
+  <c\5 g\4 c'\3>8
+  r8
 
-    <c\5 g\4 c'\3>8
-    <c\5 g\4 c'\3>8
-    <c\5 g\4 c'\3>8
-    r8
+  <c\5 g\4 c'\3>8
+  <c\5 g\4 c'\3>8
+  <c\5 g\4 c'\3>8
+  r8
 }
 mf = {
-    <f,\6 c\5 f\4>8
-    <f,\6 c\5 f\4>8
-    <f,\6 c\5 f\4>8
-    r8
-    <f,\6 c\5 f\4>8
-    <f,\6 c\5 f\4>8
-    <f,\6 c\5 f\4>8
-    r8
+  <f,\6 c\5 f\4>8
+  <f,\6 c\5 f\4>8
+  <f,\6 c\5 f\4>8
+  r8
+  <f,\6 c\5 f\4>8
+  <f,\6 c\5 f\4>8
+  <f,\6 c\5 f\4>8
+  r8
 }
 
 lignea = {
-    \mg | \mg | \mc | \mg |
+  \mg | \mg | \mc | \mg |
 }
 
 ligneb = {
-    \mc | \mc | \mf | \mf |
+  \mc | \mc | \mf | \mf |
 }
 
 
 
 rhythm = {
-% une mesure pour la levée
-r1 |
-\mg
-\lignea
-\lignea
-\lignea
-\lignea
-\ligneb
+  % une mesure pour la levée
+  r1 |
+  \mg
+  \lignea
+  \lignea
+  \lignea
+  \lignea
+  \ligneb
 }
 
 
 song_chords = \chordmode {
-g1:5
-|
-g1:5
-|
-g1:5 | g1:5 | c1:5 | g1:5 |
-g1:5 | g1:5 | c1:5 | g1:5 |
-g1:5 | g1:5 | c1:5 | g1:5 |
-g1:5 | g1:5 | c1:5 | g1:5 |
-c1:5 | c1:5 | f1:5 | f1:5 |
+  g1:5
+  |
+  g1:5
+  |
+  g1:5 | g1:5 | c1:5 | g1:5 |
+  g1:5 | g1:5 | c1:5 | g1:5 |
+  g1:5 | g1:5 | c1:5 | g1:5 |
+  g1:5 | g1:5 | c1:5 | g1:5 |
+  c1:5 | c1:5 | f1:5 | f1:5 |
 
 }
 
@@ -200,13 +200,15 @@ lead = {
     |
 
     % mes 22
-    \times 2/3 {     \mypull c''16\2 d''4\2
-                     \mypull c''16\2 d''4\2
-                     \mypull c''16\2 d''4\2
+    \times 2/3 {
+      \mypull c''16\2 d''4\2
+      \mypull c''16\2 d''4\2
+      \mypull c''16\2 d''4\2
     }
-    \times 2/3 {     \mypull c''16\2 d''4\2
-                     \mypull c''16\2 d''4\2
-                     f'4\3
+    \times 2/3 {
+      \mypull c''16\2 d''4\2
+      \mypull c''16\2 d''4\2
+      f'4\3
     }
     |
 
@@ -214,14 +216,14 @@ lead = {
     g'2\3 r2
 
 
-    }
+  }
 
 }
 
 drumbar =  \drummode {  bd4 sn4  bd4 sn4 }
 
 drumbars = {
-\repeat unfold 30 { \drumbar | }
+  \repeat unfold 30 { \drumbar | }
 }
 
 
@@ -245,76 +247,76 @@ drumbarshh = {
 
 
 \paper {
-    #(include-special-characters)
-    indent = 0\mm
-    line-width = 180\mm
-    oddHeaderMarkup = ""
-    evenHeaderMarkup = ""
-    oddFooterMarkup = ""
-    evenFooterMarkup = ""
+  #(include-special-characters)
+  indent = 0\mm
+  line-width = 180\mm
+  oddHeaderMarkup = ""
+  evenHeaderMarkup = ""
+  oddFooterMarkup = ""
+  evenFooterMarkup = ""
 
-    #(add-text-replacements!
+  #(add-text-replacements!
     '(
-    ("100" . "hundred")
-    ("dpi" . "dots per inch")
-    ))
+       ("100" . "hundred")
+       ("dpi" . "dots per inch")
+       ))
 
 }
 
 
 \score {
-    <<
+  <<
     \new ChordNames {
-        \song_chords
-        }
+      \song_chords
+    }
 
     \new TabStaff {
-        \tempo 4 = \song_tempo
-        \tabFullNotation
-        \override Score.BarNumber.break-visibility = ##(#t #t #t)
-        \lead
+      \tempo 4 = \song_tempo
+      \tabFullNotation
+      \override Score.BarNumber.break-visibility = ##(#t #t #t)
+      \lead
     }
 
-    >>
+  >>
 
-    \layout {}
+  \layout {}
 }
 
 
 \score {
-        \unfoldRepeats {
-        <<
-            \new DrumStaff
-                \tempo 4 = \song_tempo
-                <<
-                    \new DrumVoice {  \drumbarshh }
-                    \new DrumVoice {  \drumbars }
-                >>
+  \unfoldRepeats {
+    <<
+      \new DrumStaff
+      \tempo 4 = \song_tempo
+      <<
+        \new DrumVoice {  \drumbarshh }
+        \new DrumVoice {  \drumbars }
+      >>
 
-            \new Staff {
-                  \rhythm
-                  \set Staff.midiMinimumVolume = #0.2
-                  \set Staff.midiMaximumVolume = #0.2
-                  %\set Staff.midiInstrument = "electric guitar (clean)"
-                  \set Staff.midiInstrument = "bass"
-                  %\set Staff.midiInstrument = "clarinet"
-            }
-            \new Staff {
-                  \lead
-                  \set Staff.midiMinimumVolume = #0.9
-                  \set Staff.midiMaximumVolume = #0.9
-                  \set Staff.midiInstrument = "electric guitar (clean)"
-            }
-            %\new Staff {
-            %      \song_voice
-            %      \set Staff.midiMinimumVolume = #0.9
-            %      \set Staff.midiMaximumVolume = #0.9
-            %      \set Staff.midiInstrument = "electric guitar (clean)"
-            %}
-        >>
-        }
+      \new Staff {
+        \rhythm
+        \set Staff.midiMinimumVolume = #0.2
+        \set Staff.midiMaximumVolume = #0.2
+        %\set Staff.midiInstrument = "electric guitar (clean)"
+        \set Staff.midiInstrument = "bass"
+        %\set Staff.midiInstrument = "clarinet"
+      }
+      \new Staff {
+        \lead
+        \set Staff.midiMinimumVolume = #0.9
+        \set Staff.midiMaximumVolume = #0.9
+        \set Staff.midiInstrument = "electric guitar (clean)"
+      }
+      %\new Staff {
+      %      \song_voice
+      %      \set Staff.midiMinimumVolume = #0.9
+      %      \set Staff.midiMaximumVolume = #0.9
+      %      \set Staff.midiInstrument = "electric guitar (clean)"
+      %}
+    >>
+  }
 
-       \midi {
-            \tempo 4 = \song_tempo
-    }
+  \midi {
+    \tempo 4 = \song_tempo
+  }
 }

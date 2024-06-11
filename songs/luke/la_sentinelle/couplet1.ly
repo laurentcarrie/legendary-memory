@@ -4,10 +4,10 @@ nb_mesures = 32
 
 song_chords = \chordmode {
 
-\repeat unfold 8 { r1 }
+  \repeat unfold 8 { r1 }
 
-e1 | e1 | e1 | e1 |
-c1 | c1 | a1 | a1 |
+  e1 | e1 | e1 | e1 |
+  c1 | c1 | a1 | a1 |
 
 
 }
@@ -74,34 +74,34 @@ lead_pattern = {
 }
 
 lead = {
-    \override Score.SpacingSpanner.shortest-duration-space = #4.0
+  \override Score.SpacingSpanner.shortest-duration-space = #4.0
   \set Score.currentBarNumber = 0
   \repeat percent 8 { r1 | }
   \set Score.currentBarNumber = 1
 
-\lead_pattern |
-\lead_pattern |
-\lead_pattern |
+  \lead_pattern |
+  \lead_pattern |
+  \lead_pattern |
 
 }
 
 song_voice = {
-    \repeat unfold 15 { r1 } |
-    r2. r8 a'8 |
-    b'8 b'8 b'8 b'8 b'8 r8 r4 |
+  \repeat unfold 15 { r1 } |
+  r2. r8 a'8 |
+  b'8 b'8 b'8 b'8 b'8 r8 r4 |
 
 
 }
 
 song_lyrics = \lyricmode {
-    J'ai vendu ma misère pour une voix de soumission
-    Au fond de moi la sentinelle pour y briller sans exception
-    Et les sourires étaient les mêmes
+  J'ai vendu ma misère pour une voix de soumission
+  Au fond de moi la sentinelle pour y briller sans exception
+  Et les sourires étaient les mêmes
 
 
-A-t-on le cri du coeur, la vérité ou la raison ?
-Vous n'entendez donc que la bête
-Et ses réponses à vos questions
+  A-t-on le cri du coeur, la vérité ou la raison ?
+  Vous n'entendez donc que la bête
+  Et ses réponses à vos questions
 }
 
 drumbar =  \drummode {  bd4 sn4  bd4 sn4 }
@@ -132,18 +132,18 @@ drumbarshh = {
 
 
 \score {
-    <<
+  <<
     \new TabStaff {
-        \tempo 4 = \song_tempo
-        \tabFullNotation
-        \override Score.BarNumber.break-visibility = ##(#t #t #t)
-        \lead
-       %\repeat percent 3 {\lead}
+      \tempo 4 = \song_tempo
+      \tabFullNotation
+      \override Score.BarNumber.break-visibility = ##(#t #t #t)
+      \lead
+      %\repeat percent 3 {\lead}
     }
 
-    >>
+  >>
 
-   \midi {}
+  \midi {}
 
-   \layout {}
+  \layout {}
 }
