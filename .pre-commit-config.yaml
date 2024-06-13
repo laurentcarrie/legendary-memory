@@ -26,4 +26,13 @@ repos:
         entry: ly reformat --in-place
         language: system
 #        pass_filenames: false
-        files: \.ly$
+        files: .*\.ly$
+
+  - repo: local
+    hooks:
+      - id: compute-date
+        name: compute date
+        entry: bash compute-date.sh
+        language: system
+        pass_filenames: true
+        files: .*\song.json

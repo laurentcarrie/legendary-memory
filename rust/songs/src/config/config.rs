@@ -1,10 +1,12 @@
 //use serde::{Deserialize, Serialize};
 use std::fs;
+use std::fs::File;
 use std::io::Error;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use crate::config::model::UserSong;
 use crate::config::model::{Bar, Row, Section, Song, UserSection};
+use crate::generated::sh_code::make_make_pdf;
 
 fn bar_of_string(s: &String) -> Bar {
     let chords: Vec<String> = s.split(' ').map(|s| s.to_string()).collect();
@@ -32,6 +34,13 @@ pub fn decode_song(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Song, Erro
         .clone();
     //println!("{}", contents);
     let uconf: UserSong = serde_yaml::from_str(&contents).expect("read yml");
+    let j = serde_json::to_string(&uconf)?;
+    {
+        let mut p2 = filepath.clone();
+        p2.set_file_name("song.json");
+        fs::write(p2, j);
+    }
+
     // dbg!(&uconf);
     let mut song_builddir = buildroot.clone();
     song_builddir.push("songs");

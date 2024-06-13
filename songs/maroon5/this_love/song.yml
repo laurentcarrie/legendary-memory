@@ -8,6 +8,7 @@ texfiles:
 lilypondfiles:
   - couplet.ly
   - refrain.ly
+  - pont.ly
 wavfiles: []
 
 sections:
