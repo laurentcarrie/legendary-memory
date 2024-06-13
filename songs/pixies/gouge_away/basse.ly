@@ -1,5 +1,5 @@
 \version "2.24.2"
-\include "macros.ly"
+\include "../../../macros.ly"
 song_tempo = 132
 
 lead = {

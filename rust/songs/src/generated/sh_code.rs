@@ -33,7 +33,7 @@ printfc RUN lilypond $pprintworkdir
 
 rm -rf $1.output
 lilypond-book --output $1.output --pdf --latex-program=lualatex $lytexfile  1> $fstdout 2> $fstderr || true
-#lilypond-book --output $1.output --pdf --latex-program=lualatex $lytexfile  1>> $fstdout 2>> $fstderr || true
+lilypond-book --output $1.output --pdf --latex-program=lualatex $lytexfile  1>> $fstdout 2>> $fstderr || true
 if test "x$?" = "0" ; then
   printfc OK lilypond $pprintworkdir
 else

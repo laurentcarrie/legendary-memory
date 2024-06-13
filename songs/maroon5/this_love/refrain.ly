@@ -5,6 +5,7 @@ song_tempo = 100
 
 song_chords = \chordmode {
   c2:m f2:m7 | bes2 ees2 |
+  c2:m7 f2:7  | aes2 g2
 }
 
 
@@ -12,9 +13,9 @@ lead = {
   \absolute  {
     \override Score.SpacingSpanner.shortest-duration-space = #4.0
 
-    %\repeat volta 3 {
+    \set Score.currentBarNumber = 1
+    \repeat volta 3 {
       \bar ".|:"
-      %\set Score.currentBarNumber = 1
       |
       % mesure 1
       < c'\4 ees'\3 g'\2 c''\1>8
@@ -90,7 +91,7 @@ lead = {
 
     |
 
-  %}
+  }
 }
 
 \paper {
@@ -104,7 +105,6 @@ lead = {
 
   #(add-text-replacements!
     '(
-       %("100" . "hundred")
        ("dpi" . "dots per inch")
        ))
 

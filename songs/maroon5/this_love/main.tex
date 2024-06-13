@@ -12,19 +12,21 @@
 \usepackage{xcolor}
 \usepackage{todonotes}
 \usepackage{import}
+\usepackage{textcomp}
 \input{data}
 
 \begin{document}
     \makesongtitle
     \section*{couplet}
-%    \includegraphics{ mps/couplet-0 }
 
     \subimport{couplet.output/}{couplet}
     \section*{refrain}
 
     \subimport{refrain.output/}{refrain}
 
-     \section*{lyrics}
+    \newpage
+
+    \section*{lyrics}
     \begin{multicols}{2}
         \input{lyrics}
     \end{multicols}

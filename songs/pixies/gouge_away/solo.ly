@@ -1,5 +1,5 @@
 \version "2.20.0"
-\include "macros.ly"
+\include "../../../macros.ly"
 song_tempo = 114
 
 % Bb
