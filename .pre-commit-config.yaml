@@ -32,7 +32,10 @@ repos:
     hooks:
       - id: compute-date
         name: compute date
-        entry: bash compute-date.sh
+        entry: bash ./compute-date.sh
         language: system
-        pass_filenames: true
-        files: .*\song.json
+#        pass_filenames: true
+        files: .*
+        require_serial: true
+        always_run: true
+        verbose: true

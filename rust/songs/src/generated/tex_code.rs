@@ -49,7 +49,8 @@ pub fn make_preamble() -> String {
 \rhead{}
 
 \rfoot{\thepage/\pageref{LastPage}}
-\cfoot{\today}
+%\cfoot{\today}
+\cfoot{\songlastupdate}
 
 
 \usepackage{multicol}

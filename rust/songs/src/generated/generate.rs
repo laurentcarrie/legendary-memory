@@ -92,8 +92,9 @@ pub fn generate(world: &World) -> Result<(), Error> {
 \\def\\songtitle{{ {} }}
 \\def\\songauthor{{ {} }}
 \\newcommand{{\\makesongtitle}}{{\\xxmakesongtitle{{\\songtitle}}{{\\songauthor}} }}
+\\newcommand{{\\songlastupdate}}{{ {} }}
 ",
-                song.title, song.author
+                song.title, song.author, song.date
             )?;
         }
     }

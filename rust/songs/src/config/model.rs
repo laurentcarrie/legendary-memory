@@ -35,6 +35,7 @@ pub struct UserSong {
     pub chord_glyph_scale: Option<i32>,
     pub section_spacing: Option<i32>,
     pub wavfiles: Vec<String>,
+    pub date: String,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
@@ -52,6 +53,7 @@ pub struct Song {
     pub chord_glyph_scale: i32,
     pub section_spacing: i32,
     pub wavfiles: Vec<String>,
+    pub date: String,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
