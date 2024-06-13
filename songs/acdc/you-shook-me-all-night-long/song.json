@@ -1,1 +1,20 @@
-{"cell_height":30,"cell_width":60,"title":"You Shook Me All Night Long","author":"AC/DC","texfiles":["lyrics.tex"],"lilypondfiles":["solo.ly"],"sections":[],"outputtemplate":null,"outputformat":null,"chord_glyph_scale":2,"section_spacing":null,"wavfiles":[]}
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "You Shook Me All Night Long",
+  "author": "AC/DC",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [
+    "solo.ly"
+  ],
+  "sections": [],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [],
+  "digest": "b7a45797d442c1bfa0e7683fae66a33d",
+  "date": "2024-06-13"
+}

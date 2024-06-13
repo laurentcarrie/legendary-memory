@@ -1,1 +1,38 @@
-{"cell_height":30,"cell_width":60,"title":"Can't Stop","author":"Red Hot Chili Peppers","texfiles":["lyrics.tex"],"lilypondfiles":["solo.ly","intro.ly","riff_a.ly","riff_b.ly"],"sections":[{"name":"refrain","rows":[["G","D","Bm7","CM7"]]}],"outputtemplate":null,"outputformat":null,"chord_glyph_scale":2,"section_spacing":null,"wavfiles":["intro.wav","riff_a.wav"]}
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "Can't Stop",
+  "author": "Red Hot Chili Peppers",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [
+    "solo.ly",
+    "intro.ly",
+    "riff_a.ly",
+    "riff_b.ly"
+  ],
+  "sections": [
+    {
+      "name": "refrain",
+      "rows": [
+        [
+          "G",
+          "D",
+          "Bm7",
+          "CM7"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [
+    "intro.wav",
+    "riff_a.wav"
+  ],
+  "digest": "ee6cc322c4d8facbdf7b9c566802c02b",
+  "date": "2024-06-13"
+}

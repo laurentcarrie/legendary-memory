@@ -1,1 +1,30 @@
-{"cell_height":30,"cell_width":60,"title":"American Boy","author":"Estelle / K. West / Cocoon","texfiles":["lyrics.tex"],"lilypondfiles":[],"sections":[{"name":"couplet-refrain","rows":[["C#","A","F#m","F#m"]]}],"outputtemplate":null,"outputformat":null,"chord_glyph_scale":2,"section_spacing":null,"wavfiles":[]}
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "American Boy",
+  "author": "Estelle / K. West / Cocoon",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [],
+  "sections": [
+    {
+      "name": "couplet-refrain",
+      "rows": [
+        [
+          "C#",
+          "A",
+          "F#m",
+          "F#m"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [],
+  "digest": "53a1fd0fa3340267993a7983e0ffac03",
+  "date": "2024-06-13"
+}
