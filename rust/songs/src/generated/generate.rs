@@ -85,6 +85,8 @@ pub fn generate(world: &World) -> Result<(), Error> {
             println!("write {}", p.display());
             let mut output = File::create(p)?;
             //let data = make_preamble();
+            let today = chrono::Utc::now().format("%Y-%m-%d").to_string();
+
             write!(
                 output,
                 "
@@ -93,8 +95,9 @@ pub fn generate(world: &World) -> Result<(), Error> {
 \\def\\songauthor{{ {} }}
 \\newcommand{{\\makesongtitle}}{{\\xxmakesongtitle{{\\songtitle}}{{\\songauthor}} }}
 \\newcommand{{\\songlastupdate}}{{ {} }}
+\\newcommand{{\\songtoday}}{{ {} }}
 ",
-                song.title, song.author, song.date
+                song.title, song.author, song.date, today
             )?;
         }
     }

@@ -50,7 +50,7 @@ pub fn make_preamble() -> String {
 
 \rfoot{\thepage/\pageref{LastPage}}
 %\cfoot{\today}
-\cfoot{\songlastupdate}
+\cfoot{derni\`ere modif le \songlastupdate, g\'en\'er\'e le \songtoday }
 
 
 \usepackage{multicol}
