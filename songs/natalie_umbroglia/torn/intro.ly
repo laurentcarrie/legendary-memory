@@ -24,14 +24,6 @@ song_tempo = 114
 \score {
   <<
 
-    \new ChordNames \with {
-      \override BarLine.bar-extent = #'(-2 . 2)
-      \consists "Bar_engraver"
-    }
-
-    \chordmode {
-      e1 | e1 | e1 | e1
-    }
 
 \new ChordGrid \chordmode { c1 r2 c2 R1 }
 
