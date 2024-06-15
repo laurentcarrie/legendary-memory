@@ -25,15 +25,33 @@
     {
       "name": "couplet",
       "rows": [
-        [ "F","F","Am","Am"],
-        ["Bb7","Bb7"]
+        [
+          "F",
+          "F",
+          "Am",
+          "Am"
+        ],
+        [
+          "Bb7",
+          "Bb7"
+        ]
       ]
     },
     {
       "name": "pre-refrain",
       "rows": [
-        ["Dm","C","Am","C"],
-        ["Dm","C","Am","C"]
+        [
+          "Dm",
+          "C",
+          "Am",
+          "C"
+        ],
+        [
+          "Dm",
+          "C",
+          "Am",
+          "C"
+        ]
       ]
     }
   ],
@@ -42,6 +60,6 @@
   "chord_glyph_scale": 2,
   "section_spacing": null,
   "wavfiles": [],
-  "date": "2024-06-14",
-  "digest": "16100fa0bfa60733a0db24f835182204"
+  "date": "2024-06-15",
+  "digest": "56419d0f07dc932909928c559e89314d"
 }
