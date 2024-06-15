@@ -13,7 +13,7 @@ work() {
 	  echo 1 > $tmpresultfile
 	fi
   rm $(dirname $file)/*.bak*
-  rm $(dirname)/indent.log
+  rm $(dirname $file)/*.log
 }
 
 git ls-files | while read f ; do

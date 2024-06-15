@@ -65,22 +65,22 @@ pub fn make_preamble() -> String {
 \usepackage{arydshln}
 
 \newcommand{\lolocomment}[1]{{
-    \fontsize{8pt}{8pt}\selectfont
-    \textcolor{red}{#1}}
+			\fontsize{8pt}{8pt}\selectfont
+			\textcolor{red}{#1}}
 }
 
 \newcommand{\basecouplet}[3]{
-%\colorbox{bg}{\section*{#1}}
-    \colorbox{#1}{
-        \fontsize{12pt}{12pt}\selectfont
-        #2
-    }
-    {
-            {
-            \fontsize{10pt}{10pt}\selectfont
-            #3
-        }
-    }
+	%\colorbox{bg}{\section*{#1}}
+	\colorbox{#1}{
+		\fontsize{12pt}{12pt}\selectfont
+		#2
+	}
+	{
+		{
+				\fontsize{10pt}{10pt}\selectfont
+				#3
+			}
+	}
 
 }
 \newcommand{\lolocolorcouplet}{Chartreuse1}
@@ -98,22 +98,22 @@ pub fn make_preamble() -> String {
 
 
 \newcommand{\xxmakesongtitle}[2] {
-\begin{center}
-    {
-        \Fontskrivan\bfseries\slshape
-        \fontsize{60pt}{50pt}\selectfont
-        \color{blue}
-        #1
-    } \\
+	\begin{center}
+		{
+			\Fontskrivan\bfseries\slshape
+			\fontsize{60pt}{50pt}\selectfont
+			\color{blue}
+			#1
+		} \\
 
 
-    {
-        \Fontskrivan\bfseries\slshape
-        \fontsize{20pt}{10pt}\selectfont
-        \color{orange}
-        #2
-    }\\
-\end{center}
+		{
+		\Fontskrivan\bfseries\slshape
+		\fontsize{20pt}{10pt}\selectfont
+		\color{orange}
+		#2
+		}\\
+	\end{center}
 
 }
 
@@ -125,19 +125,19 @@ pub fn make_preamble() -> String {
 %\newcolumntype{C}{>{\centering}p{0.28cm}}
 
 \newcommand{\beforegrille}{
-%\Fontskrivan\bfseries\slshape
-%\fontsize{55pt}{52pt}
-    \fontsize{10pt}{8pt}\selectfont
-    \renewcommand{\arraystretch}{2}
+	%\Fontskrivan\bfseries\slshape
+	%\fontsize{55pt}{52pt}
+	\fontsize{10pt}{8pt}\selectfont
+	\renewcommand{\arraystretch}{2}
 
 }
 
 \newcommand{\beforelyrics}{
-%\Fontskrivan\bfseries\slshape
-    \Fontskrivan
-    \fontsize{55pt}{52pt}
-%   \fontsize{10pt}{8pt}\selectfont
-    \renewcommand{\arraystretch}{2}
+	%\Fontskrivan\bfseries\slshape
+	\Fontskrivan
+	\fontsize{55pt}{52pt}
+	%   \fontsize{10pt}{8pt}\selectfont
+	\renewcommand{\arraystretch}{2}
 
 }
 
@@ -148,36 +148,36 @@ pub fn make_preamble() -> String {
 %\usepackage{paracol}
 
 \newfontfamily\lolo[%%basic weight: 100, "bold" weight: 70
-    Extension      = .ttf,
-    ItalicFont     = lolo,
-    BoldFont       = lolo,
-    BoldItalicFont = lolo]
+	Extension      = .ttf,
+	ItalicFont     = lolo,
+	BoldFont       = lolo,
+	BoldItalicFont = lolo]
 {lolo}
 
 
 
 \newfontfamily\loloflat[%%basic weight: 50, "bold" weight: 70\overline{}
-    Extension      = .ttf,
-    ItalicFont     = lolo_flat,
-    BoldFont       = lolo_flat,
-    BoldItalicFont = lolo_flat]
+	Extension      = .ttf,
+	ItalicFont     = lolo_flat,
+	BoldFont       = lolo_flat,
+	BoldItalicFont = lolo_flat]
 {lolo_flat}
 
 
 \newfontfamily\lolosharp[%%basic weight: 50, "bold" weight: 70
-    Extension      = .ttf,
-    ItalicFont     = lolo_sharp,
-    BoldFont       = lolo_sharp,
-    BoldItalicFont = lolo_sharp]
+	Extension      = .ttf,
+	ItalicFont     = lolo_sharp,
+	BoldFont       = lolo_sharp,
+	BoldItalicFont = lolo_sharp]
 {lolo_sharp}
 
 
 % pour les livres
 \newcommand{\fakesection}[1]{%
-    \par\refstepcounter{section}% Increase section counter
-    \sectionmark{#1}% Add section mark (header)
-    \addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}% Add section to ToC
-% Add more content here, if needed.
+	\par\refstepcounter{section}% Increase section counter
+	\sectionmark{#1}% Add section mark (header)
+	\addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}% Add section to ToC
+	% Add more content here, if needed.
 }
 
 
@@ -199,100 +199,100 @@ pub fn make_preamble() -> String {
 
 % bar counter
 \newcommand{\loloinitcounter}[1]{
-    \setcounter{bar}{#1}
+	\setcounter{bar}{#1}
 }
 
 \newcommand{\loloshowcounter}[1]{%
-    \fontsize{16pt}{6pt}
-    \cellcolor{white}$_{\arabic{bar}}$
-    \addtocounter{bar}{#1}
+	\fontsize{16pt}{6pt}
+	\cellcolor{white}$_{\arabic{bar}}$
+	\addtocounter{bar}{#1}
 }
 
 
 
 \newcommand{\loloshowarrowcounter}[1]{%
-    \fontsize{16pt}{6pt}
-    \cellcolor{white}$_{\arabic{bar} \rightarrow \addtocounter{bar}{#1} \addtocounter{bar}{-1} \arabic{bar}}$
-    \addtocounter{bar}{1}
+	\fontsize{16pt}{6pt}
+	\cellcolor{white}$_{\arabic{bar} \rightarrow \addtocounter{bar}{#1} \addtocounter{bar}{-1} \arabic{bar}}$
+	\addtocounter{bar}{1}
 }
 
 \newcommand{\loloprintbpm}[3]{%
-% min sec bars
+	% min sec bars
 
-    \def\x{#1}
-    \def\y{#2}
-    \def\z{#3}
-    % $\x \div \y =$
-    \newcount\a\a=\number\x
-    \newcount\b\b=\number\y
-    \multiply\a by 60
-    \advance\a \y
-    \def\nseconds{\the\a}
-    %number of seconds : $\nseconds$
+	\def\x{#1}
+	\def\y{#2}
+	\def\z{#3}
+	% $\x \div \y =$
+	\newcount\a\a=\number\x
+	\newcount\b\b=\number\y
+	\multiply\a by 60
+	\advance\a \y
+	\def\nseconds{\the\a}
+	%number of seconds : $\nseconds$
 
-    \newcount\c\c=\number\z
-    \multiply\c by 4
-    \def\nbbars{\the\c}
-    %number of beats : $\nbbars$
+	\newcount\c\c=\number\z
+	\multiply\c by 4
+	\def\nbbars{\the\c}
+	%number of beats : $\nbbars$
 
-    \multiply\c by 60
-    \divide\c by \nseconds
-    \def\bpm{\the\c}
-    %number of beats per minute : $\bpm$
+	\multiply\c by 60
+	\divide\c by \nseconds
+	\def\bpm{\the\c}
+	%number of beats per minute : $\bpm$
 
-    durée : #1' #2'' ; #3 mesures ; tempo = $\bpm$
+	durée : #1' #2'' ; #3 mesures ; tempo = $\bpm$
 
-% #1' #2'/$\bpm$
+	% #1' #2'/$\bpm$
 
 }
 
 \newcommand{\makefooter}[2]{
-    \lfoot{#1/#2}
-%/\loloprintbpm{#3}{#4}{#5}}
+	\lfoot{#1/#2}
+	%/\loloprintbpm{#3}{#4}{#5}}
 }
 
 \newcommand{\lolomakerowanc}[1]{
-    & \multicolumn{4}{l}{#1}
+	& \multicolumn{4}{l}{#1}
 }
 
 
 \newcommand{\lolomakerowbnc}[1]{
-    & \multicolumn{1}{l}{}         & \multicolumn{3}{l}{#1}
+	& \multicolumn{1}{l}{}         & \multicolumn{3}{l}{#1}
 }
 
 \newcommand{\lolomakerowcnc}[1]{
-    & \multicolumn{1}{l}{}
-    & \multicolumn{1}{l}{}         & \multicolumn{2}{l}{#1}
+	& \multicolumn{1}{l}{}
+	& \multicolumn{1}{l}{}         & \multicolumn{2}{l}{#1}
 }
 
 \newcommand{\lolomakerowdnc}[1]{
-    & \multicolumn{1}{l}{}
-    & \multicolumn{1}{l}{}
-    & \multicolumn{1}{l}{}         & \multicolumn{1}{l}{#1}
+	& \multicolumn{1}{l}{}
+	& \multicolumn{1}{l}{}
+	& \multicolumn{1}{l}{}         & \multicolumn{1}{l}{#1}
 }
 
 \newcommand{\lolomakerowa}[2]{
-    \loloshowarrowcounter{#1}
-    & \multicolumn{4}{l}{#2}
+	\loloshowarrowcounter{#1}
+	& \multicolumn{4}{l}{#2}
 }
 
 
 \newcommand{\lolomakerowb}[2]{
-    \loloshowarrowcounter{#1}
-    & \multicolumn{1}{l}{}         & \multicolumn{3}{l}{#2}
+	\loloshowarrowcounter{#1}
+	& \multicolumn{1}{l}{}         & \multicolumn{3}{l}{#2}
 }
 
 \newcommand{\lolomakerowc}[2]{
-    \loloshowarrowcounter{#1}
-    & \multicolumn{1}{l}{}
-    & \multicolumn{1}{l}{}         & \multicolumn{2}{l}{#2}
+	\loloshowarrowcounter{#1}
+	& \multicolumn{1}{l}{}
+	& \multicolumn{1}{l}{}         & \multicolumn{2}{l}{#2}
 }
 
 \newcommand{\lolomakerowd}[2]{
-    \loloshowarrowcounter{#1}
-    & \multicolumn{1}{l}{}
-    & \multicolumn{1}{l}{}
-    & \multicolumn{1}{l}{}         & \multicolumn{1}{l}{#2}
+	\loloshowarrowcounter{#1}
+	& \multicolumn{1}{l}{}
+	& \multicolumn{1}{l}{}
+	& \multicolumn{1}{l}{}         & \multicolumn{1}{l}{#2}
 }"###;
     ret.to_string()
 }

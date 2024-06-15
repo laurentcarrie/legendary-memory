@@ -1,5 +1,5 @@
 \documentclass[11pt]{article}
-
+\usepackage[noprefix,norefeq]{nomencl}
 \input{preamble}
 \usepackage{pdfpages}
 
@@ -13,16 +13,13 @@
 \usepackage{todonotes}
 \usepackage{import}
 \usepackage{textcomp}
+\usepackage{multicol}
 \input{data}
 \input{chords}
 
 \begin{document}
 \makesongtitle
 
-\begin{multicols}{2}
-	\input{lyrics}
-\end{multicols}
-
-\chordCsm
+\input{lyrics}
 
 \end{document}
