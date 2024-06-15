@@ -1,4 +1,5 @@
 .idea/
+build-rust/
 song_book_builder/_build/
 /song_book_builder/lib/mp_code.ml.old
 /song_book_builder/lib/ly_code.ml.old
@@ -7,3 +8,5 @@ song_book_builder/_build/
 /rust/songs/target/
 /build-rustxx/
 *.rs.old
+indent.log
+*~
