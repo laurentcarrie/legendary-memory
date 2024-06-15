@@ -92,7 +92,7 @@ for s in $what ; do
 done
 conclusion $outfile_tmp $outfile
 
-what="preamble"
+what="preamble chords"
 shsrcdir=$here/others/texfiles
 extension=tex
 outfile_tmp=$here/src/generated/tex_code.rs.tmp

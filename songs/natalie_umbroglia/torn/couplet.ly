@@ -32,8 +32,7 @@
 }
 
 \new ChordGrid \chordmode {
-      f1 | f1 | a1:m7 | a1:m7  \break
-      bes1:7 | bes1:7 | |
+  f1 | f1 | a1:m7 | a1:m7  \break
+  bes1:7 | bes1:7
 
 }
-

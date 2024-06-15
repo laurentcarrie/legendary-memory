@@ -9,7 +9,7 @@ use crate::generated::ly_code::make_macros;
 use crate::generated::sh_code::{
     make_colors, make_make_clean, make_make_lytex, make_make_mpost, make_make_pdf, make_make_wav,
 };
-use crate::generated::tex_code::make_preamble;
+use crate::generated::tex_code::{make_chords, make_preamble};
 
 pub fn generate(world: &World) -> Result<(), Error> {
     {
@@ -74,6 +74,17 @@ pub fn generate(world: &World) -> Result<(), Error> {
             println!("write {}", p.display());
             let mut output = File::create(p)?;
             let data = make_preamble();
+            write!(output, "{}", data)?;
+        }
+    }
+    {
+        for song in &world.songs {
+            let mut p: PathBuf = song.builddir.clone();
+            let _ = fs::create_dir_all(&p)?;
+            p.push("chords.tex");
+            println!("write {}", p.display());
+            let mut output = File::create(p)?;
+            let data = make_chords();
             write!(output, "{}", data)?;
         }
     }

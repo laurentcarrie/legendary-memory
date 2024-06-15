@@ -28,11 +28,10 @@
 }
 
 \layout {
-  
+
 }
 
 \new ChordGrid \chordmode {
   e1  |e1 | e1  | e1
 
 }
-

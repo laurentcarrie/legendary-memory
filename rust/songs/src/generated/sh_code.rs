@@ -224,13 +224,13 @@ printfc () {
 
   case $status in
   OK)
-    status_fmt="${BGreen}${On_Black}[DONE   ]${Color_Off}"
+    status_fmt="${BGreen}${On_White}[DONE   ]${Color_Off}"
   ;;
   RUN)
-    status_fmt="${BBlue}${On_Black}[RUNNING]${Color_Off}"
+    status_fmt="${BBlue}${On_White}[RUNNING]${Color_Off}"
   ;;
   FAILED)
-    status_fmt="${BRed}${On_Black}[FAILED ]${Color_Off}"
+    status_fmt="${BRed}${On_Cyan}[FAILED ]${Color_Off}"
   ;;
   *)
     status_fmt="${BRed}${On_Black}[unknown status $status]${Color_Off}"

@@ -10,12 +10,38 @@
     "intro.ly",
     "couplet.ly"
   ],
-  "sections": [],
+  "sections": [
+    {
+      "name": "intro",
+      "rows": [
+        [
+          "F",
+          "F",
+          "F",
+          "F"
+        ]
+      ]
+    },
+    {
+      "name": "couplet",
+      "rows": [
+        [ "F","F","Am","Am"],
+        ["Bb7","Bb7"]
+      ]
+    },
+    {
+      "name": "pre-refrain",
+      "rows": [
+        ["Dm","C","Am","C"],
+        ["Dm","C","Am","C"]
+      ]
+    }
+  ],
   "outputtemplate": null,
   "outputformat": null,
   "chord_glyph_scale": 2,
   "section_spacing": null,
   "wavfiles": [],
   "date": "2024-06-14",
-  "digest": "bb83e9ee8b99a902e0ec154ad5af57d3"
+  "digest": "16100fa0bfa60733a0db24f835182204"
 }
