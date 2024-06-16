@@ -22,10 +22,15 @@ make() {
   (cd $builddir && omake delivery -j 4 -k)
 }
 
+format() {
+  cd $here && bash my-latexindent.sh
+}
+
 case $1 in
 b)
   build
   make
+  format
   ;;
 m)
   make

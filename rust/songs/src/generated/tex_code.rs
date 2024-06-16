@@ -298,11 +298,11 @@ pub fn make_preamble() -> String {
 
 \newcommand\lolotwocolumns[2]{
 	\begin{minipage}{0.35\linewidth}
-	\vspace{0pt}
+		\vspace{0pt}
 		#1
 	\end{minipage}
 	\begin{minipage}{0.65\linewidth}
-	\vspace{0pt}
+		\vspace{0pt}
 		#2
 	\end{minipage}
 }"###;
