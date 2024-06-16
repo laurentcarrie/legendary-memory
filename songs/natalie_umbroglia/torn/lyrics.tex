@@ -1,4 +1,9 @@
-\begin{multicols}{2}
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{blue}}
+
+
+%\lolotwocolumns{
+\begin{minipage}{0.5\linewidth}
 	\pont{intro} { \lolocomment{4 mesures} \\
 		\begin{tabular}{C|C|C|C}
 			\chordF & \chordF & \chordF & \chordF \\
@@ -14,126 +19,154 @@
 		\end{tabular} \\
 		%	\includegraphics{mps/couplet-0} \\
 	}
-	\columnbreak
-
+%}
+\end{minipage}%
+\begin{minipage}{0.5\linewidth}
+%{
 	\couplet{couplet 1}{ \lolocomment{6 mesures} \\
-		I thought I saw a man brought to life \\
+		I thought I saw a man brought to life, \\
 		He was warm, he came around like he was dignified \\
 		He showed me what it was to cry
 	}
-	\couplet{couplet 2}{ \lolocomment{6 mesures} \\
-		Well you couldn't be that man I adored \\
-		You don't seem to know \\
-		Don't seem to care what your heart is for \\
-		But I don't know him anymore
-	}
-\end{multicols}
+		\couplet{couplet 2}{ \lolocomment{6 mesures} \\
+			Well you couldn't be that man I adored, \\
+			You don't seem to know \\
+			Don't seem to care what your heart is for \\
+			But I don't know him anymore
+		}
+%	}
+\end{minipage}
 
-\begin{multicols}{2}
-
-	\prerefrain{pré refrain 1}{ \lolocomment{4 mesures} \\
+\lolotwocolumns{
+	\pont{intro} { \lolocomment{4 mesures} \\
 		\begin{tabular}{C|C|C|C}
-			\chordDm & \chordC & \chordAm & \chordC \\
+			\chordF & \chordF & \chordF & \chordF \\
 		\end{tabular} \\
-	}
-	\columnbreak
-	\prerefrain{pré refrain 1}{ \lolocomment{4 mesures} \\
-		There's nothing where he used to lie \\
-		My conversation has run dry \\
-		That's what's going on \\
-		Nothing's fine I'm torn
+	%\includegraphics{mps/intro-0} \\
+
 	}
 
-\end{multicols}
-
-\begin{multicols}{2}
-
-	\refrain{refrain 1}{ \lolocomment{12 mesures}  \\
-		\begin{tabular}{C|C|C|Cl}
-			\chordF & \chordC & \chordDm & \chordBf & \chordRepeatTrois \\
+	\couplet{couplet}{ \lolocomment{6 mesures} \\
+		\begin{tabular}{C|C|C|C}
+			\chordF      & \chordF      & \chordAm & \chordAm \\
+			\chordBfsept & \chordBfsept                       \\
 		\end{tabular} \\
+	%	\includegraphics{mps/couplet-0} \\
 	}
-	\columnbreak
-	\refrain{refrain 1}{ \lolocomment{12 mesures}  \\
-
-		I'm all out of faith, this is how I feel \\
-		I'm cold and I am shamed, lying naked on the floor \\
-		Illusion never changed, into something real \\
-		I'm wide awake and I can see, the perfect sky is torn \\
-		You're a little late, I'm already torn
+}{
+	\couplet{couplet 1}{ \lolocomment{6 mesures} \\
+	I thought I saw a man brought to life, \\
+	He was warm, he came around like he was dignified \\
+	He showed me what it was to cry
 	}
-
-\end{multicols}
-
-
-\begin{multicols}{2}
-
-
-
-
-
-	\columnbreak
-
-	\couplet{couplet 3}{ \lolocomment{6 mesures}  \\
-		So I guess the fortune teller's right \\
-		should have seen just what was there and not some holy light \\
-		But you crawl beneath my veins and now
+	\couplet{couplet 2}{ \lolocomment{6 mesures} \\
+	Well you couldn't be that man I adored, \\
+	You don't seem to know \\
+	Don't seem to care what your heart is for \\
+	But I don't know him anymore
 	}
-
-
-	\prerefrain{pré refrain 2}{\\
-		I don't care, I have no luck / I don't miss it all that much \\
-		There's just so many things / That I can't touch / I'm torn
-	}
-
-	\refrain{refrain 2}{ \lolocomment{12 mesures}  \\
-		I'm all out of faith, this is how I feel \\
-		I'm cold and I am shamed, lying naked on the floor \\
-		Illusion never changed, into something real \\
-		I'm wide awake and I can see, the perfect sky is torn \\
-		You're a little late, I'm already torn
-	}
-
-\end{multicols}
-
-
-\begin{multicols}{2}
-\refrain{sortie refrain 2}{ \lolocomment{2 mesures}  \\
-	\begin{tabular}{C|C|C|Cl}
-		\chordDm & \chordBf \\
-	\end{tabular} \\
-}
-\end{multicols}
-
-\pont{pont 1}{\\
-	\begin{tabular}{C|C|C|Cl}
-		\chordDm & \chordDm & \chordF & \chordC \\
-	\end{tabular} \\
-	Torn... Ooooh... Hoo ooooh... Ooooh
 }
 
-\prerefrain{pré refrain 3}{\\
-	There's nothing where he used to lie \\
-	My inspiration has run dry \\
-	That's what's going on \\
-	Nothing's fine I'm torn
-}
-
-
-\refrain{refrain 3}{\\
-	I'm all out of faith, this is how I feel \\
-	I'm cold and I am shamed, lying naked on the floor \\
-	Illusion never changed, into something real \\
-	I'm wide awake and I can see, the perfect sky is torn \\
-	I'm all out of faith, this is how I feel \\
-	I'm cold and I am shamed, bound and broken on the floor \\
-	You're a little late, I'm already torn
-}
-
-\couplet{pont 2}{\\
-	Torn...  (much wailing)
-}
-
-\couplet{fade out}{\\
-	oh oh...
-}
+%\begin{multicols}{2}
+%
+%	\prerefrain{pré refrain 1}{ \lolocomment{4 mesures} \\
+%		\begin{tabular}{C|C|C|C}
+%			\chordDm & \chordC & \chordAm & \chordC \\
+%		\end{tabular} \\
+%	}
+%	\columnbreak
+%	\prerefrain{pré refrain 1}{ \lolocomment{4 mesures} \\
+%		There's nothing where he used to lie \\
+%		My conversation has run dry \\
+%		That's what's going on \\
+%		Nothing's fine I'm torn
+%	}
+%
+%\end{multicols}
+%
+%\begin{multicols}{2}
+%
+%	\refrain{refrain 1}{ \lolocomment{12 mesures}  \\
+%		\begin{tabular}{C|C|C|Cl}
+%			\chordF & \chordC & \chordDm & \chordBf & \chordRepeatTrois \\
+%		\end{tabular} \\
+%	}
+%	\columnbreak
+%	\refrain{refrain 1}{ \lolocomment{12 mesures}  \\
+%
+%		I'm all out of faith, this is how I feel \\
+%		I'm cold and I am shamed, lying naked on the floor \\
+%		Illusion never changed, into something real \\
+%		I'm wide awake and I can see, the perfect sky is torn \\
+%		You're a little late, I'm already torn
+%	}
+%
+%\end{multicols}
+%
+%\begin{multicols}{2}
+%	\pagebreak
+%
+%	\couplet{couplet 3}{ \lolocomment{6 mesures}  \\
+%		So I guess the fortune teller's right \\
+%		should have seen just what was there and not some holy light \\
+%		But you crawl beneath my veins and now
+%	}
+%
+%
+%	\prerefrain{pré refrain 2}{\\
+%		I don't care, I have no luck / I don't miss it all that much \\
+%		There's just so many things / That I can't touch / I'm torn
+%	}
+%
+%	\refrain{refrain 2}{ \lolocomment{12 mesures}  \\
+%		I'm all out of faith, this is how I feel \\
+%		I'm cold and I am shamed, lying naked on the floor \\
+%		Illusion never changed, into something real \\
+%		I'm wide awake and I can see, the perfect sky is torn \\
+%		You're a little late, I'm already torn
+%	}
+%
+%\end{multicols}
+%
+%\pagebreak
+%
+%\begin{multicols}{2}
+%	\refrain{sortie refrain 2}{ \lolocomment{2 mesures}  \\
+%		\begin{tabular}{C|C|C|Cl}
+%			\chordDm & \chordBf \\
+%		\end{tabular} \\
+%	}
+%\end{multicols}
+%
+%\pont{pont 1}{\\
+%	\begin{tabular}{C|C|C|Cl}
+%		\chordDm & \chordDm & \chordF & \chordC \\
+%	\end{tabular} \\
+%	Torn... Ooooh... Hoo ooooh... Ooooh
+%}
+%
+%\prerefrain{pré refrain 3}{\\
+%	There's nothing where he used to lie \\
+%	My inspiration has run dry \\
+%	That's what's going on \\
+%	Nothing's fine I'm torn
+%}
+%
+%
+%\refrain{refrain 3}{\\
+%	I'm all out of faith, this is how I feel \\
+%	I'm cold and I am shamed, lying naked on the floor \\
+%	Illusion never changed, into something real \\
+%	I'm wide awake and I can see, the perfect sky is torn \\
+%	I'm all out of faith, this is how I feel \\
+%	I'm cold and I am shamed, bound and broken on the floor \\
+%	You're a little late, I'm already torn
+%}
+%
+%\couplet{pont 2}{\\
+%	Torn...  (much wailing)
+%}
+%
+%\couplet{fade out}{\\
+%	oh oh...
+%}

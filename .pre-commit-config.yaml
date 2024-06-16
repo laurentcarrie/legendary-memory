@@ -30,9 +30,9 @@ repos:
 
   - repo: local
     hooks:
-      - id: compute-date
-        name: compute date
-        entry: bash ./compute-date.sh
+      - id: my-latexindent
+        name: latexindent
+        entry: bash ./my-latexindent.sh
         language: system
         #        pass_filenames: true
         files: .*
@@ -42,9 +42,9 @@ repos:
 
   - repo: local
     hooks:
-      - id: my-latexindent
-        name: latexindent
-        entry: bash ./my-latexindent.sh
+      - id: compute-date
+        name: compute date
+        entry: bash ./compute-date.sh
         language: system
         #        pass_filenames: true
         files: .*

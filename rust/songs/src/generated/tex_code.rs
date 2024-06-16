@@ -293,6 +293,18 @@ pub fn make_preamble() -> String {
 	& \multicolumn{1}{l}{}
 	& \multicolumn{1}{l}{}
 	& \multicolumn{1}{l}{}         & \multicolumn{1}{l}{#2}
+}
+
+
+\newcommand\lolotwocolumns[2]{
+	\begin{minipage}{0.35\linewidth}
+	\vspace{0pt}
+		#1
+	\end{minipage}
+	\begin{minipage}{0.65\linewidth}
+	\vspace{0pt}
+		#2
+	\end{minipage}
 }"###;
     ret.to_string()
 }
