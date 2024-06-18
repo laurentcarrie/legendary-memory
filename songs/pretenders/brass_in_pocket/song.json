@@ -1,0 +1,65 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "Brass In Pocket",
+  "author": "Pretenders",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [
+    "intro.ly",
+    "couplet.ly"
+  ],
+  "sections": [
+    {
+      "name": "intro",
+      "rows": [
+        [
+          "F",
+          "F",
+          "F",
+          "F"
+        ]
+      ]
+    },
+    {
+      "name": "couplet",
+      "rows": [
+        [
+          "F",
+          "F",
+          "Am",
+          "Am"
+        ],
+        [
+          "Bb7",
+          "Bb7"
+        ]
+      ]
+    },
+    {
+      "name": "pre-refrain",
+      "rows": [
+        [
+          "Dm",
+          "C",
+          "Am",
+          "C"
+        ],
+        [
+          "Dm",
+          "C",
+          "Am",
+          "C"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [],
+  "date": "2024-06-16",
+  "digest": "528a0f4e9b8a1ff6a29935e69df88e40"
+}
