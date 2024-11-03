@@ -82,15 +82,29 @@ pub fn make_preamble() -> String {
 				#3
 			}
 	}
-
 }
+
+\newcommand{\basetitle}[2]{
+	%\colorbox{bg}{\section*{#1}}
+	\colorbox{#1}{
+		\fontsize{12pt}{12pt}\selectfont
+		#2
+	}
+}
+
 \newcommand{\lolocolorcouplet}{Chartreuse1}
 \newcommand{\couplet}[2]{\basecouplet{\lolocolorcouplet}{#1}{#2}}
+\newcommand{\couplettitle}[1]{\basetitle{\lolocolorcouplet}{#1}}
+
 \newcommand{\coupletred}[2]{\basecouplet{Firebrick1}{#1}{#2}}
 \newcommand{\lolocolorprerefrain}{DarkOrange1}
 \newcommand{\prerefrain}[2]{\basecouplet{\lolocolorprerefrain}{#1}{#2}}
+
 \newcommand{\lolocolorrefrain}{CadetBlue1}
 \newcommand{\refrain}[2]{\basecouplet{\lolocolorrefrain}{#1}{#2}}
+\newcommand{\refraintitle}[1]{\basetitle{\lolocolorrefrain}{#1}}
+
+
 \newcommand{\lolocolorpont}{PeachPuff1}
 \newcommand{\pont}[2]{\basecouplet{\lolocolorpont}{#1}{#2}}
 \newcommand{\lolocolorsolo}{PeachPuff1}
@@ -298,13 +312,28 @@ pub fn make_preamble() -> String {
 
 
 \newcommand\lolotwocolumns[2]{
-	\begin{minipage}{0.35\linewidth}
+	\begin{minipage}{0.40\linewidth}
 		\vspace{0pt}
 		#1
 	\end{minipage}
-	\begin{minipage}{0.65\linewidth}
+	\begin{minipage}{0.40\linewidth}
 		\vspace{0pt}
 		#2
+	\end{minipage}
+}
+
+\newcommand\lolothreecolumns[3]{
+	\begin{minipage}{0.40\linewidth}
+		\vspace{0pt}
+		#1
+	\end{minipage}
+	\begin{minipage}{0.10\linewidth}
+		\vspace{0pt}
+		#2
+	\end{minipage}
+	\begin{minipage}{0.50\linewidth}
+		\vspace{0pt}
+		#3
 	\end{minipage}
 }"###;
     ret.to_string()

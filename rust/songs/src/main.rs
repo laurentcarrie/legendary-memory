@@ -1,4 +1,5 @@
-use std::arch::x86_64::__cpuid;
+use log::LevelFilter;
+use simple_logger::SimpleLogger;
 use std::io::Error;
 use std::path::Path;
 use std::path::PathBuf;
@@ -9,7 +10,7 @@ use crate::config::model::World;
 use crate::config::world::make;
 use crate::generated::generate::generate;
 // use crate::makefiles::omakeroot::generate_omakeroot ;
-use crate::emitter::xxx::fff;
+// use crate::emitter::xxx::fff;
 use crate::makefiles::omakefiles::{generate_refresh_sh, generate_song_omakefile};
 use crate::makefiles::omakeroot::{generate_omakeroot, generate_root_omakefile};
 
@@ -23,7 +24,10 @@ fn usage(prog: &str) -> String {
     return format!("usage : {prog} <srcdir> <builddir>", prog = prog);
 }
 fn main() -> Result<(), Error> {
-    fff();
+    SimpleLogger::new().init().unwrap();
+    log::set_max_level(LevelFilter::Debug);
+    log::info!("start cron");
+    // fff();
     let args: Vec<String> = env::args().collect();
     let (sourceroot, buildroot) = match (args.get(1), args.get(2)) {
         (Some(x), Some(y)) => (x, y),
@@ -58,7 +62,7 @@ fn main() -> Result<(), Error> {
     generate_song_omakefile(&world.songs[0])?;
     generate(&world)?;
 
-    // println!("SUCCESS !");
+    // log::debug!("SUCCESS !");
 
     //dbg!(world);
     Ok(())

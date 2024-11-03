@@ -1,4 +1,3 @@
-//use serde::{Deserialize, Serialize};
 use std::fs;
 use std::io::Error;
 use std::path::PathBuf;
@@ -30,7 +29,6 @@ pub fn decode_song(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Song, Erro
     let contents = fs::read_to_string(filepath)
         .expect("Should have been able to read the file")
         .clone();
-    //println!("{}", contents);
     let uconf: UserSong = serde_json::from_str(&contents)
         .expect(format!("read json {}", filepath.display()).as_str());
     // let j = serde_json::to_string(&uconf)?;

@@ -16,7 +16,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("make_lytex.sh");
-        println!("write {}", p.display());
+        log::info!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_make_lytex();
         write!(output, "{}", data)?;
@@ -25,7 +25,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("make_clean.sh");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_make_clean();
         write!(output, "{}", data)?;
@@ -34,7 +34,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("make_mpost.sh");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_make_mpost();
         write!(output, "{}", data)?;
@@ -43,7 +43,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("make_pdf.sh");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_make_pdf();
         write!(output, "{}", data)?;
@@ -52,7 +52,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("make_wav.sh");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_make_wav();
         write!(output, "{}", data)?;
@@ -61,7 +61,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("colors.sh");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_colors();
         write!(output, "{}", data)?;
@@ -71,7 +71,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
             let mut p: PathBuf = song.builddir.clone();
             let _ = fs::create_dir_all(&p)?;
             p.push("preamble.tex");
-            println!("write {}", p.display());
+            log::debug!("write {}", p.display());
             let mut output = File::create(p)?;
             let data = make_preamble();
             write!(output, "{}", data)?;
@@ -82,7 +82,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
             let mut p: PathBuf = song.builddir.clone();
             let _ = fs::create_dir_all(&p)?;
             p.push("chords.tex");
-            println!("write {}", p.display());
+            log::debug!("write {}", p.display());
             let mut output = File::create(p)?;
             let data = make_chords();
             write!(output, "{}", data)?;
@@ -93,7 +93,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
             let mut p: PathBuf = song.builddir.clone();
             let _ = fs::create_dir_all(&p)?;
             p.push("data.tex");
-            println!("write {}", p.display());
+            log::debug!("write {}", p.display());
             let mut output = File::create(p)?;
             //let data = make_preamble();
             let today = chrono::Utc::now().format("%Y-%m-%d").to_string();
@@ -116,7 +116,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("macros.ly");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_macros();
         write!(output, "{}", data)?;

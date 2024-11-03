@@ -1,5 +1,5 @@
 \documentclass[11pt]{article}
-\usepackage[noprefix,norefeq]{nomencl}
+
 \input{preamble}
 \usepackage{pdfpages}
 
@@ -12,22 +12,18 @@
 \usepackage{xcolor}
 \usepackage{todonotes}
 \usepackage{import}
-\usepackage{textcomp}
-\usepackage{multicol}
-\usepackage{parcolumns}
 \input{data}
 \input{chords}
 
 
 \begin{document}
 \makesongtitle
-
-\input{lyrics}
-
+%\begin{multicols}{2}
+\input{struct.tex}
 \newpage
-\section*{intro}
-\subimport{intro.output/}{intro}
-\section*{couplet}
-\subimport{couplet.output/}{couplet}
+\input{lyrics.tex}
+%\end{multicols}
+%    \subimport{intro.output/}{intro}
+%    \subimport{solo.output/}{solo}
 
 \end{document}

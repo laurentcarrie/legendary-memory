@@ -10,7 +10,7 @@ use crate::helpers::helpers::pdfname_of_song;
 pub fn f() {}
 
 pub fn generate_omakeroot(world: &World) -> Result<(), Error> {
-    println!("generate OMakeroot in {}", world.builddir.display());
+    log::debug!("generate OMakeroot in {}", world.builddir.display());
     let mut p: PathBuf = world.builddir.clone();
     let _ = fs::create_dir_all(&p)?;
     p.push("OMakeroot");
@@ -33,7 +33,7 @@ pub fn generate_omakeroot(world: &World) -> Result<(), Error> {
 }
 
 pub fn generate_root_omakefile(world: &World) -> Result<(), Error> {
-    println!("generate OMakefile in {}", world.builddir.display());
+    log::debug!("generate OMakefile in {}", world.builddir.display());
     let mut p: PathBuf = world.builddir.clone();
     let _ = fs::create_dir_all(&p)?;
     p.push("OMakefile");

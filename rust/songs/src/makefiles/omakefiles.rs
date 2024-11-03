@@ -7,7 +7,7 @@ use crate::config::model::{Song, World};
 use crate::helpers::helpers::pdfname_of_song;
 
 pub fn generate_refresh_sh(exepath: &PathBuf, world: &World) -> Result<(), Error> {
-    println!("generate refresh.sh in {}", world.builddir.display());
+    log::debug!("generate refresh.sh in {}", world.builddir.display());
     let mut p: PathBuf = world.builddir.clone();
     let _ = fs::create_dir_all(&p)?;
     p.push("refresh.sh");
@@ -32,7 +32,7 @@ set -x
 }
 
 pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
-    println!("generate Omakefile in {}", song.builddir.display());
+    log::debug!("generate Omakefile in {}", song.builddir.display());
     let mut p: PathBuf = song.builddir.clone();
     let _ = fs::create_dir_all(&p)?;
     let pdfname = pdfname_of_song(&song);

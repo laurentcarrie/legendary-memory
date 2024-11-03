@@ -1,17 +1,13 @@
 {
   "cell_height": 30,
-  "cell_width": 60,
-  "title": "Gouge Away",
-  "author": "Pixies",
+  "cell_width": 150,
+  "title": "The End Has No End",
+  "author": "The Strokes",
   "texfiles": [
-    "lyrics.tex"
+    "lyrics.tex",
+    "struct.tex"
   ],
-  "lilypondfiles": [
-    "refrain.ly",
-    "couplet.ly",
-    "basse.ly",
-    "grille.ly"
-  ],
+  "lilypondfiles": [],
   "sections": [
     {
       "name": "couplet",
@@ -40,12 +36,10 @@
   ],
   "outputtemplate": null,
   "outputformat": null,
-  "chord_glyph_scale": 2,
+  "chord_glyph_scale": 4,
   "section_spacing": null,
-  "wavfiles": [
-    "basse.wav"
-  ],
-  "digest": "cad05eb00d28288216fff549ac13d992",
-  "date": "2024-06-15",
+  "wavfiles": [],
+  "digest": "c8a1ec51a2ded346144d83087e9ab254",
+  "date": "2024-11-11",
   "hash": "0"
 }

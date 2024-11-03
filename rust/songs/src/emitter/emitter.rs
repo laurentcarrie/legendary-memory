@@ -30,9 +30,9 @@ fn write_row(mut output: &File, row: &Row) -> Result<(), Error> {
         .fold(0, |acc, i| acc + i);
 
     // for b in &row.bars {
-    //     println!("---> {n}", n = b.chords.len());
+    //     log::debug!("---> {n}", n = b.chords.len());
     // }
-    // println!("sum is {nbchords}", nbchords = nbchords);
+    // log::debug!("sum is {nbchords}", nbchords = nbchords);
 
     writeln!(output, "nbbars:={nbbars} ;", nbbars = row.bars.len())?;
     writeln!(output, "nbchords:={nbchords} ;", nbchords = nbchords)?;
@@ -205,10 +205,10 @@ section_spacing :=  {section_spacing} ;
     let mut p: PathBuf = song.builddir.clone();
     let _ = fs::create_dir_all(&p)?;
     p.push(format!("{name}.mp", name = section.name));
-    println!("write {}", p.display());
+    log::debug!("write {}", p.display());
     let mut output = File::create(p)?;
     writeln!(output, "{}", &data)?;
-    // println!("INDEX {}", index);
+    // log::debug!("INDEX {}", index);
     write_section(&output, &section)?;
     //    {{ after_sections }}
 
