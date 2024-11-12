@@ -26,6 +26,25 @@ format() {
   cd $here && bash my-latexindent.sh
 }
 
+gdrive() {
+  (cd $builddir && omake gdrive)
+}
+
+dev(){
+  rm -rf $builddir
+  build
+  make
+  format
+}
+
+
+all(){
+  rm -rf $builddir
+  build
+  make
+  gdrive
+}
+
 case $1 in
 b)
   build
@@ -48,9 +67,18 @@ c)
   find $builddir -name "*$2*" -type d | while read f ; do echo $f ; \
    (cd $f && omake clean ) ; done
   ;;
+gd)
+  gdrive
+  ;;
+dev)
+  dev
+  ;;
+all)
+  all
+  ;;
 
 *)
-  echo "bad choice [b|m|c|s|all]"
+  echo "bad choice [b|m|c|s|gd|dev|all]"
   exit 1
   ;;
 esac

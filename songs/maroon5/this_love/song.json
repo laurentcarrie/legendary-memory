@@ -4,7 +4,8 @@
   "title": "This Love",
   "author": "Maroon 5",
   "texfiles": [
-    "lyrics.tex"
+    "lyrics.tex",
+    "struct.tex"
   ],
   "lilypondfiles": [
     "couplet.ly",
@@ -52,7 +53,7 @@
   "chord_glyph_scale": 2,
   "section_spacing": null,
   "wavfiles": [],
-  "date": "2024-06-15",
-  "digest": "6cb0dfe91d82a9e5283619367c482a0e",
+  "date": "2024-11-12",
+  "digest": "fc6074de0f046003051dff6e7a607b58",
   "hash": "0"
 }
