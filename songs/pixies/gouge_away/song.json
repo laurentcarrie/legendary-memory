@@ -1,0 +1,51 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "Gouge Away",
+  "author": "Pixies",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [
+    "refrain.ly",
+    "couplet.ly",
+    "basse.ly",
+    "grille.ly"
+  ],
+  "sections": [
+    {
+      "name": "couplet",
+      "rows": [
+        [
+          "G#m",
+          "B",
+          "E",
+          "G#m",
+          "E"
+        ]
+      ]
+    },
+    {
+      "name": "refrain",
+      "rows": [
+        [
+          "G#m",
+          "B",
+          "E",
+          "G#",
+          "E"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [
+    "basse.wav"
+  ],
+  "digest": "cad05eb00d28288216fff549ac13d992",
+  "date": "2024-06-15",
+  "hash": "0"
+}

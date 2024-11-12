@@ -1,0 +1,39 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "Special K",
+  "author": "Placebo",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [
+    "solo.ly",
+    "intro.ly",
+    "riff_a.ly",
+    "riff_b.ly"
+  ],
+  "sections": [
+    {
+      "name": "refrain",
+      "rows": [
+        [
+          "G",
+          "D",
+          "Bm7",
+          "CM7"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [
+    "intro.wav",
+    "riff_a.wav"
+  ],
+  "digest": "7f6b2007654c012e161002f7cc9ac86d",
+  "date": "2024-06-15",
+  "hash": "0"
+}

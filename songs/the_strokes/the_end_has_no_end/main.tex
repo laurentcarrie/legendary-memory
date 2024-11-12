@@ -1,0 +1,29 @@
+\documentclass[11pt]{article}
+
+\input{preamble}
+\usepackage{pdfpages}
+
+%\usepackage[margin=0.5in]{geometry}
+\usepackage{graphicx}
+\usepackage{unicode-math}
+\setmainfont{XITS}
+\setmathfont{XITS Math}
+\usepackage{luamplib}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\usepackage{import}
+\input{data}
+\input{chords}
+
+
+\begin{document}
+\makesongtitle
+%\begin{multicols}{2}
+\input{struct.tex}
+\newpage
+\input{lyrics.tex}
+%\end{multicols}
+%    \subimport{intro.output/}{intro}
+%    \subimport{solo.output/}{solo}
+
+\end{document}

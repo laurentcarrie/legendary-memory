@@ -7,9 +7,6 @@ echo "make rs of sh"
 
 here=$(dirname $(realpath $0))
 
-test -d $shsrcdir
-
-
 mkdir -p $here/src/generated
 
 generate_one_outfile() {
@@ -20,7 +17,7 @@ generate_one_outfile() {
   outfile=$5
 
   shfile=$shsrcdir/$name.$extension
-  printf "$shfile\n"
+  #printf "$shfile\n"
 
   test -f $shfile
 
@@ -72,8 +69,8 @@ conclusion() {
 
 }
 
-what="make_lytex make_mpost make_pdf make_wav make_clean"
-shsrcdir=$(dirname $(dirname $here))/song_book_builder/lib/shfiles
+what="make_lytex make_mpost make_pdf make_wav make_clean colors"
+shsrcdir=$here/others/shfiles
 extension=sh
 outfile_tmp=$here/src/generated/sh_code.rs.tmp
 outfile=$here/src/generated/sh_code.rs
@@ -85,7 +82,7 @@ conclusion $outfile_tmp $outfile
 
 
 what="macros"
-shsrcdir=$(dirname $(dirname $here))/song_book_builder/lib/lyfiles
+shsrcdir=$here/others/lyfiles
 extension=ly
 outfile_tmp=$here/src/generated/ly_code.rs.tmp
 outfile=$here/src/generated/ly_code.rs
@@ -95,8 +92,8 @@ for s in $what ; do
 done
 conclusion $outfile_tmp $outfile
 
-what="preamble"
-shsrcdir=$(dirname $(dirname $here))/song_book_builder/lib/texfiles
+what="preamble chords"
+shsrcdir=$here/others/texfiles
 extension=tex
 outfile_tmp=$here/src/generated/tex_code.rs.tmp
 outfile=$here/src/generated/tex_code.rs
@@ -108,7 +105,7 @@ conclusion $outfile_tmp $outfile
 
 
 what="flat sharp seven minor major_seven draw_bati glyph_of_chord draw_row draw_chord"
-shsrcdir=$(dirname $(dirname $here))/song_book_builder/lib/mpfiles
+shsrcdir=$here/others/mpfiles
 extension=mp
 outfile_tmp=$here/src/generated/mp_code.rs.tmp
 outfile=$here/src/generated/mp_code.rs

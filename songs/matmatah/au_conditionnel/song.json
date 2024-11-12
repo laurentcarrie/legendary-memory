@@ -1,0 +1,46 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "Au Conditionnel",
+  "author": "Matmatah",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [
+    "solo.ly"
+  ],
+  "sections": [
+    {
+      "name": "couplet",
+      "rows": [
+        [
+          "G#m",
+          "B",
+          "E",
+          "G#m",
+          "E"
+        ]
+      ]
+    },
+    {
+      "name": "refrain",
+      "rows": [
+        [
+          "G#m",
+          "B",
+          "E",
+          "G#",
+          "E"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [],
+  "digest": "4a9a717e851348c422fcb9f462f19466",
+  "date": "2024-06-15",
+  "hash": "0"
+}

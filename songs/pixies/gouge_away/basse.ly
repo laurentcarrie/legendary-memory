@@ -1,5 +1,5 @@
 \version "2.24.2"
-\include "macros.ly"
+\include "../../../macros.ly"
 song_tempo = 132
 
 lead = {
@@ -10,14 +10,14 @@ lead = {
     e,8\2  e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 |
     gis,,8\4  gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 gis,,8\4 |
     e,8\2  e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 e,8\2 |
-    }
+  }
 
 }
 
 drumbar =  \drummode {  bd4 sn4  bd4 sn4 }
 
 drumbars = {
-\repeat unfold 15 { \drumbar | }
+  \repeat unfold 15 { \drumbar | }
 }
 
 
@@ -39,44 +39,44 @@ drumbarshh = {
 
 
 \score {
-    <<
+  <<
     \new TabStaff {
-        \set Staff.stringTunings = #bass-tuning
+      \set Staff.stringTunings = #bass-tuning
 
-        \clef bass
+      \clef bass
 
-        \tempo 4 = \song_tempo
-        \tabFullNotation
-        \override Score.BarNumber.break-visibility = ##(#t #t #t)
-        \transpose g f { \lead }
-       %\repeat percent 3 {\lead}
+      \tempo 4 = \song_tempo
+      \tabFullNotation
+      \override Score.BarNumber.break-visibility = ##(#t #t #t)
+      \transpose g f { \lead }
+      %\repeat percent 3 {\lead}
     }
 
-    >>
+  >>
 
-   \layout {}
+  \layout {}
 }
 
 
 \score {
-        \unfoldRepeats {
-        <<
-            \new DrumStaff
-                \tempo 4 = \song_tempo
-                <<
-                    %\new DrumVoice {  \drumbarshh }
-                    \new DrumVoice {  \drumbars }
-                >>
+  \unfoldRepeats {
+    <<
+      \new DrumStaff
+      \tempo 4 = \song_tempo
+      <<
+        %\new DrumVoice {  \drumbarshh }
+        \new DrumVoice {  \drumbars }
+      >>
 
-            \new Staff {
-                  \repeat unfold 3 {\lead}
-                  \set Staff.midiMinimumVolume = #0.9
-                  \set Staff.midiMaximumVolume = #0.9
-                  \set Staff.midiInstrument = "electric guitar (clean)"
-            }
-        >>
-        }
-       \midi {
-            \tempo 4 = \song_tempo
-    }
+      \new Staff {
+        \repeat unfold 3 {\lead}
+        \set Staff.midiMinimumVolume = #0.9
+        \set Staff.midiMaximumVolume = #0.9
+        \set Staff.midiInstrument = "electric guitar (clean)"
+      }
+    >>
+  }
+  \midi {
+    \tempo 4 = \song_tempo
+  }
 }

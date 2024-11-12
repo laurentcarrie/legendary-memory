@@ -1,0 +1,33 @@
+\documentclass[11pt]{article}
+
+\input{preamble}
+\usepackage{pdfpages}
+
+%\usepackage[margin=0.5in]{geometry}
+\usepackage{graphicx}
+\usepackage{unicode-math}
+\setmainfont{XITS}
+\setmathfont{XITS Math}
+\usepackage{luamplib}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\usepackage{import}
+\usepackage{textcomp}
+\input{data}
+
+\begin{document}
+\makesongtitle
+\section*{couplet}
+\subimport{couplet.output/}{couplet}
+\section*{refrain}
+\subimport{refrain.output/}{refrain}
+\section*{pont}
+\subimport{pont.output/}{pont}
+
+\newpage
+
+\section*{lyrics}
+\begin{multicols}{2}
+	\input{lyrics}
+\end{multicols}
+\end{document}

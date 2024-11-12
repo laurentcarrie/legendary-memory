@@ -7,16 +7,16 @@ use crate::config::model::World;
 use crate::emitter::emitter::write_mp;
 use crate::generated::ly_code::make_macros;
 use crate::generated::sh_code::{
-    make_make_clean, make_make_lytex, make_make_mpost, make_make_pdf, make_make_wav,
+    make_colors, make_make_clean, make_make_lytex, make_make_mpost, make_make_pdf, make_make_wav,
 };
-use crate::generated::tex_code::make_preamble;
+use crate::generated::tex_code::{make_chords, make_preamble};
 
 pub fn generate(world: &World) -> Result<(), Error> {
     {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("make_lytex.sh");
-        println!("write {}", p.display());
+        log::info!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_make_lytex();
         write!(output, "{}", data)?;
@@ -25,7 +25,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("make_clean.sh");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_make_clean();
         write!(output, "{}", data)?;
@@ -34,7 +34,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("make_mpost.sh");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_make_mpost();
         write!(output, "{}", data)?;
@@ -43,7 +43,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("make_pdf.sh");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_make_pdf();
         write!(output, "{}", data)?;
@@ -52,9 +52,18 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("make_wav.sh");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_make_wav();
+        write!(output, "{}", data)?;
+    }
+    {
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = fs::create_dir_all(&p)?;
+        p.push("colors.sh");
+        log::debug!("write {}", p.display());
+        let mut output = File::create(p)?;
+        let data = make_colors();
         write!(output, "{}", data)?;
     }
     {
@@ -62,7 +71,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
             let mut p: PathBuf = song.builddir.clone();
             let _ = fs::create_dir_all(&p)?;
             p.push("preamble.tex");
-            println!("write {}", p.display());
+            log::debug!("write {}", p.display());
             let mut output = File::create(p)?;
             let data = make_preamble();
             write!(output, "{}", data)?;
@@ -72,10 +81,23 @@ pub fn generate(world: &World) -> Result<(), Error> {
         for song in &world.songs {
             let mut p: PathBuf = song.builddir.clone();
             let _ = fs::create_dir_all(&p)?;
-            p.push("data.tex");
-            println!("write {}", p.display());
+            p.push("chords.tex");
+            log::debug!("write {}", p.display());
             let mut output = File::create(p)?;
-            let data = make_preamble();
+            let data = make_chords();
+            write!(output, "{}", data)?;
+        }
+    }
+    {
+        for song in &world.songs {
+            let mut p: PathBuf = song.builddir.clone();
+            let _ = fs::create_dir_all(&p)?;
+            p.push("data.tex");
+            log::debug!("write {}", p.display());
+            let mut output = File::create(p)?;
+            //let data = make_preamble();
+            let today = chrono::Utc::now().format("%Y-%m-%d").to_string();
+
             write!(
                 output,
                 "
@@ -83,8 +105,10 @@ pub fn generate(world: &World) -> Result<(), Error> {
 \\def\\songtitle{{ {} }}
 \\def\\songauthor{{ {} }}
 \\newcommand{{\\makesongtitle}}{{\\xxmakesongtitle{{\\songtitle}}{{\\songauthor}} }}
+\\newcommand{{\\songlastupdate}}{{ {} }}
+\\newcommand{{\\songtoday}}{{ {} }}
 ",
-                song.title, song.author
+                song.title, song.author, song.date, today
             )?;
         }
     }
@@ -92,14 +116,16 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let mut p: PathBuf = world.builddir.clone();
         let _ = fs::create_dir_all(&p)?;
         p.push("macros.ly");
-        println!("write {}", p.display());
+        log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_macros();
         write!(output, "{}", data)?;
     }
     {
-        for song in &world.songs {
-            write_mp(&song);
+        for song in world.songs.iter() {
+            for section in song.sections.iter() {
+                write_mp(&section, &song)?;
+            }
         }
     }
     Ok(())

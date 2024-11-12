@@ -1,3 +1,5 @@
+use log::LevelFilter;
+use simple_logger::SimpleLogger;
 use std::io::Error;
 use std::path::Path;
 use std::path::PathBuf;
@@ -8,21 +10,34 @@ use crate::config::model::World;
 use crate::config::world::make;
 use crate::generated::generate::generate;
 // use crate::makefiles::omakeroot::generate_omakeroot ;
-use crate::emitter::xxx::fff;
-use crate::makefiles::omakefiles::generate_song_omakefile;
+// use crate::emitter::xxx::fff;
+use crate::makefiles::omakefiles::{generate_refresh_sh, generate_song_omakefile};
 use crate::makefiles::omakeroot::{generate_omakeroot, generate_root_omakefile};
 
 pub mod config;
 pub mod emitter;
 pub mod generated;
+pub mod helpers;
 pub mod makefiles;
+
+fn usage(prog: &str) -> String {
+    return format!("usage : {prog} <srcdir> <builddir>", prog = prog);
+}
 fn main() -> Result<(), Error> {
-    fff();
+    SimpleLogger::new().init().unwrap();
+    log::set_max_level(LevelFilter::Debug);
+    log::info!("start cron");
+    // fff();
     let args: Vec<String> = env::args().collect();
-    let root = &args[1];
-    let buildroot = &args[2];
+    let (sourceroot, buildroot) = match (args.get(1), args.get(2)) {
+        (Some(x), Some(y)) => (x, y),
+        _ => {
+            panic!("{}", usage(&args[0]));
+        }
+    };
     let _ = fs::create_dir_all(&buildroot)?;
-    let srcdir: PathBuf = Path::new(root).canonicalize().expect("root");
+    let exepath: PathBuf = Path::new(&args[0]).canonicalize().expect("exepath");
+    let srcdir: PathBuf = Path::new(sourceroot).canonicalize().expect("root");
     let builddir: PathBuf = Path::new(buildroot).canonicalize().expect("buildroot");
     let _ = fs::create_dir_all(&buildroot)?;
 
@@ -32,6 +47,7 @@ fn main() -> Result<(), Error> {
     // let s = root2.into_os_string() ;
 
     let world: World = make(&srcdir, &builddir);
+    generate_refresh_sh(&exepath, &world)?;
     generate_omakeroot(&world)?;
     generate_root_omakefile(&world)?;
     // world
@@ -44,9 +60,9 @@ fn main() -> Result<(), Error> {
     }
 
     generate_song_omakefile(&world.songs[0])?;
-    generate(&world);
+    generate(&world)?;
 
-    // println!("SUCCESS !");
+    // log::debug!("SUCCESS !");
 
     //dbg!(world);
     Ok(())
