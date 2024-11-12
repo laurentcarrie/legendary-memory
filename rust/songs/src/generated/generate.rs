@@ -7,7 +7,8 @@ use crate::config::model::World;
 use crate::emitter::emitter::write_mp;
 use crate::generated::ly_code::make_macros;
 use crate::generated::sh_code::{
-    make_colors, make_make_clean, make_make_lytex, make_make_mpost, make_make_pdf, make_make_wav,
+    make_colors, make_make_clean, make_make_gdrive, make_make_lytex, make_make_mpost,
+    make_make_pdf, make_make_wav,
 };
 use crate::generated::tex_code::{make_chords, make_preamble};
 
@@ -64,6 +65,15 @@ pub fn generate(world: &World) -> Result<(), Error> {
         log::debug!("write {}", p.display());
         let mut output = File::create(p)?;
         let data = make_colors();
+        write!(output, "{}", data)?;
+    }
+    {
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = fs::create_dir_all(&p)?;
+        p.push("make_gdrive.sh");
+        log::debug!("write {}", p.display());
+        let mut output = File::create(p)?;
+        let data = make_make_gdrive();
         write!(output, "{}", data)?;
     }
     {

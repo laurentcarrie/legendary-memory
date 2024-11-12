@@ -49,11 +49,14 @@ pub fn generate_root_omakefile(world: &World) -> Result<(), Error> {
 
     write!(
         output,
-        "
-.PHONY: all install clean pdf delivery clean
+        r###"
+.PHONY: all install clean pdf delivery clean gdrive
 
-.SUBDIRS: \\
-"
+gdrive:
+	bash $(buildroot)/make_gdrive.sh delivery
+
+.SUBDIRS: \
+"###
     )?;
 
     for subdir in subdirs {

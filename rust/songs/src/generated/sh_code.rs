@@ -242,3 +242,19 @@ printf "${status_fmt}${topic_fmt}${message_fmt}\n"
 }"###;
     ret.to_string()
 }
+pub fn make_make_gdrive() -> String {
+    let ret = r###"#!/usr/bin/env sh
+
+set -e
+set -x
+
+dirname=$1
+test -d $dirname
+test -f "$dirname/maroon_5--@--this_love.pdf"
+
+(
+  cd $dirname
+  rclone sync . mydrive:/zik/songs --differ -
+)"###;
+    ret.to_string()
+}
