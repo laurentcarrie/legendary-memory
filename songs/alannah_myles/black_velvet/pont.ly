@@ -77,35 +77,54 @@ lead = {
 
     % mesure #1
     \tuplet 3/2 {
-      r4 f8\4
-      c'8\glissando\3 d'8\3 d'4~\3 ~8\3 r8 d'8\3\glissando c'8\3 a8\4
+      r4
+      f8\4
     }
+    \tuplet 3/2 {
+      c'8\glissando\3 d'8\3
+      d'4~\3
+      ~8\3 r8 d'8\3\glissando c'8\3 a8\4
+    }
+
+
+    % mesure #2
     |
     \tuplet 3/2 {
       f'8\2 d'8\3 d'8\3~
+    }
+    \tuplet 3/2 {
       d'4\3 f8\5
-      d'8\3 c'8\3 g8\4 f8\3
+    }
+
+    \tuplet 3/2 {
+      d'8\3 c'8\3 g8\4
+    }
+    \tuplet 3/2 {
+      f8\3
       d8\5 c8\5
     }
-    % mesure #2
-    |
-    \( \grace f8\4~\glissando g1\4 \prall \)
+
+
     % mesure #3
     |
-    r1
+    \( \grace f8\4~\glissando g1\4 \prall \)
     % mesure #4
+    |
+    r1
+    % mesure #5
     |
     r4
     \tuplet 3/2 {
-      a'8\2 c''8\1 c''8\1\glissando
+      \grace g'8\2\glissando a'8\2 c''8\1 c''8\1
     }
     \tuplet 3/2 {
-      g'8\2 f'8\2 d'8\3
+      \grace a'10\2\glissando g'8\2 f'8\2 d'8\3
     }
     \tuplet 3/2{
-      g'8\2 a'8\2 c''8\1
+      g'8\2\glissando a'8\2 c''8\1
     }
-    % mesure #5
+
+    % mesure #6
     |
     \tuplet 3/2 {
       d''4\1 c''8\1~
@@ -120,16 +139,16 @@ lead = {
       r8 f'8\2 d'8\3
     }
 
-    % mesure #6
+    % mesure #7
     |
     \( \grace f'8\2~\glissando g'1\2~ \prall \)
     % mesure #3
 
-    % mesure 7
+    % mesure 8
     |
     \( g'1\2~ \prall \)
 
-    % mesure 8
+    % mesure 9
     |
     r1
   }
