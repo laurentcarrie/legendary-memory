@@ -69,7 +69,7 @@ conclusion() {
 
 }
 
-what="make_lytex make_mpost make_pdf make_wav make_clean colors"
+what="make_lytex make_mpost make_pdf make_wav make_clean colors make_gdrive"
 shsrcdir=$here/others/shfiles
 extension=sh
 outfile_tmp=$here/src/generated/sh_code.rs.tmp

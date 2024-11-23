@@ -15,7 +15,7 @@
 	\begin{tabular}{C|C|C|C}
 		\chordDm & \chordDm & \chordDm & \chordDm \\
 		\chordDm & \chordDm & \chordDm & \chordDm \\
-		\chordA  & \chordG  & \chordF  & \chordE  \\
+		\chordA  & \chordG  & \chordF  & \chordC  \\
 	\end{tabular} \\
 }{
 	\couplet{couplet 1}{\lolocomment{12 mesures}\\
@@ -29,13 +29,12 @@
 % refrain 1
 \lolotwocolumns{
 	\begin{tabular}{C|C|C|C}
-		\chordGm & \chordC & \chordGm          & \chordG \chordBf \\
-		\chordGm & \chordC & \chordD  \chordAm & \chordDm         \\
+		\chordGm & \chordC & \chordGm                   & \chordEf \chordBf \\
+		\chordGm & \chordC & \chordBfsept  \chordAfsept &                   \\
 	\end{tabular} \\
 }{
-	\refrain{refrain 1}{\lolocomment{8 mesures}\\
+	\refrain{refrain 1}{\lolocomment{7 mesures}\\
 		\lolocomment{stop 7.1} \\
-		\lolocomment{4 mesures Dm}
 	}
 }
 
@@ -45,11 +44,11 @@
 
 % fill 1
 \lolotwocolumns{
-	\begin{tabular}{C|C|C}
-		\chordDm & \chordDm & \chordDm \\
+	\begin{tabular}{C|C|C|C}
+		\chordDm & \chordDm & \chordDm & \chordDm \\
 	\end{tabular} \\
 }{
-	\pont{fill 1}{\lolocomment{3 mesures}\\
+	\pont{fill 1}{\lolocomment{4 mesures}\\
 	}
 }
 
@@ -58,18 +57,22 @@
 \end{center}
 
 % couplet 2
-\begin{multicols}{2}
-	\couplet{couplet 2}{\lolocomment{12 mesures}\\
-		\lolocomment{idem couplet 1}
-	}
-	\columnbreak
+\lolotwocolumns{
+	\lolocomment{idem couplet 1}
+}{
+	\couplet{couplet 2}{\lolocomment{12 mesures}}
+}
 
-	\refrain{refrain 2}{\lolocomment{8 mesures !}\\
-		\lolocomment{idem couplet 1 mais pas de stop}
-	}
+\begin{center}
+	\line(1,0){450}
+\end{center}
 
 
-\end{multicols}
+\lolotwocolumns{
+	\lolocomment{idem couplet 1 mais pas de stop}
+}{
+	\refrain{refrain 2}{\lolocomment{7 mesures}}
+}
 
 \begin{center}
 	\line(1,0){450}
@@ -77,11 +80,11 @@
 
 % fill 2
 \lolotwocolumns{
-	\begin{tabular}{C}
-		\chordDm
+	\begin{tabular}{C|C}
+		\chordDm & \chordDm
 	\end{tabular} \\
 }{
-	\pont{fill 2}{\lolocomment{1 mesure Dm}	}
+	\pont{fill 2}{\lolocomment{2 mesures}	}
 }
 
 \begin{center}
@@ -104,12 +107,10 @@
 \end{center}
 
 \lolotwocolumns{
+	What could you do?
 }
 {
-	\pont{solo}{\lolocomment{8 mesures Dm}\\
-
-		What could you do? \\
-	}
+	\pont{solo}{\lolocomment{8 mesures Dm}}
 }
 
 \begin{center}
@@ -119,7 +120,8 @@
 
 \begin{multicols}{2}
 
-	\refrain{refrain 3}{}
-	\couplet{couplet3}{}
+	\refrain{refrain 3}{\lolocomment{7 mesures + 1 Dm}  }
+	\refrain{refrain 4}{}
+	\pont{final ad lib}{}
 
 \end{multicols}
