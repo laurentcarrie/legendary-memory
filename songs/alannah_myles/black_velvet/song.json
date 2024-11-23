@@ -7,7 +7,10 @@
     "lyrics.tex",
     "struct.tex"
   ],
-  "lilypondfiles": [],
+  "lilypondfiles": [
+    "pont.ly",
+    "solo.ly"
+  ],
   "sections": [
     {
       "name": "couplet",
@@ -39,7 +42,7 @@
   "chord_glyph_scale": 4,
   "section_spacing": null,
   "wavfiles": [],
-  "digest": "e9026f4054ae7a4c3dda09548984b88b",
+  "digest": "09801afe3ab9283719db100b593ccae3",
   "date": "2024-11-23",
   "hash": "0"
 }
