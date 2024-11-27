@@ -335,7 +335,15 @@ pub fn make_preamble() -> String {
 		\vspace{0pt}
 		#3
 	\end{minipage}
-}"###;
+}
+
+\newcommand\lolohr{
+	\begin{center}
+		\line(1,0){450}
+	\end{center}
+}
+
+\newcommand\lolovspace{\vspace{0.5cm plus 0.5ex}}"###;
     ret.to_string()
 }
 pub fn make_chords() -> String {
