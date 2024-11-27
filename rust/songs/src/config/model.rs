@@ -38,6 +38,18 @@ pub struct UserSong {
     pub date: String,
 }
 
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
+pub struct UserBookSong {
+    pub author: String,
+    pub title: String,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
+pub struct UserBook {
+    pub title: String,
+    pub songs: Vec<UserBookSong>,
+}
+
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct Song {
     pub cell_height: i32,
@@ -57,9 +69,22 @@ pub struct Song {
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
+pub struct BookSong {
+    pub author: String,
+    pub title: String,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
+pub struct Book {
+    pub title: String,
+    pub songs: Vec<BookSong>,
+    pub builddir: PathBuf,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct World {
     pub builddir: PathBuf,
     pub srcdir: PathBuf,
-    pub project_yaml_paths: Vec<PathBuf>,
     pub songs: Vec<Song>,
+    pub books: Vec<Book>,
 }

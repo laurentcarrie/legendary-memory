@@ -248,13 +248,14 @@ pub fn make_make_gdrive() -> String {
 set -e
 set -x
 
-dirname=$1
+dirname=$2
+remote=$1
 test -d $dirname
 test -f "$dirname/maroon_5--@--this_love.pdf"
 
 (
   cd $dirname
-  rclone sync . mydrive:/zik/songs --differ -
+  rclone sync . mydrive:$remote --differ -
 )"###;
     ret.to_string()
 }

@@ -59,11 +59,20 @@ clean:
 
     write!(
         output,
-        "
-
+        r###"
 pdf : {pdfname}.pdf
 
-main.pdf : main.tex"
+main.tex : $(buildroot)/songs/main.tex
+    cp $(buildroot)/songs/main.tex .
+
+preamble.tex : $(buildroot)/songs/preamble.tex
+    cp $(buildroot)/songs/preamble.tex .
+
+chords.tex : $(buildroot)/songs/chords.tex
+    cp $(buildroot)/songs/chords.tex .
+
+
+main.pdf : main.tex preamble.tex chords.tex body.tex "###
     )?;
 
     for section in song.sections.iter() {

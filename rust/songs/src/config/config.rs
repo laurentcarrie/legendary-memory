@@ -2,8 +2,8 @@ use std::fs;
 use std::io::Error;
 use std::path::PathBuf;
 
-use crate::config::model::UserSong;
-use crate::config::model::{Bar, Row, Section, Song, UserSection};
+use crate::config::model::{Bar, BookSong, Row, Section, Song, UserBook, UserSection};
+use crate::config::model::{Book, UserSong};
 
 fn bar_of_string(s: &String) -> Bar {
     let chords: Vec<String> = s.split(' ').map(|s| s.to_string()).collect();
@@ -23,6 +23,40 @@ fn section_of_usection(u: &UserSection) -> Section {
         name: u.name.clone(),
         rows: rows,
     };
+}
+
+/// read a json file and returns a Book
+pub fn decode_book(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Book, Error> {
+    log::debug!("read book {:?}", &filepath);
+    let contents = fs::read_to_string(filepath)
+        .expect("Should have been able to read the file")
+        .clone();
+    let uconf: UserBook = serde_json::from_str(&contents)
+        .expect(format!("read json {}", filepath.display()).as_str());
+    // let j = serde_json::to_string(&uconf)?;
+    // {
+    //     let mut p2 = filepath.clone();
+    //     p2.set_file_name("book.json");
+    //     fs::write(p2, j);
+    // }
+
+    // dbg!(&uconf);
+    let mut book_builddir = buildroot.clone();
+    book_builddir.push("books");
+    book_builddir.push(&uconf.title);
+    let book = Book {
+        title: uconf.title,
+        songs: uconf
+            .songs
+            .iter()
+            .map(|ub| BookSong {
+                title: ub.title.clone(),
+                author: ub.author.clone(),
+            })
+            .collect(),
+        builddir: book_builddir,
+    };
+    Ok(book)
 }
 
 pub fn decode_song(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Song, Error> {

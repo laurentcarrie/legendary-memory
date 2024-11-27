@@ -5,7 +5,7 @@ use std::io::{Error, Write};
 use std::path::PathBuf;
 
 use crate::config::model::World;
-use crate::helpers::helpers::pdfname_of_song;
+use crate::helpers::helpers::{pdfname_of_book, pdfname_of_song};
 
 pub fn f() {}
 
@@ -45,15 +45,20 @@ pub fn generate_root_omakefile(world: &World) -> Result<(), Error> {
         subdirs.insert(&song.builddir);
     }
 
+    assert_eq!(world.books.len() as i32, 1);
+    for book in &world.books {
+        subdirs.insert(&book.builddir);
+    }
+
     write!(output, "# root is {}\n", world.builddir.display())?;
 
     write!(
         output,
         r###"
-.PHONY: all install clean pdf delivery clean gdrive
+.PHONY: all install clean pdf delivery delivery_songs delivery_books clean gdrive
 
 gdrive:
-	bash $(buildroot)/make_gdrive.sh delivery
+	bash $(buildroot)/make_gdrive.sh /zik/songs delivery
 
 .SUBDIRS: \
 "###
@@ -70,7 +75,7 @@ gdrive:
 "
     )?;
 
-    write!(output, "delivery:\\\n")?;
+    write!(output, "delivery_songs:\\\n")?;
     for song in &world.songs {
         write!(
             output,
@@ -85,10 +90,33 @@ gdrive:
     write!(
         output,
         "
-\trm -rf delivery
-\tmkdir delivery
+\tmkdir -p delivery
+\tcp $^ delivery/.
+
+"
+    );
+
+    write!(output, "delivery_books:\\\n")?;
+    for book in &world.books {
+        write!(
+            output,
+            "{}",
+            format!(
+                "\t{p}/{pdfname}.pdf \\\n",
+                p = book.builddir.display(),
+                pdfname = pdfname_of_book(&book)
+            )
+        )?;
+    }
+    write!(
+        output,
+        "
+\tmkdir -p delivery
 \tcp $^ delivery/.
 "
     )?;
+
+    write!(output, "delivery: delivery_books delivery_songs\\\n")?;
+
     Ok(())
 }

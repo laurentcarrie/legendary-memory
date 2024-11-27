@@ -5,7 +5,8 @@
   "author": "Alannah Myles",
   "texfiles": [
     "lyrics.tex",
-    "struct.tex"
+    "struct.tex",
+    "body.tex"
   ],
   "lilypondfiles": [
     "pont.ly",

@@ -92,16 +92,16 @@ for s in $what ; do
 done
 conclusion $outfile_tmp $outfile
 
-what="preamble chords"
-shsrcdir=$here/others/texfiles
-extension=tex
-outfile_tmp=$here/src/generated/tex_code.rs.tmp
-outfile=$here/src/generated/tex_code.rs
-#preamble $outfile_tmp $outfile
-for s in $what ; do
-  generate_one_outfile $s $shsrcdir $extension $outfile_tmp $outfile
-done
-conclusion $outfile_tmp $outfile
+#what="preamble chords"
+#shsrcdir=$here/others/texfiles
+#extension=tex
+#outfile_tmp=$here/src/generated/tex_code.rs.tmp
+#outfile=$here/src/generated/tex_code.rs
+##preamble $outfile_tmp $outfile
+#for s in $what ; do
+#  generate_one_outfile $s $shsrcdir $extension $outfile_tmp $outfile
+#done
+#conclusion $outfile_tmp $outfile
 
 
 what="flat sharp seven minor major_seven draw_bati glyph_of_chord draw_row draw_chord"

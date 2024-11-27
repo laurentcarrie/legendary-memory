@@ -10,7 +10,6 @@ use crate::generated::sh_code::{
     make_colors, make_make_clean, make_make_gdrive, make_make_lytex, make_make_mpost,
     make_make_pdf, make_make_wav,
 };
-use crate::generated::tex_code::{make_chords, make_preamble};
 
 pub fn generate(world: &World) -> Result<(), Error> {
     {
@@ -76,28 +75,79 @@ pub fn generate(world: &World) -> Result<(), Error> {
         let data = make_make_gdrive();
         write!(output, "{}", data)?;
     }
+    // {
+    //     for song in &world.songs {
+    //         let mut p: PathBuf = song.builddir.clone();
+    //         let _ = fs::create_dir_all(&p)?;
+    //         p.push("preamble.tex");
+    //         log::debug!("write {}", p.display());
+    //         let mut output = File::create(p)?;
+    //         let data = make_preamble();
+    //         write!(output, "{}", data)?;
+    //     }
+    // }
+    // {
+    //     for song in &world.songs {
+    //         let mut p: PathBuf = song.builddir.clone();
+    //         let _ = fs::create_dir_all(&p)?;
+    //         p.push("chords.tex");
+    //         log::debug!("write {}", p.display());
+    //         let mut output = File::create(p)?;
+    //         let data = make_chords();
+    //         write!(output, "{}", data)?;
+    //     }
+    // }
+
     {
-        for song in &world.songs {
-            let mut p: PathBuf = song.builddir.clone();
-            let _ = fs::create_dir_all(&p)?;
-            p.push("preamble.tex");
-            log::debug!("write {}", p.display());
-            let mut output = File::create(p)?;
-            let data = make_preamble();
-            write!(output, "{}", data)?;
-        }
+        let bytes_preamble_tex = include_bytes!("../../others/texfiles/preamble.tex");
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = fs::create_dir_all(&p)?;
+        p.push("books");
+        p.push("preamble.tex");
+        log::debug!("write {}", p.display());
+        let _ = fs::write(&p, bytes_preamble_tex).unwrap();
     }
+
     {
-        for song in &world.songs {
-            let mut p: PathBuf = song.builddir.clone();
-            let _ = fs::create_dir_all(&p)?;
-            p.push("chords.tex");
-            log::debug!("write {}", p.display());
-            let mut output = File::create(p)?;
-            let data = make_chords();
-            write!(output, "{}", data)?;
-        }
+        let bytes_preamble_tex = include_bytes!("../../others/texfiles/preamble.tex");
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = fs::create_dir_all(&p)?;
+        p.push("songs");
+        p.push("preamble.tex");
+        log::debug!("write {}", p.display());
+        let _ = fs::write(&p, bytes_preamble_tex).unwrap();
     }
+
+    {
+        let bytes_preamble_tex = include_bytes!("../../others/texfiles/main.tex");
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = fs::create_dir_all(&p)?;
+        p.push("songs");
+        p.push("main.tex");
+        log::debug!("write {}", p.display());
+        let _ = fs::write(&p, bytes_preamble_tex).unwrap();
+    }
+
+    {
+        let bytes_chords_tex = include_bytes!("../../others/texfiles/chords.tex");
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = fs::create_dir_all(&p)?;
+        // p.push("books");
+        p.push("chords.tex");
+        log::debug!("write {}", p.display());
+        let _ = fs::write(&p, bytes_chords_tex).unwrap();
+    }
+
+    {
+        let bytes_chords_tex = include_bytes!("../../others/texfiles/chords.tex");
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = fs::create_dir_all(&p)?;
+        p.push("songs");
+        p.push("chords.tex");
+        log::debug!("write {}", p.display());
+        let _ = fs::write(&p, bytes_chords_tex).unwrap();
+    }
+
     {
         for song in &world.songs {
             let mut p: PathBuf = song.builddir.clone();
@@ -114,9 +164,9 @@ pub fn generate(world: &World) -> Result<(), Error> {
 % import preamble first
 \\def\\songtitle{{ {} }}
 \\def\\songauthor{{ {} }}
-\\newcommand{{\\makesongtitle}}{{\\xxmakesongtitle{{\\songtitle}}{{\\songauthor}} }}
-\\newcommand{{\\songlastupdate}}{{ {} }}
-\\newcommand{{\\songtoday}}{{ {} }}
+\\renewcommand{{\\makesongtitle}}{{\\xxmakesongtitle{{\\songtitle}}{{\\songauthor}} }}
+\\renewcommand{{\\songlastupdate}}{{ {} }}
+\\renewcommand{{\\songtoday}}{{ {} }}
 ",
                 song.title, song.author, song.date, today
             )?;

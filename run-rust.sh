@@ -6,7 +6,15 @@ set -x
 here=$(dirname $(realpath $0))
 builddir=$here/build-rust
 songs=$here/songs
-test -d $songs
+books=$here/books
+
+printf "songs: $songs\n"
+[[ -n $songs ]]
+[[ -d $songs ]]
+
+printf "books: $books\n"
+[[ -n $books ]]
+[[ -d $books ]]
 
 build() {
   (
@@ -18,7 +26,7 @@ build() {
 }
 
 make() {
-  ( cd $here/rust/songs && cargo run -- $songs $builddir )
+  ( cd $here/rust/songs && cargo run -- $songs $books $builddir )
   (cd $builddir && omake delivery -j 4 -k)
 }
 
@@ -27,7 +35,7 @@ format() {
 }
 
 gdrive() {
-  (cd $builddir && omake gdrive)
+  (cd $builddir && omake gdrive )
 }
 
 dev(){
@@ -38,12 +46,32 @@ dev(){
 }
 
 
+#book() {
+#  cd $builddir
+#  convert \
+#  amy_winehouse--@--you_know_i_m_no_good.pdf \
+#  maroon_5--@--this_love.pdf 13-fevrier.pdf  \
+#  estelle___k__west___cocoon--@--american_boy.pdf \
+#  natalie_imbroglia--@--torn.pdf \
+#  red_hot_chili_peppers--@--can_t_stop.pdf \
+#  alannah_myles--@--black_velvet.pdf \
+#  concert-13-fevrier.pdf
+#}
+
 all(){
+  rm -rf $builddir
+  build
+  make
+#  gdrive
+}
+
+deploy(){
   rm -rf $builddir
   build
   make
   gdrive
 }
+
 
 case $1 in
 b)
@@ -75,6 +103,9 @@ dev)
   ;;
 all)
   all
+  ;;
+deploy)
+  deploy
   ;;
 
 *)

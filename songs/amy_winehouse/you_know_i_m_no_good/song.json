@@ -5,7 +5,8 @@
   "author": "Amy Winehouse",
   "texfiles": [
     "lyrics.tex",
-    "struct.tex"
+    "struct.tex",
+    "body.tex"
   ],
   "lilypondfiles": [
     "intro.ly",

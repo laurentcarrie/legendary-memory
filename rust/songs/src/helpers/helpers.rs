@@ -1,8 +1,14 @@
-use crate::config::model::Song;
+use crate::config::model::{Book, Song};
 
 pub fn pdfname_of_song(song: &Song) -> String {
     let pdfname = &song.author;
     let pdfname = normalize_name(&(pdfname.to_owned() + &"--@--".to_string() + &song.title));
+    pdfname
+}
+
+pub fn pdfname_of_book(book: &Book) -> String {
+    let pdfname = &book.title;
+    let pdfname = normalize_name(&pdfname.to_owned());
     pdfname
 }
 
