@@ -1,0 +1,21 @@
+.PHONY: all install clean songs build tree help gdrive compute-date
+.DEFAULT: help
+
+build :
+    cd rust && ( (cargo fmt && cargo build --release && echo "SUCCESS") || echo "FAILURE" )
+
+tree :
+    ./rust/target/release/songs $(songs_dir) $(books_dir) $(build_dir)
+
+compute-date:
+	bash $(root)/compute-date.sh $(songs_dir)
+
+gdrive:
+    rclone sync $(build_dir)/delivery $(remote) --differ -
+
+help :
+    cat help.md
+
+
+
+

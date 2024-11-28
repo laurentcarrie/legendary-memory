@@ -1,0 +1,24 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "You Know I'm No Good",
+  "author": "Amy Winehouse",
+  "texfiles": [
+    "lyrics.tex",
+    "struct.tex",
+    "body.tex"
+  ],
+  "lilypondfiles": [
+    "intro.ly",
+    "couplet.ly"
+  ],
+  "sections": [],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [],
+  "date": "2024-11-28",
+  "digest": "39858f41ee3ca19cf567a810aa3579da",
+  "hash": "0"
+}

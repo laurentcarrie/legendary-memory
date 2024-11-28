@@ -5,9 +5,13 @@
   "author": "Alannah Myles",
   "texfiles": [
     "lyrics.tex",
-    "struct.tex"
+    "struct.tex",
+    "body.tex"
   ],
-  "lilypondfiles": [],
+  "lilypondfiles": [
+    "pont.ly",
+    "solo.ly"
+  ],
   "sections": [
     {
       "name": "couplet",
@@ -39,7 +43,7 @@
   "chord_glyph_scale": 4,
   "section_spacing": null,
   "wavfiles": [],
-  "digest": "fd87826423081601393864343eb0e3cf",
-  "date": "2024-11-12",
+  "digest": "bb2b63fdd7164e3c044d335255632c95",
+  "date": "2024-11-28",
   "hash": "0"
 }
