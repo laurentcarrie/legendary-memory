@@ -6,12 +6,12 @@ This needs to be :
 - compact
 
 partitions tend to be very long, pages long, but pop music is made of repetetions of verses, bridge, chorus, and I want
-that to stand in one A4 page
+that to fit in one A4 page, so I can have it and play without turning the page.
 ![alt text](doc1.png)
 
-- table oriented
+- chord grid oriented
 
-We want to see grid of chords.
+We want to see grid of chords, so in the band we easily agree on the structures, breaks, ...
 ![alt text](doc2.png)
 
 - versioned in github, as text files. We don't want a word or other format
@@ -43,3 +43,19 @@ But this is latex, you can put anything you like.
 
 a book is a list of songs. You usually work on a set list, and you don't want to browse your google drive to 
 find each song when you rehearse. We want to have all of them in one file.
+
+
+# How does it work ?
+
+There is a tool written in rust, that is basically a code generator. It will generate :
+- tex glue files
+- OMakefile ( omake replacement for make )
+from your songs. 
+
+## what is a song ? 
+
+A song is a directory in the tree ( look at [songs](songs)). It has :
+- a song.json description file ( look at [songs/alannah_myles/black_velvet/song.json](song.json))
+- a body.tex file ( it is the body of the `\begin{document} .... \end{document}` in latex)
+- your stuff : latex files, lilypond files,... just declare them in the `song.json`
+
