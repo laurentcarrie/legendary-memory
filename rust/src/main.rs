@@ -8,16 +8,14 @@ use std::{env, fs};
 //use crate::config::Song::decode_Song;
 use crate::config::model::World;
 use crate::config::world::make;
-use crate::generated::generate::generate;
+use crate::generate::generate::generate;
 use crate::makefiles::omakefile_book::{generate_book_omakefile, generate_main_book};
-// use crate::makefiles::omakeroot::generate_omakeroot ;
-// use crate::emitter::xxx::fff;
 use crate::makefiles::omakefile_song::{generate_refresh_sh, generate_song_omakefile};
-use crate::makefiles::omakeroot::{generate_omakeroot, generate_root_omakefile};
+use crate::makefiles::omakeroot::generate_root_omakefile;
 
 pub mod config;
 pub mod emitter;
-pub mod generated;
+pub mod generate;
 pub mod helpers;
 pub mod makefiles;
 
@@ -27,7 +25,7 @@ fn usage(prog: &str) -> String {
 fn main() -> Result<(), Error> {
     SimpleLogger::new().init().unwrap();
     log::set_max_level(LevelFilter::Debug);
-    log::info!("start cron");
+    log::info!("start build");
     // fff();
     let args: Vec<String> = env::args().collect();
     let (source_song_root, source_book_root, buildroot) =
@@ -44,27 +42,17 @@ fn main() -> Result<(), Error> {
     let builddir: PathBuf = Path::new(buildroot).canonicalize().expect("buildroot");
     let _ = fs::create_dir_all(&buildroot)?;
 
-    // dbg!(root2);
-    // let p : PathBuf = PathBuf::from("/the/head");
-    // let s = p.into_os_string() ;
-    // let s = root2.into_os_string() ;
-
     let world: World = make(&src_song_dir, &src_book_dir, &builddir);
     generate_refresh_sh(&exepath, &world)?;
-    generate_omakeroot(&world)?;
+    // generate_omakeroot(&world)?;
     generate_root_omakefile(&world)?;
-    // world
-    //     .songs
-    //     .iter()
-    //     .for_each(|s|  generate_song_omakefile(&world, &s)? )?;
-
     for song in &world.songs {
         generate_song_omakefile(&song)?;
     }
 
     for book in &world.books {
         generate_book_omakefile(&book)?;
-        generate_main_book(&book);
+        generate_main_book(&book)?;
     }
 
     generate_song_omakefile(&world.songs[0])?;

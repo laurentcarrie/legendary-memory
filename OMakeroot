@@ -1,0 +1,30 @@
+# here
+root = $(absname .)
+
+# the root of your songs definitions
+songs_dir = $(absname songs)
+
+# the roots of your books definitions
+books_dir = $(absname books)
+
+# where you will build the pdf and wav files
+build_dir = $(absname build)
+
+# the remote on google drive
+# see rclone documentation
+# mydrive is my mount to google drive, /zik/songs is the remote path
+remote = "mydrive:/zik/songs"
+
+buildroot = $(build_dir)
+mkdir -p $(buildroot)
+public.srcdir = $(dir $(songs_dir))
+
+# create an empty OMakefile for bootstrap, it will be overwritten by omake tree
+touch $(build_dir)/OMakefile
+
+CREATE_SUBDIRS=true
+vmount(-c,$(srcdir),$(build_dir)/songs)
+
+DefineCommandVars()
+
+.SUBDIRS: . $(build_dir)

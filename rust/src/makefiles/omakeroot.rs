@@ -94,7 +94,7 @@ gdrive:
 \tcp $^ delivery/.
 
 "
-    );
+    )?;
 
     write!(output, "delivery_books:\\\n")?;
     for book in &world.books {
@@ -113,10 +113,11 @@ gdrive:
         "
 \tmkdir -p delivery
 \tcp $^ delivery/.
+
 "
     )?;
 
-    write!(output, "delivery: delivery_books delivery_songs\\\n")?;
+    write!(output, "delivery: delivery_books delivery_songs\n")?;
 
     Ok(())
 }

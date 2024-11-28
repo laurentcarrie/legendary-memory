@@ -12,17 +12,49 @@
 // data
 
 use crate::config::model::{Row, Section, Song};
-use crate::generated::mp_code::{
-    make_draw_bati, make_draw_chord, make_draw_row, make_flat, make_glyph_of_chord,
-    make_major_seven, make_minor, make_seven, make_sharp,
-};
 use std::fs;
 use std::fs::File;
 use std::io::{Error, Write};
 use std::path::PathBuf;
 
+fn make_sharp() -> String {
+    String::from_utf8(include_bytes!("../../others/mpfiles/sharp.mp").to_vec()).unwrap()
+}
+
+fn make_flat() -> String {
+    String::from_utf8(include_bytes!("../../others/mpfiles/flat.mp").to_vec()).unwrap()
+}
+fn make_major_seven() -> String {
+    String::from_utf8(include_bytes!("../../others/mpfiles/major_seven.mp").to_vec()).unwrap()
+}
+
+fn make_seven() -> String {
+    String::from_utf8(include_bytes!("../../others/mpfiles/seven.mp").to_vec()).unwrap()
+}
+
+fn make_minor() -> String {
+    String::from_utf8(include_bytes!("../../others/mpfiles/minor.mp").to_vec()).unwrap()
+}
+
+fn make_draw_bati() -> String {
+    String::from_utf8(include_bytes!("../../others/mpfiles/draw_bati.mp").to_vec()).unwrap()
+}
+
+fn make_draw_chord() -> String {
+    String::from_utf8(include_bytes!("../../others/mpfiles/draw_chord.mp").to_vec()).unwrap()
+}
+
+fn make_draw_row() -> String {
+    String::from_utf8(include_bytes!("../../others/mpfiles/draw_row.mp").to_vec()).unwrap()
+}
+
+fn make_glyph_of_chord() -> String {
+    String::from_utf8(include_bytes!("../../others/mpfiles/glyph_of_chord.mp").to_vec()).unwrap()
+}
+
 fn write_row(mut output: &File, row: &Row) -> Result<(), Error> {
     writeln!(output, "% write row from emitter.rs")?;
+
     let nbchords: usize = row
         .bars
         .iter()

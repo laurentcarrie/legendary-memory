@@ -1,12 +1,19 @@
 #!/bin/bash
 
+set -e
+#set -x
+
+songdir=$1
+[[ -n $songdir ]]
+[[ -d $songdir ]]
+
 tmpresultfile=$(mktemp /tmp/pch-legendary-memory.XXXXXX)
 
 echo 0 > $tmpresultfile
 
 work() {
 
-	here=$(dirname $realpath $1)
+	here=$(dirname $(realpath $1))
 #	echo $here
 	jsonfile=$here/song.json
 	tmpfile=$(mktemp /tmp/pch-legendary-memory.XXXXXX)

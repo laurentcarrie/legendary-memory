@@ -19,7 +19,7 @@ printf "books: $books\n"
 build() {
   (
   cd $here/rust/songs
-  bash ./rs_of_others.sh
+#  bash ./rs_of_others.sh
   cargo fmt
   cargo build
   )
@@ -46,23 +46,10 @@ dev(){
 }
 
 
-#book() {
-#  cd $builddir
-#  convert \
-#  amy_winehouse--@--you_know_i_m_no_good.pdf \
-#  maroon_5--@--this_love.pdf 13-fevrier.pdf  \
-#  estelle___k__west___cocoon--@--american_boy.pdf \
-#  natalie_imbroglia--@--torn.pdf \
-#  red_hot_chili_peppers--@--can_t_stop.pdf \
-#  alannah_myles--@--black_velvet.pdf \
-#  concert-13-fevrier.pdf
-#}
-
 all(){
   rm -rf $builddir
   build
   make
-#  gdrive
 }
 
 deploy(){
