@@ -55,7 +55,11 @@ from your songs.
 ## what is a song ? 
 
 A song is a directory in the tree ( look at [songs](songs)). It has :
-- a song.json description file ( look at [songs/alannah_myles/black_velvet/song.json](song.json))
+- a song.json description file ( look at [song.json](songs/alannah_myles/black_velvet/song.json)
 - a body.tex file ( it is the body of the `\begin{document} .... \end{document}` in latex)
 - your stuff : latex files, lilypond files,... just declare them in the `song.json`
+
+# How do I run it ?
+
+look at [help.md](help.md)
 
