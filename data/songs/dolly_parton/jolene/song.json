@@ -1,0 +1,44 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "Jolene",
+  "author": "Dolly Parton ( cover xxx )",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [],
+  "sections": [
+    {
+      "name": "couplet",
+      "rows": [
+        [
+          "G#m",
+          "B",
+          "E",
+          "G#m",
+          "E"
+        ]
+      ]
+    },
+    {
+      "name": "refrain",
+      "rows": [
+        [
+          "G#m",
+          "B",
+          "E",
+          "G#",
+          "E"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [],
+  "digest": "23467cbcd4a3f293944315e5c56fd662",
+  "date": "2024-12-02",
+  "hash": "0"
+}

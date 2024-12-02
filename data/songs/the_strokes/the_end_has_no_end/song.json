@@ -1,0 +1,20 @@
+{
+  "cell_height": 30,
+  "cell_width": 150,
+  "title": "The End Has No End",
+  "author": "The Strokes",
+  "texfiles": [
+    "lyrics.tex",
+    "struct.tex"
+  ],
+  "lilypondfiles": [],
+  "sections": [],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 4,
+  "section_spacing": null,
+  "wavfiles": [],
+  "digest": "f7f336716157d1fc2913ed70f2582f01",
+  "date": "2024-12-02",
+  "hash": "0"
+}

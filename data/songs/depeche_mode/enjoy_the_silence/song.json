@@ -1,0 +1,23 @@
+{
+  "cell_height": 30,
+  "cell_width": 150,
+  "title": "Enjoy The Silence",
+  "author": "Depeche Mode",
+  "texfiles": [
+    "lyrics.tex",
+    "struct.tex",
+    "body.tex"
+  ],
+  "lilypondfiles": [
+    "pont.ly",
+    "solo.ly"
+  ],
+  "sections": [],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 4,
+  "section_spacing": null,
+  "wavfiles": [],
+  "digest": "28188d6e76468b015f139096fe67bd88",
+  "date": "2024-12-03"
+}

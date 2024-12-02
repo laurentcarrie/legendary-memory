@@ -1,0 +1,59 @@
+{
+  "cell_height": 20,
+  "cell_width": 60,
+  "title": "Dani California",
+  "author": "Red Hot Chili Peppers",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [],
+  "sections": [
+    {
+      "name": "couplet",
+      "rows": [
+        [
+          "Am G",
+          "Dm Am",
+          "Am G",
+          "Dm Am"
+        ]
+      ]
+    },
+    {
+      "name": "add-d",
+      "rows": [
+        [
+          "Dm"
+        ]
+      ]
+    },
+    {
+      "name": "refrain",
+      "rows": [
+        [
+          "F G",
+          "Dm G",
+          "F G",
+          "Dm G"
+        ],
+        [
+          "F G",
+          "Dm G",
+          "F G",
+          "Dm G"
+        ],
+        [
+          "Dm"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 1,
+  "section_spacing": null,
+  "wavfiles": [],
+  "digest": "f6f36aa2977876a10899b8bdc2e3cc42",
+  "date": "2024-12-02",
+  "hash": "0"
+}

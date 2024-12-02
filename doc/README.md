@@ -7,19 +7,12 @@ This needs to be :
 
 partitions tend to be very long, pages long, but pop music is made of repetetions of verses, bridge, chorus, and I want
 that to fit in one A4 page, so I can have it and play without turning the page.
-
-this is what a real music sheet looks like. We have a hundred times the same `D` chord.
-![alt text](doc/real-music-sheet2.png)
-
-It is suited for real musicians, and has all the informations, but I want something easier to read
-and fits on one page
-
-![alt text](doc/doc1.png)
+![alt text](doc1.png)
 
 - chord grid oriented
 
 We want to see grid of chords, so in the band we easily agree on the structures, breaks, ...
-![alt text](doc/doc2.png)
+![alt text](doc2.png)
 
 - versioned in github, as text files. We don't want a word or other format
 
@@ -33,7 +26,7 @@ We want to have all music sheets with the same look
 
 We want to able to import music notation, we choose lilypond music notation for that
 
-![alt text](doc/doc3.png)
+![alt text](doc3.png)
 
 
 - support of midi and wav export
@@ -44,7 +37,7 @@ We will use lilypond and synth for that.
 not being the singer in the band, I did not put much effort on that.
 But this is latex, you can put anything you like.
 
-![alt text](doc/doc4.png)
+![alt text](doc4.png)
 
 - support for books ( set list )
 
