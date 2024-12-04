@@ -43,22 +43,21 @@ RUN fc-cache -f -v
 
 # build the tool
 USER root
-RUN chown -R john_doe:john_doe /home/john_doe/*
-USER john_doe
-WORKDIR /home/john_doe/work
+#RUN chown -R john_doe:john_doe /home/john_doe/*
+#USER john_doe
+#ORKDIR /home/john_doe/work
+#RUN cargo install --path software
+RUN mkdir /songbin
+ENV PATH="/songbin:$PATH"
 
-RUN cargo install --path software
-RUN rm -rf software
+#RUN rm -rf software
 
 USER root
 RUN usermod -aG ubuntu john_doe
 RUN mkdir -p /home/john_doe
-#RUN mkdir -p $HOME/work/build
 RUN ln -s $HOME/work/songs /songs
 RUN ln -s $HOME/work/books /books
-#RUN ln -s $HOME/work/build /build
 RUN chown -R john_doe:john_doe /home/john_doe/*
-#RUN chown -R john_doe:john_doe build
 RUN mkdir /build
 RUN chown -R john_doe:john_doe /build
 
@@ -67,5 +66,6 @@ USER john_doe
 
 #RUN mkdir songs
 #RUN mkdir books
+WORKDIR /home/john_doe/work
 COPY software/run.sh run.sh
 CMD ["bash","run.sh"]

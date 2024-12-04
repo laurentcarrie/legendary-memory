@@ -1,19 +1,17 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 set -x
 
-echo $PWD
-
-songsdir=$(realpath $1)
+songsdir=$(realpath $1) ; shift
 [[ -n $songsdir ]]
 [[ -d $songsdir ]]
 
-booksdir=$(realpath $2)
+booksdir=$(realpath $1) ; shift
 [[ -n $booksdir ]]
 [[ -d $booksdir ]]
 
-outdir=$(realpath $3)
+outdir=$(realpath $1) ; shift
 [[ -n $outdir ]]
 [[ -d $outdir ]] || ( mkdir $outdir )
 [[ -d $outdir ]] 
@@ -26,4 +24,9 @@ help() {
 
 here=$(dirname $(realpath $0))
 
-docker run -v $songsdir:/songs -v $booksdir:/books -v $outdir:/build:rw songs
+docker run \
+    -v $songsdir:/songs \
+    -v $booksdir:/books \
+    -v $outdir:/build:rw \
+    -v $HOME/.cargo/bin:/songbin \
+    songs
