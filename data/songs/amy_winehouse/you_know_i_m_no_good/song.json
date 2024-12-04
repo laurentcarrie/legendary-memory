@@ -1,24 +1,147 @@
 {
-  "cell_height": 30,
-  "cell_width": 60,
-  "title": "You Know I'm No Good",
+  "title": "you know I'm no good",
   "author": "Amy Winehouse",
-  "texfiles": [
-    "lyrics.tex",
-    "struct.tex",
-    "body.tex"
-  ],
+  "texfiles": [],
   "lilypondfiles": [
     "intro.ly",
     "couplet.ly"
   ],
-  "sections": [],
-  "outputtemplate": null,
-  "outputformat": null,
-  "chord_glyph_scale": 2,
-  "section_spacing": null,
   "wavfiles": [],
-  "date": "2024-12-03",
-  "digest": "3dc6e4a8c1a3daab9adbf8047c2a8f62",
-  "hash": "0"
+  "date": "2024-12-11",
+  "digest": "865d83bb93f481f827b256ccaf89660b",
+  "hash": "0",
+  "structure": [
+    {
+      "id": "intro_batterie",
+      "item": {
+        "Chords": {
+          "section_title": "intro batterie",
+          "section_type": "intro",
+          "rows": [
+            "HRest | HRest "
+          ]
+        }
+      },
+      "text": "blah blah"
+    },
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_title": "intro batterie/basse ",
+          "section_type": "intro",
+          "rows": [
+            "Dm | Dm | Dm | Dm"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet_1",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 1",
+          "section_type": "couplet",
+          "rows": [
+            "Dm | Gm | A | Dm",
+            "Dm | Gm | A | Dm ",
+            "Gm | Gm | E | E ",
+            "F | F | E7 | A"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain_1",
+      "item": {
+        "Chords": {
+          "section_title": "refrain 1",
+          "section_type": "refrain",
+          "rows": [
+            "Dm | Am | E | Am",
+            "Dm | Am | E | Am"
+          ]
+        }
+      },
+      "text": "x x x "
+    },
+    {
+      "id": "hr",
+      "item": {
+        "HRule": 67
+      }
+    },
+    {
+      "id": "pont",
+      "item": {
+        "Chords": {
+          "section_title": "pont batterie",
+          "section_type": "pont",
+          "rows": [
+            "HRest | HRest"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet_2",
+      "item": {
+        "Ref": {
+          "section_title": "couplet 2",
+          "link": "couplet_1"
+        }
+      }
+    },
+    {
+      "id": "refrain_2",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 2",
+          "link": "refrain_1"
+        }
+      }
+    },
+    {
+      "id": "hr",
+      "item": {
+        "HRule": 70
+      }
+    },
+    {
+      "id": "pont_guitare",
+      "item": {
+        "Ref": {
+          "section_title": "pont guitare",
+          "link": "intro"
+        }
+      }
+    },
+    {
+      "id": "couplet_3",
+      "item": {
+        "Ref": {
+          "section_title": "couplet 3",
+          "link": "couplet_1"
+        }
+      }
+    },
+    {
+      "id": "refrain_3",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 3",
+          "link": "refrain_1"
+        }
+      }
+    },
+    {
+      "id": "refrain_4",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 4",
+          "link": "refrain_1"
+        }
+      }
+    }
+  ]
 }

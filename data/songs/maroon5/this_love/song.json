@@ -1,59 +1,133 @@
 {
-  "cell_height": 30,
-  "cell_width": 60,
   "title": "This Love",
   "author": "Maroon 5",
-  "texfiles": [
-    "lyrics.tex",
-    "struct.tex"
-  ],
+  "texfiles": [],
   "lilypondfiles": [
     "couplet.ly",
     "refrain.ly",
     "pont.ly"
   ],
-  "sections": [
+  "structure": [
     {
-      "name": "couplet",
-      "rows": [
-        [
-          "G7",
-          "Cm7",
-          "Fm7",
-          "Abdim"
-        ],
-        [
-          "G7",
-          "Cm7",
-          "Fm7",
-          "Abdim"
-        ]
-      ]
+      "id": "intro",
+      "text": "",
+      "item": {
+        "Chords": {
+          "section_title": "intro",
+          "section_type": "intro",
+          "rows": [
+            "G7 | Cm7 | Fm7 | Af",
+            "G7 | Cm7 | Fm7 | Af"
+          ]
+        }
+      }
     },
     {
-      "name": "refrain",
-      "rows": [
-        [
-          "Cm Fm7",
-          "Bb Eb",
-          "Cm Fm7",
-          "Bb Eb"
-        ],
-        [
-          "Cm Fm7",
-          "Bb Eb",
-          "Cm7 F7",
-          "Ab G"
-        ]
-      ]
+      "id": "couplet_1",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 1",
+          "section_type": "couplet",
+          "rows": [
+            "G7 | Cm7 | Fm7 | Af",
+            "G7 | Cm7 | Fm7 | Af"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain_1",
+      "item": {
+        "Chords": {
+          "section_title": "refrain 1",
+          "section_type": "refrain",
+          "rows": [
+            "Cm Fm7 | Bf Ef | Cm Fm7 | Bf Ef",
+            "Cm Fm7 | Bf Ef | Cm7 F7 | Af G"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet_2",
+      "item": {
+        "Chords": {
+          "section_title": "\\textonehalf~couplet 2",
+          "section_type": "couplet",
+          "rows": [
+            "G7 | Cm7 | Fm7 | Af"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet_3",
+      "item": {
+        "Ref": {
+          "link": "couplet_1",
+          "section_type": "couplet",
+          "section_title": "couplet 3"
+        }
+      }
+    },
+    {
+      "id": "refrain_2",
+      "item": {
+        "Ref": {
+          "link": "refrain_1",
+          "section_type": "refrain",
+          "section_title": "refrain 2"
+        }
+      }
+    },
+    {
+      "id": "couplet_4",
+      "item": {
+        "Chords": {
+          "section_title": "\\textonehalf~couplet 4",
+          "section_type": "couplet",
+          "rows": [
+            "G7 | Cm7 | Fm7 | Af"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pont",
+      "item": {
+        "Chords": {
+          "section_title": "pont",
+          "section_type": "pont",
+          "rows": [
+            "Fm7 | Ef | Cm7 | Fm7",
+            "Fm7 | Ef | A | A"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain_3",
+      "item": {
+        "Ref": {
+          "link": "refrain_1",
+          "section_type": "refrain",
+          "section_title": "refrain 3"
+        }
+      }
+    },
+    {
+      "id": "refrain_4",
+      "item": {
+        "Ref": {
+          "link": "refrain_1",
+          "section_type": "refrain",
+          "section_title": "refrain 4"
+        }
+      }
     }
   ],
-  "outputtemplate": null,
-  "outputformat": null,
-  "chord_glyph_scale": 2,
-  "section_spacing": null,
   "wavfiles": [],
-  "date": "2024-12-02",
-  "digest": "a37d1013bddfb3f5f595b8bd63f595ae",
+  "date": "2024-12-11",
+  "digest": "3cf3e24e9cc20f1d13867f0be7c0c9c6",
   "hash": "0"
 }

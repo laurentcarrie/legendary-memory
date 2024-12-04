@@ -5,7 +5,7 @@ use std::io::{Error, Write};
 use std::path::PathBuf;
 
 use crate::config::model::World;
-use crate::helpers::helpers::{pdfname_of_book, pdfname_of_song};
+use crate::helpers::helpers::pdfname_of_book;
 
 pub fn f() {}
 
@@ -17,10 +17,10 @@ pub fn generate_omakeroot(world: &World) -> Result<(), Error> {
     let mut output = File::create(p)?; //.expect("file created");
                                        // write!(output, "Rust\n💖\nFun");
 
-    let body =    String::from_utf8(include_bytes!("OMakeroot").to_vec()).expect("OMakeroot") ;
-    let body = body.replace("@@@SONGS_DIR@@@",&world.srcdir.display().to_string()) ;
-    let body = body.replace("@@@BUILD_DIR@@@",&world.builddir.display().to_string()) ;
-    write!(output,"{}",body)? ;
+    let body = String::from_utf8(include_bytes!("OMakeroot").to_vec()).expect("OMakeroot");
+    let body = body.replace("@@@SONGS_DIR@@@", &world.srcdir.display().to_string());
+    let body = body.replace("@@@BUILD_DIR@@@", &world.builddir.display().to_string());
+    write!(output, "{}", body)?;
     // buildroot = /home/laurent/work/legendary-memory/build-songs
     // write!(output, "DefineCommandVars()\n")?;
     // write!(output, "public.srcdir = $(dir $(srcdir))\n")?;
@@ -45,7 +45,7 @@ pub fn generate_root_omakefile(world: &World) -> Result<(), Error> {
         subdirs.insert(&song.builddir);
     }
 
-    assert_eq!(world.books.len() as i32, 1);
+    // assert_eq!(world.books.len() as i32, 1);
     for book in &world.books {
         subdirs.insert(&book.builddir);
     }
@@ -83,7 +83,7 @@ gdrive:
             format!(
                 "\t{p}/{pdfname}.pdf \\\n",
                 p = song.builddir.display(),
-                pdfname = pdfname_of_song(&song)
+                pdfname = song.pdfname
             )
         )?;
     }
@@ -118,9 +118,6 @@ gdrive:
     )?;
 
     write!(output, "delivery: delivery_books delivery_songs\n")?;
-
-
-
 
     Ok(())
 }

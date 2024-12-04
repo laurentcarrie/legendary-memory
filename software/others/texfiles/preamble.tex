@@ -1,9 +1,11 @@
 %\usepackage[margin=0.5cm]{geometry}
 \usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{geometry}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 %\usepackage[light, largesmallcaps]{kpfonts}
 \usepackage{mwe}
 \usepackage{multicol}
+\usepackage{pgfkeys}
+
 %\usepackage{geometry}
 \usepackage{lipsum}
 \usepackage{microtype}
@@ -15,7 +17,9 @@
 
 \usepackage{aurical}
 \usepackage[T1]{fontenc}
+\usepackage{css-colors}
 \usepackage[table,x11names]{xcolor}
+\usepackage{latexcolors}
 \usepackage{tabularray}
 \usepackage{nicematrix}
 %\usepackage{titlesec}
@@ -70,7 +74,6 @@
 }
 
 \newcommand{\basecouplet}[3]{
-	%\colorbox{bg}{\section*{#1}}
 	\colorbox{#1}{
 		\fontsize{12pt}{12pt}\selectfont
 		#2
@@ -84,32 +87,11 @@
 }
 
 \newcommand{\basetitle}[2]{
-	%\colorbox{bg}{\section*{#1}}
 	\colorbox{#1}{
 		\fontsize{12pt}{12pt}\selectfont
 		#2
 	}
 }
-
-\newcommand{\lolocolorcouplet}{Chartreuse1}
-\newcommand{\couplet}[2]{\basecouplet{\lolocolorcouplet}{#1}{#2}}
-\newcommand{\couplettitle}[1]{\basetitle{\lolocolorcouplet}{#1}}
-
-\newcommand{\coupletred}[2]{\basecouplet{Firebrick1}{#1}{#2}}
-\newcommand{\lolocolorprerefrain}{DarkOrange1}
-\newcommand{\prerefrain}[2]{\basecouplet{\lolocolorprerefrain}{#1}{#2}}
-
-\newcommand{\lolocolorrefrain}{CadetBlue1}
-\newcommand{\refrain}[2]{\basecouplet{\lolocolorrefrain}{#1}{#2}}
-\newcommand{\refraintitle}[1]{\basetitle{\lolocolorrefrain}{#1}}
-
-
-\newcommand{\lolocolorpont}{PeachPuff1}
-\newcommand{\pont}[2]{\basecouplet{\lolocolorpont}{#1}{#2}}
-\newcommand{\lolocolorsolo}{PeachPuff1}
-\newcommand{\solo}[2]{\basecouplet{\lolocolorsolo}{#1}{#2}}
-
-
 
 \newcommand{\xxmakesongtitle}[2] {
 	\begin{center}
@@ -311,11 +293,11 @@
 
 
 \newcommand\lolotwocolumns[2]{
-	\begin{minipage}{0.40\linewidth}
+	\begin{minipage}{0.50\linewidth}
 		\vspace{0pt}
 		#1
 	\end{minipage}
-	\begin{minipage}{0.40\linewidth}
+	\begin{minipage}{0.50\linewidth}
 		\vspace{0pt}
 		#2
 	\end{minipage}
@@ -343,3 +325,20 @@
 }
 
 \newcommand\lolovspace{\vspace{0.5cm plus 0.5ex}}
+\newcommand\lolohspace{\hspace{5cm}}
+
+
+\newcommand{\setvalue}[1]{\pgfkeys{/variables/#1}}
+\newcommand{\getvalue}[1]{\pgfkeysvalueof{/variables/#1}}
+\newcommand{\declare}[1]{%
+	\pgfkeys{
+		/variables/#1.is family,
+		/variables/#1.unknown/.style = {\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = ##1}
+	}%
+}
+
+\declare{}
+
+\newcommand{\xxxstruct}{}
+\newcommand{\xxxlyrics}{}
+

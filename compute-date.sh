@@ -16,7 +16,7 @@ echo 0 > $tmpresultfile
 work() {
 
 	here=$(dirname $(realpath $1))
-#	echo $here
+	echo $here
 	jsonfile=$here/song.json
 	tmpfile=$(mktemp /tmp/pch-legendary-memory.XXXXXX)
 
@@ -30,6 +30,17 @@ work() {
 		#  echo "--------> $1 ; $f"
 		md5sum $here/$f >> $tmpfile
 	done
+
+	cat $jsonfile | jq -r ".structure[] | select (.item.Chords != null ) | .id "  | while read -r id; do
+    lyricsfile=$(dirname $jsonfile)/lyrics/$id.tex
+    md5sum $lyricsfile >> $tmpfile
+  done
+
+cat $jsonfile | jq -r ".structure[] | select (.item.Ref != null ) | .id "  | while read -r id; do
+    lyricsfile=$(dirname $jsonfile)/lyrics/$id.tex
+    md5sum $lyricsfile >> $tmpfile
+  done
+
 
 	new_digest=$(md5sum $tmpfile | sed "s/ .*//")
 	old_digest=$(jq -r ".digest " $jsonfile)
@@ -50,14 +61,14 @@ work() {
 
 
 	jq "." $jsonfile > $tmpfile
-	diff $jsonfile $tmpfile
+#	diff $jsonfile $tmpfile
 	if test "x$(cat $jsonfile)" != "x$(cat $tmpfile)" ; then
 		cp $tmpfile $jsonfile
 		echo 1 > $tmpresultfile
 	fi
 }
 
-find $songsdir -name "song.json" | while read f ; do
+find $songdir -name "song.json" | while read f ; do
   work $f
 done
 

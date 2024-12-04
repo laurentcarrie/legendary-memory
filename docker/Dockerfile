@@ -32,38 +32,40 @@ ENV PATH="$HOME/lilypond/lilypond-2.24.4/bin:$PATH"
 
 
 WORKDIR /home/john_doe/work
-COPY rust/others rust/others
-COPY rust/src rust/src
-COPY rust/Cargo.toml rust/Cargo.toml
-COPY OMakeroot OMakeroot
-COPY OMakefile OMakefile
+COPY software/others software/others
+COPY software/src software/src
+COPY software/Cargo.toml software/Cargo.toml
 
 # install the project fonts
 RUN mkdir -p $HOME/.local/share/fonts
-COPY fonts/* $HOME/.local/share/fonts/.
+COPY software/fonts/* $HOME/.local/share/fonts/.
 RUN fc-cache -f -v
 
 # build the tool
 USER root
-RUN chown -R john_doe:john_doe /home/john_doe/*
-USER john_doe
-WORKDIR /home/john_doe/work
+#RUN chown -R john_doe:john_doe /home/john_doe/*
+#USER john_doe
+#ORKDIR /home/john_doe/work
+#RUN cargo install --path software
+RUN mkdir /songbin
+ENV PATH="/songbin:$PATH"
 
-RUN omake build
+#RUN rm -rf software
 
 USER root
 RUN usermod -aG ubuntu john_doe
 RUN mkdir -p /home/john_doe
-#RUN mkdir -p $HOME/work/build
 RUN ln -s $HOME/work/songs /songs
 RUN ln -s $HOME/work/books /books
-#RUN ln -s $HOME/work/build /build
 RUN chown -R john_doe:john_doe /home/john_doe/*
-#RUN chown -R john_doe:john_doe build
+RUN mkdir /build
+RUN chown -R john_doe:john_doe /build
 
 USER john_doe
-#USER root
+# USER root
 
 #RUN mkdir songs
 #RUN mkdir books
-#CMD ["omake","pdf"]
+WORKDIR /home/john_doe/work
+COPY software/run.sh run.sh
+CMD ["bash","run.sh"]
