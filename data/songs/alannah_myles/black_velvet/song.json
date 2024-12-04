@@ -1,0 +1,49 @@
+{
+  "cell_height": 30,
+  "cell_width": 150,
+  "title": "Black Velvet",
+  "author": "Alannah Myles",
+  "texfiles": [
+    "lyrics.tex",
+    "struct.tex",
+    "body.tex"
+  ],
+  "lilypondfiles": [
+    "pont.ly",
+    "solo.ly"
+  ],
+  "sections": [
+    {
+      "name": "couplet",
+      "rows": [
+        [
+          "G#m",
+          "B",
+          "E",
+          "G#m",
+          "E"
+        ]
+      ]
+    },
+    {
+      "name": "refrain",
+      "rows": [
+        [
+          "G#m",
+          "B",
+          "E",
+          "G#",
+          "E"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 4,
+  "section_spacing": null,
+  "wavfiles": [],
+  "digest": "ce20a8a29e3e0a34793a115ebaf5b94f",
+  "date": "2024-12-03",
+  "hash": "0"
+}

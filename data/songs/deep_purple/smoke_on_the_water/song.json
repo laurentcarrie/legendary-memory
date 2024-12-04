@@ -1,0 +1,44 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "Smoke On The Water",
+  "author": "Deep Purple",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [
+    "solo.ly"
+  ],
+  "sections": [
+    {
+      "name": "intro",
+      "rows": [
+        [
+          "C#m7",
+          "C#m7",
+          "C#m7",
+          "C#m7"
+        ]
+      ]
+    },
+    {
+      "name": "couplet",
+      "rows": [
+        [
+          "C#m7 A",
+          "C#m7"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [
+    "solo.wav"
+  ],
+  "digest": "d9918ea9a7bf513999be75be0e0c88f5",
+  "date": "2024-12-02",
+  "hash": "0"
+}

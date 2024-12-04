@@ -2,6 +2,8 @@
 
 set -e
 #set -x
+here=$(realpath $(dirname $0))
+source $here/software/others/shfiles/colors.sh
 
 songdir=$1
 [[ -n $songdir ]]
@@ -38,6 +40,9 @@ work() {
 		echo "changed $here"
 		#echo "new digest : $new_digest"
 		#echo "old digest : $old_digest"
+		author=$(cat $jsonfile | jq -r ".author")
+		title=$(cat $jsonfile | jq -r ".title")
+		printf "date updated : ${Red}$author${Color_Off} $Blue$title$Color_Off in $Yellow$here$Color_Off\n"
 		j=$(jq . $jsonfile | jq ".digest=\"$new_digest\"" | jq ".date=\"$today\"")
 		echo $j | jq "." > $jsonfile
 		echo 1 > $tmpresultfile
@@ -52,7 +57,7 @@ work() {
 	fi
 }
 
-find songs -name "song.json" | while read f ; do
+find $songsdir -name "song.json" | while read f ; do
   work $f
 done
 

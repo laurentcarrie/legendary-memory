@@ -1,0 +1,73 @@
+{
+  "cell_height": 30,
+  "cell_width": 60,
+  "title": "Wild Horses",
+  "author": "Rolling Stones",
+  "texfiles": [
+    "lyrics.tex"
+  ],
+  "lilypondfiles": [],
+  "sections": [
+    {
+      "name": "intro",
+      "rows": [
+        [
+          "G",
+          "Am7",
+          "G",
+          "Am7",
+          "G"
+        ]
+      ]
+    },
+    {
+      "name": "couplet",
+      "rows": [
+        [
+          "Bm",
+          "G",
+          "Bm",
+          "G"
+        ],
+        [
+          "Am",
+          "C D",
+          "G",
+          "D"
+        ],
+        [
+          "Bm",
+          "G",
+          "Bm",
+          "G"
+        ],
+        [
+          "Am",
+          "C D",
+          "G",
+          "D"
+        ],
+        [
+          "Am",
+          "C D",
+          "G F",
+          "C"
+        ],
+        [
+          "Am",
+          "C D",
+          "G F",
+          "C"
+        ]
+      ]
+    }
+  ],
+  "outputtemplate": null,
+  "outputformat": null,
+  "chord_glyph_scale": 2,
+  "section_spacing": null,
+  "wavfiles": [],
+  "digest": "d3bf61febe9b0a90cee21f49db609c03",
+  "date": "2024-12-02",
+  "hash": "0"
+}

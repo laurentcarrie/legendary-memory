@@ -10,3 +10,5 @@ song_book_builder/_build/
 *.rs.old
 indent.log
 *~
+/software/target/
+/build/
