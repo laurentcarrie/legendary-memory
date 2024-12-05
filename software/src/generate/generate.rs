@@ -158,20 +158,26 @@ pub fn generate(world: &World) -> Result<(), Error> {
                 write!(output, "% structure item name {}", &item.texname)?;
                 match &item.content {
                     StructureItemContent::Chords(chords) => {
+                        let firstcol = (0..(chords.len() / 4))
+                            .map(|c| format!("{}-1", c + 1))
+                            .collect::<Vec<_>>()
+                            .join(",");
                         write!(
                             output,
                             r###"\
 \newcommand{{\xxxgrid{texname}}}{{                            
-\begin{{NiceTabular}}{{p{{0.1cm}}C|C|C|C}}
+\begin{{NiceTabular}}{{>{{\raggedright}}p{{0.5cm}}C|C|C|C}}
 \CodeBefore
 \rowcolor{{\lolocolor{sectiontype}!100}}{{1-{nrows}}}
-%\cellcolor{{white}}{{1-1,2-1,3-1,4-1}}
+\cellcolor{{white}}{{{firstcol}}}
 \Body
 "###,
                             texname = &item.texname,
                             sectiontype = &item.sectiontype,
-                            nrows = (chords.len() / 4)
+                            nrows = (chords.len() / 4),
+                            firstcol = firstcol
                         )?;
+
                         for (index, c) in chords.iter().enumerate() {
                             if index % 4 == 0 {
                                 write!(output, "\\tiny{{{index}}} & ", index = cumul + index + 1)?;
