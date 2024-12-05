@@ -17,10 +17,10 @@ pub fn generate_omakeroot(world: &World) -> Result<(), Error> {
     let mut output = File::create(p)?; //.expect("file created");
                                        // write!(output, "Rust\n💖\nFun");
 
-    let body =    String::from_utf8(include_bytes!("OMakeroot").to_vec()).expect("OMakeroot") ;
-    let body = body.replace("@@@SONGS_DIR@@@",&world.srcdir.display().to_string()) ;
-    let body = body.replace("@@@BUILD_DIR@@@",&world.builddir.display().to_string()) ;
-    write!(output,"{}",body)? ;
+    let body = String::from_utf8(include_bytes!("OMakeroot").to_vec()).expect("OMakeroot");
+    let body = body.replace("@@@SONGS_DIR@@@", &world.srcdir.display().to_string());
+    let body = body.replace("@@@BUILD_DIR@@@", &world.builddir.display().to_string());
+    write!(output, "{}", body)?;
     // buildroot = /home/laurent/work/legendary-memory/build-songs
     // write!(output, "DefineCommandVars()\n")?;
     // write!(output, "public.srcdir = $(dir $(srcdir))\n")?;
@@ -118,9 +118,6 @@ gdrive:
     )?;
 
     write!(output, "delivery: delivery_books delivery_songs\n")?;
-
-
-
 
     Ok(())
 }

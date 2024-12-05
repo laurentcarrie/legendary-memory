@@ -3,9 +3,6 @@ use std::fs::File;
 use std::io::{Error, Write};
 use std::path::PathBuf;
 
-
-
-
 use crate::config::model::Book;
 use crate::helpers::helpers::pdfname_of_book;
 
@@ -37,9 +34,8 @@ pub fn generate_main_book(book: &Book) -> Result<(), Error> {
 \newcommand{{\makesongtitle}}{{}}
 \newcommand{{\songlastupdate}}{{}}
 \newcommand{{\songtoday}}{{}}
-\import{{../}}{{preamble}}
 \import{{../}}{{chords}}
-
+\import{{../}}{{preamble}}
 \begin{{document}}
 
 \tableofcontents

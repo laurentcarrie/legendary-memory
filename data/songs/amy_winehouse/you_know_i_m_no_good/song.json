@@ -18,7 +18,30 @@
   "chord_glyph_scale": 2,
   "section_spacing": null,
   "wavfiles": [],
-  "date": "2024-12-03",
-  "digest": "3dc6e4a8c1a3daab9adbf8047c2a8f62",
-  "hash": "0"
+  "date": "2024-12-05",
+  "digest": "1419b119ef1c9ecddd73035409c084d4",
+  "hash": "0",
+  "structure": [
+    {
+      "texname": "intro",
+      "sectiontype":"intro",
+      "content": {
+        "Chords": [
+          "Dm | Dm | Dm | Dm"
+        ]
+      }
+    },
+    {
+      "texname": "couplet",
+      "sectiontype":"couplet",
+      "content": {
+        "Chords": [
+          "Dm | Gm | Am | Dm",
+          "Dm | Gm | Am | Dm ",
+          "Gm | Gm | E | E ",
+          "F | F | E7 | A"
+        ]
+      }
+    }
+  ]
 }

@@ -2,8 +2,13 @@ use std::fs;
 use std::io::Error;
 use std::path::PathBuf;
 
-use crate::config::model::{Bar, BookSong, Row, Section, Song, UserBook, UserSection};
-use crate::config::model::{Book, UserSong};
+use crate::config::model::{
+    Bar, Book, BookSong, Row, Section, Song, StructureItem, StructureItemContent,
+};
+
+use crate::config::input_model::{
+    UserBook, UserSection, UserSong, UserStructureItem, UserStructureItemContent,
+};
 
 fn bar_of_string(s: &String) -> Bar {
     let chords: Vec<String> = s.split(' ').map(|s| s.to_string()).collect();
@@ -22,6 +27,26 @@ fn section_of_usection(u: &UserSection) -> Section {
     return Section {
         name: u.name.clone(),
         rows: rows,
+    };
+}
+
+fn structure_of_structure(u: &UserStructureItem) -> StructureItem {
+    return StructureItem {
+        texname: u.texname.clone(),
+        sectiontype: u.sectiontype.clone(),
+        content: match &u.content {
+            UserStructureItemContent::Chords(l) => {
+                let l: Vec<_> = l
+                    .iter()
+                    .map(|c| c.as_str().split("|"))
+                    .flatten()
+                    .map(|c| c.replace("7", "sept").replace(" ", ""))
+                    .map(|c| c.to_string())
+                    .filter(|c| c.len() > 0)
+                    .collect();
+                StructureItemContent::Chords(l.clone().to_owned())
+            }
+        },
     };
 }
 
@@ -108,6 +133,12 @@ pub fn decode_song(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Song, Erro
         outputtemplate: uconf.outputtemplate.unwrap_or("mps/%s-%c.mps".to_string()),
         section_spacing: uconf.section_spacing.unwrap_or(20),
         date: uconf.date,
+        structure: {
+            match uconf.structure {
+                Some(s) => s.iter().map(structure_of_structure).collect(),
+                None => vec![],
+            }
+        },
     };
     Ok(song)
 }

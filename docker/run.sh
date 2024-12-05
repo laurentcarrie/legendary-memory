@@ -14,7 +14,7 @@ booksdir=$(realpath $1) ; shift
 outdir=$(realpath $1) ; shift
 [[ -n $outdir ]]
 [[ -d $outdir ]] || ( mkdir $outdir )
-[[ -d $outdir ]] 
+[[ -d $outdir ]]
 chmod 777 $outdir
 
 

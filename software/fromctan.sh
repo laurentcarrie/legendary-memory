@@ -8,7 +8,7 @@ if wget http://mirrors.ctan.org/install/macros/latex/contrib/$1.tds.zip ; then
 elif wget ftp://sunsite.icm.edu.pl/pub/CTAN/systems/texlive/tlnet/archive/$1.tar.xz ; then
     tar -xf $1.tar.xz -C $texmf_dir
     rm $1.tar.xz
-    echo installed from texlive archive  
+    echo installed from texlive archive
 else
     wget http://mirror.ctan.org/macros/latex/contrib/$1.zip
     unzip $1.zip
@@ -22,6 +22,3 @@ else
     echo "installed via *.ins *.dtx"
 fi
 test -e ~/texmf/ls-R && texhash $texmf_dir
-
-
-

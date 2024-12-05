@@ -10,9 +10,8 @@ use crate::config::model::World;
 use crate::config::world::make;
 use crate::generate::generate::generate;
 use crate::makefiles::omakefile_book::{generate_book_omakefile, generate_main_book};
-use crate::makefiles::omakefile_song::{ generate_song_omakefile};
-use crate::makefiles::omakeroot::{generate_root_omakefile,generate_omakeroot} ;
-
+use crate::makefiles::omakefile_song::generate_song_omakefile;
+use crate::makefiles::omakeroot::{generate_omakeroot, generate_root_omakefile};
 
 pub mod config;
 pub mod emitter;

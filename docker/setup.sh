@@ -15,13 +15,19 @@ install_lilypond() {
     rm -rf $HOME/lilypond
     mkdir $HOME/lilypond
     mv lilypond-2.24.4 $HOME/lilypond
-    echo PATH="$HOME/lilypond/lilypond-2.24.4/bin:$PATH" >> $HOME/.bashrc
+    echo export PATH="\$HOME/lilypond/lilypond-2.24.4/bin:\$PATH" >> $HOME/.bashrc
 }
 
 install_omake() {
     sudo apt-get update
     sudo apt-get install omake -y
 }
+
+install_fluidsynth() {
+    sudo apt-get update
+    sudo apt-get install fluidsynth -y
+}
+
 
 install_fonts() {
     mkdir -p $HOME/.local/share/fonts
@@ -33,4 +39,3 @@ install_rust
 install_fonts
 install_omake
 install_lilypond
-

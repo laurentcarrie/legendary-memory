@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::{Error, Write};
 use std::path::PathBuf;
 
-use crate::config::model::{Song, World};
+use crate::config::model::Song;
 use crate::helpers::helpers::pdfname_of_song;
 
 // pub fn generate_refresh_sh(exepath: &PathBuf, world: &World) -> Result<(), Error> {

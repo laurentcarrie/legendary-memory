@@ -3,6 +3,7 @@ use std::fs::File;
 use std::io::{Error, Write};
 use std::path::PathBuf;
 
+use crate::config::model::StructureItemContent;
 use crate::config::model::World;
 use crate::emitter::emitter::write_mp;
 
@@ -134,7 +135,6 @@ pub fn generate(world: &World) -> Result<(), Error> {
             p.push("data.tex");
             log::debug!("write {}", p.display());
             let mut output = File::create(p)?;
-            //let data = make_preamble();
             let today = chrono::Utc::now().format("%Y-%m-%d").to_string();
 
             write!(
@@ -149,6 +149,47 @@ pub fn generate(world: &World) -> Result<(), Error> {
 ",
                 song.title, song.author, song.date, today
             )?;
+
+            write!(output, "% length of structure : {}", song.structure.len())?;
+
+            let mut cumul = 0;
+
+            for item in song.structure.iter() {
+                write!(output, "% structure item name {}", &item.texname)?;
+                match &item.content {
+                    StructureItemContent::Chords(chords) => {
+                        write!(
+                            output,
+                            r###"\
+\newcommand{{\xxxgrid{texname}}}{{                            
+\begin{{NiceTabular}}{{p{{0.1cm}}C|C|C|C}}
+\CodeBefore
+\rowcolor{{\lolocolor{sectiontype}!100}}{{1-{nrows}}}
+%\cellcolor{{white}}{{1-1,2-1,3-1,4-1}}
+\Body
+"###,
+                            texname = &item.texname,
+                            sectiontype = &item.sectiontype,
+                            nrows = (chords.len() / 4)
+                        )?;
+                        for (index, c) in chords.iter().enumerate() {
+                            if index % 4 == 0 {
+                                write!(output, "\\tiny{{{index}}} & ", index = cumul + index + 1)?;
+                            }
+                            write!(output, "\\chord{} ", c)?;
+                            // write!(output, "chord{} ", c)?;
+                            if (index + 1) % 4 == 0 {
+                                write!(output, "\\\\ \n")?;
+                            } else {
+                                write!(output, "& ")?;
+                            }
+                        }
+                        write!(output, "\n\\end{{NiceTabular}} \n")?;
+                        write!(output, "}}\n")?;
+                        cumul += chords.len();
+                    }
+                }
+            }
         }
     }
     // {

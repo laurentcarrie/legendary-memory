@@ -25,7 +25,3 @@ the local corresponding directories should be passed to the run script
     ./docker/run.sh data/songs data/books build
 
 will generate the pdfs in the build directory. It should initially not exist
-
-
-
-

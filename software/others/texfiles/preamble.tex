@@ -4,6 +4,8 @@
 %\usepackage[light, largesmallcaps]{kpfonts}
 \usepackage{mwe}
 \usepackage{multicol}
+\usepackage{pgfkeys}
+
 %\usepackage{geometry}
 \usepackage{lipsum}
 \usepackage{microtype}
@@ -108,6 +110,9 @@
 \newcommand{\pont}[2]{\basecouplet{\lolocolorpont}{#1}{#2}}
 \newcommand{\lolocolorsolo}{PeachPuff1}
 \newcommand{\solo}[2]{\basecouplet{\lolocolorsolo}{#1}{#2}}
+
+\newcommand{\lolocolorintro}{PeachPuff1}
+\newcommand{\intro}[2]{\basecouplet{\lolocolorintro}{#1}{#2}}
 
 
 
@@ -343,3 +348,15 @@
 }
 
 \newcommand\lolovspace{\vspace{0.5cm plus 0.5ex}}
+
+
+\newcommand{\setvalue}[1]{\pgfkeys{/variables/#1}}
+\newcommand{\getvalue}[1]{\pgfkeysvalueof{/variables/#1}}
+\newcommand{\declare}[1]{%
+ \pgfkeys{
+  /variables/#1.is family,
+  /variables/#1.unknown/.style = {\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = ##1}
+ }%
+}
+
+\declare{}
