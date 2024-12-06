@@ -34,6 +34,7 @@ fn structure_of_structure(u: &UserStructureItem) -> StructureItem {
     return StructureItem {
         texname: u.texname.clone(),
         sectiontype: u.sectiontype.clone(),
+        text: u.text.clone(),
         content: match &u.content {
             UserStructureItemContent::Chords(l) => {
                 let l: Vec<_> = l

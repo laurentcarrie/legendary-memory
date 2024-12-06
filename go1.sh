@@ -12,4 +12,8 @@ cargo install --path $here/software || ( echo "build FAILED" && false )
 
 songs $here/data/songs $here/data/books $here/build
 
-( cd $here/build/songs/$1 && omake pdf && echo DONE ) || ( echo FAILED )
+echo "SUCCESS"
+
+song=amy_winehouse/you_know_i_m_no_good
+
+( cd $here/build/songs/$song && omake pdf && echo DONE ) || ( echo FAILED )

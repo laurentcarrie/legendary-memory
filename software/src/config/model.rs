@@ -24,6 +24,7 @@ pub enum StructureItemContent {
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
 pub struct StructureItem {
     pub texname: String,
+    pub text: String,
     pub sectiontype: String,
     pub content: StructureItemContent,
 }

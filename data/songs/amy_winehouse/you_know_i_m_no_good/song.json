@@ -23,13 +23,24 @@
   "hash": "0",
   "structure": [
     {
+      "texname": "introbatterie",
+      "sectiontype":"intro",
+      "content": {
+        "Chords": [
+          "HRest | HRest "
+        ]
+      },
+      "text":"blah blah"
+    },
+    {
       "texname": "intro",
       "sectiontype":"intro",
       "content": {
         "Chords": [
           "Dm | Dm | Dm | Dm"
         ]
-      }
+      },
+      "text":"hello world"
     },
     {
       "texname": "couplet",
@@ -41,7 +52,8 @@
           "Gm | Gm | E | E ",
           "F | F | E7 | A"
         ]
-      }
+      },
+      "text": "x x x "
     }
   ]
 }

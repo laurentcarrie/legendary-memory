@@ -16,6 +16,7 @@ pub struct UserStructureItem {
     pub texname: String,
     pub sectiontype: String,
     pub content: UserStructureItemContent,
+    pub text: String,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
