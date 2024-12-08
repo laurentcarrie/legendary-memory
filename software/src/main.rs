@@ -55,7 +55,7 @@ fn main() -> Result<(), Error> {
         generate_main_book(&book)?;
     }
 
-    generate_song_omakefile(&world.songs[0])?;
+    // generate_song_omakefile(&world.songs[0])?;
     generate(&world)?;
 
     // log::debug!("SUCCESS !");

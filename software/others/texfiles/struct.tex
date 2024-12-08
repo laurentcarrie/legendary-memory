@@ -1,7 +1,7 @@
 
 % import preamble first
-\def\songtitle{ {{songtitle}} }
-\def\songauthor{ {{songauthor}} }
+\def\songtitle{ {{{title}}} }
+\def\songauthor{ {{{author}}} }
 
 
 
@@ -47,5 +47,34 @@
 \end{NiceTabular} 
 }
 \newcommand{\xxxtextcouplet}{ \couplet{xxx} { x x x   } }
+
+
+\newcommand{\xxxstruct}{
+        {{#each structure}}
+\lolotwocolumns{
+    \begin{NiceTabular}{>{\raggedright}p{0.5cm}C|C|C|C}
+    \CodeBefore
+    \rowcolor{\lolocolorcouplet!100}{1-4}
+    \cellcolor{white}{1-1,2-1,3-1,4-1}
+    \Body
+    \tiny{7} & \chordDm & \chordGm & \chordAm & \chordDm \\
+    \tiny{11} & \chordDm & \chordGm & \chordAm & \chordDm \\
+    \tiny{15} & \chordGm & \chordGm & \chordE & \chordE \\
+    \tiny{19} & \chordF & \chordF & \chordEsept & \chordA \\
+
+    \end{NiceTabular}
+
+}{
+blah blah blah
+}
+\lolohr
+            %hello {{this.sectiontype}}
+            %hello {{this.content}}
+            {{#each this.content.Chords}}
+                %blah blah {{this}}
+            {{/each}}
+
+        {{/each}}
+}
 
 

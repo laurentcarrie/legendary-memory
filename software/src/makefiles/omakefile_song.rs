@@ -72,6 +72,9 @@ chords.tex : $(buildroot)/songs/chords.tex
     cp $(buildroot)/songs/chords.tex .
 
 
+#data.tex : data-utf8.tex
+#    iconv -f UTF-8 -t ISO-8859-15 data-utf8.tex > data.tex
+
 main.pdf : main.tex preamble.tex chords.tex body.tex data.tex "###
     )?;
 

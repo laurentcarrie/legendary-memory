@@ -45,7 +45,7 @@ pub fn generate_root_omakefile(world: &World) -> Result<(), Error> {
         subdirs.insert(&song.builddir);
     }
 
-    assert_eq!(world.books.len() as i32, 1);
+    // assert_eq!(world.books.len() as i32, 1);
     for book in &world.books {
         subdirs.insert(&book.builddir);
     }

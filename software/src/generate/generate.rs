@@ -1,25 +1,17 @@
-use encoding::all::ISO_8859_1;
-// use encoding::DecoderTrap;
-use encoding::{EncoderTrap, Encoding};
-use handlebars::Handlebars;
-use serde_json::json;
-
+use std::collections::BTreeMap;
 use std::fs;
 use std::fs::File;
 use std::io::{Error, Write};
 use std::path::PathBuf;
 
-use crate::config::model::StructureItemContent;
+use crate::config::model::StructureItemContent::Chords;
+use handlebars::Handlebars;
+use serde_json::json;
+
 use crate::config::model::World;
 use crate::emitter::emitter::write_mp;
 
 pub fn generate(world: &World) -> Result<(), Error> {
-    // include_bytes!("../../others/shfiles/make_lytex.sh"),
-    // include_bytes!("../../others/shfiles/colors.sh"),
-    // include_bytes!("../../others/shfiles/make_mpost.sh"),
-    // include_bytes!("../../others/shfiles/make_pdf.sh"),
-    // include_bytes!("../../others/shfiles/make_wav.sh"),
-    // include_bytes!("../../others/shfiles/make_clean.sh"),
     {
         let bytes = include_bytes!("../../others/shfiles/make_lytex.sh");
         let mut p: PathBuf = world.builddir.clone();
@@ -214,26 +206,34 @@ pub fn generate(world: &World) -> Result<(), Error> {
             //                 }
             //             }
 
-            let reg = Handlebars::new();
+            let mut reg = Handlebars::new();
 
             let template =
                 String::from_utf8(include_bytes!("../../others/texfiles/struct.tex").to_vec())
                     .unwrap();
 
             {
-                // let mut bytes = Vec::new();
+                let j = json!(&song);
+                log::info!("{}", j.to_string());
+            }
+            reg.register_template_string("t1", template).unwrap();
 
-                let data = &reg
-                    .render_template(
-                        template.as_str(),
-                        &json!({"name": "foo","songtitle":song.title,"songauthor":song.author}),
-                    )
-                    .unwrap();
-
-                let data = "caf\u{e9}".to_string();
-
-                // ISO_8859_1.encode_to(&data, EncoderTrap::Ignore, &mut bytes);
-                let _ = output.write(data.as_bytes()).unwrap();
+            // let mut input_data = BTreeMap::new();
+            // input_data.insert("songtitle".to_string(), &song.title);
+            // input_data.insert("songauthor".to_string(), &song.author);
+            // let chords = &song
+            //     .structure
+            //     .iter()
+            //     .filter_map(|s| match &s.content {
+            //         Chords(c) => Some(c),
+            //         _ => None,
+            //     })
+            //     .collect::<Vec<_>>();
+            // input_data.insert("chords".to_string(), &song);
+            {
+                // let output_data = &reg.render_template(template.as_str(), &input_data).unwrap();
+                let output_data = reg.render("t1", song).unwrap();
+                let _ = output.write(output_data.as_bytes()).unwrap();
             };
         }
     }
