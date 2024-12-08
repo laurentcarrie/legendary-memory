@@ -2,33 +2,9 @@ use std::fs;
 use std::io::Error;
 use std::path::PathBuf;
 
-use crate::config::model::{
-    Bar, Book, BookSong, Row, Section, Song, StructureItem, StructureItemContent,
-};
+use crate::config::model::{Book, BookSong, Song, StructureItem, StructureItemContent};
 
-use crate::config::input_model::{
-    UserBook, UserSection, UserSong, UserStructureItem, UserStructureItemContent,
-};
-
-fn bar_of_string(s: &String) -> Bar {
-    let chords: Vec<String> = s.split(' ').map(|s| s.to_string()).collect();
-    //.iter().map(|s| s.to_string()).collect() ;
-    Bar { chords: chords }
-}
-
-fn row_of_vstring(v: &Vec<String>) -> Row {
-    let bars: Vec<Bar> = v.iter().map(bar_of_string).collect();
-    Row { bars: bars }
-}
-
-fn section_of_usection(u: &UserSection) -> Section {
-    // let mut split = "Mary had a little lamb".split_whitespace();
-    let rows: Vec<Row> = u.rows.iter().map(row_of_vstring).collect();
-    return Section {
-        name: u.name.clone(),
-        rows: rows,
-    };
-}
+use crate::config::input_model::{UserBook, UserSong, UserStructureItem, UserStructureItemContent};
 
 fn structure_of_structure(u: &UserStructureItem) -> StructureItem {
     return StructureItem {
@@ -120,19 +96,12 @@ pub fn decode_song(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Song, Erro
     song_builddir.push(&parent_author);
     song_builddir.push(&parent_title);
     let song = Song {
-        cell_height: uconf.cell_height,
-        cell_width: uconf.cell_width,
         texfiles: uconf.texfiles,
         author: uconf.author,
         title: uconf.title,
         builddir: song_builddir,
         lilypondfiles: uconf.lilypondfiles,
         wavfiles: uconf.wavfiles,
-        sections: uconf.sections.iter().map(section_of_usection).collect(),
-        chord_glyph_scale: uconf.chord_glyph_scale.unwrap_or(2),
-        outputformat: uconf.outputformat.unwrap_or("mps".to_string()),
-        outputtemplate: uconf.outputtemplate.unwrap_or("mps/%s-%c.mps".to_string()),
-        section_spacing: uconf.section_spacing.unwrap_or(20),
         date: uconf.date,
         structure: {
             match uconf.structure {

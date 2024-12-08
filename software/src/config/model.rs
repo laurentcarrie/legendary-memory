@@ -2,21 +2,6 @@ use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
-pub struct Bar {
-    pub chords: Vec<String>,
-}
-#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
-pub struct Row {
-    pub bars: Vec<Bar>,
-}
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
-pub struct Section {
-    pub name: String,
-    pub rows: Vec<Row>,
-}
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
 pub enum StructureItemContent {
     Chords(Vec<String>),
 }
@@ -31,18 +16,11 @@ pub struct StructureItem {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct Song {
-    pub cell_height: i32,
-    pub cell_width: i32,
     pub title: String,
     pub author: String,
     pub texfiles: Vec<String>,
     pub builddir: PathBuf,
     pub lilypondfiles: Vec<String>,
-    pub sections: Vec<Section>,
-    pub outputtemplate: String,
-    pub outputformat: String,
-    pub chord_glyph_scale: i32,
-    pub section_spacing: i32,
     pub wavfiles: Vec<String>,
     pub date: String,
     pub structure: Vec<StructureItem>,

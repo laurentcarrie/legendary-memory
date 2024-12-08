@@ -1,6 +1,4 @@
 {
-  "cell_height": 30,
-  "cell_width": 60,
   "title": "you know I'm no good",
   "author": "Amy Winehouse",
   "texfiles": [
@@ -12,11 +10,6 @@
     "intro.ly",
     "couplet.ly"
   ],
-  "sections": [],
-  "outputtemplate": null,
-  "outputformat": null,
-  "chord_glyph_scale": 2,
-  "section_spacing": null,
   "wavfiles": [],
   "date": "2024-12-05",
   "digest": "1419b119ef1c9ecddd73035409c084d4",

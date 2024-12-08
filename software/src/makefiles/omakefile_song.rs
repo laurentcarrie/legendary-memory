@@ -78,10 +78,6 @@ chords.tex : $(buildroot)/songs/chords.tex
 main.pdf : main.tex preamble.tex chords.tex body.tex data.tex "###
     )?;
 
-    for section in song.sections.iter() {
-        write!(output, " mps/{name}-0.mps ", name = section.name)?;
-    }
-
     for f in &song.lilypondfiles {
         let f2 = f.replace(".ly", "");
         write!(output, " {f2}.output/{f2}.tex ", f2 = f2)?
@@ -102,19 +98,6 @@ main.pdf : main.tex preamble.tex chords.tex body.tex data.tex "###
 "
     )?;
 
-    for section in song.sections.iter() {
-        write!(
-            output,
-            r###"
-mps/{name}-0.mps  : {name}.mp
-    mkdir -p mps
-    bash $(buildroot)/make_mpost.sh {name}.mp
-
-"###,
-            name = section.name
-        )?;
-    }
-
     for f in &song.lilypondfiles {
         write!(
             output,
@@ -124,19 +107,6 @@ mps/{name}-0.mps  : {name}.mp
 
 ",
             name = f
-        )?;
-    }
-
-    for (index, _section) in song.sections.iter().enumerate() {
-        write!(
-            output,
-            r###"
-mps/main-{index}.mps  : main.mp
-    mkdir -p mps
-    bash $(buildroot)/make_mpost.sh main.mp
-
-"###,
-            index = index
         )?;
     }
 

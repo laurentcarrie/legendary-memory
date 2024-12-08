@@ -9,7 +9,6 @@ use handlebars::Handlebars;
 use serde_json::json;
 
 use crate::config::model::World;
-use crate::emitter::emitter::write_mp;
 
 pub fn generate(world: &World) -> Result<(), Error> {
     {
@@ -246,13 +245,6 @@ pub fn generate(world: &World) -> Result<(), Error> {
     //     let data = make_macros();
     //     write!(output, "{}", data)?;
     // }
-    {
-        for song in world.songs.iter() {
-            for section in song.sections.iter() {
-                write_mp(&section, &song)?;
-            }
-        }
-    }
 
     Ok(())
 }
