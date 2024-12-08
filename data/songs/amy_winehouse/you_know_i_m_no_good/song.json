@@ -43,10 +43,22 @@
       "sectiontype": "couplet",
       "content": {
         "Chords": [
-          "Dm | Gm | Am | Dm",
-          "Dm | Gm | Am | Dm ",
+          "Dm | Gm | A | Dm",
+          "Dm | Gm | A | Dm ",
           "Gm | Gm | E | E ",
           "F | F | E7 | A"
+        ]
+      },
+      "text": "x x x "
+    },
+    {
+      "texname": "refrain",
+      "title": "refrain 1",
+      "sectiontype": "refrain",
+      "content": {
+        "Chords": [
+          "Dm | Am | E | Am",
+          "Dm | Am | E | Am",
         ]
       },
       "text": "x x x "
