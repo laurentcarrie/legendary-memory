@@ -1,10 +1,8 @@
-use std::collections::BTreeMap;
 use std::fs;
 use std::fs::File;
 use std::io::{Error, Write};
 use std::path::PathBuf;
 
-use crate::config::model::StructureItemContent::Chords;
 use handlebars::Handlebars;
 use serde_json::json;
 

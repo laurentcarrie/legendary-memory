@@ -17,27 +17,30 @@
   "structure": [
     {
       "texname": "introbatterie",
-      "sectiontype":"intro",
+      "sectiontype": "intro",
       "content": {
         "Chords": [
           "HRest | HRest "
         ]
       },
-      "text":"blah blah"
+      "text": "blah blah",
+      "title": "intro batterie"
     },
     {
+      "title": "intro batterie/basse ",
       "texname": "intro",
-      "sectiontype":"intro",
+      "sectiontype": "intro",
       "content": {
         "Chords": [
           "Dm | Dm | Dm | Dm"
         ]
       },
-      "text":"hello world"
+      "text": "hello world"
     },
     {
       "texname": "couplet",
-      "sectiontype":"couplet",
+      "title": "couplet 1",
+      "sectiontype": "couplet",
       "content": {
         "Chords": [
           "Dm | Gm | Am | Dm",

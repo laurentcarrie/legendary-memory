@@ -1,3 +1,4 @@
+use crate::config::model::Row;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
@@ -7,6 +8,7 @@ pub enum UserStructureItemContent {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
 pub struct UserStructureItem {
+    pub title: String,
     pub texname: String,
     pub sectiontype: String,
     pub content: UserStructureItemContent,

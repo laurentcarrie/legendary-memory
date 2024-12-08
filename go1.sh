@@ -15,7 +15,7 @@ fi
 
 
 
-( cd software && cargo fmt && cargo build $type)
+( cd software && cargo fmt && cargo build $type && cargo test $type )
 #cargo install --path $here/software || ( echo "build FAILED" && false )
 
 

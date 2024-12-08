@@ -3,18 +3,27 @@ use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
 pub struct Row {
-    pub bar_number:u32,
-    pub chords:Vec<String>
+    pub bar_number: u32,
+    pub chords: Vec<String>,
 }
 
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
+pub struct Chords {
+    pub colspec: String,
+    pub nbcols: u32,
+    pub nbrows: u32,
+    pub CodeBefore: String,
+    pub rows: Vec<Row>,
+}
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
 pub enum StructureItemContent {
-    Chords(Vec<Row>),
+    ItemChords(Chords),
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
 pub struct StructureItem {
+    pub title: String,
     pub texname: String,
     pub text: String,
     pub sectiontype: String,
