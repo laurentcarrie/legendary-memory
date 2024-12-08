@@ -2,8 +2,15 @@ use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
+pub struct Row {
+    pub bar_number:u32,
+    pub chords:Vec<String>
+}
+
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
 pub enum StructureItemContent {
-    Chords(Vec<String>),
+    Chords(Vec<Row>),
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
