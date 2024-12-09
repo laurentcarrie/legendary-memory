@@ -1,6 +1,4 @@
 {
-  "cell_height": 30,
-  "cell_width": 60,
   "title": "This Love",
   "author": "Maroon 5",
   "texfiles": [
@@ -12,24 +10,17 @@
     "refrain.ly",
     "pont.ly"
   ],
-  "sections": [
+  "structure": [
     {
+      "text": "",
+      "item": {
+        "Chords": {
       "name": "couplet",
-      "rows": [
-        [
-          "G7",
-          "Cm7",
-          "Fm7",
-          "Abdim"
-        ],
-        [
-          "G7",
-          "Cm7",
-          "Fm7",
-          "Abdim"
+      "rows": [ "G7 | Cm7 | Fm7 | Abdim" ,
+          "G7 | Cm7 | Fm7 | Abdim",
         ]
-      ]
     },
+      ]
     {
       "name": "refrain",
       "rows": [
@@ -48,10 +39,6 @@
       ]
     }
   ],
-  "outputtemplate": null,
-  "outputformat": null,
-  "chord_glyph_scale": 2,
-  "section_spacing": null,
   "wavfiles": [],
   "date": "2024-12-05",
   "digest": "9f41817eb0f86bb83954a0c6fa636d41",
