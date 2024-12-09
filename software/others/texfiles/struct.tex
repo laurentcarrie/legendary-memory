@@ -13,32 +13,44 @@
 
 \newcommand{\xxxstruct}{
 
-        {{#each structure}}
-\lolotwocolumns{
+    {{#each structure}}
 
-    \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{this.content.ItemChords.colspec}}}
-    \CodeBefore
-    {{{this.content.ItemChords.CodeBefore}}}
-   \Body
-    {{#each this.content.ItemChords.rows}}
-        \tiny{ {{this.bar_number}} }
-            {{#each this.chords}}
-                & \chord{{this}}
-            {{/each}}
+    {{#if this.content.ItemChords}}
+        \lolotwocolumns{
+        \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{this.content.ItemChords.colspec}}}
+        \CodeBefore
+        {{{this.content.ItemChords.CodeBefore}}}
+       \Body
+        {{#each this.content.ItemChords.rows}}
+            \tiny{ {{this.bar_number}} }
+                {{#each this.chords}}
+                    & \chord{{this}}
+                {{/each}}
+                \\
+
+        {{/each}}
+        \end{NiceTabular}
+        }{
+            \\{{{this.sectiontype}}} { {{{this.title}}} } { {{{this.text}}} }
+        }
+        \lolohr
+    {{/if}}
+    {{#if this.content.ItemRef}}
+        \lolotwocolumns{
+            \begin{NiceTabular}{>{\raggedright}p{0.5cm}C}
+            \tiny{ {{this.content.ItemRef.bar_number}} } &
+            \colorbox{\lolocolor{{this.sectiontype}}}{ {{{this.content.ItemRef.nb_bars}}} mesures}
             \\
+            \end{NiceTabular}
+            \lolohspace}{
+            \\{{{this.sectiontype}}} { {{{this.title}}} } { }
+            }
+        \lolohr
+        % >>>>> Ref {{{this.content.ItemRef}}}
+    {{/if}}
 
-    {{/each}}
-    \end{NiceTabular}
 
 
-}{
-
-        \\{{{this.sectiontype}}} { {{{this.title}}} } { {{{this.text}}} }
-}
-
-    %\lolovspace
-
-    \lolohr
 
     {{/each}}
 

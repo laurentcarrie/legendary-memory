@@ -1,15 +1,16 @@
 use crate::config::model::Row;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub enum UserStructureItemContent {
     Chords(Vec<String>),
+    Ref(String),
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct UserStructureItem {
     pub title: String,
-    pub texname: String,
+    pub section_id: String,
     pub sectiontype: String,
     pub content: UserStructureItemContent,
     pub text: String,
@@ -23,7 +24,7 @@ pub struct UserSong {
     pub lilypondfiles: Vec<String>,
     pub wavfiles: Vec<String>,
     pub date: String,
-    pub structure: Option<Vec<UserStructureItem>>,
+    pub structure: Vec<UserStructureItem>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]

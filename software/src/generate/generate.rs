@@ -150,7 +150,7 @@ pub fn generate(world: &World) -> Result<(), Error> {
             // let mut cumul = 0;
 
             //             for item in song.structure.iter() {
-            //                 write!(output, "% structure item name {}", &item.texname)?;
+            //                 write!(output, "% structure item name {}", &item.section_id)?;
             //                 match &item.content {
             //                     StructureItemContent::Chords(chords) => {
             //                         let nbcols = std::cmp::min(4, chords.len());
@@ -162,14 +162,14 @@ pub fn generate(world: &World) -> Result<(), Error> {
             //                         write!(
             //                             output,
             //                             r###"\
-            // \newcommand{{\xxxgrid{texname}}}{{
+            // \newcommand{{\xxxgrid{section_id}}}{{
             // \begin{{NiceTabular}}{{>{{\raggedright}}p{{0.5cm}}{colspec}}}
             // \CodeBefore
             // \rowcolor{{\lolocolor{sectiontype}!100}}{{1-{nrows}}}
             // \cellcolor{{white}}{{{firstcol}}}
             // \Body
             // "###,
-            //                             texname = &item.texname,
+            //                             section_id = &item.section_id,
             //                             sectiontype = &item.sectiontype,
             //                             nrows = (chords.len() / nbcols),
             //                             firstcol = firstcol,
@@ -193,8 +193,8 @@ pub fn generate(world: &World) -> Result<(), Error> {
 
             //                         write!(
             //                             output,
-            //                             "\\newcommand{{\\xxxtext{texname}}}{{ \\{sectiontype}{{xxx}} {{ {text}  }} }}\n",
-            //                             texname = &item.texname,sectiontype=&item.sectiontype,
+            //                             "\\newcommand{{\\xxxtext{section_id}}}{{ \\{sectiontype}{{xxx}} {{ {text}  }} }}\n",
+            //                             section_id = &item.section_id,sectiontype=&item.sectiontype,
             //                             text = &item.text
             //                         )?;
 
