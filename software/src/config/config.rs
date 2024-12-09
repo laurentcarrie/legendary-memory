@@ -4,28 +4,34 @@ use std::io::Error;
 use std::path::PathBuf;
 
 use crate::config::model::{
-    Book, BookSong, Chords, Row, Song, StructureItem, StructureItemContent,
+    Bar, Book, BookSong, Chords, Row, Song, StructureItem, StructureItemContent,
 };
 
 use crate::config::input_model::{
     UserBook, UserChordSection, UserSong, UserStructureItem, UserStructureItemContent,
 };
 
+fn chord_of_string(s: String) -> String {
+    s.replace("7", "sept").replace(" ", "")
+}
+
+fn bar_of_string(s: String) -> Bar {
+    Bar {
+        chords: s
+            .split(" ")
+            .map(|c| chord_of_string(c.to_string()))
+            .filter(|c| c.ne(""))
+            .collect(),
+    }
+}
+
 fn row_of_string(barcount: u32, s: String) -> (u32, Row) {
-    let l: Vec<_> = s
-        .split("|")
-        .map(|c| c.replace("7", "sept").replace(" ", ""))
-        .map(|c| c.to_string())
-        .filter(|c| c.len() > 0)
-        .collect();
-    // while l.len() < 4 {
-    //     l.push("".to_string());
-    // }
+    let bars: Vec<Bar> = s.split("|").map(|b| bar_of_string(b.to_string())).collect();
     (
-        barcount + l.len() as u32,
+        barcount + bars.len() as u32,
         Row {
             bar_number: barcount,
-            chords: l,
+            bars: bars,
         },
     )
 }
@@ -49,7 +55,7 @@ fn structure_of_structure(
         UserStructureItemContent::Chords(l) => {
             let (new_barcount, rows) = rows_of_userchordsection(barcount, &l);
             let nbcols = rows.iter().fold(1000 as u32, |acc, row| {
-                std::cmp::min(acc, row.chords.len() as u32)
+                std::cmp::min(acc, row.bars.len() as u32)
             });
             (
                 new_barcount,
@@ -61,7 +67,7 @@ fn structure_of_structure(
                     nb_bars: rows
                         .clone()
                         .into_iter()
-                        .fold(0, |acc, row| acc + row.chords.len() as u32),
+                        .fold(0, |acc, row| acc + row.bars.len() as u32),
                     nbcols: nbcols,
                     nbrows: l.rows.len() as u32,
                     rows: rows,
@@ -250,11 +256,19 @@ mod tests {
                 5,
                 Row {
                     bar_number: 1,
-                    chords: vec![
-                        "A".to_string(),
-                        "B".to_string(),
-                        "C".to_string(),
-                        "D".to_string()
+                    bars: vec![
+                        Bar {
+                            chords: vec!["A".to_string()]
+                        },
+                        Bar {
+                            chords: vec!["B".to_string()]
+                        },
+                        Bar {
+                            chords: vec!["C".to_string()]
+                        },
+                        Bar {
+                            chords: vec!["D".to_string()]
+                        },
                     ]
                 }
             )
@@ -283,24 +297,42 @@ mod tests {
                 vec![
                     Row {
                         bar_number: 5,
-                        chords: vec![
-                            "A".to_string(),
-                            "B".to_string(),
-                            "C".to_string(),
-                            "D".to_string()
+                        bars: vec![
+                            Bar {
+                                chords: vec!["A".to_string()]
+                            },
+                            Bar {
+                                chords: vec!["B".to_string()]
+                            },
+                            Bar {
+                                chords: vec!["C".to_string()]
+                            },
+                            Bar {
+                                chords: vec!["D".to_string()]
+                            }
                         ]
                     },
                     Row {
                         bar_number: 9,
-                        chords: vec!["Gf".to_string(),]
+                        bars: vec![Bar {
+                            chords: vec!["Gf".to_string()]
+                        }]
                     },
                     Row {
                         bar_number: 10,
-                        chords: vec![
-                            "C".to_string(),
-                            "D".to_string(),
-                            "C".to_string(),
-                            "D".to_string()
+                        bars: vec![
+                            Bar {
+                                chords: vec!["C".to_string()]
+                            },
+                            Bar {
+                                chords: vec!["D".to_string()]
+                            },
+                            Bar {
+                                chords: vec!["C".to_string()]
+                            },
+                            Bar {
+                                chords: vec!["D".to_string()]
+                            }
                         ]
                     }
                 ]
@@ -315,7 +347,7 @@ mod tests {
                 section_title: "".to_string(),
                 section_id: "".to_string(),
                 section_type: "".to_string(),
-                rows: vec!["A".to_string(), "B".to_string()],
+                rows: vec!["Af Bfm7 | E E ".to_string(), "B".to_string()],
             }),
             text: "".to_string(),
         };
@@ -328,20 +360,29 @@ mod tests {
                 nbcols: 1,
                 nbrows: 2,
                 bar_number: 10,
-                nb_bars: 2,
+                nb_bars: 3,
                 rows: vec![
                     Row {
                         bar_number: 10,
-                        chords: vec!["A".to_string()],
+                        bars: vec![
+                            Bar {
+                                chords: vec!["Af".to_string(), "Bfmsept".to_string()],
+                            },
+                            Bar {
+                                chords: vec!["E".to_string(), "E".to_string()],
+                            },
+                        ],
                     },
                     Row {
-                        bar_number: 11,
-                        chords: vec!["B".to_string()],
+                        bar_number: 12,
+                        bars: vec![Bar {
+                            chords: vec!["B".to_string()],
+                        }],
                     },
                 ],
             }),
         };
-        assert_eq!((12, expected), structure_of_structure(10, &vec![], &u));
+        assert_eq!((13, expected), structure_of_structure(10, &vec![], &u));
     }
 
     #[test]
@@ -405,20 +446,36 @@ mod tests {
                         rows: vec![
                             Row {
                                 bar_number: 1,
-                                chords: vec![
-                                    "A".to_string(),
-                                    "B".to_string(),
-                                    "C".to_string(),
-                                    "D".to_string(),
+                                bars: vec![
+                                    Bar {
+                                        chords: vec!["A".to_string()],
+                                    },
+                                    Bar {
+                                        chords: vec!["B".to_string()],
+                                    },
+                                    Bar {
+                                        chords: vec!["C".to_string()],
+                                    },
+                                    Bar {
+                                        chords: vec!["D".to_string()],
+                                    },
                                 ],
                             },
                             Row {
                                 bar_number: 5,
-                                chords: vec![
-                                    "E".to_string(),
-                                    "F".to_string(),
-                                    "G".to_string(),
-                                    "A".to_string(),
+                                bars: vec![
+                                    Bar {
+                                        chords: vec!["E".to_string()],
+                                    },
+                                    Bar {
+                                        chords: vec!["F".to_string()],
+                                    },
+                                    Bar {
+                                        chords: vec!["G".to_string()],
+                                    },
+                                    Bar {
+                                        chords: vec!["A".to_string()],
+                                    },
                                 ],
                             },
                         ],

@@ -7,9 +7,14 @@ pub struct HRule {
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct Bar {
+    pub chords: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct Row {
     pub bar_number: u32,
-    pub chords: Vec<String>,
+    pub bars: Vec<Bar>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]

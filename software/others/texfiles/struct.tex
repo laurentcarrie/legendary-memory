@@ -18,7 +18,7 @@
     {{#if this.item.ItemChords}}
         {{#with this.item.ItemChords}}
             \lolotwocolumns{
-            \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{join-helper "C" "|" nbcols  }}}
+            \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{join-helper "W{c}{2cm}" "|" nbcols  }}}
             \CodeBefore
             \rowcolor{\lolocolor{{section_type}}!100}{1-{{nbrows}}}
             {{#each rows}}
@@ -27,8 +27,11 @@
            \Body
             {{#each rows}}
                 \tiny{ {{this.bar_number}} }
-                    {{#each this.chords}}
-                        & \chord{{this}}
+                    {{#each this.bars}}
+                        &
+                        {{#each this.chords}}
+                             \chord{{this}}
+                             {{/each}}
                     {{/each}}
                     \\
 

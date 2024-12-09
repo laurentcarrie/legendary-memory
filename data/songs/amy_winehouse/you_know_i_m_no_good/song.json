@@ -2,9 +2,6 @@
   "title": "you know I'm no good",
   "author": "Amy Winehouse",
   "texfiles": [
-    "lyrics.tex",
-    "struct.tex",
-    "body.tex"
   ],
   "lilypondfiles": [
     "intro.ly",

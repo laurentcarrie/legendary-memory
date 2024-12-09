@@ -2,8 +2,6 @@
   "title": "This Love",
   "author": "Maroon 5",
   "texfiles": [
-    "lyrics.tex",
-    "struct.tex"
   ],
   "lilypondfiles": [
     "couplet.ly",
@@ -15,28 +13,29 @@
       "text": "",
       "item": {
         "Chords": {
-      "name": "couplet",
-      "rows": [ "G7 | Cm7 | Fm7 | Abdim" ,
-          "G7 | Cm7 | Fm7 | Abdim",
-        ]
+          "section_title": "couplet 1",
+          "section_id": "couplet_1",
+          "section_type": "couplet",
+          "rows": [
+            "G7 | Cm7 | Fm7 | Af",
+            "G7 | Cm7 | Fm7 | Af"
+          ]
+        }
+      }
     },
-      ]
     {
-      "name": "refrain",
-      "rows": [
-        [
-          "Cm Fm7",
-          "Bb Eb",
-          "Cm Fm7",
-          "Bb Eb"
-        ],
-        [
-          "Cm Fm7",
-          "Bb Eb",
-          "Cm7 F7",
-          "Ab G"
-        ]
-      ]
+      "text": "",
+      "item": {
+        "Chords": {
+          "section_title": "refrain 1",
+          "section_id": "refrain_1",
+          "section_type": "refrain",
+          "rows": [
+            "Cm Fm7 | Bf Ef | Cm Fm7 | Bf Ef",
+            "Cm Fm7 | Bf Ef | Cm7 F7 | Af G"
+          ]
+        }
+      }
     }
   ],
   "wavfiles": [],

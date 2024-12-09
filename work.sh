@@ -5,8 +5,8 @@ set -x
 
 here=$(dirname $(realpath $0))
 
-( cd $here/software && cargo fmt && cargo build )
+( cd $here/software && cargo fmt && cargo test && cargo build )
 
 $here/software/target/debug/songs $here/data/songs $here/data/books $here/build
 
-( cd $here/build && omake delivery && echo DONE )
+( cd $here/build && omake pdf && echo DONE )

@@ -24,7 +24,7 @@ fn usage(prog: &str) -> String {
 }
 fn main() -> Result<(), Error> {
     SimpleLogger::new().init().unwrap();
-    log::set_max_level(LevelFilter::Warn);
+    log::set_max_level(LevelFilter::Info);
     log::info!("start build");
     // fff();
     let args: Vec<String> = env::args().collect();

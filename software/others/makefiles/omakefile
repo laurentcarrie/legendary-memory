@@ -21,7 +21,8 @@ chords.tex : $(buildroot)/songs/chords.tex
 
 main.pdf : main.tex preamble.tex chords.tex body.tex data.tex \
     {{#each structure }}{{#if this.item.ItemChords}}{{#with this.item.ItemChords}}{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
-    {{#each structure }}{{#if this.item.ItemRef}}{{#with this.item.ItemRef}}{{section_id}}.tex {{/with}}{{/if}}{{/each}}
+    {{#each structure }}{{#if this.item.ItemRef}}{{#with this.item.ItemRef}}{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
+    {{#each lilypondfiles}}{{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex {{/each}}
     bash $(buildroot)/make_pdf.sh main
 
 {{pdfname}}.pdf : main.pdf
@@ -29,8 +30,8 @@ main.pdf : main.tex preamble.tex chords.tex body.tex data.tex \
 
 
 {{#each lilypondfiles}}
-{{this}}.output/{{this}}.tex : {{this}}.ly
-    bash $(buildroot)/make_lytex.sh {{this}}
+{{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex : {{this}}
+    bash $(buildroot)/make_lytex.sh {{remove-file-extension-helper this ".ly"}}
 
 {{/each}}
 

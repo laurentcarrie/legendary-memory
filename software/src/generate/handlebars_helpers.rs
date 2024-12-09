@@ -92,12 +92,35 @@ impl HelperDef for AddHelper {
     }
 }
 
+#[derive(Clone, Copy)]
+struct RemoveFileExtension;
+impl HelperDef for RemoveFileExtension {
+    fn call<'reg: 'rc, 'rc>(
+        &self,
+        h: &Helper,
+        _: &Handlebars,
+        _: &Context,
+        _rc: &mut RenderContext,
+        out: &mut dyn Output,
+    ) -> HelperResult {
+        let filename = h.param(0).unwrap().value().render();
+        let extension = h.param(1).unwrap().value().render();
+        let result = filename.as_str().replace(extension.as_str(), "");
+        out.write(format!("{}", result).as_str())?;
+        Ok(())
+    }
+}
+
 pub fn get_handlebar() -> Result<Handlebars<'static>, Error> {
     let mut reg = Handlebars::new();
     reg.register_helper("simple-helper", Box::new(SimpleHelper));
     reg.register_helper("repeat-helper", Box::new(RepeatHelper));
     reg.register_helper("join-helper", Box::new(JoinHelper));
     reg.register_helper("add-helper", Box::new(AddHelper));
+    reg.register_helper(
+        "remove-file-extension-helper",
+        Box::new(RemoveFileExtension),
+    );
 
     // let template =
     //     String::from_utf8(include_bytes!("../../others/texfiles/struct.tex").to_vec())
