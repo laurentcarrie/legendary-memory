@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 pub enum UserStructureItemContent {
     Chords(Vec<String>),
     Ref(String),
+    HRule(Option<u32>),
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
@@ -12,7 +13,7 @@ pub struct UserStructureItem {
     pub title: String,
     pub section_id: String,
     pub sectiontype: String,
-    pub content: UserStructureItemContent,
+    pub item: UserStructureItemContent,
     pub text: String,
 }
 

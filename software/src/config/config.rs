@@ -43,7 +43,7 @@ fn structure_of_structure(
     previous: &Vec<StructureItem>,
     u: &UserStructureItem,
 ) -> (u32, StructureItem) {
-    let (barcount, content) = match &u.content {
+    let (barcount, item) = match &u.item {
         UserStructureItemContent::Chords(l) => {
             let (new_barcount, rows) = rows_of_vec_string(barcount, &l);
             let nbcols = rows.iter().fold(1000 as u32, |acc, row| {
@@ -83,7 +83,7 @@ fn structure_of_structure(
             let other = {
                 let others = previous
                     .iter()
-                    .filter_map(|usi| match &usi.content {
+                    .filter_map(|usi| match &usi.item {
                         model::StructureItemContent::ItemChords(ic) => {
                             if usi.section_id.eq(s) {
                                 Some(usi)
@@ -113,20 +113,21 @@ fn structure_of_structure(
                 0,
                 StructureItemContent::ItemRef(crate::config::model::Ref {
                     bar_number: barcount,
-                    nb_bars: match &other.content {
+                    nb_bars: match &other.item {
                         model::StructureItemContent::ItemChords(ic) => ic.nb_bars,
-                        _ => 99999,
+                        _ => panic!("not implemented"),
                     },
                 }),
             )
         }
+        UserStructureItemContent::HRule(_) => (barcount, model::StructureItemContent::ItemHRule()),
     };
     let si = StructureItem {
         title: u.title.clone(),
         section_id: u.section_id.clone(),
         sectiontype: u.sectiontype.clone(),
         text: u.text.clone(),
-        content: content,
+        item: item,
     };
     (barcount, si)
 }
@@ -303,7 +304,7 @@ mod tests {
             title: "".to_string(),
             section_id: "".to_string(),
             sectiontype: "".to_string(),
-            content: UserStructureItemContent::Chords(vec!["A".to_string(), "B".to_string()]),
+            item: UserStructureItemContent::Chords(vec!["A".to_string(), "B".to_string()]),
             text: "".to_string(),
         };
         let expected = StructureItem {
@@ -311,7 +312,7 @@ mod tests {
             section_id: "".to_string(),
             text: "".to_string(),
             sectiontype: "".to_string(),
-            content: StructureItemContent::ItemChords(model::Chords {
+            item: StructureItemContent::ItemChords(model::Chords {
                 nbcols: 1,
                 nbrows: 2,
                 bar_number: 10,
@@ -346,7 +347,7 @@ mod tests {
             structure: vec![
                 input_model::UserStructureItem {
                     title: "".to_string(),
-                    content: UserStructureItemContent::Chords(vec![
+                    item: UserStructureItemContent::Chords(vec![
                         "A|B|C|D".to_string(),
                         "E|F|G|A".to_string(),
                     ]),
@@ -358,7 +359,7 @@ mod tests {
                     title: "".to_string(),
                     section_id: "".to_string(),
                     sectiontype: "".to_string(),
-                    content: UserStructureItemContent::Ref("blahblah".to_string()),
+                    item: UserStructureItemContent::Ref("blahblah".to_string()),
                     text: "".to_string(),
                 },
             ],
@@ -378,7 +379,7 @@ mod tests {
                     section_id: "blahblah".to_string(),
                     text: "".to_string(),
                     sectiontype: "".to_string(),
-                    content: model::StructureItemContent::ItemChords(Chords {
+                    item: model::StructureItemContent::ItemChords(Chords {
                         bar_number: 1,
                         nb_bars: 8,
                         colspec: "C|C|C|C".to_string(),
@@ -413,7 +414,7 @@ mod tests {
                     section_id: "".to_string(),
                     text: "".to_string(),
                     sectiontype: "".to_string(),
-                    content: model::StructureItemContent::ItemRef(model::Ref {
+                    item: model::StructureItemContent::ItemRef(model::Ref {
                         bar_number: 9,
                         nb_bars: 8,
                     }),

@@ -18,7 +18,7 @@
     {
       "section_id": "introbatterie",
       "sectiontype": "intro",
-      "content": {
+      "item": {
         "Chords": [
           "HRest | HRest "
         ]
@@ -30,7 +30,7 @@
       "title": "intro batterie/basse ",
       "section_id": "intro",
       "sectiontype": "intro",
-      "content": {
+      "item": {
         "Chords": [
           "Dm | Dm | Dm | Dm"
         ]
@@ -41,7 +41,7 @@
       "section_id": "couplet 1",
       "title": "couplet 1",
       "sectiontype": "couplet",
-      "content": {
+      "item": {
         "Chords": [
           "Dm | Gm | A | Dm",
           "Dm | Gm | A | Dm ",
@@ -55,7 +55,7 @@
       "section_id": "refrain 1",
       "title": "refrain 1",
       "sectiontype": "refrain",
-      "content": {
+      "item": {
         "Chords": [
           "Dm | Am | E | Am",
           "Dm | Am | E | Am"
@@ -67,7 +67,7 @@
       "title": "pont batterie",
       "section_id": "pont",
       "sectiontype": "pont",
-      "content": {
+      "item": {
         "Chords": [
           "Dm | Dm | Dm | Dm"
         ]
@@ -78,7 +78,7 @@
       "title": "couplet 2",
       "section_id": "couplet 2",
       "sectiontype": "couplet",
-      "content": {
+      "item": {
         "Ref": "couplet 1"
       },
       "text": "hello world"

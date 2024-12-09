@@ -15,13 +15,13 @@
 
     {{#each structure}}
 
-    {{#if this.content.ItemChords}}
+    {{#if this.item.ItemChords}}
         \lolotwocolumns{
-        \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{this.content.ItemChords.colspec}}}
+        \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{this.item.ItemChords.colspec}}}
         \CodeBefore
-        {{{this.content.ItemChords.CodeBefore}}}
+        {{{this.item.ItemChords.CodeBefore}}}
        \Body
-        {{#each this.content.ItemChords.rows}}
+        {{#each this.item.ItemChords.rows}}
             \tiny{ {{this.bar_number}} }
                 {{#each this.chords}}
                     & \chord{{this}}
@@ -34,20 +34,20 @@
             \\{{{this.sectiontype}}} { {{{this.title}}} } { {{{this.text}}} }
         }
     {{/if}}
-    {{#if this.content.ItemRef}}
+    {{#if this.item.ItemRef}}
         \lolotwocolumns{
             \begin{NiceTabular}{>{\raggedright}p{0.5cm}C}
-            \tiny{ {{this.content.ItemRef.bar_number}} } &
-            \colorbox{\lolocolor{{this.sectiontype}}}{ {{{this.content.ItemRef.nb_bars}}} mesures}
+            \tiny{ {{this.item.ItemRef.bar_number}} } &
+            \colorbox{\lolocolor{{this.sectiontype}}}{ {{{this.item.ItemRef.nb_bars}}} mesures}
             \\
             \end{NiceTabular}
             \lolohspace}{
             \\{{{this.sectiontype}}} { {{{this.title}}} } { }
             }
-        % >>>>> Ref {{{this.content.ItemRef}}}
+        % >>>>> Ref {{{this.item.ItemRef}}}
     {{/if}}
 
-    {{#if this.content.ItemHRule}}
+    {{#if this.item.ItemHRule}}
         \lolohr
     {{/if}}
 
