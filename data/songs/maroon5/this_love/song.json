@@ -13,6 +13,20 @@
       "text": "",
       "item": {
         "Chords": {
+          "section_title": "intro",
+          "section_id": "intro",
+          "section_type": "intro",
+          "rows": [
+            "G7 | Cm7 | Fm7 | Af",
+            "G7 | Cm7 | Fm7 | Af"
+          ]
+        }
+      }
+    },
+    {
+      "text": "",
+      "item": {
+        "Chords": {
           "section_title": "couplet 1",
           "section_id": "couplet_1",
           "section_type": "couplet",
