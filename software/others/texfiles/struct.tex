@@ -33,7 +33,6 @@
         }{
             \\{{{this.sectiontype}}} { {{{this.title}}} } { {{{this.text}}} }
         }
-        \lolohr
     {{/if}}
     {{#if this.content.ItemRef}}
         \lolotwocolumns{
@@ -45,14 +44,17 @@
             \lolohspace}{
             \\{{{this.sectiontype}}} { {{{this.title}}} } { }
             }
-        \lolohr
         % >>>>> Ref {{{this.content.ItemRef}}}
+    {{/if}}
+
+    {{#if this.content.ItemHRule}}
+        \lolohr
     {{/if}}
 
 
 
 
-    {{/each}}
+        {{/each}}
 
 }
 

@@ -2,6 +2,11 @@ use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct HRule {
+}
+
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct Row {
     pub bar_number: u32,
     pub chords: Vec<String>,
@@ -28,6 +33,7 @@ pub struct Ref {
 pub enum StructureItemContent {
     ItemChords(Chords),
     ItemRef(Ref),
+    ItemHRule(HRule)
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
