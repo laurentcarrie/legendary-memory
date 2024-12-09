@@ -83,7 +83,7 @@ gdrive:
             format!(
                 "\t{p}/{pdfname}.pdf \\\n",
                 p = song.builddir.display(),
-                pdfname = "blahblahblah".to_string()
+                pdfname = song.pdfname
             )
         )?;
     }

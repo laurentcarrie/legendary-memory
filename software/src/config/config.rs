@@ -111,7 +111,15 @@ fn structure_of_structure(
                 }),
             )
         }
-        UserStructureItemContent::HRule(_) => (barcount, model::StructureItemContent::ItemHRule()),
+        UserStructureItemContent::HRule(u) => (
+            barcount,
+            model::StructureItemContent::ItemHRule(model::HRule {
+                percent: match u {
+                    Some(s) => *s,
+                    None => 70,
+                },
+            }),
+        ),
     };
     let si = StructureItem {
         text: u.text.clone(),
@@ -195,8 +203,7 @@ pub fn decode_song(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Song, Erro
     let contents = fs::read_to_string(filepath)
         .expect("Should have been able to read the file")
         .clone();
-    let uconf: UserSong = serde_json::from_str(&contents)
-        .expect(format!("read json {}", filepath.display()).as_str());
+    let uconf: UserSong = serde_json::from_str(&contents)?;
     // let j = serde_json::to_string(&uconf)?;
     // {
     //     let mut p2 = filepath.clone();

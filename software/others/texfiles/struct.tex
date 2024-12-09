@@ -24,7 +24,6 @@
             {{#each rows}}
             \cellcolor{white}{ {{add-helper @index 1}}-1 }
             {{/each}}
-            % {{{CodeBefore}}}
            \Body
             {{#each rows}}
                 \tiny{ {{this.bar_number}} }
@@ -56,15 +55,11 @@
             }
     {{/with}}
     {{/if}}
-
     {{#if this.item.ItemHRule}}
-        \lolohr
+            % HRule
+            \lolohr
     {{/if}}
-
-
-
-
-        {{/each}}
+    {{/each}}
 
 }
 
@@ -74,14 +69,14 @@
         {{#if this.item.ItemChords}}
             {{#with this.item.ItemChords}}
                 % helper : {{simple-helper section_type }}
-                \\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{{bar_number}}} \rightarrow {{ add-helper bar_number nb_bars -1 }} } } { {{{text}}} }
+                \\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{ nb_bars }} ( {{{bar_number}}}~\rightarrow~{{ add-helper bar_number nb_bars -1 }} )} } { {{{text}}} }
                 \input{ {{section_id}}.tex }
             {{/with}}
         {{/if}}
 
         {{#if this.item.ItemRef}}
             {{#with this.item.ItemRef}}
-            \\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{{bar_number}}} \rightarrow {{ add-helper bar_number nb_bars -1 }} } } { {{{text}}} }
+            \\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{ nb_bars}} ( {{{bar_number}}}~\rightarrow~{{ add-helper bar_number nb_bars -1 }} ) } } { {{{text}}} }
             \input{ {{section_id}}.tex }
             {{/with}}
         {{/if}}

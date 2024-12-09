@@ -122,6 +122,10 @@ pub fn generate(world: &World) -> Result<(), Error> {
 
     {
         for song in &world.songs {
+            {
+                let mut output = File::create("debug.json")?;
+                write!(output, "{}", serde_json::to_string(&song)?)?;
+            }
             let mut p: PathBuf = song.builddir.clone();
             let _ = fs::create_dir_all(&p)?;
             p.push("data.tex");

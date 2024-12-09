@@ -29,7 +29,6 @@
       "text": "blah blah"
     },
     {
-      "section_id": "intro",
       "item": {
         "Chords": {
           "section_title": "intro batterie/basse ",
@@ -74,6 +73,12 @@
     },
     {
       "item": {
+        "HRule": 67
+      },
+      "text": "xxx"
+    },
+    {
+      "item": {
         "Chords": {
           "section_title": "pont batterie",
           "section_id": "pont",
@@ -104,6 +109,17 @@
         }
       },
       "text": "hello world"
+    },
+    {"text": "xxx","item": {"HRule": 70}},
+    {
+      "text": "",
+      "item": {
+        "Ref": {
+          "section_title": "pont guitare",
+          "section_id": "pont_guitare",
+          "link": "intro"
+        }
+      }
     },
     {
       "item": {
