@@ -2,8 +2,14 @@ use crate::config::model::Row;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct UserChordSection {
+    pub rows : Vec<String>
+}
+
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub enum UserStructureItemContent {
-    Chords(Vec<String>),
+    Chords(UserChordSection),
     Ref(String),
     HRule(Option<u32>),
 }
