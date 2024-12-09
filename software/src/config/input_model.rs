@@ -4,20 +4,26 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct UserChordSection {
     pub sectiontype: String,
+    pub section_id: String,
     pub rows: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct UserRef {
+    pub section_id: String,
+    pub link: String,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub enum UserStructureItemContent {
     Chords(UserChordSection),
-    Ref(String),
+    Ref(UserRef),
     HRule(Option<u32>),
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct UserStructureItem {
     pub title: String,
-    pub section_id: String,
     pub item: UserStructureItemContent,
     pub text: String,
 }

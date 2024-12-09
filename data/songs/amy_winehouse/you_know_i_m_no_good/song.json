@@ -16,12 +16,14 @@
   "hash": "0",
   "structure": [
     {
-      "section_id": "introbatterie",
-      "sectiontype": "intro",
       "item": {
-        "Chords": {"rows": [
-          "HRest | HRest "
-        ]}
+        "Chords": {
+          "section_id": "intro batterie",
+          "sectiontype": "intro",
+          "rows": [
+            "HRest | HRest "
+          ]
+        }
       },
       "text": "blah blah",
       "title": "intro batterie"
@@ -29,9 +31,10 @@
     {
       "title": "intro batterie/basse ",
       "section_id": "intro",
-      "sectiontype": "intro",
       "item": {
         "Chords": {
+          "section_id": "intro",
+          "sectiontype": "intro",
           "rows": [
             "Dm | Dm | Dm | Dm"
           ]
@@ -42,9 +45,10 @@
     {
       "section_id": "couplet 1",
       "title": "couplet 1",
-      "sectiontype": "couplet",
       "item": {
         "Chords": {
+          "section_id": "couplet 1",
+          "sectiontype": "couplet",
           "rows": [
             "Dm | Gm | A | Dm",
             "Dm | Gm | A | Dm ",
@@ -58,9 +62,10 @@
     {
       "section_id": "refrain 1",
       "title": "refrain 1",
-      "sectiontype": "refrain",
       "item": {
         "Chords": {
+          "section_id": "refrain",
+          "sectiontype": "refrain",
           "rows": [
             "Dm | Am | E | Am",
             "Dm | Am | E | Am"
@@ -71,10 +76,10 @@
     },
     {
       "title": "pont batterie",
-      "section_id": "pont",
-      "sectiontype": "pont",
       "item": {
         "Chords": {
+          "section_id": "pont",
+          "sectiontype": "pont",
           "rows": [
             "Dm | Dm | Dm | Dm"
           ]
@@ -84,10 +89,10 @@
     },
     {
       "title": "couplet 2",
-      "section_id": "couplet 2",
-      "sectiontype": "couplet",
       "item": {
-        "Ref": "couplet 1"
+        "Ref": {
+          "link": "couplet 1",
+          "section_id": "couplet 2"}
       },
       "text": "hello world"
     }

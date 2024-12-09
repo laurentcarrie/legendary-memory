@@ -31,19 +31,20 @@
         {{/each}}
         \end{NiceTabular}
         }{
-            \\{{{this.sectiontype}}} { {{{this.title}}} } { {{{this.text}}} }
+            \\{{{this.item.ItemChords.sectiontype}}} { {{{this.title}}} } { {{{this.text}}} }
         }
     {{/if}}
     {{#if this.item.ItemRef}}
         \lolotwocolumns{
             \begin{NiceTabular}{>{\raggedright}p{0.5cm}C}
             \tiny{ {{this.item.ItemRef.bar_number}} } &
-            \colorbox{\lolocolor{{this.sectiontype}}}{ {{{this.item.ItemRef.nb_bars}}} mesures}
+            \colorbox{\lolocolor{{this.item.ItemRef.sectiontype}}}{ {{{this.item.ItemRef.nb_bars}}} mesures}
             \\
             \end{NiceTabular}
-            \lolohspace}{
-            \\{{{this.sectiontype}}} { {{{this.title}}} } { }
-            }
+            \lolohspace
+        }{
+            \\{{{this.item.ItemRef.sectiontype}}} { {{{this.title}}} } { }
+        }
         % >>>>> Ref {{{this.item.ItemRef}}}
     {{/if}}
 

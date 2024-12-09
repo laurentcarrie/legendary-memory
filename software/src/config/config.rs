@@ -54,6 +54,8 @@ fn structure_of_structure(
             (
                 new_barcount,
                 StructureItemContent::ItemChords(Chords {
+                    section_id: l.section_id.clone(),
+                    sectiontype: l.sectiontype.clone(),
                     bar_number: barcount,
                     nb_bars: rows
                         .clone()
@@ -69,7 +71,7 @@ fn structure_of_structure(
                         "\
                     \\rowcolor{{\\lolocolor{sectiontype}!100}}{{1-{nbrows}}}\n\
                     \\cellcolor{{white}}{{{cellcolor}}}",
-                        sectiontype = u.sectiontype,
+                        sectiontype = l.sectiontype.clone(),
                         nbrows = l.rows.len(),
                         cellcolor = (0..l.rows.len())
                             .map(|i| format!("{}-1", i + 1))
@@ -86,8 +88,8 @@ fn structure_of_structure(
                 let others = previous
                     .iter()
                     .filter_map(|usi| match &usi.item {
-                        model::StructureItemContent::ItemChords(_ic) => {
-                            if usi.section_id.eq(s) {
+                        model::StructureItemContent::ItemChords(ic) => {
+                            if ic.section_id.eq(&s.link) {
                                 Some(usi)
                             } else {
                                 None
@@ -100,7 +102,7 @@ fn structure_of_structure(
                 match others.len() {
                     1 => others.get(0).unwrap().clone(),
                     n => {
-                        panic!("found {} (instead of 1) sections with id {}", n, s)
+                        panic!("found {} (instead of 1) sections with id {}", n, s.link)
                     }
                 }
                 // .get(0)
@@ -110,6 +112,11 @@ fn structure_of_structure(
             (
                 0,
                 StructureItemContent::ItemRef(crate::config::model::Ref {
+                    section_id: s.section_id.clone(),
+                    sectiontype: match &other.item {
+                        model::StructureItemContent::ItemChords(ic) => ic.sectiontype.clone(),
+                        _ => panic!("not implemented"),
+                    },
                     bar_number: barcount,
                     nb_bars: match &other.item {
                         model::StructureItemContent::ItemChords(ic) => ic.nb_bars,
@@ -122,8 +129,7 @@ fn structure_of_structure(
     };
     let si = StructureItem {
         title: u.title.clone(),
-        section_id: u.section_id.clone(),
-        sectiontype: u.sectiontype.clone(),
+        // sectiontype: u.sectiontype.clone(),
         text: u.text.clone(),
         item: item,
     };
@@ -231,6 +237,7 @@ pub fn decode_song(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Song, Erro
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::config::input_model::UserRef;
     use crate::config::{input_model, model};
 
     #[test]
@@ -258,6 +265,8 @@ mod tests {
         let ret = rows_of_userchordsection(
             5,
             &UserChordSection {
+                section_id: "".to_string(),
+                sectiontype: "".to_string(),
                 rows: vec![
                     "A|B|C|D".to_string(),
                     "Gf".to_string(),
@@ -301,19 +310,19 @@ mod tests {
     fn test_3() {
         let u = UserStructureItem {
             title: "".to_string(),
-            section_id: "".to_string(),
-            sectiontype: "".to_string(),
             item: UserStructureItemContent::Chords(UserChordSection {
+                section_id: "".to_string(),
+                sectiontype: "".to_string(),
                 rows: vec!["A".to_string(), "B".to_string()],
             }),
             text: "".to_string(),
         };
         let expected = StructureItem {
             title: "".to_string(),
-            section_id: "".to_string(),
             text: "".to_string(),
-            sectiontype: "".to_string(),
             item: StructureItemContent::ItemChords(model::Chords {
+                section_id: "".to_string(),
+                sectiontype: "".to_string(),
                 nbcols: 1,
                 nbrows: 2,
                 bar_number: 10,
@@ -349,17 +358,18 @@ mod tests {
                 input_model::UserStructureItem {
                     title: "".to_string(),
                     item: UserStructureItemContent::Chords(UserChordSection {
+                        section_id: "blahblah".to_string(),
+                        sectiontype: "".to_string(),
                         rows: vec!["A|B|C|D".to_string(), "E|F|G|A".to_string()],
                     }),
-                    section_id: "blahblah".to_string(),
-                    sectiontype: "".to_string(),
                     text: "".to_string(),
                 },
                 input_model::UserStructureItem {
                     title: "".to_string(),
-                    section_id: "".to_string(),
-                    sectiontype: "".to_string(),
-                    item: UserStructureItemContent::Ref("blahblah".to_string()),
+                    item: UserStructureItemContent::Ref(input_model::UserRef {
+                        link: "blahblah".to_string(),
+                        section_id: "".to_string(),
+                    }),
                     text: "".to_string(),
                 },
             ],
@@ -376,10 +386,10 @@ mod tests {
             structure: vec![
                 model::StructureItem {
                     title: "".to_string(),
-                    section_id: "blahblah".to_string(),
                     text: "".to_string(),
-                    sectiontype: "".to_string(),
                     item: model::StructureItemContent::ItemChords(Chords {
+                        section_id: "blahblah".to_string(),
+                        sectiontype: "".to_string(),
                         bar_number: 1,
                         nb_bars: 8,
                         colspec: "C|C|C|C".to_string(),
@@ -411,10 +421,10 @@ mod tests {
                 },
                 model::StructureItem {
                     title: "".to_string(),
-                    section_id: "".to_string(),
                     text: "".to_string(),
-                    sectiontype: "".to_string(),
                     item: model::StructureItemContent::ItemRef(model::Ref {
+                        section_id: "".to_string(),
+                        sectiontype: "".to_string(),
                         bar_number: 9,
                         nb_bars: 8,
                     }),
