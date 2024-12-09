@@ -1,4 +1,4 @@
-use crate::config::{input_model, model};
+use crate::config::model;
 use std::fs;
 use std::io::Error;
 use std::path::PathBuf;
@@ -62,24 +62,8 @@ fn structure_of_structure(
                         .clone()
                         .into_iter()
                         .fold(0, |acc, row| acc + row.chords.len() as u32),
-                    colspec: (0..nbcols)
-                        .map(|_| "C".to_string())
-                        .collect::<Vec<_>>()
-                        .join("|"),
                     nbcols: nbcols,
                     nbrows: l.rows.len() as u32,
-                    CodeBefore: format!(
-                        "\
-                    \\rowcolor{{\\lolocolor{section_type}!100}}{{1-{nbrows}}}\n\
-                    \\cellcolor{{white}}{{{cellcolor}}}",
-                        section_type = l.section_type.clone(),
-                        nbrows = l.rows.len(),
-                        cellcolor = (0..l.rows.len())
-                            .map(|i| format!("{}-1", i + 1))
-                            .collect::<Vec<_>>()
-                            .join(",")
-                    ),
-
                     rows: rows,
                 }),
             )
@@ -174,6 +158,17 @@ fn song_of_usersong(uconf: UserSong, song_builddir: PathBuf) -> Result<Song, Err
     let song = Song {
         texfiles: uconf.texfiles.clone(),
         author: uconf.author.clone(),
+        pdfname: {
+            crate::helpers::helpers::normalize_name(
+                format!(
+                    "{author}--@--{title}",
+                    author = uconf.author,
+                    title = uconf.title
+                )
+                .clone(),
+            )
+        },
+
         title: uconf.title.clone(),
         builddir: song_builddir,
         lilypondfiles: uconf.lilypondfiles.clone(),
@@ -237,7 +232,6 @@ pub fn decode_song(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Song, Erro
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::input_model::UserRef;
     use crate::config::{input_model, model};
 
     #[test]
@@ -328,9 +322,6 @@ mod tests {
                 nbrows: 2,
                 bar_number: 10,
                 nb_bars: 2,
-                colspec: "C".to_string(),
-                CodeBefore: "\\rowcolor{\\lolocolor!100}{1-2}\n\\cellcolor{white}{1-1,2-1}"
-                    .to_string(),
                 rows: vec![
                     Row {
                         bar_number: 10,
@@ -387,6 +378,7 @@ mod tests {
         let expected = Song {
             title: "".to_string(),
             author: "".to_string(),
+            pdfname: "--@--".to_string(),
             texfiles: vec![],
             builddir: Default::default(),
             lilypondfiles: vec![],
@@ -401,11 +393,8 @@ mod tests {
                         section_type: "".to_string(),
                         bar_number: 1,
                         nb_bars: 8,
-                        colspec: "C|C|C|C".to_string(),
                         nbcols: 4,
                         nbrows: 2,
-                        CodeBefore: "\\rowcolor{\\lolocolor!100}{1-2}\n\\cellcolor{white}{1-1,2-1}"
-                            .to_string(),
                         rows: vec![
                             Row {
                                 bar_number: 1,

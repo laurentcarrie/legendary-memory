@@ -4,7 +4,7 @@ use std::io::{Error, Write};
 use std::path::PathBuf;
 
 use crate::config::model::Song;
-use crate::helpers::helpers::pdfname_of_song;
+use crate::generate::handlebars_helpers::get_handlebar;
 
 // pub fn generate_refresh_sh(exepath: &PathBuf, world: &World) -> Result<(), Error> {
 //     log::debug!("generate refresh.sh in {}", world.builddir.display());
@@ -31,11 +31,11 @@ use crate::helpers::helpers::pdfname_of_song;
 //     Ok(())
 // }
 
-pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
+pub fn generate_song_omakefile_old(song: &Song) -> Result<(), Error> {
     log::debug!("generate Omakefile in {}", song.builddir.display());
     let mut p: PathBuf = song.builddir.clone();
     let _ = fs::create_dir_all(&p)?;
-    let pdfname = pdfname_of_song(&song);
+    let pdfname = "blahblahblah".to_string();
     p.push("OMakefile");
     let mut output = File::create(p)?;
     // dbg!(&output);
@@ -159,5 +159,21 @@ midi : {name}.midi
     // bash $(buildroot)/make_lytex.sh intro2
     //
 
+    Ok(())
+}
+
+pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
+    log::debug!("generate Omakefile in {}", song.builddir.display());
+    let mut p: PathBuf = song.builddir.clone();
+    let _ = fs::create_dir_all(&p)?;
+    p.push("OMakefile");
+    let mut output = File::create(p)?;
+    let template =
+        String::from_utf8(include_bytes!("../../others/makefiles/omakefile").to_vec()).unwrap();
+
+    let mut h = get_handlebar()?;
+    h.register_template_string("t1", template).unwrap();
+    let output_data = h.render("t1", song).unwrap();
+    let _ = output.write(output_data.as_bytes()).unwrap();
     Ok(())
 }

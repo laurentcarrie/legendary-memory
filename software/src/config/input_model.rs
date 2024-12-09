@@ -1,4 +1,3 @@
-use crate::config::model::Row;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]

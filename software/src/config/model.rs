@@ -14,10 +14,8 @@ pub struct Chords {
     pub section_type: String,
     pub bar_number: u32,
     pub nb_bars: u32,
-    pub colspec: String,
     pub nbcols: u32,
     pub nbrows: u32,
-    pub CodeBefore: String,
     pub rows: Vec<Row>,
 }
 
@@ -47,6 +45,7 @@ pub struct StructureItem {
 pub struct Song {
     pub title: String,
     pub author: String,
+    pub pdfname: String,
     pub texfiles: Vec<String>,
     pub builddir: PathBuf,
     pub lilypondfiles: Vec<String>,

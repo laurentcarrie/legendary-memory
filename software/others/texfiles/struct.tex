@@ -18,10 +18,13 @@
     {{#if this.item.ItemChords}}
         {{#with this.item.ItemChords}}
             \lolotwocolumns{
-            %\begin{NiceTabular}{>{\raggedright}p{0.5cm}{{join-helper "C" "|" nbcols  }}}
-            \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{colspec}}}
+            \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{join-helper "C" "|" nbcols  }}}
             \CodeBefore
-            {{{CodeBefore}}}
+            \rowcolor{\lolocolor{{section_type}}!100}{1-{{nbrows}}}
+            {{#each rows}}
+            \cellcolor{white}{ {{add-helper @index 1}}-1 }
+            {{/each}}
+            % {{{CodeBefore}}}
            \Body
             {{#each rows}}
                 \tiny{ {{this.bar_number}} }
@@ -33,22 +36,25 @@
             {{/each}}
             \end{NiceTabular}
             }{
-                \\{{{this.item.ItemChords.section_type}}} { {{{this.section_title}}} } { {{{this.text}}} }
+                \\{{{section_type}}} { {{{section_title}}} } { {{{text}}} }
             }
         {{/with}}
     {{/if}}
     {{#if this.item.ItemRef}}
-        \lolotwocolumns{
-            \begin{NiceTabular}{>{\raggedright}p{0.5cm}C}
-            \tiny{ {{this.item.ItemRef.bar_number}} } &
-            \colorbox{\lolocolor{{this.item.ItemRef.section_type}}}{ {{{this.item.ItemRef.nb_bars}}} mesures}
-            \\
-            \end{NiceTabular}
-            \lolohspace
-        }{
-            \\{{{this.item.ItemRef.section_type}}} { {{{this.section_title}}} } { }
-        }
         % >>>>> Ref {{{this.item.ItemRef}}}
+        {{#with this.item.ItemRef}}
+            \lolotwocolumns{
+                \begin{NiceTabular}{>{\raggedright}p{0.5cm}C}
+                \tiny{ {{bar_number}} } &
+                \colorbox{\lolocolor{{section_type}}}{ {{{nb_bars}}} mesures}
+                \\
+                \end{NiceTabular}
+                \lolohspace
+            }{
+                % section type : {{section_type}}
+                \\{{{section_type}}} { {{{section_title}}} } { }
+            }
+    {{/with}}
     {{/if}}
 
     {{#if this.item.ItemHRule}}
@@ -64,23 +70,22 @@
 
 \newcommand{\xxxlyrics}{
     {{#each structure}}
-        % helper : {{simple-helper 1}}
-        % xxxxx {{@index}}
 
         {{#if this.item.ItemChords}}
             {{#with this.item.ItemChords}}
                 % helper : {{simple-helper section_type }}
-                \\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{{bar_number}}}}  } { {{{text}}} }
-                {{/with}}
+                \\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{{bar_number}}} \rightarrow {{ add-helper bar_number nb_bars -1 }} } } { {{{text}}} }
+                \input{ {{section_id}}.tex }
+            {{/with}}
         {{/if}}
 
         {{#if this.item.ItemRef}}
-            {{#with this.item.ItemChords}}
-                \\{{{section_type}}} { {{{section_title}}} } { }
-                {{/with}}
+            {{#with this.item.ItemRef}}
+            \\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{{bar_number}}} \rightarrow {{ add-helper bar_number nb_bars -1 }} } } { {{{text}}} }
+            \input{ {{section_id}}.tex }
+            {{/with}}
         {{/if}}
     {{/each}}
 }
 
 
-% {{repeat-helper "hello world" 4 }}

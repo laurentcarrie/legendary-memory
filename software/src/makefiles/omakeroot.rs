@@ -5,7 +5,7 @@ use std::io::{Error, Write};
 use std::path::PathBuf;
 
 use crate::config::model::World;
-use crate::helpers::helpers::{pdfname_of_book, pdfname_of_song};
+use crate::helpers::helpers::pdfname_of_book;
 
 pub fn f() {}
 
@@ -83,7 +83,7 @@ gdrive:
             format!(
                 "\t{p}/{pdfname}.pdf \\\n",
                 p = song.builddir.display(),
-                pdfname = pdfname_of_song(&song)
+                pdfname = "blahblahblah".to_string()
             )
         )?;
     }

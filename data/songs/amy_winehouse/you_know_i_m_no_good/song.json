@@ -19,7 +19,7 @@
       "item": {
         "Chords": {
           "section_title": "intro batterie",
-          "section_id": "intro batterie",
+          "section_id": "intro_batterie",
           "section_type": "intro",
           "rows": [
             "HRest | HRest "
@@ -43,11 +43,10 @@
       "text": "hello world"
     },
     {
-      "section_id": "couplet 1",
       "item": {
         "Chords": {
           "section_title": "couplet 1",
-          "section_id": "couplet 1",
+          "section_id": "couplet_1",
           "section_type": "couplet",
           "rows": [
             "Dm | Gm | A | Dm",
@@ -63,7 +62,7 @@
       "item": {
         "Chords": {
           "section_title": "refrain 1",
-          "section_id": "refrain 1",
+          "section_id": "refrain_1",
           "section_type": "refrain",
           "rows": [
             "Dm | Am | E | Am",
@@ -90,8 +89,8 @@
       "item": {
         "Ref": {
           "section_title": "couplet 2",
-          "link": "couplet 1",
-          "section_id": "couplet 2"
+          "link": "couplet_1",
+          "section_id": "couplet_2"
         }
       },
       "text": "hello world"
@@ -100,8 +99,38 @@
       "item": {
         "Ref": {
           "section_title": "refrain 2",
-          "link": "refrain 1",
-          "section_id": "refrain 2"
+          "link": "refrain_1",
+          "section_id": "refrain_2"
+        }
+      },
+      "text": "hello world"
+    },
+    {
+      "item": {
+        "Ref": {
+          "section_title": "couplet 3",
+          "link": "couplet_1",
+          "section_id": "couplet_3"
+        }
+      },
+      "text": "hello world"
+    },
+    {
+      "item": {
+        "Ref": {
+          "section_title": "refrain 3",
+          "link": "refrain_1",
+          "section_id": "refrain_3"
+        }
+      },
+      "text": "hello world"
+    },
+    {
+      "item": {
+        "Ref": {
+          "section_title": "refrain 4",
+          "link": "refrain_1",
+          "section_id": "refrain_4"
         }
       },
       "text": "hello world"
