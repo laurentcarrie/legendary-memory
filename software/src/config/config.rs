@@ -372,6 +372,14 @@ mod tests {
                     }),
                     text: "".to_string(),
                 },
+                input_model::UserStructureItem {
+                    title: "".to_string(),
+                    item: UserStructureItemContent::Ref(input_model::UserRef {
+                        link: "blahblah".to_string(),
+                        section_id: "".to_string(),
+                    }),
+                    text: "".to_string(),
+                },
             ],
         };
         let output = song_of_usersong(input, PathBuf::new()).unwrap();
@@ -429,9 +437,22 @@ mod tests {
                         nb_bars: 8,
                     }),
                 },
+                model::StructureItem {
+                    title: "".to_string(),
+                    text: "".to_string(),
+                    item: model::StructureItemContent::ItemRef(model::Ref {
+                        section_id: "".to_string(),
+                        section_type: "".to_string(),
+                        bar_number: 17,
+                        nb_bars: 8,
+                    }),
+                },
             ],
         };
         assert_eq!(expected.structure.get(0), output.structure.get(0));
+        assert_eq!(expected.structure.get(1), output.structure.get(1));
+        assert_eq!(expected.structure.get(2), output.structure.get(2));
+        assert_eq!(expected.structure.get(3), output.structure.get(3));
         assert_eq!(expected, output);
     }
 }

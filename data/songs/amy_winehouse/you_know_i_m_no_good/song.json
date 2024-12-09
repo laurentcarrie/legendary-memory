@@ -64,7 +64,7 @@
       "title": "refrain 1",
       "item": {
         "Chords": {
-          "section_id": "refrain",
+          "section_id": "refrain 1",
           "section_type": "refrain",
           "rows": [
             "Dm | Am | E | Am",
@@ -93,6 +93,15 @@
         "Ref": {
           "link": "couplet 1",
           "section_id": "couplet 2"}
+      },
+      "text": "hello world"
+    },
+    {
+      "title": "refrain 2",
+      "item": {
+        "Ref": {
+          "link": "refrain 1",
+          "section_id": "refrain 2"}
       },
       "text": "hello world"
     }
