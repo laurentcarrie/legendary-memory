@@ -165,12 +165,12 @@ pub fn generate(world: &World) -> Result<(), Error> {
             // \newcommand{{\xxxgrid{section_id}}}{{
             // \begin{{NiceTabular}}{{>{{\raggedright}}p{{0.5cm}}{colspec}}}
             // \CodeBefore
-            // \rowcolor{{\lolocolor{sectiontype}!100}}{{1-{nrows}}}
+            // \rowcolor{{\lolocolor{section_type}!100}}{{1-{nrows}}}
             // \cellcolor{{white}}{{{firstcol}}}
             // \Body
             // "###,
             //                             section_id = &item.section_id,
-            //                             sectiontype = &item.sectiontype,
+            //                             section_type = &item.section_type,
             //                             nrows = (chords.len() / nbcols),
             //                             firstcol = firstcol,
             //                             colspec = colspec
@@ -193,8 +193,8 @@ pub fn generate(world: &World) -> Result<(), Error> {
 
             //                         write!(
             //                             output,
-            //                             "\\newcommand{{\\xxxtext{section_id}}}{{ \\{sectiontype}{{xxx}} {{ {text}  }} }}\n",
-            //                             section_id = &item.section_id,sectiontype=&item.sectiontype,
+            //                             "\\newcommand{{\\xxxtext{section_id}}}{{ \\{section_type}{{xxx}} {{ {text}  }} }}\n",
+            //                             section_id = &item.section_id,section_type=&item.section_type,
             //                             text = &item.text
             //                         )?;
 

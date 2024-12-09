@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct UserChordSection {
-    pub sectiontype: String,
+    pub section_type: String,
     pub section_id: String,
     pub rows: Vec<String>,
 }

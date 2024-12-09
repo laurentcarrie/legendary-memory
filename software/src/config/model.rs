@@ -10,7 +10,7 @@ pub struct Row {
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
 pub struct Chords {
     pub section_id: String,
-    pub sectiontype: String,
+    pub section_type: String,
     pub bar_number: u32,
     pub nb_bars: u32,
     pub colspec: String,
@@ -25,7 +25,7 @@ pub struct Ref {
     pub bar_number: u32,
     pub nb_bars: u32,
     pub section_id: String,
-    pub sectiontype: String,
+    pub section_type: String,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
