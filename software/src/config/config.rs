@@ -105,12 +105,12 @@ fn structure_of_structure(
                         panic!("found {} (instead of 1) sections with id {}", n, s.link)
                     }
                 }
-                // .get(0)
-                // .expect(format!("ref {}", s).as_str())
-                // .clone();
             };
             (
-                0,
+                match &other.item {
+                    model::StructureItemContent::ItemChords(ic) => barcount + ic.nb_bars,
+                    _ => panic!("input error"),
+                },
                 StructureItemContent::ItemRef(crate::config::model::Ref {
                     section_id: s.section_id.clone(),
                     section_type: match &other.item {
