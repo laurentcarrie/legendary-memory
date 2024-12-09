@@ -7,7 +7,9 @@ use crate::config::model::{
     Book, BookSong, Chords, Row, Song, StructureItem, StructureItemContent,
 };
 
-use crate::config::input_model::{UserBook, UserSong, UserStructureItem, UserStructureItemContent};
+use crate::config::input_model::{
+    UserBook, UserChordSection, UserSong, UserStructureItem, UserStructureItemContent,
+};
 
 fn row_of_string(barcount: u32, s: String) -> (u32, Row) {
     let l: Vec<_> = s
@@ -28,8 +30,8 @@ fn row_of_string(barcount: u32, s: String) -> (u32, Row) {
     )
 }
 
-fn rows_of_vec_string(barcount: u32, rows: &Vec<String>) -> (u32, Vec<Row>) {
-    let bar_count_and_rows = rows.iter().fold((barcount, vec![]), |mut acc, s| {
+fn rows_of_userchordsection(barcount: u32, uc: &UserChordSection) -> (u32, Vec<Row>) {
+    let bar_count_and_rows = uc.rows.iter().fold((barcount, vec![]), |mut acc, s| {
         let ret = row_of_string(acc.0, s.to_string());
         acc.0 = ret.0;
         acc.1.push(ret.1);
@@ -45,7 +47,7 @@ fn structure_of_structure(
 ) -> (u32, StructureItem) {
     let (barcount, item) = match &u.item {
         UserStructureItemContent::Chords(l) => {
-            let (new_barcount, rows) = rows_of_vec_string(barcount, &l);
+            let (new_barcount, rows) = rows_of_userchordsection(barcount, &l);
             let nbcols = rows.iter().fold(1000 as u32, |acc, row| {
                 std::cmp::min(acc, row.chords.len() as u32)
             });
@@ -62,14 +64,14 @@ fn structure_of_structure(
                         .collect::<Vec<_>>()
                         .join("|"),
                     nbcols: nbcols,
-                    nbrows: l.len() as u32,
+                    nbrows: l.rows.len() as u32,
                     CodeBefore: format!(
                         "\
                     \\rowcolor{{\\lolocolor{sectiontype}!100}}{{1-{nbrows}}}\n\
                     \\cellcolor{{white}}{{{cellcolor}}}",
                         sectiontype = u.sectiontype,
-                        nbrows = l.len(),
-                        cellcolor = (0..l.len())
+                        nbrows = l.rows.len(),
+                        cellcolor = (0..l.rows.len())
                             .map(|i| format!("{}-1", i + 1))
                             .collect::<Vec<_>>()
                             .join(",")
@@ -84,7 +86,7 @@ fn structure_of_structure(
                 let others = previous
                     .iter()
                     .filter_map(|usi| match &usi.item {
-                        model::StructureItemContent::ItemChords(ic) => {
+                        model::StructureItemContent::ItemChords(_ic) => {
                             if usi.section_id.eq(s) {
                                 Some(usi)
                             } else {
@@ -98,11 +100,7 @@ fn structure_of_structure(
                 match others.len() {
                     1 => others.get(0).unwrap().clone(),
                     n => {
-                        panic!(
-                            "found {} (instead of 1) sections with id {}",
-                            others.len(),
-                            s
-                        )
+                        panic!("found {} (instead of 1) sections with id {}", n, s)
                     }
                 }
                 // .get(0)
@@ -257,14 +255,15 @@ mod tests {
 
     #[test]
     fn test2_vec() {
-        let ret = rows_of_vec_string(
+        let ret = rows_of_userchordsection(
             5,
-            &vec![
-                "A|B|C|D".to_string(),
-                "Gf".to_string(),
-                "C|D|C|D".to_string(),
-            ]
-            .clone(),
+            &UserChordSection {
+                rows: vec![
+                    "A|B|C|D".to_string(),
+                    "Gf".to_string(),
+                    "C|D|C|D".to_string(),
+                ],
+            },
         );
         assert_eq!(
             ret,
@@ -304,7 +303,9 @@ mod tests {
             title: "".to_string(),
             section_id: "".to_string(),
             sectiontype: "".to_string(),
-            item: UserStructureItemContent::Chords(vec!["A".to_string(), "B".to_string()]),
+            item: UserStructureItemContent::Chords(UserChordSection {
+                rows: vec!["A".to_string(), "B".to_string()],
+            }),
             text: "".to_string(),
         };
         let expected = StructureItem {
@@ -347,10 +348,9 @@ mod tests {
             structure: vec![
                 input_model::UserStructureItem {
                     title: "".to_string(),
-                    item: UserStructureItemContent::Chords(vec![
-                        "A|B|C|D".to_string(),
-                        "E|F|G|A".to_string(),
-                    ]),
+                    item: UserStructureItemContent::Chords(UserChordSection {
+                        rows: vec!["A|B|C|D".to_string(), "E|F|G|A".to_string()],
+                    }),
                     section_id: "blahblah".to_string(),
                     sectiontype: "".to_string(),
                     text: "".to_string(),

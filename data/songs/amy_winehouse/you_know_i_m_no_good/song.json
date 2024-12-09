@@ -19,9 +19,9 @@
       "section_id": "introbatterie",
       "sectiontype": "intro",
       "item": {
-        "Chords": [
+        "Chords": {"rows": [
           "HRest | HRest "
-        ]
+        ]}
       },
       "text": "blah blah",
       "title": "intro batterie"
@@ -31,9 +31,11 @@
       "section_id": "intro",
       "sectiontype": "intro",
       "item": {
-        "Chords": [
-          "Dm | Dm | Dm | Dm"
-        ]
+        "Chords": {
+          "rows": [
+            "Dm | Dm | Dm | Dm"
+          ]
+        }
       },
       "text": "hello world"
     },
@@ -42,12 +44,14 @@
       "title": "couplet 1",
       "sectiontype": "couplet",
       "item": {
-        "Chords": [
-          "Dm | Gm | A | Dm",
-          "Dm | Gm | A | Dm ",
-          "Gm | Gm | E | E ",
-          "F | F | E7 | A"
-        ]
+        "Chords": {
+          "rows": [
+            "Dm | Gm | A | Dm",
+            "Dm | Gm | A | Dm ",
+            "Gm | Gm | E | E ",
+            "F | F | E7 | A"
+          ]
+        }
       },
       "text": "x x x "
     },
@@ -56,10 +60,12 @@
       "title": "refrain 1",
       "sectiontype": "refrain",
       "item": {
-        "Chords": [
-          "Dm | Am | E | Am",
-          "Dm | Am | E | Am"
-        ]
+        "Chords": {
+          "rows": [
+            "Dm | Am | E | Am",
+            "Dm | Am | E | Am"
+          ]
+        }
       },
       "text": "x x x "
     },
@@ -68,9 +74,11 @@
       "section_id": "pont",
       "sectiontype": "pont",
       "item": {
-        "Chords": [
-          "Dm | Dm | Dm | Dm"
-        ]
+        "Chords": {
+          "rows": [
+            "Dm | Dm | Dm | Dm"
+          ]
+        }
       },
       "text": "hello world"
     },
@@ -82,7 +90,6 @@
         "Ref": "couplet 1"
       },
       "text": "hello world"
-
     }
   ]
 }
