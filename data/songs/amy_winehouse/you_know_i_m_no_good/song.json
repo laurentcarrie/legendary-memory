@@ -19,7 +19,7 @@
       "item": {
         "Chords": {
           "section_id": "intro batterie",
-          "sectiontype": "intro",
+          "section_type": "intro",
           "rows": [
             "HRest | HRest "
           ]
@@ -34,7 +34,7 @@
       "item": {
         "Chords": {
           "section_id": "intro",
-          "sectiontype": "intro",
+          "section_type": "intro",
           "rows": [
             "Dm | Dm | Dm | Dm"
           ]
@@ -48,7 +48,7 @@
       "item": {
         "Chords": {
           "section_id": "couplet 1",
-          "sectiontype": "couplet",
+          "section_type": "couplet",
           "rows": [
             "Dm | Gm | A | Dm",
             "Dm | Gm | A | Dm ",
@@ -65,7 +65,7 @@
       "item": {
         "Chords": {
           "section_id": "refrain",
-          "sectiontype": "refrain",
+          "section_type": "refrain",
           "rows": [
             "Dm | Am | E | Am",
             "Dm | Am | E | Am"
@@ -79,7 +79,7 @@
       "item": {
         "Chords": {
           "section_id": "pont",
-          "sectiontype": "pont",
+          "section_type": "pont",
           "rows": [
             "Dm | Dm | Dm | Dm"
           ]
