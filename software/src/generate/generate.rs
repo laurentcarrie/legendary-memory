@@ -7,6 +7,75 @@ use handlebars::Handlebars;
 use serde_json::json;
 
 use crate::config::model::World;
+use handlebars::*;
+
+// implement by a structure impls HelperDef
+#[derive(Clone, Copy)]
+struct SimpleHelper;
+
+impl HelperDef for SimpleHelper {
+    fn call<'reg: 'rc, 'rc>(
+        &self,
+        h: &Helper,
+        _: &Handlebars,
+        _: &Context,
+        rc: &mut RenderContext,
+        out: &mut dyn Output,
+    ) -> HelperResult {
+        let param = h.param(0).unwrap();
+
+        out.write("1st helper: ")?;
+        out.write(param.value().render().as_ref())?;
+        Ok(())
+    }
+}
+
+#[derive(Clone, Copy)]
+struct RepeatHelper;
+impl HelperDef for RepeatHelper {
+    fn call<'reg: 'rc, 'rc>(
+        &self,
+        h: &Helper,
+        _: &Handlebars,
+        _: &Context,
+        rc: &mut RenderContext,
+        out: &mut dyn Output,
+    ) -> HelperResult {
+        let param = h.param(0).unwrap();
+        let count = h.param(1).unwrap();
+
+        let n = count.value().render().parse::<u32>().unwrap();
+        for i in 0..n {
+            out.write(param.value().render().as_ref())?;
+        }
+        Ok(())
+    }
+}
+
+#[derive(Clone, Copy)]
+struct JoinHelper;
+impl HelperDef for crate::generate::generate::JoinHelper {
+    fn call<'reg: 'rc, 'rc>(
+        &self,
+        h: &Helper,
+        _: &Handlebars,
+        _: &Context,
+        rc: &mut RenderContext,
+        out: &mut dyn Output,
+    ) -> HelperResult {
+        let motif = h.param(0).unwrap();
+        let glue = h.param(1).unwrap();
+        let count = h.param(2).unwrap();
+
+        let n = count.value().render().parse::<u32>().unwrap();
+        for i in 0..n - 1 {
+            out.write(motif.value().render().as_ref())?;
+            out.write(glue.value().render().as_ref())?;
+        }
+        out.write(motif.value().render().as_ref())?;
+        Ok(())
+    }
+}
 
 pub fn generate(world: &World) -> Result<(), Error> {
     {
@@ -147,63 +216,10 @@ pub fn generate(world: &World) -> Result<(), Error> {
 
             write!(output, "% length of structure : {}\n", song.structure.len())?;
 
-            // let mut cumul = 0;
-
-            //             for item in song.structure.iter() {
-            //                 write!(output, "% structure item name {}", &item.section_id)?;
-            //                 match &item.content {
-            //                     StructureItemContent::Chords(chords) => {
-            //                         let nbcols = std::cmp::min(4, chords.len());
-            //                         let firstcol = (0..(chords.len() / nbcols))
-            //                             .map(|c| format!("{}-1", c + 1))
-            //                             .collect::<Vec<_>>()
-            //                             .join(",");
-            //                         let colspec = (0..nbcols).map(|_| "C").collect::<Vec<_>>().join("|");
-            //                         write!(
-            //                             output,
-            //                             r###"\
-            // \newcommand{{\xxxgrid{section_id}}}{{
-            // \begin{{NiceTabular}}{{>{{\raggedright}}p{{0.5cm}}{colspec}}}
-            // \CodeBefore
-            // \rowcolor{{\lolocolor{section_type}!100}}{{1-{nrows}}}
-            // \cellcolor{{white}}{{{firstcol}}}
-            // \Body
-            // "###,
-            //                             section_id = &item.section_id,
-            //                             section_type = &item.section_type,
-            //                             nrows = (chords.len() / nbcols),
-            //                             firstcol = firstcol,
-            //                             colspec = colspec
-            //                         )?;
-
-            //                         for (index, c) in chords.iter().enumerate() {
-            //                             if index % nbcols == 0 {
-            //                                 write!(output, "\\tiny{{{index}}} & ", index = cumul + index + 1)?;
-            //                             }
-            //                             write!(output, "\\chord{} ", c)?;
-            //                             // write!(output, "chord{} ", c)?;
-            //                             if (index + 1) % nbcols == 0 {
-            //                                 write!(output, "\\\\ \n")?;
-            //                             } else {
-            //                                 write!(output, "& ")?;
-            //                             }
-            //                         }
-            //                         write!(output, "\n\\end{{NiceTabular}} \n")?;
-            //                         write!(output, "}}\n")?;
-
-            //                         write!(
-            //                             output,
-            //                             "\\newcommand{{\\xxxtext{section_id}}}{{ \\{section_type}{{xxx}} {{ {text}  }} }}\n",
-            //                             section_id = &item.section_id,section_type=&item.section_type,
-            //                             text = &item.text
-            //                         )?;
-
-            //                         cumul += chords.len();
-            //                     }
-            //                 }
-            //             }
-
             let mut reg = Handlebars::new();
+            reg.register_helper("simple-helper", Box::new(SimpleHelper));
+            reg.register_helper("repeat-helper", Box::new(RepeatHelper));
+            reg.register_helper("join-helper", Box::new(JoinHelper));
 
             let template =
                 String::from_utf8(include_bytes!("../../others/texfiles/struct.tex").to_vec())

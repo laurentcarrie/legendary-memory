@@ -18,6 +18,7 @@
     {
       "item": {
         "Chords": {
+          "section_title": "intro batterie",
           "section_id": "intro batterie",
           "section_type": "intro",
           "rows": [
@@ -25,14 +26,13 @@
           ]
         }
       },
-      "text": "blah blah",
-      "title": "intro batterie"
+      "text": "blah blah"
     },
     {
-      "title": "intro batterie/basse ",
       "section_id": "intro",
       "item": {
         "Chords": {
+          "section_title": "intro batterie/basse ",
           "section_id": "intro",
           "section_type": "intro",
           "rows": [
@@ -44,9 +44,9 @@
     },
     {
       "section_id": "couplet 1",
-      "title": "couplet 1",
       "item": {
         "Chords": {
+          "section_title": "couplet 1",
           "section_id": "couplet 1",
           "section_type": "couplet",
           "rows": [
@@ -60,10 +60,9 @@
       "text": "x x x "
     },
     {
-      "section_id": "refrain 1",
-      "title": "refrain 1",
       "item": {
         "Chords": {
+          "section_title": "refrain 1",
           "section_id": "refrain 1",
           "section_type": "refrain",
           "rows": [
@@ -75,9 +74,9 @@
       "text": "x x x "
     },
     {
-      "title": "pont batterie",
       "item": {
         "Chords": {
+          "section_title": "pont batterie",
           "section_id": "pont",
           "section_type": "pont",
           "rows": [
@@ -88,20 +87,22 @@
       "text": "hello world"
     },
     {
-      "title": "couplet 2",
       "item": {
         "Ref": {
+          "section_title": "couplet 2",
           "link": "couplet 1",
-          "section_id": "couplet 2"}
+          "section_id": "couplet 2"
+        }
       },
       "text": "hello world"
     },
     {
-      "title": "refrain 2",
       "item": {
         "Ref": {
+          "section_title": "refrain 2",
           "link": "refrain 1",
-          "section_id": "refrain 2"}
+          "section_id": "refrain 2"
+        }
       },
       "text": "hello world"
     }

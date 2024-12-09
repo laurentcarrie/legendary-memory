@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct UserChordSection {
+    pub section_title: String,
     pub section_type: String,
     pub section_id: String,
     pub rows: Vec<String>,
@@ -10,6 +11,7 @@ pub struct UserChordSection {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct UserRef {
+    pub section_title: String,
     pub section_id: String,
     pub link: String,
 }
@@ -23,7 +25,6 @@ pub enum UserStructureItemContent {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct UserStructureItem {
-    pub title: String,
     pub item: UserStructureItemContent,
     pub text: String,
 }

@@ -16,23 +16,26 @@
     {{#each structure}}
 
     {{#if this.item.ItemChords}}
-        \lolotwocolumns{
-        \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{this.item.ItemChords.colspec}}}
-        \CodeBefore
-        {{{this.item.ItemChords.CodeBefore}}}
-       \Body
-        {{#each this.item.ItemChords.rows}}
-            \tiny{ {{this.bar_number}} }
-                {{#each this.chords}}
-                    & \chord{{this}}
-                {{/each}}
-                \\
+        {{#with this.item.ItemChords}}
+            \lolotwocolumns{
+            %\begin{NiceTabular}{>{\raggedright}p{0.5cm}{{join-helper "C" "|" nbcols  }}}
+            \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{colspec}}}
+            \CodeBefore
+            {{{CodeBefore}}}
+           \Body
+            {{#each rows}}
+                \tiny{ {{this.bar_number}} }
+                    {{#each this.chords}}
+                        & \chord{{this}}
+                    {{/each}}
+                    \\
 
-        {{/each}}
-        \end{NiceTabular}
-        }{
-            \\{{{this.item.ItemChords.section_type}}} { {{{this.title}}} } { {{{this.text}}} }
-        }
+            {{/each}}
+            \end{NiceTabular}
+            }{
+                \\{{{this.item.ItemChords.section_type}}} { {{{this.section_title}}} } { {{{this.text}}} }
+            }
+        {{/with}}
     {{/if}}
     {{#if this.item.ItemRef}}
         \lolotwocolumns{
@@ -43,7 +46,7 @@
             \end{NiceTabular}
             \lolohspace
         }{
-            \\{{{this.item.ItemRef.section_type}}} { {{{this.title}}} } { }
+            \\{{{this.item.ItemRef.section_type}}} { {{{this.section_title}}} } { }
         }
         % >>>>> Ref {{{this.item.ItemRef}}}
     {{/if}}
@@ -59,4 +62,25 @@
 
 }
 
+\newcommand{\xxxlyrics}{
+    {{#each structure}}
+        % helper : {{simple-helper 1}}
+        % xxxxx {{@index}}
 
+        {{#if this.item.ItemChords}}
+            {{#with this.item.ItemChords}}
+                % helper : {{simple-helper section_type }}
+                \\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{{bar_number}}}}  } { {{{text}}} }
+                {{/with}}
+        {{/if}}
+
+        {{#if this.item.ItemRef}}
+            {{#with this.item.ItemChords}}
+                \\{{{section_type}}} { {{{section_title}}} } { }
+                {{/with}}
+        {{/if}}
+    {{/each}}
+}
+
+
+% {{repeat-helper "hello world" 4 }}

@@ -9,6 +9,7 @@ pub struct Row {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
 pub struct Chords {
+    pub section_title: String,
     pub section_id: String,
     pub section_type: String,
     pub bar_number: u32,
@@ -24,6 +25,7 @@ pub struct Chords {
 pub struct Ref {
     pub bar_number: u32,
     pub nb_bars: u32,
+    pub section_title: String,
     pub section_id: String,
     pub section_type: String,
 }
@@ -37,7 +39,6 @@ pub enum StructureItemContent {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
 pub struct StructureItem {
-    pub title: String,
     pub text: String,
     pub item: StructureItemContent,
 }

@@ -54,6 +54,7 @@ fn structure_of_structure(
             (
                 new_barcount,
                 StructureItemContent::ItemChords(Chords {
+                    section_title: l.section_title.clone(),
                     section_id: l.section_id.clone(),
                     section_type: l.section_type.clone(),
                     bar_number: barcount,
@@ -112,6 +113,7 @@ fn structure_of_structure(
                     _ => panic!("input error"),
                 },
                 StructureItemContent::ItemRef(crate::config::model::Ref {
+                    section_title: s.section_title.clone(),
                     section_id: s.section_id.clone(),
                     section_type: match &other.item {
                         model::StructureItemContent::ItemChords(ic) => ic.section_type.clone(),
@@ -128,8 +130,6 @@ fn structure_of_structure(
         UserStructureItemContent::HRule(_) => (barcount, model::StructureItemContent::ItemHRule()),
     };
     let si = StructureItem {
-        title: u.title.clone(),
-        // section_type: u.section_type.clone(),
         text: u.text.clone(),
         item: item,
     };
@@ -265,6 +265,7 @@ mod tests {
         let ret = rows_of_userchordsection(
             5,
             &UserChordSection {
+                section_title: "".to_string(),
                 section_id: "".to_string(),
                 section_type: "".to_string(),
                 rows: vec![
@@ -309,8 +310,8 @@ mod tests {
     #[test]
     fn test_3() {
         let u = UserStructureItem {
-            title: "".to_string(),
             item: UserStructureItemContent::Chords(UserChordSection {
+                section_title: "".to_string(),
                 section_id: "".to_string(),
                 section_type: "".to_string(),
                 rows: vec!["A".to_string(), "B".to_string()],
@@ -318,9 +319,9 @@ mod tests {
             text: "".to_string(),
         };
         let expected = StructureItem {
-            title: "".to_string(),
             text: "".to_string(),
             item: StructureItemContent::ItemChords(model::Chords {
+                section_title: "".to_string(),
                 section_id: "".to_string(),
                 section_type: "".to_string(),
                 nbcols: 1,
@@ -356,8 +357,8 @@ mod tests {
             date: "".to_string(),
             structure: vec![
                 input_model::UserStructureItem {
-                    title: "".to_string(),
                     item: UserStructureItemContent::Chords(UserChordSection {
+                        section_title: "".to_string(),
                         section_id: "blahblah".to_string(),
                         section_type: "".to_string(),
                         rows: vec!["A|B|C|D".to_string(), "E|F|G|A".to_string()],
@@ -365,16 +366,16 @@ mod tests {
                     text: "".to_string(),
                 },
                 input_model::UserStructureItem {
-                    title: "".to_string(),
                     item: UserStructureItemContent::Ref(input_model::UserRef {
+                        section_title: "".to_string(),
                         link: "blahblah".to_string(),
                         section_id: "".to_string(),
                     }),
                     text: "".to_string(),
                 },
                 input_model::UserStructureItem {
-                    title: "".to_string(),
                     item: UserStructureItemContent::Ref(input_model::UserRef {
+                        section_title: "".to_string(),
                         link: "blahblah".to_string(),
                         section_id: "".to_string(),
                     }),
@@ -393,9 +394,9 @@ mod tests {
             date: "".to_string(),
             structure: vec![
                 model::StructureItem {
-                    title: "".to_string(),
                     text: "".to_string(),
                     item: model::StructureItemContent::ItemChords(Chords {
+                        section_title: "".to_string(),
                         section_id: "blahblah".to_string(),
                         section_type: "".to_string(),
                         bar_number: 1,
@@ -428,9 +429,9 @@ mod tests {
                     }),
                 },
                 model::StructureItem {
-                    title: "".to_string(),
                     text: "".to_string(),
                     item: model::StructureItemContent::ItemRef(model::Ref {
+                        section_title: "".to_string(),
                         section_id: "".to_string(),
                         section_type: "".to_string(),
                         bar_number: 9,
@@ -438,9 +439,9 @@ mod tests {
                     }),
                 },
                 model::StructureItem {
-                    title: "".to_string(),
                     text: "".to_string(),
                     item: model::StructureItemContent::ItemRef(model::Ref {
+                        section_title: "".to_string(),
                         section_id: "".to_string(),
                         section_type: "".to_string(),
                         bar_number: 17,
