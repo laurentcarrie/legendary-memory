@@ -13,77 +13,75 @@
 
 \newcommand{\xxxstruct}{
 
-    {{#each structure}}
+{{#each structure}}
 
-    {{#if this.item.ItemChords}}
-        {{#with this.item.ItemChords}}
-            \lolotwocolumns{
-            \begin{NiceTabular}{>{\raggedright}p{0.5cm}{{join-helper "W{c}{2cm}" "|" nbcols  }}}
-            \CodeBefore
-            \rowcolor{\lolocolor{{section_type}}!100}{1-{{nbrows}}}
-            {{#each rows}}
-            \cellcolor{white}{ {{add-helper @index 1}}-1 }
-            {{/each}}
-           \Body
-            {{#each rows}}
-                \tiny{ {{this.bar_number}} }
-                    {{#each this.bars}}
-                        &
-                        {{#each this.chords}}
-                             \chord{{this}}
-                             {{/each}}
-                    {{/each}}
-                    \\
+	{{#if this.item.ItemChords}}
+	{{#with this.item.ItemChords}}
+\lolotwocolumns{
+\begin{NiceTabular}{>{\raggedright}p{0.5cm}{{join-helper "W{c}{2cm}" "|" nbcols  }}}
+	\CodeBefore
+	\rowcolor{\lolocolor{{section_type}}!100}{1-{{nbrows}}}
+	{{#each rows}}
+	\cellcolor{white}{ {{add-helper @index 1}}-1 }
+	{{/each}}
+	\Body
+	{{#each rows}}
+	\tiny{ {{this.bar_number}} }
+	{{#each this.bars}}
+	&
+	{{#each this.chords}}
+	\chord{{this}}
+	{{/each}}
+	{{/each}}
+	\\
 
-            {{/each}}
-            \end{NiceTabular}
-            }{
-                \\{{{section_type}}} { {{{section_title}}} } { {{{text}}} }
-            }
-        {{/with}}
-    {{/if}}
-    {{#if this.item.ItemRef}}
-        % >>>>> Ref {{{this.item.ItemRef}}}
-        {{#with this.item.ItemRef}}
-            \lolotwocolumns{
-                \begin{NiceTabular}{>{\raggedright}p{0.5cm}C}
-                \tiny{ {{bar_number}} } &
-                \colorbox{\lolocolor{{section_type}}}{ {{{nb_bars}}} mesures}
-                \\
-                \end{NiceTabular}
-                \lolohspace
-            }{
-                % section type : {{section_type}}
-                \\{{{section_type}}} { {{{section_title}}} } { }
-            }
-    {{/with}}
-    {{/if}}
-    {{#if this.item.ItemHRule}}
-            % HRule
-            \lolohr
-    {{/if}}
-    {{/each}}
+	{{/each}}
+\end{NiceTabular}
+}{
+\\{{{section_type}}} { {{{section_title}}} } { {{{text}}} }
+}
+{{/with}}
+{{/if}}
+{{#if this.item.ItemRef}}
+% >>>>> Ref {{{this.item.ItemRef}}}
+{{#with this.item.ItemRef}}
+\lolotwocolumns{
+\begin{NiceTabular}{>{\raggedright}p{0.5cm}C}
+	\tiny{ {{bar_number}} } &
+	\colorbox{\lolocolor{{section_type}}}{ {{{nb_bars}}} mesures}
+	\\
+\end{NiceTabular}
+\lolohspace
+}{
+% section type : {{section_type}}
+\\{{{section_type}}} { {{{section_title}}} } { }
+}
+{{/with}}
+{{/if}}
+{{#if this.item.ItemHRule}}
+% HRule
+\lolohr
+{{/if}}
+{{/each}}
 
 }
 
 \newcommand{\xxxlyrics}{
-    {{#each structure}}
+{{#each structure}}
 
-        {{#if this.item.ItemChords}}
-            {{#with this.item.ItemChords}}
-                % helper : {{simple-helper section_type }}
-                \\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{ nb_bars }} ( {{{bar_number}}}~\rightarrow~{{ add-helper bar_number nb_bars -1 }} )} } { {{{text}}} }
-                \input{ {{section_id}}.tex }
-            {{/with}}
-        {{/if}}
+	{{#if this.item.ItemChords}}
+	{{#with this.item.ItemChords}}
+% helper : {{simple-helper section_type }}
+\\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{ nb_bars }} ( {{{bar_number}}}~\rightarrow~{{ add-helper bar_number nb_bars -1 }} )} } { {{{text}}} }
+\input{ lyrics/{{section_id}}.tex }
+{{/with}}
+{{/if}}
 
-        {{#if this.item.ItemRef}}
-            {{#with this.item.ItemRef}}
-            \\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{ nb_bars}} ( {{{bar_number}}}~\rightarrow~{{ add-helper bar_number nb_bars -1 }} ) } } { {{{text}}} }
-            \input{ {{section_id}}.tex }
-            {{/with}}
-        {{/if}}
-    {{/each}}
+{{#if this.item.ItemRef}}
+{{#with this.item.ItemRef}}
+\\{{{section_type}}} { {{{section_title}}} \lolocomment{ {{ nb_bars}} ( {{{bar_number}}}~\rightarrow~{{ add-helper bar_number nb_bars -1 }} ) } } { {{{text}}} }
+\input{ lyrics/{{section_id}}.tex }
+{{/with}}
+{{/if}}
+{{/each}}
 }
-
-

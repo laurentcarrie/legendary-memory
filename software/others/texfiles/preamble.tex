@@ -354,10 +354,10 @@
 \newcommand{\setvalue}[1]{\pgfkeys{/variables/#1}}
 \newcommand{\getvalue}[1]{\pgfkeysvalueof{/variables/#1}}
 \newcommand{\declare}[1]{%
- \pgfkeys{
-  /variables/#1.is family,
-  /variables/#1.unknown/.style = {\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = ##1}
- }%
+	\pgfkeys{
+		/variables/#1.is family,
+		/variables/#1.unknown/.style = {\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = ##1}
+	}%
 }
 
 \declare{}

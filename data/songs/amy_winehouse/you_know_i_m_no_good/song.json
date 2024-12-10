@@ -1,15 +1,14 @@
 {
   "title": "you know I'm no good",
   "author": "Amy Winehouse",
-  "texfiles": [
-  ],
+  "texfiles": [],
   "lilypondfiles": [
     "intro.ly",
     "couplet.ly"
   ],
   "wavfiles": [],
-  "date": "2024-12-05",
-  "digest": "1419b119ef1c9ecddd73035409c084d4",
+  "date": "2024-12-10",
+  "digest": "afc7c7dd9a5e2129afbcc1b360dad016",
   "hash": "0",
   "structure": [
     {
@@ -107,7 +106,12 @@
       },
       "text": "hello world"
     },
-    {"text": "xxx","item": {"HRule": 70}},
+    {
+      "text": "xxx",
+      "item": {
+        "HRule": 70
+      }
+    },
     {
       "text": "",
       "item": {

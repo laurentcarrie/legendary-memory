@@ -1,8 +1,7 @@
 {
   "title": "This Love",
   "author": "Maroon 5",
-  "texfiles": [
-  ],
+  "texfiles": [],
   "lilypondfiles": [
     "couplet.ly",
     "refrain.ly",
@@ -53,7 +52,7 @@
     }
   ],
   "wavfiles": [],
-  "date": "2024-12-05",
-  "digest": "9f41817eb0f86bb83954a0c6fa636d41",
+  "date": "2024-12-10",
+  "digest": "37a4ae1f098b74f853b615a19c20c148",
   "hash": "0"
 }

@@ -20,8 +20,8 @@ chords.tex : $(buildroot)/songs/chords.tex
 #    iconv -f UTF-8 -t ISO-8859-15 data-utf8.tex > data.tex
 
 main.pdf : main.tex preamble.tex chords.tex body.tex data.tex \
-    {{#each structure }}{{#if this.item.ItemChords}}{{#with this.item.ItemChords}}{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
-    {{#each structure }}{{#if this.item.ItemRef}}{{#with this.item.ItemRef}}{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
+    {{#each structure }}{{#if this.item.ItemChords}}{{#with this.item.ItemChords}}lyrics/{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
+    {{#each structure }}{{#if this.item.ItemRef}}{{#with this.item.ItemRef}}lyrics/{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
     {{#each lilypondfiles}}{{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex {{/each}}
     bash $(buildroot)/make_pdf.sh main
 
@@ -34,4 +34,3 @@ main.pdf : main.tex preamble.tex chords.tex body.tex data.tex \
     bash $(buildroot)/make_lytex.sh {{remove-file-extension-helper this ".ly"}}
 
 {{/each}}
-
