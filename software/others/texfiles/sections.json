@@ -1,0 +1,37 @@
+[
+  {
+    "id": "couplet",
+    "color": "Chartreuse1",
+    "label": "couplet"
+  },
+  {
+    "id": "prerefrain",
+    "color": "LightBlue1",
+    "label": "prerefrain"
+  },
+  {
+    "id": "refrain",
+    "color": "CadetBlue3",
+    "label": "refrain"
+  },
+  {
+    "id": "pont",
+    "color": "Thistle",
+    "label": "pont"
+  },
+  {
+    "id": "solo",
+    "color": "PeachPuff1",
+    "label": "solo"
+  },
+  {
+    "id": "intro",
+    "color": "PeachPuff1",
+    "label": "intro"
+  },
+  {
+    "id": "fill",
+    "color": "timberwolf",
+    "label": "fill"
+  }
+]

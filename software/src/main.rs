@@ -10,12 +10,12 @@ use crate::config::model::World;
 use crate::config::world::make;
 use crate::generate::generate::generate;
 use crate::makefiles::omakefile_book::{generate_book_omakefile, generate_main_book};
-use crate::makefiles::omakefile_song::{ generate_song_omakefile};
-use crate::makefiles::omakeroot::{generate_root_omakefile,generate_omakeroot} ;
-
+use crate::makefiles::omakefile_song::generate_song_omakefile;
+use crate::makefiles::omakeroot::{generate_omakeroot, generate_root_omakefile};
 
 pub mod config;
 pub mod emitter;
+pub mod errors;
 pub mod generate;
 pub mod helpers;
 pub mod makefiles;
@@ -25,7 +25,7 @@ fn usage(prog: &str) -> String {
 }
 fn main() -> Result<(), Error> {
     SimpleLogger::new().init().unwrap();
-    log::set_max_level(LevelFilter::Debug);
+    log::set_max_level(LevelFilter::Info);
     log::info!("start build");
     // fff();
     let args: Vec<String> = env::args().collect();
@@ -56,7 +56,7 @@ fn main() -> Result<(), Error> {
         generate_main_book(&book)?;
     }
 
-    generate_song_omakefile(&world.songs[0])?;
+    // generate_song_omakefile(&world.songs[0])?;
     generate(&world)?;
 
     // log::debug!("SUCCESS !");

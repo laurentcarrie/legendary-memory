@@ -1,71 +1,74 @@
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 use std::path::PathBuf;
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct Section {
+    pub id: String,
+    pub color: String,
+    pub label: String,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct HRule {
+    pub percent: u32,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct Bar {
     pub chords: Vec<String>,
 }
-#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct Row {
+    pub bar_number: u32,
     pub bars: Vec<Bar>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
-pub struct UserSection {
-    pub name: String,
-    pub rows: Vec<Vec<String>>,
-}
-#[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
-pub struct Section {
-    pub name: String,
+pub struct Chords {
+    pub section_title: String,
+    pub section_id: String,
+    pub section_type: String,
+    pub bar_number: u32,
+    pub nb_bars: u32,
+    pub nbcols: u32,
+    pub nbrows: u32,
     pub rows: Vec<Row>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
-pub struct UserSong {
-    pub cell_height: i32,
-    pub cell_width: i32,
-    pub title: String,
-    pub author: String,
-    pub texfiles: Vec<String>,
-    pub lilypondfiles: Vec<String>,
-    pub sections: Vec<UserSection>,
-    pub outputtemplate: Option<String>,
-    pub outputformat: Option<String>,
-    pub chord_glyph_scale: Option<i32>,
-    pub section_spacing: Option<i32>,
-    pub wavfiles: Vec<String>,
-    pub date: String,
+pub struct Ref {
+    pub bar_number: u32,
+    pub nb_bars: u32,
+    pub section_title: String,
+    pub section_id: String,
+    pub section_type: String,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
-pub struct UserBookSong {
-    pub author: String,
-    pub title: String,
+pub enum StructureItemContent {
+    ItemChords(Chords),
+    ItemRef(Ref),
+    ItemHRule(HRule),
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
-pub struct UserBook {
-    pub title: String,
-    pub songs: Vec<UserBookSong>,
+pub struct StructureItem {
+    pub item: StructureItemContent,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct Song {
-    pub cell_height: i32,
-    pub cell_width: i32,
     pub title: String,
     pub author: String,
+    pub pdfname: String,
     pub texfiles: Vec<String>,
     pub builddir: PathBuf,
     pub lilypondfiles: Vec<String>,
-    pub sections: Vec<Section>,
-    pub outputtemplate: String,
-    pub outputformat: String,
-    pub chord_glyph_scale: i32,
-    pub section_spacing: i32,
     pub wavfiles: Vec<String>,
     pub date: String,
+    pub structure: Vec<StructureItem>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
@@ -87,4 +90,5 @@ pub struct World {
     pub srcdir: PathBuf,
     pub songs: Vec<Song>,
     pub books: Vec<Book>,
+    pub sections: BTreeMap<String, Section>,
 }

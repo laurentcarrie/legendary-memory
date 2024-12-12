@@ -1,67 +1,158 @@
 {
-  "cell_height": 30,
-  "cell_width": 60,
   "title": "Torn",
   "author": "Natalie Imbroglia",
-  "texfiles": [
-    "lyrics.tex",
-    "struct.tex"
-  ],
+  "texfiles": [],
   "lilypondfiles": [
     "intro.ly",
     "couplet.ly"
   ],
-  "sections": [
+  "structure": [
     {
-      "name": "intro",
-      "rows": [
-        [
-          "F",
-          "F",
-          "F",
-          "F"
-        ]
-      ]
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_title": "intro",
+          "section_type": "intro",
+          "rows": [
+            "F|F|F|F"
+          ]
+        }
+      }
     },
     {
-      "name": "couplet",
-      "rows": [
-        [
-          "F",
-          "F",
-          "Am",
-          "Am"
-        ],
-        [
-          "Bb7",
-          "Bb7"
-        ]
-      ]
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 1",
+          "section_type": "couplet",
+          "rows": [
+            "F|F|Am|Am",
+            "Bf7|Bf7"
+          ]
+        }
+      }
     },
     {
-      "name": "pre-refrain",
-      "rows": [
-        [
-          "Dm",
-          "C",
-          "Am",
-          "C"
-        ],
-        [
-          "Dm",
-          "C",
-          "Am",
-          "C"
-        ]
-      ]
+      "id": "couplet2",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 2",
+          "section_type": "couplet",
+          "rows": [
+            "F|F|Am|Am",
+            "Bf7|Bf7"
+          ]
+        }
+      }
+    },
+    {
+      "id": "prerefrain1",
+      "item": {
+        "Chords": {
+          "section_title": "pré refrain 1",
+          "section_type": "prerefrain",
+          "rows": [
+            "Dm|C|Am|C"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_title": "refrain 1",
+          "section_type": "refrain",
+          "rows": [
+            "F|C|Dm|Bf",
+            "F|C|Dm|Bf",
+            "F|C|Dm|Bf"
+          ]
+        }
+      }
+    },
+    {
+      "id": "hr",
+      "item": {
+        "HRule": 1
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_type": "couplet",
+          "section_title": "couplet 3"
+        }
+      }
+    },
+    {
+      "id": "prerefrain2",
+      "item": {
+        "Ref": {
+          "link": "prerefrain1",
+          "section_type": "prerefrain",
+          "section_title": "pré refrain 2"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "link": "refrain1",
+          "section_type": "refrain",
+          "section_title": "refrain 2"
+        }
+      }
+    },
+    {
+      "id": "pont",
+      "item": {
+        "Chords": {
+          "section_title": "pont",
+          "section_type": "pont",
+          "rows": [
+            "Dm|Bf|Dm|Dm",
+            "F|C"
+          ]
+        }
+      }
+    },
+    {
+      "id": "prerefrain3",
+      "item": {
+        "Ref": {
+          "section_title": "pré refrain 3",
+          "section_type": "prerefrain",
+          "link": "prerefrain1"
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 3",
+          "section_type": "refrain",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "refrain4",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 4",
+          "section_type": "refrain",
+          "link": "refrain1"
+        }
+      }
     }
   ],
-  "outputtemplate": null,
-  "outputformat": null,
-  "chord_glyph_scale": 2,
-  "section_spacing": null,
   "wavfiles": [],
-  "date": "2024-12-02",
-  "digest": "4216e9232d79e1d255bf4b58655738cf",
+  "date": "2024-12-11",
+  "digest": "3494ff5ca3ba4ea5612432e062a2f3be",
   "hash": "0"
 }

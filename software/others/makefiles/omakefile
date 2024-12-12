@@ -1,0 +1,39 @@
+.PHONY: pdf wav midi clean
+
+clean:
+    bash  $(buildroot)/make_clean.sh
+    rm -rf  {{#each lilypondfiles}} {{this}} {{/each}}
+
+pdf : {{pdfname}}.pdf
+
+main.tex : $(buildroot)/songs/main.tex
+    cp $(buildroot)/songs/main.tex .
+
+preamble.tex : $(buildroot)/songs/preamble.tex
+    cp $(buildroot)/songs/preamble.tex .
+
+chords.tex : $(buildroot)/songs/chords.tex
+    cp $(buildroot)/songs/chords.tex .
+
+sections.tex : $(buildroot)/songs/sections.tex
+    cp $< $@
+
+
+#data.tex : data-utf8.tex
+#    iconv -f UTF-8 -t ISO-8859-15 data-utf8.tex > data.tex
+
+main.pdf : main.tex preamble.tex sections.tex chords.tex body.tex data.tex \
+    {{#each structure }}{{#if this.item.ItemChords}}{{#with this.item.ItemChords}}lyrics/{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
+    {{#each structure }}{{#if this.item.ItemRef}}{{#with this.item.ItemRef}}lyrics/{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
+    {{#each lilypondfiles}}{{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex {{/each}}
+    bash $(buildroot)/make_pdf.sh main
+
+{{pdfname}}.pdf : main.pdf
+    cp main.pdf $@
+
+
+{{#each lilypondfiles}}
+{{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex : {{this}}
+    bash $(buildroot)/make_lytex.sh {{remove-file-extension-helper this ".ly"}}
+
+{{/each}}

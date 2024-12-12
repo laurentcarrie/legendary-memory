@@ -1,0 +1,90 @@
+
+% import preamble first
+\def\songtitle{ {{{title}}} }
+\def\songauthor{ {{{author}}} }
+
+
+
+\renewcommand{\makesongtitle}{\xxmakesongtitle{\songtitle}{\songauthor} }
+\renewcommand{\songlastupdate}{ 2024-12-05 }
+\renewcommand{\songtoday}{ 2024-12-06 }
+
+
+
+\renewcommand{\xxxstruct}{
+
+{{#each structure}}
+
+	{{#if this.item.ItemChords}}
+	{{#with this.item.ItemChords}}
+\lolotwocolumns{
+\begin{NiceTabular}{>{\raggedright}p{0.5cm}{{join-helper "W{c}{2cm}" "|" nbcols  }}}
+	\CodeBefore
+	%	\rowcolor{\lolocolor{{section_type}}!100}{1-{{len-helper this.rows}}}
+	{{#each rows}}
+	% row {{ @index }}
+	\cellcolor{white}{ {{add-helper @index 1}}-1 }
+	{{#each this.bars}}
+	\cellcolor{\lolocolor{{../../section_type}}}{ {{add-helper @../index 1}}-{{add-helper @index 2}} }
+	{{/each}}
+	{{/each}}
+	\Body
+	{{#each rows}}
+	\tiny{ {{this.bar_number}} }
+	{{#each this.bars}}
+	                                    &
+	{{#each this.chords}}
+	\chord{{this}}
+	{{/each}}
+	{{/each}}
+	{{ pad-helper this.bars ../nbcols " & " }}
+	\\
+	{{/each}}
+\end{NiceTabular}
+}{
+\lolosection{{{section_type}}} { {{{section_title}}} } { {{{text}}} }
+}
+{{/with}}
+{{/if}}
+{{#if this.item.ItemRef}}
+% >>>>> Ref {{{this.item.ItemRef}}}
+{{#with this.item.ItemRef}}
+\lolotwocolumns{
+\begin{NiceTabular}{>{\raggedright}p{0.5cm}C}
+	\tiny{ {{bar_number}} } &
+	\colorbox{\lolocolor{{section_type}}}{ {{{nb_bars}}} mesures}
+	\\
+\end{NiceTabular}
+\lolohspace
+}{
+% section type : {{section_type}}
+\lolosection{{{section_type}}} { {{{section_title}}} } { }
+}
+{{/with}}
+{{/if}}
+{{#if this.item.ItemHRule}}
+% HRule
+\lolohr
+{{/if}}
+{{/each}}
+
+}
+
+\renewcommand{\xxxlyrics}{
+{{#each structure}}
+
+	{{#if this.item.ItemChords}}
+	{{#with this.item.ItemChords}}
+\lolosection{{{section_type}}} { {{{section_title}}} \lolocomment{ {{ nb_bars }} ( {{{bar_number}}}~\rightarrow~{{ add-helper bar_number nb_bars -1 }} )} } { {{{text}}} }
+\input{ lyrics/{{section_id}}.tex }
+{{/with}}
+{{/if}}
+
+{{#if this.item.ItemRef}}
+{{#with this.item.ItemRef}}
+\lolosection{{{section_type}}} { {{{section_title}}} \lolocomment{ {{ nb_bars}} ( {{{bar_number}}}~\rightarrow~{{ add-helper bar_number nb_bars -1 }} ) } } { {{{text}}} }
+\input{ lyrics/{{section_id}}.tex }
+{{/with}}
+{{/if}}
+{{/each}}
+}

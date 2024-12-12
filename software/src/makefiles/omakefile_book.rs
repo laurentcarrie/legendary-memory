@@ -34,9 +34,9 @@ pub fn generate_main_book(book: &Book) -> Result<(), Error> {
 \newcommand{{\makesongtitle}}{{}}
 \newcommand{{\songlastupdate}}{{}}
 \newcommand{{\songtoday}}{{}}
-\import{{../}}{{preamble}}
 \import{{../}}{{chords}}
-
+\import{{../}}{{preamble}}
+\import{{../}}{{sections}}
 \begin{{document}}
 
 \tableofcontents
@@ -106,7 +106,11 @@ pdf : {pdfname}.pdf
 chords.tex : $(buildroot)/songs/chords.tex
     cp $< $@
 
-main.pdf : main.tex delivery_songs chords.tex
+sections.tex : $(buildroot)/songs/sections.tex
+    cp $< $@
+
+
+main.pdf : main.tex delivery_songs chords.tex sections.tex
 	bash $(buildroot)/make_pdf.sh main
 
 {pdfname}.pdf : main.pdf
