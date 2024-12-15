@@ -1,2 +1,1 @@
 {https://latexcolor.com/}
-

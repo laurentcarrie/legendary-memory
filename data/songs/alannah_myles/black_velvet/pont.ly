@@ -74,6 +74,7 @@ lead = {
 
 
     % les numeros de mesure ici commencent
+    \set Score.currentBarNumber = #53
 
     % mesure #1
     \tuplet 3/2 {

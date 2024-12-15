@@ -1,4 +1,5 @@
 {
+  "tempo": 95,
   "title": "This Love",
   "author": "Maroon 5",
   "texfiles": [],
@@ -9,15 +10,25 @@
   ],
   "structure": [
     {
-      "id": "intro",
-      "text": "",
+      "id": "intro1",
       "item": {
         "Chords": {
-          "section_title": "intro",
+          "section_title": "intro d/b",
           "section_type": "intro",
           "rows": [
-            "G7 | Cm7 | Fm7 | Af",
-            "G7 | Cm7 | Fm7 | Af"
+            "G7 | Cm7 | Fm7 | Afdim"
+          ]
+        }
+      }
+    },
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_title": "intro tous",
+          "section_type": "intro",
+          "rows": [
+            "G7 | Cm7 | Fm7 | Afdim"
           ]
         }
       }
@@ -29,8 +40,8 @@
           "section_title": "couplet 1",
           "section_type": "couplet",
           "rows": [
-            "G7 | Cm7 | Fm7 | Af",
-            "G7 | Cm7 | Fm7 | Af"
+            "G7 | Cm7 | Fm7 | Afdim",
+            "G7 | Cm7 | Fm7 | Afdim"
           ]
         }
       }
@@ -55,7 +66,7 @@
           "section_title": "\\textonehalf~couplet 2",
           "section_type": "couplet",
           "rows": [
-            "G7 | Cm7 | Fm7 | Af"
+            "G7 | Cm7 | Fm7 | Afdim"
           ]
         }
       }
@@ -66,7 +77,8 @@
         "Ref": {
           "link": "couplet_1",
           "section_type": "couplet",
-          "section_title": "couplet 3"
+          "section_title": "couplet 3",
+          "section_body": "{\\color{red} stop \\sharp 29}"
         }
       }
     },
@@ -87,7 +99,7 @@
           "section_title": "\\textonehalf~couplet 4",
           "section_type": "couplet",
           "rows": [
-            "G7 | Cm7 | Fm7 | Af"
+            "G7 | Cm7 | Fm7 | Afdim"
           ]
         }
       }
@@ -99,8 +111,8 @@
           "section_title": "pont",
           "section_type": "pont",
           "rows": [
-            "Fm7 | Ef | Cm7 | Fm7",
-            "Fm7 | Ef | A | A"
+            "Fm7 | Ef7M | Cm7 | Fdim",
+            "Fm7 | Ef7M | Adim | Adim"
           ]
         }
       }
@@ -127,7 +139,7 @@
     }
   ],
   "wavfiles": [],
-  "date": "2024-12-11",
-  "digest": "3cf3e24e9cc20f1d13867f0be7c0c9c6",
+  "date": "2025-01-11",
+  "digest": "e053a8b330e436f065e3f74f8aa79e29",
   "hash": "0"
 }

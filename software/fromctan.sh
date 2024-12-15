@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
 # adapt this path to your configuration
-#texmf_dir=~/texmf
+texmf_dir=~/texmf
 #this is for github codespace
 #texmf_dir=/usr/local/texlive/2024/texmf-local
-texmf_dir=/usr/local/texlive/2024/texmf-dist
+#texmf_dir=/usr/local/texlive/2024/texmf-dist
 
 if wget http://mirrors.ctan.org/install/macros/latex/contrib/$1.tds.zip ; then
     unzip -d $texmf_dir $1.tds.zip
     rm $1.tds.zip
     echo installed via tds
-elif wget ftp://sunsite.icm.edu.pl/pub/CTAN/systems/texlive/tlnet/archive/$1.tar.xz ; then    
+elif wget ftp://sunsite.icm.edu.pl/pub/CTAN/systems/texlive/tlnet/archive/$1.tar.xz ; then
     mv $1.tar.xz $texmf_dir/.
     ( cd $texmf_dir ; pwd ; tar xvf $1.tar.xz ; rm $1.tar.xz )
     echo installed from texlive archive

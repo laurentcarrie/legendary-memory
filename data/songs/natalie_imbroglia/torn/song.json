@@ -1,4 +1,5 @@
 {
+  "tempo": 96,
   "title": "Torn",
   "author": "Natalie Imbroglia",
   "texfiles": [],
@@ -35,13 +36,10 @@
     {
       "id": "couplet2",
       "item": {
-        "Chords": {
+        "Ref": {
           "section_title": "couplet 2",
           "section_type": "couplet",
-          "rows": [
-            "F|F|Am|Am",
-            "Bf7|Bf7"
-          ]
+          "link": "couplet1"
         }
       }
     },
@@ -114,8 +112,8 @@
           "section_title": "pont",
           "section_type": "pont",
           "rows": [
-            "Dm|Bf|Dm|Dm",
-            "F|C"
+            "Dm|Bf",
+            "Dm|Dm|F|C"
           ]
         }
       }
@@ -126,7 +124,8 @@
         "Ref": {
           "section_title": "pré refrain 3",
           "section_type": "prerefrain",
-          "link": "prerefrain1"
+          "link": "prerefrain1",
+          "section_body": "{\\color{red} g + voix}"
         }
       }
     },
@@ -137,6 +136,18 @@
           "section_title": "refrain 3",
           "section_type": "refrain",
           "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "pont2",
+      "item": {
+        "Chords": {
+          "section_title": "pont 2",
+          "section_type": "pont",
+          "rows": [
+            "Dm|C|C"
+          ]
         }
       }
     },
@@ -152,7 +163,7 @@
     }
   ],
   "wavfiles": [],
-  "date": "2024-12-11",
-  "digest": "3494ff5ca3ba4ea5612432e062a2f3be",
+  "date": "2025-01-13",
+  "digest": "c30644e5994218041bb430b8d3c8120e",
   "hash": "0"
 }

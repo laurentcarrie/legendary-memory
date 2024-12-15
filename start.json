@@ -1,0 +1,9 @@
+{
+  "choice": {
+    "ItemBuild": {
+      "songdir": "/home/laurent/work/legendary-memory/data/songs",
+      "bookdir": "/home/laurent/work/legendary-memory/data/books",
+      "builddir": "/home/laurent/work/legendary-memory/build"
+    }
+  }
+}

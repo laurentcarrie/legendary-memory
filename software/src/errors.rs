@@ -1,5 +1,5 @@
 // use polars::prelude::PolarsError;
-use serde_json::Error;
+// use serde_json::Error;
 use std::fmt;
 use std::num::ParseIntError;
 use std::string::FromUtf8Error;
@@ -24,6 +24,8 @@ pub enum MyError {
     // PolarsError(PolarsError),
     // TantivyError(Tantivy::Error)
     SerdeJsonError(serde_json::Error),
+    HandebarsError(handlebars::TemplateError),
+    RenderError(handlebars::RenderError),
 }
 
 // impl From<curl::Error> for MyError {
@@ -71,6 +73,18 @@ impl From<chrono::ParseError> for MyError {
         MyError::ChronoParseError(err)
     }
 }
+
+impl From<handlebars::TemplateError> for MyError {
+    fn from(err: handlebars::TemplateError) -> MyError {
+        MyError::HandebarsError(err)
+    }
+}
+impl From<handlebars::RenderError> for MyError {
+    fn from(err: handlebars::RenderError) -> MyError {
+        MyError::RenderError(err)
+    }
+}
+
 // impl From<PolarsError> for MyError {
 //     fn from(err: PolarsError) -> MyError {
 //         MyError::PolarsError(err)
@@ -109,6 +123,8 @@ impl fmt::Display for MyError {
             MyError::MyCronParseError(name) => write!(f, "error for cron : {}", name),
             // MyError::PolarsError(err) => write!(f, "polors error : {}", err),
             MyError::SerdeJsonError(msg) => write!(f, "error for serde_json : {}", msg),
+            MyError::HandebarsError(msg) => write!(f, "handlebars template error : {}", msg),
+            MyError::RenderError(msg) => write!(f, "handlebars rendor error : {}", msg),
         }
     }
 }

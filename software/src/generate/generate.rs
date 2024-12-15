@@ -168,6 +168,13 @@ pub fn generate(world: &World) -> Result<(), Error> {
             let _ = output.write(output_data.as_bytes()).unwrap();
         }
     }
+
+    {
+        let mut p: PathBuf = world.builddir.clone();
+        p.push("delivery");
+        let _ = fs::create_dir_all(&p)?;
+    }
+
     // {
     //     let mut p: PathBuf = world.builddir.clone();
     //     let _ = fs::create_dir_all(&p)?;

@@ -1,0 +1,70 @@
+<html>
+<h1>my song book</h1>
+<ul>
+    <li>
+        <a href="/delivery/">songs and books</a>
+    </li>
+    <li> inputs
+        <ul>
+            <li>
+                <a href="/input-songs/">song inputs</a>
+            </li>
+            <li>
+                <a href="/input-books/">book inputs</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        outputs
+        <ul>
+            <li>
+                <a href="/output/">output build tree</a>
+            </li>
+            <li>
+                <a href="/output/progress.html">build progress</a>
+            </li>
+            <li>
+                <a href="/output/omake.stdout">omake stdout</a>
+            </li>
+            <li>
+                <a href="/output/omake.stderr">omake stderr</a>
+            </li>
+        </ul>
+    </li>
+    <li>commands
+        <ul>
+            <li>
+                <a href="/leptos/source_tree">source</a> : get the json source tree
+            </li>
+            <li>
+                <!--
+                echo "{\"choice\":{\"ItemSourceTree\": null}}" | base64
+                -->
+                <a href="/scripts/request.sh?request=eyJjaG9pY2UiOnsiSXRlbVNvdXJjZVRyZWUiOiBudWxsfX0K">source tree</a> : build the json source tree
+            </li>
+            <li>
+                <!-- echo "{\"choice\":{\"ItemBuild\": null}}" | base64 -->
+                <a href="/scripts/request.sh?request=eyJjaG9pY2UiOnsiSXRlbUJ1aWxkIjogbnVsbH19Cg==">build</a> : build the pdf and wav files
+            </li>
+            <li>
+                <!--
+                echo "{\"choice\": {\"ItemOMakeChildrenInfo\": null}}" | base64
+                -->
+                <a href="/scripts/request.sh?request=eyJjaG9pY2UiOiB7Ikl0ZW1PTWFrZUNoaWxkcmVuSW5mbyI6IG51bGx9fQo=">info</a> : information on the build process.
+                See if some construction hangs, and fix it.
+            </li>
+            <li>
+                <!--
+                echo "{\"choice\": {\"ItemOMakeKill\":null}} " | base64
+                -->
+                <a href="/scripts/request.sh?request=eyJjaG9pY2UiOiB7Ikl0ZW1PTWFrZUtpbGwiOm51bGx9fSAK">kill</a> : kill the omake child processes
+            </li>
+            <li>
+                <!-- echo "{\"choice\": {\"ItemCleanBuildTree\":null}} " | base64 -->
+                <a href="/scripts/request.sh?request=eyJjaG9pY2UiOiB7Ikl0ZW1DbGVhbkJ1aWxkVHJlZSI6bnVsbH19IAo=">clean</a> : delete the output tree file
+            </li>
+
+        </ul>
+    </li>
+</ul>
+</html>

@@ -71,13 +71,20 @@ song_chords = \chordmode {
 lead = {
   \absolute  {
     \override Score.SpacingSpanner.shortest-duration-space = #4.0
+    \override NoteHead.color = #red
 
 
     % les numeros de mesure ici commencent
 
-    % mesure #40
+    % mesure
+    \set Score.currentBarNumber = #53
+    \staffHighlight "lightsteelblue"
+
     <>^"default"
     r4
+    \override Beam.color = #red
+    \override NoteHead.color = #red
+    \override Stem.color = #red
 
     g'16\^\2 ais'16\^\2 g'16\2 \glissando
     f'16\2
@@ -146,6 +153,8 @@ drumbarshh = {
       \override TextScript.font-size = -2
       \clef "G_8"
       \tabFullNotation
+      \set Score.currentBarNumber = #53
+
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \lead
     }
