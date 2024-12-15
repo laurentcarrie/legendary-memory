@@ -126,7 +126,7 @@ fn structure_of_structure(
                     .collect::<Vec<_>>()
                     .clone();
                 match others.len() {
-                    1 => others.get(0).unwrap().clone(),
+                    1 => *others.get(0).unwrap(),
                     n => {
                         panic!("found {} (instead of 1) sections with id {}", n, s.link)
                     }
@@ -186,7 +186,7 @@ pub fn decode_book(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Book, Erro
     book_builddir.push("books");
     book_builddir.push(&uconf.title);
     let book = Book {
-        title: uconf.title,
+        title: uconf.title.clone(),
         songs: uconf
             .songs
             .iter()
@@ -196,6 +196,7 @@ pub fn decode_book(buildroot: &PathBuf, filepath: &PathBuf) -> Result<Book, Erro
             })
             .collect(),
         builddir: book_builddir,
+        pdfname: format!("{}.pdf", uconf.title.clone()).to_string(),
     };
     Ok(book)
 }

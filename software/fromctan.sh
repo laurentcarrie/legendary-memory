@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # adapt this path to your configuration
-#texmf_dir=~/texmf
+texmf_dir=~/texmf
 #this is for github codespace
 #texmf_dir=/usr/local/texlive/2024/texmf-local
-texmf_dir=/usr/local/texlive/2024/texmf-dist
+#texmf_dir=/usr/local/texlive/2024/texmf-dist
 
 if wget http://mirrors.ctan.org/install/macros/latex/contrib/$1.tds.zip ; then
     unzip -d $texmf_dir $1.tds.zip

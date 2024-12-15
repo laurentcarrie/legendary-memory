@@ -139,7 +139,7 @@ impl HelperDef for PadHelper {
 
 #[derive(Clone, Copy)]
 struct LenHelper;
-impl HelperDef for crate::generate::handlebars_helpers::LenHelper {
+impl HelperDef for LenHelper {
     fn call<'reg: 'rc, 'rc>(
         &self,
         h: &Helper,
@@ -150,6 +150,24 @@ impl HelperDef for crate::generate::handlebars_helpers::LenHelper {
     ) -> HelperResult {
         let p = h.param(0).unwrap().value().as_array().unwrap().len();
         out.write(format!("{}", p).as_str())?;
+        Ok(())
+    }
+}
+
+#[derive(Clone, Copy)]
+struct TexSanitizeHelper;
+impl HelperDef for TexSanitizeHelper {
+    fn call<'reg: 'rc, 'rc>(
+        &self,
+        h: &Helper,
+        _: &Handlebars,
+        _: &Context,
+        _rc: &mut RenderContext,
+        out: &mut dyn Output,
+    ) -> HelperResult {
+        let s = h.param(0).unwrap().value().as_str().unwrap();
+        let s = s.replace("_", "\\_");
+        out.write(format!("{}", s).as_str())?;
         Ok(())
     }
 }
@@ -166,6 +184,7 @@ pub fn get_handlebar() -> Result<Handlebars<'static>, Error> {
     );
     reg.register_helper("pad-helper", Box::new(PadHelper));
     reg.register_helper("len-helper", Box::new(LenHelper));
+    reg.register_helper("helper_tex_sanitize", Box::new(TexSanitizeHelper));
 
     Ok(reg)
 }

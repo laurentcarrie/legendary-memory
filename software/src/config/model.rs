@@ -82,6 +82,7 @@ pub struct Book {
     pub title: String,
     pub songs: Vec<BookSong>,
     pub builddir: PathBuf,
+    pub pdfname: String,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]

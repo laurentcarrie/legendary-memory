@@ -1,5 +1,5 @@
 // use polars::prelude::PolarsError;
-use serde_json::Error;
+// use serde_json::Error;
 use std::fmt;
 use std::num::ParseIntError;
 use std::string::FromUtf8Error;

@@ -19,8 +19,8 @@ fi
 #cargo install --path $here/software || ( echo "build FAILED" && false )
 
 
-artist=alannah_myles
-song=black_velvet
+artist=depeche_mode
+song=enjoy_the_silence
 
 rm -rf $here/data2
 mkdir -p $here/data2/songs

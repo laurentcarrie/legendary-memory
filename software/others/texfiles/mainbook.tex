@@ -1,0 +1,31 @@
+%\documentclass[a4paper, 12 pt, showframe, french]{scrartcl}
+\documentclass[a4paper, 10 pt]{article}
+\usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{geometry}
+\usepackage{import}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\newcommand{\makesongtitle}{}
+\newcommand{\songlastupdate}{}
+\newcommand{\songtoday}{}
+\import{../}{chords}
+\import{../}{preamble}
+\import{../}{sections}
+\begin{document}
+
+\tableofcontents
+\newpage
+
+{{#each songs}}
+{{#with this}}
+\section{ {{helper_tex_sanitize author}} / {{helper_tex_sanitize title}} }
+\lfoot{ {{helper_tex_sanitize author}} / {{helper_tex_sanitize title}} }
+\import{../../songs/{{author}}/{{title}}/}{data.tex}
+\makesongtitle
+\import{../../songs/{{author}}/{{title}}/}{body.tex}
+\newpage
+{{/with}}
+{{/each}}
+
+\end{document}

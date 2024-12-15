@@ -1,22 +1,71 @@
 {
-  "cell_height": 30,
-  "cell_width": 150,
   "title": "Enjoy The Silence",
   "author": "Depeche Mode",
-  "texfiles": [
-    "lyrics.tex",
-    "struct.tex",
-    "body.tex"
-  ],
+  "texfiles": [],
   "lilypondfiles": [
     "pont.ly",
     "solo.ly"
   ],
-  "sections": [],
-  "outputtemplate": null,
-  "outputformat": null,
-  "chord_glyph_scale": 4,
-  "section_spacing": null,
+  "structure": [
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_type": "intro",
+          "section_title": "introbatterie",
+          "rows": [
+            "HRest | HRest | HRest | HRest "
+          ]
+        }
+      }
+    },
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_type": "intro",
+          "section_title": "introriff",
+          "rows": [
+            "Cm| Efm| Cm| Efm ",
+            "Cm | Efm | Cm | Efm "
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet",
+          "rows": [
+            "HRest | HRest | HRest | HRest ",
+            "Cm| Efm| Cm| Efm ",
+            "Cm | Efm | Cm | Efm "
+          ]
+        }
+      }
+    },
+    {
+      "id": "hr",
+      "item": {
+        "HRule": 60
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_title": "refrain 1",
+          "section_type": "refrain",
+          "rows": [
+            "Fm | Af | Cm | Bf ",
+            "Fm | Af | Cm | Bf "
+          ]
+        }
+      }
+    }
+  ],
   "wavfiles": [],
   "digest": "a40bd7c5c58440820593a3193abf86fd",
   "date": "2024-12-11"
