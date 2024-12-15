@@ -87,6 +87,8 @@ make_www_tree() {
   sudo mkdir $wwwroot
   sudo cp $here/autoindex.xslt $wwwroot/.
   sudo cp $here/index.html $wwwroot/.
+  sudo cp $here/xxx.html $wwwroot/.
+  sudo cp $here/my-ace.js $wwwroot/.
 
   # scripts
   sudo mkdir -p $wwwroot/scripts
@@ -109,6 +111,11 @@ make_www_tree() {
 
   sudo chown -R www-data $wwwroot
   sudo chgrp -R www-data $wwwroot
+
+  sudo chmod -R g+w $wwwroot/input/songs
+  sudo chmod -R g+w $wwwroot/input/books
+
+
   find $wwwroot -type d | while read f ; do sudo chmod go+w $f ; done
 }
 
@@ -123,12 +130,18 @@ restart_nginx() {
 install_packages
 make_www_tree
 build_songbook
-for w in build_progress  source_tree ; do
+for w in source_tree ; do
+#for w in build_progress  source_tree edit_file; do
   build_wasm $w
 done
 make_nginx_conf
 restart_nginx
 #install_songbook_server_service_as_root
 install_songbook_server_service_as_user
+
+
+cp -R /home/laurent/work/ace-builds/src-min-noconflict $wwwroot
+cp -R /home/laurent/work/ace-builds/src-noconflict $wwwroot
+
 
 echo "DONE"
