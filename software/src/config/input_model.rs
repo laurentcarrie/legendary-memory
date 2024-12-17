@@ -4,12 +4,14 @@ use serde::{Deserialize, Serialize};
 pub struct UserChordSection {
     pub section_title: String,
     pub section_type: String,
+    pub section_body: Option<String>,
     pub rows: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct UserRef {
     pub section_title: String,
+    pub section_body: Option<String>,
     pub link: String,
 }
 

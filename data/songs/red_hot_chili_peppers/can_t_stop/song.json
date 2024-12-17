@@ -16,6 +16,7 @@
         "Chords": {
           "section_title": "couplet 1",
           "section_type": "couplet",
+          "section_body": "",
           "rows": [
             "Em | D | Bm7 | C7M",
             "Em | D | Bm7 | C7M",
@@ -31,6 +32,7 @@
         "Chords": {
           "section_title": "refrain 1",
           "section_type": "refrain",
+          "section_body": "\\newline \\subimport{chordsrefrain.output}{chordsrefrain}",
           "rows": [
             "G | D | Bm7 | C7M",
             "G | D | Bm7 | C7M",

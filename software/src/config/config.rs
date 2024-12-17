@@ -98,6 +98,12 @@ fn structure_of_structure(
                     section_title: l.section_title.clone(),
                     section_id: u.id.clone(),
                     section_type: l.section_type.clone(),
+                    section_body: {
+                        match &l.section_body {
+                            None => "".to_string(),
+                            Some(s) => s.clone(),
+                        }
+                    },
                     bar_number: barcount,
                     nb_bars: rows
                         .clone()
@@ -140,6 +146,12 @@ fn structure_of_structure(
                 StructureItemContent::ItemRef(crate::config::model::Ref {
                     section_title: s.section_title.clone(),
                     section_id: u.id.clone(),
+                    section_body: {
+                        match &s.section_body {
+                            None => "".to_string(),
+                            Some(s) => s.clone(),
+                        }
+                    },
                     section_type: match &other.item {
                         model::StructureItemContent::ItemChords(ic) => ic.section_type.clone(),
                         _ => panic!("not implemented"),
@@ -320,6 +332,7 @@ mod tests {
             &UserChordSection {
                 section_title: "".to_string(),
                 section_type: "".to_string(),
+                section_body: None,
                 rows: vec![
                     "A|B|C|D".to_string(),
                     "Gf".to_string(),
@@ -383,6 +396,7 @@ mod tests {
             item: UserStructureItemContent::Chords(UserChordSection {
                 section_title: "".to_string(),
                 section_type: "".to_string(),
+                section_body: None,
                 rows: vec!["Af Bfm7 | E E ".to_string(), "B".to_string()],
             }),
             id: "".to_string(),
@@ -392,6 +406,7 @@ mod tests {
                 section_title: "".to_string(),
                 section_id: "".to_string(),
                 section_type: "".to_string(),
+                section_body: "".to_string(),
                 nbcols: 2,
                 nbrows: 2,
                 bar_number: 10,
@@ -434,6 +449,7 @@ mod tests {
                     item: UserStructureItemContent::Chords(UserChordSection {
                         section_title: "".to_string(),
                         section_type: "".to_string(),
+                        section_body: None,
                         rows: vec!["A|B|C|D".to_string(), "E|F|G|A".to_string()],
                     }),
                     id: "blahblah".to_string(),
@@ -442,12 +458,14 @@ mod tests {
                     item: UserStructureItemContent::Ref(input_model::UserRef {
                         section_title: "".to_string(),
                         link: "blahblah".to_string(),
+                        section_body: None,
                     }),
                     id: "".to_string(),
                 },
                 input_model::UserStructureItem {
                     item: UserStructureItemContent::Ref(input_model::UserRef {
                         section_title: "".to_string(),
+                        section_body: None,
                         link: "blahblah".to_string(),
                     }),
                     id: "".to_string(),
@@ -470,6 +488,7 @@ mod tests {
                         section_title: "".to_string(),
                         section_id: "blahblah".to_string(),
                         section_type: "".to_string(),
+                        section_body: "".to_string(),
                         bar_number: 1,
                         nb_bars: 8,
                         nbcols: 4,
@@ -517,6 +536,7 @@ mod tests {
                         section_title: "".to_string(),
                         section_id: "".to_string(),
                         section_type: "".to_string(),
+                        section_body: "".to_string(),
                         bar_number: 9,
                         nb_bars: 8,
                     }),
@@ -526,6 +546,7 @@ mod tests {
                         section_title: "".to_string(),
                         section_id: "".to_string(),
                         section_type: "".to_string(),
+                        section_body: "".to_string(),
                         bar_number: 17,
                         nb_bars: 8,
                     }),

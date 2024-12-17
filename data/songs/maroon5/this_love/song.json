@@ -16,8 +16,8 @@
           "section_title": "intro",
           "section_type": "intro",
           "rows": [
-            "G7 | Cm7 | Fm7 | Af",
-            "G7 | Cm7 | Fm7 | Af"
+            "G7 | Cm7 | Fm7 | Afdim",
+            "G7 | Cm7 | Fm7 | Afdim"
           ]
         }
       }
@@ -29,8 +29,8 @@
           "section_title": "couplet 1",
           "section_type": "couplet",
           "rows": [
-            "G7 | Cm7 | Fm7 | Af",
-            "G7 | Cm7 | Fm7 | Af"
+            "G7 | Cm7 | Fm7 | Afdim",
+            "G7 | Cm7 | Fm7 | Afdim"
           ]
         }
       }
@@ -99,7 +99,7 @@
           "section_title": "pont",
           "section_type": "pont",
           "rows": [
-            "Fm7 | Ef | Cm7 | Fm7",
+            "Fm7 | Ef | Cm7 | Fdim",
             "Fm7 | Ef | A | A"
           ]
         }

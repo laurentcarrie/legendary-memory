@@ -30,6 +30,7 @@ pub struct Chords {
     pub section_title: String,
     pub section_id: String,
     pub section_type: String,
+    pub section_body: String,
     pub bar_number: u32,
     pub nb_bars: u32,
     pub nbcols: u32,
@@ -44,6 +45,7 @@ pub struct Ref {
     pub section_title: String,
     pub section_id: String,
     pub section_type: String,
+    pub section_body: String,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
