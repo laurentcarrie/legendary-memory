@@ -41,6 +41,60 @@
           ]
         }
       }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 2",
+          "section_type": "couplet"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "link": "refrain1",
+          "section_title": "refrain 2",
+          "section_type": "refrain"
+        }
+      }
+    },
+    {
+      "id": "pont",
+      "item": {
+        "Chords": {
+          "section_title": "pont",
+          "section_type": "pont",
+          "rows": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "id": "solo",
+      "item": {
+        "Chords": {
+          "section_title": "solo",
+          "section_type": "solo",
+          "rows": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 3",
+          "section_type": "couplet"
+        }
+      }
     }
   ],
   "wavfiles": [
