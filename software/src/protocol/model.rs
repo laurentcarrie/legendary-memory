@@ -73,7 +73,9 @@ pub mod answer {
     pub struct SourceTreeItem {
         pub title: String,
         pub author: String,
-        pub files: Vec<String>,
+        pub texfiles: Vec<String>,
+        pub lyricstexfiles: Vec<String>,
+        pub lyfiles: Vec<String>,
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
