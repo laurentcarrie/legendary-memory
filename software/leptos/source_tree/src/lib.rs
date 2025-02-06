@@ -3,6 +3,7 @@ use leptos::tachys::html::style::style;
 use leptos_meta::*;
 use serde::{Deserialize, Serialize};
 use serde_json;
+use std::path::PathBuf;
 use thiserror::Error;
 
 pub mod input_model;
@@ -179,9 +180,23 @@ pub fn fetch_example() -> impl IntoView {
                             {move || Suspend::new(async move {
                                 let w = world.await.unwrap() ;
                                 w.items.into_iter().map(|i| {
+                                let texfiles = i.files.clone().into_iter().filter(|f| {
+                                    PathBuf::from(f).extension().map(|e| {e=="tex"}).is_some()
+                                }).collect::<Vec<_>>() ;
                                     view! {
                                         <li>
                                         {i.author.clone()} / {i.title.clone()}
+                                        tex files
+                                        <ul>
+                                        { texfiles.into_iter().map(|f| {
+                                            view! {
+                                                <li>
+                                                {f}
+                                                </li>
+                                            }
+                                            }).collect::<Vec<_>>()
+                                        }
+                                        </ul>
                                         <ul>
                                         { i.files.into_iter().map(|f| {
                                             view! {
