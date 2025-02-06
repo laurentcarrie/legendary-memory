@@ -183,23 +183,15 @@ pub fn fetch_example() -> impl IntoView {
                                 let texfiles = i.files.clone().into_iter().filter(|f| {
                                     PathBuf::from(f).extension().map(|e| {e=="tex"}).is_some()
                                 }).collect::<Vec<_>>() ;
+                                let lyfiles = i.files.clone().into_iter().filter(|f| {
+                                    PathBuf::from(f).extension().map(|e| {e=="ly"}).is_some()
+                                }).collect::<Vec<_>>() ;
                                     view! {
                                         <li>
                                         {i.author.clone()} / {i.title.clone()}
                                         <label>tex files</label>
                                         <ul>
                                         { texfiles.into_iter().map(|f| {
-                                            view! {
-                                                <li>
-                                                {f}
-                                                </li>
-                                            }
-                                            }).collect::<Vec<_>>()
-                                        }
-                                        </ul>
-                                        <label>xxx</label>
-                                        <ul>
-                                        { i.files.into_iter().map(|f| {
                                             view! {
                                                 <li>
                                                 {f}

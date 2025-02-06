@@ -70,7 +70,7 @@ pub struct UserWorld {
     pub books: Vec<UserBookWithPath>,
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
-pub struct UserSourceTree {
-    pub files: Vec<String>,
-}
+// #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+// pub struct UserSourceTree {
+//     pub files: Vec<String>,
+// }
