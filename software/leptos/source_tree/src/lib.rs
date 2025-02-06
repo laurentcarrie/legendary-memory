@@ -194,6 +194,17 @@ pub fn fetch_example() -> impl IntoView {
                                             }).collect::<Vec<_>>()
                                         }
                                         </ul>
+                                        <label>lilypond files</label>
+                                        <ul>
+                                        { i.lyfiles.into_iter().map(|f| {
+                                            view! {
+                                                <li>
+                                                {f}
+                                                </li>
+                                            }
+                                            }).collect::<Vec<_>>()
+                                        }
+                                        </ul>
                                         </li>
     }
                                 }).collect::<Vec<_>>()
