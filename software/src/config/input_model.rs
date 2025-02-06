@@ -69,4 +69,3 @@ pub struct UserWorld {
     pub songs: Vec<UserSongWithPath>,
     pub books: Vec<UserBookWithPath>,
 }
-

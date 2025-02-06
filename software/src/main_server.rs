@@ -265,19 +265,30 @@ pub fn handle_source_tree(
     let mut ret: Vec<SourceTreeItem> = vec![];
     for song in world.songs {
         dbg!(&song.srcdir);
-        let mut files: Vec<String> = vec![];
-        files.push(format!("{}/song.json", song.srcdir.to_string()));
+        let mut texfiles: Vec<String> = vec![];
+        let mut lyricstexfiles: Vec<String> = vec![];
+        let mut lyfiles: Vec<String> = vec![];
+        // files.push(format!("{}/song.json", song.srcdir.to_string()));
+        for f in &song.texfiles {
+            texfiles.push(format!(
+                "{}/{}",
+                song.srcdir.to_string(),
+                f
+            ));
+
+
+        }
         for section in &song.structure {
             match &section.item {
                 ItemChords(c) => {
-                    files.push(format!(
+                    lyricstexfiles.push(format!(
                         "{}/lyrics/{}.tex",
                         song.srcdir.to_string(),
                         c.section_id
                     ));
                 }
                 ItemRef(c) => {
-                    files.push(format!(
+                    lyricstexfiles.push(format!(
                         "{}/lyrics/{}.tex",
                         song.srcdir.to_string(),
                         c.section_id
@@ -287,7 +298,7 @@ pub fn handle_source_tree(
             }
         }
         for lyfile in &song.lilypondfiles {
-            files.push(format!("{}/{}", song.srcdir.to_string(), lyfile));
+            lyfiles.push(format!("{}/{}", song.srcdir.to_string(), lyfile));
         }
         // for texfile in &s.texfiles {
         //     let path = PathBuf::from(song.path.as_str());
@@ -302,7 +313,9 @@ pub fn handle_source_tree(
         ret.push(SourceTreeItem {
             title: song.title.clone(),
             author: song.author.clone(),
-            files: files,
+            lyricstexfiles: lyricstexfiles,
+            lyfiles:lyfiles,
+            texfiles:texfiles
         });
     }
     Ok(answer::EChoice::ItemSourceTree {
