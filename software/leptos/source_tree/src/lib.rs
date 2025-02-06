@@ -186,7 +186,7 @@ pub fn fetch_example() -> impl IntoView {
                                     view! {
                                         <li>
                                         {i.author.clone()} / {i.title.clone()}
-                                        tex files
+                                        <label>tex files</label>
                                         <ul>
                                         { texfiles.into_iter().map(|f| {
                                             view! {
@@ -197,6 +197,7 @@ pub fn fetch_example() -> impl IntoView {
                                             }).collect::<Vec<_>>()
                                         }
                                         </ul>
+                                        <label>xxx</label>
                                         <ul>
                                         { i.files.into_iter().map(|f| {
                                             view! {
