@@ -182,30 +182,55 @@ pub fn fetch_example() -> impl IntoView {
                                 w.items.into_iter().map(|i| {
                                     view! {
                                         <li>
+
                                         {i.author.clone()} / {i.title.clone()}
-                                        <label>tex files</label>
+
                                         <ul>
-                                        { i.texfiles.into_iter().map(|f| {
-                                            view! {
-                                                <li>
-                                                {f}
-                                                </li>
-                                            }
-                                            }).collect::<Vec<_>>()
-                                        }
+                                            <li>
+                                            { i.masterjsonfile }
+                                            </li>
+
+                                            <li>
+                                                <ul>
+                                                { i.texfiles.into_iter().map(|f| {
+                                                    view! {
+                                                        <li>
+                                                        {f}
+                                                        </li>
+                                                    }
+                                                    }).collect::<Vec<_>>()
+                                                }
+                                                </ul>
+                                            </li>
+
+                                            <li>
+                                                <ul>
+                                                { i.lyricstexfiles.into_iter().map(|f| {
+                                                    view! {
+                                                        <li>
+                                                        {f}
+                                                        </li>
+                                                    }
+                                                    }).collect::<Vec<_>>()
+                                                }
+                                                </ul>
+                                            </li>
+
+                                            <li>lilypond files
+                                                <ul>
+                                                { i.lyfiles.into_iter().map(|f| {
+                                                    view! {
+                                                        <li>
+                                                        {f}
+                                                        </li>
+                                                    }
+                                                    }).collect::<Vec<_>>()
+                                                }
+                                                </ul>
+                                            </li>
+
                                         </ul>
-                                        <label>lilypond files</label>
-                                        <ul>
-                                        { i.lyfiles.into_iter().map(|f| {
-                                            view! {
-                                                <li>
-                                                {f}
-                                                </li>
-                                            }
-                                            }).collect::<Vec<_>>()
-                                        }
-                                        </ul>
-                                        </li>
+                                    </li>
     }
                                 }).collect::<Vec<_>>()
                                 // w.songs.into_iter().map(|s| {

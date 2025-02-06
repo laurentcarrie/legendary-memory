@@ -307,7 +307,7 @@ pub fn handle_source_tree(
         ret.push(SourceTreeItem {
             title: song.title.clone(),
             author: song.author.clone(),
-            masterjsonfile:masterjsonfile,
+            masterjsonfile: masterjsonfile,
             lyricstexfiles: lyricstexfiles,
             lyfiles: lyfiles,
             texfiles: texfiles,
