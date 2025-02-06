@@ -268,7 +268,7 @@ pub fn handle_source_tree(
         let mut texfiles: Vec<String> = vec![];
         let mut lyricstexfiles: Vec<String> = vec![];
         let mut lyfiles: Vec<String> = vec![];
-        // files.push(format!("{}/song.json", song.srcdir.to_string()));
+        let masterjsonfile = format!("{}/song.json", song.srcdir.to_string());
         for f in &song.texfiles {
             texfiles.push(format!("{}/{}", song.srcdir.to_string(), f));
         }
@@ -307,6 +307,7 @@ pub fn handle_source_tree(
         ret.push(SourceTreeItem {
             title: song.title.clone(),
             author: song.author.clone(),
+            masterjsonfile:masterjsonfile,
             lyricstexfiles: lyricstexfiles,
             lyfiles: lyfiles,
             texfiles: texfiles,
