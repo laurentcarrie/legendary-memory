@@ -42,7 +42,7 @@ pub mod answer {
     use serde::{Deserialize, Serialize};
     // use std::path::Path;
 
-    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
     pub struct ChildInfo {
         pub pid: u32,
         pub cwd: Option<String>,
@@ -50,7 +50,7 @@ pub mod answer {
         pub run_time: u64,
     }
 
-    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
     pub struct TreeInfo {
         pub item: u32,
         pub cwd: Option<String>,
@@ -58,30 +58,32 @@ pub mod answer {
         pub run_time: u64,
     }
 
-    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
     pub struct ProgressItem {
         pub path: String,
         pub status: bool,
     }
 
-    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
     pub struct Progress {
         pub progress: Vec<ProgressItem>,
     }
 
-    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
     pub struct SourceTreeItem {
         pub title: String,
         pub author: String,
-        pub files: Vec<String>,
+        pub texfiles: Vec<String>,
+        pub lyricstexfiles: Vec<String>,
+        pub lyfiles: Vec<String>,
     }
 
-    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
     pub struct SourceTree {
         pub items: Vec<SourceTreeItem>,
     }
 
-    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash)]
     pub enum EChoice {
         ItemOmakeBuild(u32),
         ItemOMakeOmakeChildren(Vec<ChildInfo>),
@@ -92,8 +94,7 @@ pub mod answer {
         ItemSourceTree(SourceTree),
     }
 
-    // #[derive(Serialize, Deserialize, PartialEq, Debug)]
-    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+    #[derive(Serialize, Deserialize, PartialEq, Debug)]
     pub struct Choice {
         pub choice: EChoice,
     }

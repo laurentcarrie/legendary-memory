@@ -270,13 +270,7 @@ pub fn handle_source_tree(
         let mut lyfiles: Vec<String> = vec![];
         // files.push(format!("{}/song.json", song.srcdir.to_string()));
         for f in &song.texfiles {
-            texfiles.push(format!(
-                "{}/{}",
-                song.srcdir.to_string(),
-                f
-            ));
-
-
+            texfiles.push(format!("{}/{}", song.srcdir.to_string(), f));
         }
         for section in &song.structure {
             match &section.item {
@@ -314,8 +308,8 @@ pub fn handle_source_tree(
             title: song.title.clone(),
             author: song.author.clone(),
             lyricstexfiles: lyricstexfiles,
-            lyfiles:lyfiles,
-            texfiles:texfiles
+            lyfiles: lyfiles,
+            texfiles: texfiles,
         });
     }
     Ok(answer::EChoice::ItemSourceTree {
