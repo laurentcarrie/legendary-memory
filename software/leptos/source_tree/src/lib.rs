@@ -187,7 +187,7 @@ pub fn fetch_example() -> impl IntoView {
 
                                         <ul>
                                             <li> master json
-                                            <ul><li>{ i.masterjsonfile }</ul></li>
+                                            <ul><li>{ i.masterjsonfile }</li></ul>
                                             </li>
 
                                             <li>tex files
