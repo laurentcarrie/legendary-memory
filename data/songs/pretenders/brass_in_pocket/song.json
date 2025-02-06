@@ -1,66 +1,54 @@
 {
-  "cell_height": 30,
-  "cell_width": 60,
+  "tempo": 80,
   "title": "Brass In Pocket",
   "author": "Pretenders",
-  "texfiles": [
-    "lyrics.tex"
-  ],
+  "texfiles": [],
   "lilypondfiles": [
     "intro.ly",
     "couplet.ly"
   ],
-  "sections": [
+  "structure": [
     {
-      "name": "intro",
-      "rows": [
-        [
-          "F",
-          "F",
-          "F",
-          "F"
-        ]
-      ]
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_title": "intro",
+          "section_type": "intro",
+          "rows": [
+            "F | F | F | F "
+          ]
+        }
+      }
     },
     {
-      "name": "couplet",
-      "rows": [
-        [
-          "F",
-          "F",
-          "Am",
-          "Am"
-        ],
-        [
-          "Bb7",
-          "Bb7"
-        ]
-      ]
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 1",
+          "section_type": "couplet",
+          "rows": [
+            "F | F | Am | Am",
+            "Bf7 | Bf7"
+          ]
+        }
+      }
     },
     {
-      "name": "pre-refrain",
-      "rows": [
-        [
-          "Dm",
-          "C",
-          "Am",
-          "C"
-        ],
-        [
-          "Dm",
-          "C",
-          "Am",
-          "C"
-        ]
-      ]
+      "id": "prerefrain",
+      "item": {
+        "Chords": {
+          "section_title": "pré refrain 1",
+          "section_type": "prerefrain",
+          "rows": [
+            "Dm | C | Am | C",
+            "Dm | C | Am | C"
+          ]
+        }
+      }
     }
   ],
-  "outputtemplate": null,
-  "outputformat": null,
-  "chord_glyph_scale": 2,
-  "section_spacing": null,
   "wavfiles": [],
-  "date": "2024-12-11",
-  "digest": "447f5b250d3f0f3607913fefde7e7d8e",
+  "date": "2025-01-11",
+  "digest": "cd6f9ba852a06ca2c0d5e4d2fa4df1df",
   "hash": "0"
 }

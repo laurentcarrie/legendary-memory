@@ -1,32 +1,42 @@
 [
   {
+    "id": "coupletx",
+    "color": "burntsienna!50",
+    "label": "couplet"
+  },
+  {
     "id": "couplet",
-    "color": "Chartreuse1",
+    "color": "brightgreen",
     "label": "couplet"
   },
   {
     "id": "prerefrain",
-    "color": "LightBlue1",
+    "color": "bubbles",
     "label": "prerefrain"
   },
   {
     "id": "refrain",
-    "color": "CadetBlue3",
+    "color": "columbiablue",
     "label": "refrain"
   },
   {
     "id": "pont",
-    "color": "Thistle",
+    "color": "thistle",
     "label": "pont"
   },
   {
+    "id": "solox",
+    "color": "coralred",
+    "label": "solo"
+  },
+  {
     "id": "solo",
-    "color": "PeachPuff1",
+    "color": "candyapplered!65",
     "label": "solo"
   },
   {
     "id": "intro",
-    "color": "PeachPuff1",
+    "color": "buff",
     "label": "intro"
   },
   {

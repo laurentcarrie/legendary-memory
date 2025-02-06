@@ -14,12 +14,13 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{verse}
+\usepackage{setspace}
 
 \usepackage{aurical}
 \usepackage[T1]{fontenc}
-\usepackage{css-colors}
-\usepackage[table,x11names]{xcolor}
+%\usepackage{css-colors}
 \usepackage{latexcolors}
+%\usepackage[table,svgnames]{xcolor}
 \usepackage{tabularray}
 \usepackage{nicematrix}
 %\usepackage{titlesec}
@@ -35,6 +36,9 @@
 \def\mytitlebox#1{\parbox[c][{40.0mm}][c]{\gridwidth}{\center #1}}
 \setlength{\tabcolsep}{0.0mm}
 
+% we want only the chapters in the toc, for books. No toc for rsongs
+\setcounter{tocdepth}{1}
+
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \pagestyle{fancy}
@@ -46,8 +50,17 @@
 \usepackage{array}
 \usepackage{paracol}
 
-%\setlength{\headheight}{10pt}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
 
+%\setlength{\headheight}{10pt}
+\usepackage[normalem]{ulem}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{2pt}
 
@@ -75,12 +88,12 @@
 
 \newcommand{\basecouplet}[3]{
 	\colorbox{#1}{
-		\fontsize{12pt}{12pt}\selectfont
+		\fontsize{18pt}{18pt}\selectfont
 		#2
 	}
 	{
 		{
-				\fontsize{10pt}{10pt}\selectfont
+				\fontsize{16pt}{16pt}\selectfont
 				#3
 			}
 	}
@@ -93,7 +106,7 @@
 	}
 }
 
-\newcommand{\xxmakesongtitle}[2] {
+\newcommand{\xxmakesongtitle}[3] {
 	\begin{center}
 		{
 			\Fontskrivan\bfseries\slshape
@@ -108,6 +121,12 @@
 		\fontsize{20pt}{10pt}\selectfont
 		\color{orange}
 		#2
+		}
+		{
+		%\Fontskrivan\bfseries\slshape
+		\fontsize{10pt}{5pt}\selectfont
+		\color{blue}
+		#3 BPM
 		}\\
 	\end{center}
 
@@ -143,7 +162,7 @@
 
 %\usepackage{paracol}
 
-\newfontfamily\lolo[%%basic weight: 100, "bold" weight: 70
+\newfontfamily\lolofont[%%basic weight: 100, "bold" weight: 70
 	Extension      = .ttf,
 	ItalicFont     = lolo,
 	BoldFont       = lolo,
@@ -152,7 +171,7 @@
 
 
 
-\newfontfamily\loloflat[%%basic weight: 50, "bold" weight: 70\overline{}
+\newfontfamily\lolofontflat[%%basic weight: 50, "bold" weight: 70\overline{}
 	Extension      = .ttf,
 	ItalicFont     = lolo_flat,
 	BoldFont       = lolo_flat,
@@ -160,7 +179,7 @@
 {lolo_flat}
 
 
-\newfontfamily\lolosharp[%%basic weight: 50, "bold" weight: 70
+\newfontfamily\lolofontsharp[%%basic weight: 50, "bold" weight: 70
 	Extension      = .ttf,
 	ItalicFont     = lolo_sharp,
 	BoldFont       = lolo_sharp,
@@ -297,7 +316,7 @@
 		\vspace{0pt}
 		#1
 	\end{minipage}
-	\begin{minipage}{0.50\linewidth}
+	\begin{minipage}{0.40\linewidth}
 		\vspace{0pt}
 		#2
 	\end{minipage}
@@ -341,4 +360,3 @@
 
 \newcommand{\xxxstruct}{}
 \newcommand{\xxxlyrics}{}
-

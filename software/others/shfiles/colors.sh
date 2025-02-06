@@ -76,24 +76,47 @@ printfc () {
   status=$1
   topic=$2
   message=$3
+  html_file=$4
 
   topic_fmt="${Blue}${On_Yellow}[${topic}]${Color_Off}"
+  topic_html="<span style=\"color:blue\" background=\"yellow\">[${topic}]</span>"
+
+  case $topic in
+  lilypond)
+  topic_html="<span style=\"color:blue;background-color:yellow\">[${topic}]</span>"
+  ;;
+  pdf)
+      topic_html="<span style=\"color:blue;background-color:green\">[${topic}]</span>"
+      ;;
+  fluidsynth)
+      topic_html="<span style=\"color:blue;background-color:cyan\">[${topic}]</span>"
+      ;;
+*)
+    topic_html="<span style=\"color:blue;background-color:yellow\">[${topic}]</span>"
+esac
 
   case $status in
   OK)
-    status_fmt="${BGreen}${On_White}[DONE   ]${Color_Off}"
+    status_fmt="${BGreen}${On_White}[DONE  ]${Color_Off}"
+    status_html="<span style=\"color:white;background-color:green\">[DONE  ]</span>"
   ;;
   RUN)
-    status_fmt="${BBlue}${On_White}[RUNNING]${Color_Off}"
+    status_fmt="${BBlue}${On_White}[START]${Color_Off}"
+    status_html="<span style=\"color:white;background-color:rgba(0,0,200,0.5);\">[START ]</span>"
   ;;
   FAILED)
     status_fmt="${BRed}${On_Cyan}[FAILED ]${Color_Off}"
+    status_html="<span style=\"color:blue;background-color:red\">[FAILED]</span>"
   ;;
   *)
     status_fmt="${BRed}${On_Black}[unknown status $status]${Color_Off}"
+    status_html="<span style=\"color:red;background-color:cyan\">[unknown status]</span>"
 esac
 
 message_fmt="${White}${On_Cyan}$message${Color_Off}"
 printf "${status_fmt}${topic_fmt}${message_fmt}\n"
+
+message_html="<span style=\"color:black;background-color:hsla(0,50%%,50%%,0.5)\">$message</span>"
+printf "${status_html}${topic_html}    ${message_html}<br/>\n" >> $html_file
 
 }

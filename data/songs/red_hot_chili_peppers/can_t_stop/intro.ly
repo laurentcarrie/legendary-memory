@@ -1,5 +1,5 @@
 \version "2.20.0"
-\include "../../../macros.ly"
+\include "../../macros.ly"
 song_tempo = 100
 
 lead = {
@@ -57,16 +57,18 @@ drumbarshh = {
   \unfoldRepeats {
     <<
       \new DrumStaff
+      %              \set Staff.midiMinimumVolume = 1.0
+      %       \set Staff.midiMaximumVolume = 1.0
       \tempo 4 = \song_tempo
       <<
-        \new DrumVoice {  \drumbarshh }
+        %\new DrumVoice {  \drumbarshh }
         \new DrumVoice {  \drumbars }
       >>
 
       \new Staff {
         \repeat unfold 8 {\lead}
-        \set Staff.midiMinimumVolume = #0.9
-        \set Staff.midiMaximumVolume = #0.9
+        \set Staff.midiMinimumVolume = 0.9
+        \set Staff.midiMaximumVolume = 0.4
         \set Staff.midiInstrument = "electric guitar (clean)"
       }
     >>

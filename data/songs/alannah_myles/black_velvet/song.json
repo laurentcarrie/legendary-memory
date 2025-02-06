@@ -1,4 +1,5 @@
 {
+  "tempo": 91,
   "title": "Black Velvet",
   "author": "Alannah Myles",
   "texfiles": [],
@@ -14,8 +15,8 @@
           "section_title": "intro",
           "section_type": "intro",
           "rows": [
-            "Dm | Dm | Dm | ",
-            "Dm | Dm | Dm | "
+            "Dm | Dm | Dm | Dm",
+            "Dm | Dm | Dm | Dm"
           ]
         }
       }
@@ -26,11 +27,22 @@
         "Chords": {
           "rows": [
             "Dm | Dm | Dm | Dm",
-            " Dm | Dm | Dm | Dm ",
-            "A | G | F | C "
+            " Dm | Dm | Dm | Dm "
           ],
           "section_type": "couplet",
           "section_title": "couplet 1"
+        }
+      }
+    },
+    {
+      "id": "prerefrain1",
+      "item": {
+        "Chords": {
+          "rows": [
+            "A | G | F | C "
+          ],
+          "section_type": "prerefrain",
+          "section_title": "pré refrain 1"
         }
       }
     },
@@ -82,6 +94,16 @@
       }
     },
     {
+      "id": "prerefrain2",
+      "item": {
+        "Ref": {
+          "section_title": "pré refrain 2",
+          "section_type": "prerefrain",
+          "link": "prerefrain1"
+        }
+      }
+    },
+    {
       "id": "refrain2",
       "item": {
         "Ref": {
@@ -113,7 +135,7 @@
       "id": "pontsolo",
       "item": {
         "Chords": {
-          "section_title": "pontsolo",
+          "section_title": "pont-solo",
           "section_type": "pont",
           "rows": [
             " Gm | Am | Dm | Dm ",
@@ -163,7 +185,7 @@
     }
   ],
   "wavfiles": [],
-  "digest": "19bf28e2f8dda41a97d68e3bf7e98b74",
-  "date": "2024-12-11",
+  "digest": "c78ac85bed7e2a8845187ed2d2cacb65",
+  "date": "2025-01-13",
   "hash": "0"
 }

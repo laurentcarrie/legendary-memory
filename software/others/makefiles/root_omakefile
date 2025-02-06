@@ -1,0 +1,57 @@
+# root is {{ builddir }}
+
+.PHONY: all install clean pdf delivery delivery_songs delivery_books clean gdrive
+
+.BUILD_BEGIN:
+    echo "<h3>BUILD BEGIN at" > $(html_output)
+    date >> $(html_output)
+    echo "</h3>" >> $(html_output)
+
+.BUILD_SUCCESS:
+    echo "<h3>BUILD END at" >> $(html_output)
+    date >> $(html_output)
+    echo "</h3>" >> $(html_output)
+    echo "<h3 style=\"color:green\"> SUCCESS </h3>" >> $(html_output)
+
+.BUILD_FAILURE:
+    echo "<h3>BUILD END at" >> $(html_output)
+    date >> $(html_output)
+    echo "</h3>" >> $(html_output)
+    echo "<h3 style=\"color:red\"> FAILURE </h3>" >> $(html_output)
+
+.DEFAULT: all
+
+all: delivery
+    echo "ALL DONE"
+
+gdrive:
+	bash $(buildroot)/make_gdrive.sh /zik/songs delivery
+
+.SUBDIRS: \
+{{#each songs}}
+    {{ this.builddir }} \
+{{/each}}
+{{#each books}}
+    {{ this.builddir }} \
+{{/each}}
+
+delivery_songs: \
+{{#each songs}}
+    {{this.builddir}}/{{this.pdfname}}.pdf \
+{{/each}}
+
+    mkdir -p delivery
+    cp $^ delivery/.
+
+
+delivery_books: \
+{{#each books}}
+    {{this.builddir}}/{{this.pdfname}} \
+{{/each}}
+
+    mkdir -p delivery
+    cp $^ delivery/.
+
+
+
+delivery: delivery_books delivery_songs

@@ -10,5 +10,5 @@ test -f "$dirname/maroon_5--@--this_love.pdf"
 
 (
   cd $dirname
-  rclone sync . mydrive:$remote --differ -
+  rclone sync . mydrive:$remote --verbose --differ -
 )

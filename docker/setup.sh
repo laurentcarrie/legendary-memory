@@ -3,6 +3,13 @@
 set -e
 set -x
 
+here=$(dirname $(realpath $0))
+root=$(dirname $here)
+
+fix_codespace() {
+sudo apt-get install libyaml-tiny-perl libfile-homedir-perl
+}
+
 install_rust() {
     curl https://sh.rustup.rs -sSf -o rustup.sh
     bash rustup.sh -y
@@ -31,11 +38,29 @@ install_fluidsynth() {
 
 install_fonts() {
     mkdir -p $HOME/.local/share/fonts
-    cp software/fonts/* $HOME/.local/share/fonts/.
+    cp $root/software/fonts/*.ttf $HOME/.local/share/fonts/.
     fc-cache -f -v
+
+    mkdir p $HOME/.fonts
+    cp $root/software/fonts/*.ttf $HOME/.fonts
+
 }
 
-install_rust
+all() {
+  fix_codespace
+  install_rust
+  install_fonts
+  install_omake
+  install_lilypond
+}
+
+case $1 in
+fonts)
 install_fonts
-install_omake
-install_lilypond
+;;
+all)
+  all
+  ;;
+*)
+  echo "bad option"
+  esac

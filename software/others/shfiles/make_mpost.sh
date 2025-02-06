@@ -11,6 +11,6 @@ pprintworkdir=$(echo $workdir | sed "s#$here##")
 
 printfc RUN mpost $pprintworkdir
 
-mpost --tex=latex $1 1> $1.mpost.stdout.log 2> $1.mpost.stderr.log
+mpost --tex=latex $1 1> $1.mpost.stdout 2> $1.mpost.stderr
 
 printfc OK mpost $pprintworkdir

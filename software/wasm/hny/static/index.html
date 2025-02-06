@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
+    <title>hny</title>
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+    <script id="script_div_id_1"></script>
+</head>
+<body>
+<script type="module">
+    import init, {greet} from "/static/hny/dsci_hny_wasm_hny.js";
+    import {blahblah} from "/static/hny/index.js" ;
+
+    init().then(() => {
+        // greet("WebAssembly");
+        blahblah();
+    });
+</script>
+<div id="hny-text" style="background-color: aquamarine; color:black; align-content: center;height:400px;width:80%">
+    <pre>
+    <span id="guess" style="font-family:times"/>
+    </pre>
+</div>
+<div id='div_id_1'></div>
+
+</body>
+</html>
