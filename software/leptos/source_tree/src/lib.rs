@@ -186,11 +186,11 @@ pub fn fetch_example() -> impl IntoView {
                                         {i.author.clone()} / {i.title.clone()}
 
                                         <ul>
-                                            <li>
-                                            { i.masterjsonfile }
+                                            <li> master json
+                                            <ul><li>{ i.masterjsonfile }</ul></li>
                                             </li>
 
-                                            <li>
+                                            <li>tex files
                                                 <ul>
                                                 { i.texfiles.into_iter().map(|f| {
                                                     view! {
@@ -203,7 +203,7 @@ pub fn fetch_example() -> impl IntoView {
                                                 </ul>
                                             </li>
 
-                                            <li>
+                                            <li>lyrics tex files
                                                 <ul>
                                                 { i.lyricstexfiles.into_iter().map(|f| {
                                                     view! {
