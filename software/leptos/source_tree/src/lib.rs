@@ -180,18 +180,12 @@ pub fn fetch_example() -> impl IntoView {
                             {move || Suspend::new(async move {
                                 let w = world.await.unwrap() ;
                                 w.items.into_iter().map(|i| {
-                                let texfiles = i.files.clone().into_iter().filter(|f| {
-                                    PathBuf::from(f).extension().map(|e| {e=="tex"}).is_some()
-                                }).collect::<Vec<_>>() ;
-                                let lyfiles = i.files.clone().into_iter().filter(|f| {
-                                    PathBuf::from(f).extension().map(|e| {e=="ly"}).is_some()
-                                }).collect::<Vec<_>>() ;
                                     view! {
                                         <li>
                                         {i.author.clone()} / {i.title.clone()}
                                         <label>tex files</label>
                                         <ul>
-                                        { texfiles.into_iter().map(|f| {
+                                        { i.texfiles.into_iter().map(|f| {
                                             view! {
                                                 <li>
                                                 {f}
