@@ -13,6 +13,18 @@ use input_model::UserWorld;
 pub mod protocol;
 use protocol::model::answer::{Choice, EChoice, SourceTree};
 
+
+#[wasm_bindgen(module = "myscript.js")]
+extern "C" {
+    fn xxx() ;
+}
+
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Cat {
     url: String,
@@ -278,6 +290,11 @@ pub fn fetch_example() -> impl IntoView {
                     //
                     // </ErrorBoundary>
                 </Transition>
-            </div>
+  <div class="container">
+    <h2>My Foldable List</h2>
+    <button id="toggleBtn">Expand List</button>
+    <ul id="myList"></ul>
+  </div>
+        </div>
         }
 }
