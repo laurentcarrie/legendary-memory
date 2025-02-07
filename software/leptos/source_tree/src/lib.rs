@@ -168,6 +168,7 @@ pub fn fetch_example() -> impl IntoView {
 
     view! {
             <Title text="songbook" />
+            <Style>{include_str!("style.css")}</Style>
             {view! {
             <div>
             </div>
