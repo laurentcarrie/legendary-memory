@@ -257,20 +257,6 @@ pub fn fetch_example() -> impl IntoView {
                             })}
                             </ul>
 
-                            <label>books</label>
-                            <ul>
-                            {move || Suspend::new(async move {
-                                let w = world.await.unwrap() ;
-                                // w.books.into_iter().map(|s| {
-                                //                 view! {
-                                //                     <li>
-                                //                         {s.path.clone()}
-                                //                     </li>
-                                //                 }
-                                //             })
-                                //             .collect::<Vec<_>>()
-                            })}
-                            </ul>
                     </ErrorBoundary>
                     // <ErrorBoundary fallback>
                     //         <label>books</label>
