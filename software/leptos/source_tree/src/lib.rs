@@ -74,8 +74,6 @@ pub fn fetch_example() -> impl IntoView {
     view! {
             <Title text="songbook" />
             {view! {
-            <div>
-            </div>
             }}
             <div>
                    <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
@@ -93,6 +91,8 @@ pub fn fetch_example() -> impl IntoView {
                                         default_world()
                                     }
                                 };
+                                let signals = &w.items.iter().map(|_| signal( false)) ;
+
                                 view!{
                                 <h1> "number of items : " </h1>
                                 };
