@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 use std::path::PathBuf;
 use thiserror::Error;
+use leptos::logging::log;
 
 pub mod input_model;
 
@@ -73,7 +74,7 @@ async fn fetch_world() -> Result<SourceTree> {
     // console.log(&world) ;
     match world.choice {
         EChoice::ItemSourceTree(tree) => {
-            log!("size of tree : {}",tree.len()) ;
+            log!("size of tree : {}",tree.items.len()) ;
             Ok(tree)
         },
         _ => panic!("bad type"),
