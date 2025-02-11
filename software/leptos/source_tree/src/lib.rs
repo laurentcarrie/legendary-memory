@@ -51,6 +51,13 @@ type CatCount = usize;
 //     }
 // }
 
+fn default_world() -> SourceTree {
+    SourceTree{
+         items: vec![],
+
+    }
+}
+
 async fn fetch_world() -> Result<SourceTree> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
@@ -181,7 +188,10 @@ pub fn fetch_example() -> impl IntoView {
                             <label>songs</label>
                             <ul>
                             {move || Suspend::new(async move {
-                                let w = world.await.unwrap() ;
+                                let w = match world.await {
+                                    Ok(w) => w ,
+                                    Err(e) => default_world()
+                                };
                                 w.items.into_iter().map(|i| {
                                     view! {
                                         <li>
