@@ -91,13 +91,14 @@ pub fn fetch_example() -> impl IntoView {
                                         default_world()
                                     }
                                 };
-                                let signals = &w.items.iter().map(|_| signal( false)) ;
+                                // let w = &w.items.iter().map(|w| (w.clone(),signal( false))).collect::<Vec<_>>() ;
 
                                 view!{
                                 <h1> "number of items : " </h1>
                                 };
 
                                 w.items.into_iter().map(|i| {
+                                    // let i=&(p.0) ;
                                     view! {
                                         <li>
 
@@ -105,7 +106,7 @@ pub fn fetch_example() -> impl IntoView {
 
                                         <ul>
                                             <li> master json
-                                            <ul><li>{ i.masterjsonfile }</li></ul>
+                                            <ul><li>{ i.masterjsonfile.clone() }</li></ul>
                                             </li>
 
                                             <li>tex files
