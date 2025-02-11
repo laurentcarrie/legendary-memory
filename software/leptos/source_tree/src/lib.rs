@@ -14,16 +14,6 @@ pub mod protocol;
 use protocol::model::answer::{Choice, EChoice, SourceTree};
 
 
-#[wasm_bindgen(module = "myscript.js")]
-extern "C" {
-    fn xxx() ;
-}
-
-#[wasm_bindgen]
-extern "C" {
-    #[wasm_bindgen(js_namespace = console)]
-    fn log(s: &str);
-}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Cat {
