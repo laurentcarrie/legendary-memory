@@ -72,7 +72,10 @@ async fn fetch_world() -> Result<SourceTree> {
     // Ok(vec!["hello".to_string(),"world".to_string()])
     // console.log(&world) ;
     match world.choice {
-        EChoice::ItemSourceTree(tree) => Ok(tree),
+        EChoice::ItemSourceTree(tree) => {
+            log!("size of tree : {}",tree.len()) ;
+            Ok(tree)
+        },
         _ => panic!("bad type"),
     }
 }
