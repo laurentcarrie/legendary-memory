@@ -158,7 +158,6 @@ pub fn fetch_example() -> impl IntoView {
     // 1) we'd want to use a Resource, so the data would be serialized to the client
     // 2) we'd need to make sure there was a thread-local spawner set up
     let world = AsyncDerived::new_unsync(move || fetch_world());
-    log!("number of items : ",&world.items.len()) ;
 
     let fallback = move |errors: ArcRwSignal<Errors>| {
         let error_list = move || {
@@ -194,8 +193,14 @@ pub fn fetch_example() -> impl IntoView {
                             <ul>
                             {move || Suspend::new(async move {
                                 let w = match world.await {
-                                    Ok(w) => w ,
-                                    Err(e) => default_world()
+                                    Ok(w) => {
+                                         log!("number of items : {} ",&w.items.len()) ;
+                                        w
+                                    } ,
+                                    Err(e) => {
+                                         log!("default") ;
+                                        default_world()
+                                    }
                                 };
                                 w.items.into_iter().map(|i| {
                                     view! {
