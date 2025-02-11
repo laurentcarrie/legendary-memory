@@ -202,6 +202,10 @@ pub fn fetch_example() -> impl IntoView {
                                         default_world()
                                     }
                                 };
+                                view!{
+                                <h1> "number of items : " </h1>
+                                };
+
                                 w.items.into_iter().map(|i| {
                                     view! {
                                         <li>
@@ -286,11 +290,6 @@ pub fn fetch_example() -> impl IntoView {
                     //
                     // </ErrorBoundary>
                 </Transition>
-  <div class="container">
-    <h2>My Foldable List</h2>
-    <button id="toggleBtn">Expand List</button>
-    <ul id="myList"></ul>
-  </div>
         </div>
         }
 }
