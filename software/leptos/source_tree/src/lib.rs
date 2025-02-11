@@ -202,7 +202,6 @@ pub fn fetch_example() -> impl IntoView {
                                         default_world()
                                     }
                                 };
-                                         log!("number of items : {} ",&w.items.len()) ;
                                 w.items.into_iter().map(|i| {
                                     view! {
                                         <li>
