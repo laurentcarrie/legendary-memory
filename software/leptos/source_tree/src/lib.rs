@@ -177,7 +177,7 @@ pub fn fetch_example() -> impl IntoView {
         }
     };
 
-    let spreadable = style(("background-color", "AliceBlue")("foreground-color","red"));
+    let spreadable = style(("background-color", "AliceBlue"),("foreground-color","red"));
 
     view! {
             <Title text="songbook" />
