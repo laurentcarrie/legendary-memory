@@ -1,4 +1,5 @@
-use leptos::prelude::*;
+use std::cmp::Ordering;
+use human_sort::compare;use leptos::prelude::*;
 use leptos::tachys::html::style::style;
 use leptos_meta::*;
 use leptos::logging::log;
@@ -85,14 +86,21 @@ pub fn fetch_example() -> impl IntoView {
                                         default_world()
                                     }
                                 };
-                                let w = &w.items.iter().map(|w| (w.clone(),signal( false))).collect::<Vec<_>>() ;
+                                // let w = &w.items.iter().map(|w| (w.clone(),signal( false))).collect::<Vec<_>>() ;
+                                let mut items = w.items ;
+                                items.sort_by(|a,b| match compare(a.author.as_str(),b.author.as_str()) {
+                                    Ordering::Equal => {
+                                        compare(a.title.as_str(),b.title.as_str())
+                                    },
+                                    x => x
+                                }) ;
 
                                 view!{
                                 <h1> "number of items : " </h1>
                                 };
 
-                                w.into_iter().map(|p| {
-                                    let i=&(p.0) ; // item
+                                items.into_iter().map(|i| {
+                                    // let i=&(p.0) ; // item
                                     // let (expanded,set_expanded)=&(p.1) ; // signal
                                     // let expanded=&(p.1.0) ;
                                     let (expanded,set_expanded) = signal(false) ;
