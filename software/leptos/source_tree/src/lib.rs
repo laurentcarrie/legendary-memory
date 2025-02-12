@@ -75,12 +75,12 @@ pub fn fetch_example() -> impl IntoView {
                 editor.session.setMode("ace/mode/javascript");
             </script>
 
-            <pre id="editor">r#"""function foo(items) {
+            <pre id="editor">r#"function foo(items) {
                 var i;
                 for (i = 0; i &lt; items.length; i++) {
                     alert("Ace Rocks " + items[i]);
                 }
-            }"""#</pre>
+            }"#</pre>
 
 
             {view! {
