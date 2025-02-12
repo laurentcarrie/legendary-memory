@@ -1,15 +1,9 @@
 use leptos::prelude::*;
 use leptos::tachys::html::style::style;
 use leptos_meta::*;
-use serde::{Deserialize, Serialize};
-use serde_json;
-use std::path::PathBuf;
-use thiserror::Error;
 use leptos::logging::log;
 
 pub mod input_model;
-
-use input_model::UserWorld;
 
 pub mod protocol;
 use protocol::model::answer::{Choice, EChoice, SourceTree};
@@ -86,7 +80,7 @@ pub fn fetch_example() -> impl IntoView {
                                          log!("number of items : {} ",&w.items.len()) ;
                                         w
                                     } ,
-                                    Err(e) => {
+                                    Err(_) => {
                                          log!("default") ;
                                         default_world()
                                     }
