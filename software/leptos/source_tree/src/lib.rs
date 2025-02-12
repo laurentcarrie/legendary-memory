@@ -76,6 +76,7 @@ pub fn App() -> impl IntoView {
 
             <Title text="songbook" />
         <script>r#"
+        import ace from "/src-noconflict/ace.js";
         var editor = ace.edit("editor") ;
         console.log("hello");
         "#</script>
