@@ -68,6 +68,13 @@ pub fn fetch_example() -> impl IntoView {
 
     view! {
             <Title text="songbook" />
+            <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+            <script>
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/twilight");
+            editor.session.setMode("ace/mode/javascript");
+            </script>
+
             {view! {
             }}
             <div>

@@ -132,4 +132,8 @@ restart_nginx
 #install_songbook_server_service_as_root
 install_songbook_server_service_as_user
 
+
+cp -R /home/laurent/work/ace-builds/src-min-noconflict $wwwroot
+
+
 echo "DONE"
