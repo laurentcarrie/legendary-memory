@@ -1,5 +1,3 @@
-use wasm_bindgen::prelude::*;
-
 use std::cmp::Ordering;
 use human_sort::compare;use leptos::prelude::*;
 use leptos::tachys::html::style::style;
@@ -11,11 +9,6 @@ pub mod input_model;
 pub mod protocol;
 use protocol::model::answer::{Choice, EChoice, SourceTree};
 
-
-#[wasm_bindgen(module = "/src-noconflict/ace.js")]
-extern "C" {
-
-}
 
 fn default_world() -> SourceTree {
     SourceTree{
@@ -44,7 +37,8 @@ async fn fetch_world() -> Result<SourceTree> {
 }
 
 
-pub fn fetch_example() -> impl IntoView {
+#[component]
+pub fn App() -> impl IntoView {
     provide_meta_context();
 
     // we use new_unsync here because the reqwasm request type isn't Send
@@ -73,13 +67,16 @@ pub fn fetch_example() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
 
-    let editor = ace.edit("editor");
-    editor.setTheme("ace/theme/twilight");
-    editor.session.setMode("ace/mode/javascript");
-
 
     view! {
             <Title text="songbook" />
+    <script> r#"
+    let editor = edit("editor") ;
+    // let editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/javascript");
+    "#
+        </script>
 
             <pre id="editor">r#"function foo(items) {
                 var i;

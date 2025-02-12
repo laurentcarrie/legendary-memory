@@ -1,6 +1,6 @@
 // use leptos::html::Title;
 use leptos::prelude::*;
-use source_tree::fetch_example;
+use source_tree::App;
 pub mod input_model;
 pub mod protocol;
 
@@ -21,5 +21,6 @@ pub fn main() {
     console_error_panic_hook::set_once();
 
     // view!{<Title text="songbook" />} ;
-    mount_to_body(fetch_example)
+    // mount_to_body(fetch_example)
+    mount_to_body(|| view! { <App/> })
 }
