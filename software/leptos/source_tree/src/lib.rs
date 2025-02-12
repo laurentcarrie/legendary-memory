@@ -4,6 +4,10 @@ use leptos::tachys::html::style::style;
 use leptos_meta::*;
 use leptos::logging::log;
 
+#[link(wasm_import_module = "ace")]
+extern { fn edit(what:&str); }
+
+
 pub mod input_model;
 
 pub mod protocol;
@@ -76,7 +80,6 @@ pub fn App() -> impl IntoView {
 
             <Title text="songbook" />
         <script>r#"
-        import ace from "/src-noconflict/ace.js";
         var editor = ace.edit("editor") ;
         console.log("hello");
         "#</script>

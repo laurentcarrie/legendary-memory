@@ -66,6 +66,7 @@ install_songbook_server_service_as_user() {
    systemctl --user daemon-reload
    # test
    bash $here/request.sh $(echo "{\"choice\":{\"ItemHealthCheck\":null}}" | base64 )
+   bash $here/request.sh $(echo "{\"choice\":{\"ItemHealthCheck\":null}}" | base64 ) text/text
 }
 
 install_packages(){
