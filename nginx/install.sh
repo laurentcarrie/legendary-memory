@@ -134,6 +134,7 @@ install_songbook_server_service_as_user
 
 
 cp -R /home/laurent/work/ace-builds/src-min-noconflict $wwwroot
+cp -R /home/laurent/work/ace-builds/src-noconflict $wwwroot
 
 
 echo "DONE"
