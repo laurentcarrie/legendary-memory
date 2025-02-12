@@ -72,7 +72,7 @@ pub fn App() -> impl IntoView {
             <Title text="songbook" />
 <script src="/src-noconflict/ace.js" type="text/javascript" ></script>
     <script> r#"
-    let editor = ace.edit("editor");
+    var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
     editor.session.setMode("ace/mode/javascript");
     "#
