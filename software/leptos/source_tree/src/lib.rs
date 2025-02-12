@@ -72,22 +72,22 @@ pub fn App() -> impl IntoView {
     view! {
         <main>
             <Script src="/src-noconflict/ace.js"> </Script>
-        </main>
-
-            <Title text="songbook" />
-
-    <script> r#"
+    <Script> r#"
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
     editor.session.setMode("ace/mode/javascript");
     "#
-        </script>
+        </Script>
+        </main>
+
+            <Title text="songbook" />
+
 
             <pre id="editor">r#"
 
 edit me...
 
-            }"#</pre>
+            "#</pre>
 
 
 
