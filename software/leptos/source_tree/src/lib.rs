@@ -93,7 +93,9 @@ pub fn fetch_example() -> impl IntoView {
 
                                 w.into_iter().map(|p| {
                                     let i=&(p.0) ; // item
-                                    let expanded=&(p.1) ; // signal
+                                    // let (expanded,set_expanded)=&(p.1) ; // signal
+                                    // let expanded=&(p.1.0) ;
+                                    let (expanded,set_expanded) = signal(false) ;
                                     view! {
                                         <li>
                                         <button>
