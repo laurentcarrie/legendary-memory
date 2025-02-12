@@ -85,6 +85,7 @@ pub fn App() -> impl IntoView {
 
             <Title text="songbook" />
 
+        <div>
 
             <pre id="editor">r#"
 
@@ -96,7 +97,7 @@ yyy
 
             "#</pre>
 
-
+</div>
 
 
 
