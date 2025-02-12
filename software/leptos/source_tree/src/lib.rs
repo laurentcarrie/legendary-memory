@@ -88,7 +88,11 @@ pub fn App() -> impl IntoView {
 
             <pre id="editor">r#"
 
+xxx
+
 edit me...
+
+yyy
 
             "#</pre>
 
@@ -126,6 +130,7 @@ edit me...
                                 view!{
                                 <h1> "number of items : " </h1>
                                 };
+                                items.drain() ;
 
                                 items.into_iter().map(|i| {
                                     // let i=&(p.0) ; // item
