@@ -91,27 +91,28 @@ pub fn fetch_example() -> impl IntoView {
                                         default_world()
                                     }
                                 };
-                                // let w = &w.items.iter().map(|w| (w.clone(),signal( false))).collect::<Vec<_>>() ;
+                                let w = &w.items.iter().map(|w| (w.clone(),signal( false))).collect::<Vec<_>>() ;
 
                                 view!{
                                 <h1> "number of items : " </h1>
                                 };
 
-                                w.items.into_iter().map(|i| {
-                                    // let i=&(p.0) ;
+                                w.into_iter().map(|p| {
+                                    let i=&(p.0) ; // item
+                                    let expanded=&(p.1) ; // signal
                                     view! {
                                         <li>
-
+                                        <button>
                                         {i.author.clone()} / {i.title.clone()}
-
-                                        <ul>
+                                        </button>
+                                        <ul style:display=move || if expanded.get() { "block" } else { "none" }>
                                             <li> master json
                                             <ul><li>{ i.masterjsonfile.clone() }</li></ul>
                                             </li>
 
                                             <li>tex files
                                                 <ul>
-                                                { i.texfiles.into_iter().map(|f| {
+                                                { i.texfiles.clone().into_iter().map(|f| {
                                                     view! {
                                                         <li>
                                                         {f}
@@ -124,7 +125,7 @@ pub fn fetch_example() -> impl IntoView {
 
                                             <li>lyrics tex files
                                                 <ul>
-                                                { i.lyricstexfiles.into_iter().map(|f| {
+                                                { i.lyricstexfiles.clone().into_iter().map(|f| {
                                                     view! {
                                                         <li>
                                                         {f}
@@ -137,7 +138,7 @@ pub fn fetch_example() -> impl IntoView {
 
                                             <li>lilypond files
                                                 <ul>
-                                                { i.lyfiles.into_iter().map(|f| {
+                                                { i.lyfiles.clone().into_iter().map(|f| {
                                                     view! {
                                                         <li>
                                                         {f}
