@@ -71,8 +71,7 @@ pub fn App() -> impl IntoView {
     view! {
             <Title text="songbook" />
     <script> r#"
-    let editor = edit("editor") ;
-    // let editor = ace.edit("editor");
+    let editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
     editor.session.setMode("ace/mode/javascript");
     "#
