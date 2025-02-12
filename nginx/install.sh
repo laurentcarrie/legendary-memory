@@ -87,6 +87,7 @@ make_www_tree() {
   sudo mkdir $wwwroot
   sudo cp $here/autoindex.xslt $wwwroot/.
   sudo cp $here/index.html $wwwroot/.
+  sudo cp $here/xxx.html $wwwroot/.
 
   # scripts
   sudo mkdir -p $wwwroot/scripts
