@@ -82,7 +82,10 @@ pub fn App() -> impl IntoView {
         </main>
 
             <Title text="songbook" />
-        <script>r#"console.log("hello");"#</script>
+        <script>r#"
+        var editor = ace.edit("editor") ;
+        console.log("hello");
+        "#</script>
 
 
             <pre id="editor">r#"
