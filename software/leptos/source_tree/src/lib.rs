@@ -98,7 +98,7 @@ pub fn fetch_example() -> impl IntoView {
                                     let (expanded,set_expanded) = signal(false) ;
                                     view! {
                                         <li>
-                                        <button>
+                                        <button on:click=move |_| { *set_expanded.write() = !expanded.get() ; } >
                                         {i.author.clone()} / {i.title.clone()}
                                         </button>
                                         <ul style:display=move || if expanded.get() { "block" } else { "none" }>
