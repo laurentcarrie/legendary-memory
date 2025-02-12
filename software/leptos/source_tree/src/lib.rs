@@ -9,7 +9,7 @@ use wasm_bindgen::prelude::*;
 extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
-    #[wasm_bindgen(js_namespace = acexxx)]
+    #[wasm_bindgen(js_namespace = ace)]
     fn edit(s: &str);
 }
 
