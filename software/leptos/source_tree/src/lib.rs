@@ -68,13 +68,6 @@ pub fn fetch_example() -> impl IntoView {
 
     view! {
             <Title text="songbook" />
-            <script src="/src-noconflict/ace.js" type="text/javascript" ></script>
-            <script>r#"
-                var editor = ace.edit("editor");
-                editor.setTheme("ace/theme/twilight");
-                editor.session.setMode("ace/mode/javascript");
-                "#
-            </script>
 
             <pre id="editor">r#"function foo(items) {
                 var i;
@@ -82,6 +75,16 @@ pub fn fetch_example() -> impl IntoView {
                     alert("Ace Rocks " + items[i]);
                 }
             }"#</pre>
+
+            <script src="/src-noconflict/ace.js" type="text/javascript" ></script>
+
+            <script>r#"
+                var editor = ace.edit("editor");
+                editor.setTheme("ace/theme/twilight");
+                editor.session.setMode("ace/mode/javascript");
+                "#
+            </script>
+
 
 
             {view! {
