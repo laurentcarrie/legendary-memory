@@ -73,6 +73,11 @@ pub fn fetch_example() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
 
+    let editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/javascript");
+
+
     view! {
             <Title text="songbook" />
 
@@ -84,9 +89,6 @@ pub fn fetch_example() -> impl IntoView {
             }"#</pre>
 
 
-                let editor = ace.edit("editor");
-                editor.setTheme("ace/theme/twilight");
-                editor.session.setMode("ace/mode/javascript");
 
 
 
