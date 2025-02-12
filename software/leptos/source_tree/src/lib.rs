@@ -72,7 +72,7 @@ pub fn App() -> impl IntoView {
     view! {
         <main>
             <Script src="/src-noconflict/ace.js"> </Script>
-    <Script> r#"
+    <Script src="/src-noconflict/ace.js"> r#"
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
     editor.session.setMode("ace/mode/javascript");
