@@ -68,9 +68,14 @@ pub fn App() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
 
 
+
     view! {
+        <main>
+            <Script src="/src-noconflict/ace.js"> </Script>
+        </main>
+
             <Title text="songbook" />
-<script src="/src-noconflict/ace.js" type="text/javascript" ></script>
+
     <script> r#"
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
@@ -78,11 +83,10 @@ pub fn App() -> impl IntoView {
     "#
         </script>
 
-            <pre id="editor">r#"function foo(items) {
-                var i;
-                for (i = 0; i &lt; items.length; i++) {
-                    alert("Ace Rocks " + items[i]);
-                }
+            <pre id="editor">r#"
+
+edit me...
+
             }"#</pre>
 
 
