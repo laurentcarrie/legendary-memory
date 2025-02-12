@@ -84,10 +84,6 @@ pub fn App() -> impl IntoView {
         </main>
 
             <Title text="songbook" />
-        <script>r#"
-        var editor = ace.edit("editor") ;
-        console.log("hello");
-        "#</script>
 
 
             <pre id="editor">r#"
@@ -138,7 +134,7 @@ edit me...
                                     let (expanded,set_expanded) = signal(false) ;
                                     view! {
                                         <li>
-                                        <button on:click=move |_| { *set_expanded.write() = !expanded.get() ; edit("editor") ; } >
+                                        <button on:click=move |_| { *set_expanded.write() = !expanded.get() ; log!("edit") ; edit("editor") ; } >
                                         {i.author.clone()} / {i.title.clone()}
                                         </button>
                                         <ul style:display=move || if expanded.get() { "block" } else { "none" }>
