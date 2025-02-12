@@ -3,10 +3,15 @@ use human_sort::compare;use leptos::prelude::*;
 use leptos::tachys::html::style::style;
 use leptos_meta::*;
 use leptos::logging::log;
+use wasm_bindgen::prelude::*;
 
-#[link(wasm_import_module = "ace")]
-extern { fn edit(what:&str); }
-
+#[wasm_bindgen]
+extern "C" {
+    // Use `js_namespace` here to bind `console.log(..)` instead of just
+    // `log(..)`
+    #[wasm_bindgen(js_namespace = ace)]
+    fn edit(s: &str);
+}
 
 pub mod input_model;
 
@@ -133,7 +138,7 @@ edit me...
                                     let (expanded,set_expanded) = signal(false) ;
                                     view! {
                                         <li>
-                                        <button on:click=move |_| { *set_expanded.write() = !expanded.get() ; } >
+                                        <button on:click=move |_| { *set_expanded.write() = !expanded.get() ; edit("editor") ; } >
                                         {i.author.clone()} / {i.title.clone()}
                                         </button>
                                         <ul style:display=move || if expanded.get() { "block" } else { "none" }>

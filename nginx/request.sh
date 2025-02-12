@@ -20,7 +20,7 @@ fi
 here=$(dirname $(realpath $0))
 request=$(echo $COMMAND | sed "s/^request=//")
 work() {
-  echo "Content-type:$MIME/json\r\n"
+  echo "Content-type:$MIME\r\n"
   $here/songbook-client $request 2>/dev/null | jq "."
 }
 
