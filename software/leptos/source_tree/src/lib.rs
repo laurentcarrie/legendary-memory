@@ -1,3 +1,5 @@
+use wasm_bindgen::prelude::*;
+
 use std::cmp::Ordering;
 use human_sort::compare;use leptos::prelude::*;
 use leptos::tachys::html::style::style;
@@ -9,6 +11,11 @@ pub mod input_model;
 pub mod protocol;
 use protocol::model::answer::{Choice, EChoice, SourceTree};
 
+
+#[wasm_bindgen(module = "/src-noconflict/ace.js")]
+extern "C" {
+
+}
 
 fn default_world() -> SourceTree {
     SourceTree{
@@ -76,14 +83,10 @@ pub fn fetch_example() -> impl IntoView {
                 }
             }"#</pre>
 
-            <script src="/src-noconflict/ace.js" type="text/javascript" ></script>
 
-            <script>r#"
-                var editor = ace.edit("editor");
+                let editor = ace.edit("editor");
                 editor.setTheme("ace/theme/twilight");
                 editor.session.setMode("ace/mode/javascript");
-                "#
-            </script>
 
 
 
