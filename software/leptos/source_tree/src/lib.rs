@@ -83,6 +83,7 @@ pub fn App() -> impl IntoView {
 
             <Title text="songbook" />
         <script>r#"
+        import ace from "ace" ;
         var editor = ace.edit("editor") ;
         console.log("hello");
         "#</script>
