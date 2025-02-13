@@ -152,22 +152,6 @@ yyy
                                                 // log!("edit") ;
                                                 log!("edit {}",mjf) ;
                                                 // let mjf = mjf.as_str().clone() ;
-                                                let data = AsyncDerived::new_unsync(move || {
-                                                    let mjf = "/input-songs/depeche_mode/enjoy_the_silence/song.json".to_string() ;
-                                                    fetch_file(mjf)});
-                                                {
-                                                    move || Suspend::new(async move {
-                                                    let text = match data.await {
-                                                        Ok(t) => {
-                                                            log!("{}",t);
-                                                            let _ = my_edit("editor",t.as_str()) ;
-                                                            ()
-                                                        },
-                                                        Err(e) =>{log!("{:?}",e);()}
-                                                    } ;
-                                                    view!{<p> "text" </p>} ;
-                                                })
-                                                } ;
 
 
                                             } >
