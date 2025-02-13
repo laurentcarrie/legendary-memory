@@ -152,20 +152,22 @@ yyy
                                                 // log!("edit") ;
                                                 log!("edit {}",mjf) ;
                                                 // let mjf = mjf.as_str().clone() ;
-                                                let data = AsyncDerived::new_unsync(move || fetch_file("input-songs/amy_winehouse/you_know_i_m_no_good/song.json"));
-                                                {move || Suspend::new(async move {
-                                                    let text = match data.await {
+                                                let data = AsyncDerived::new_unsync(move || fetch_file("input-songs/amy_winehouse/you_know_i_m_no_good/song.json".to_string()));
+                                                {
+                                                    move || Suspend::new(async move  {
+                                                    match data.await {
                                                         Ok(text) => {
                                                              log!("text") ;
-                                                             my_edit("editor",text) ;
+                                                             my_edit("editor",&text.to_string()) ;
                                                              ()
                                                         } ,
                                                         Err(e) => {
                                                              log!("error {:?}",e) ;
                                                             ()
                                                         }
-                                                    };
-                                                })}
+                                                    } ;
+                                                })} ;
+                                                ()
                                             } >
                                             {i.author.clone()} / {i.title.clone()}
                                             </button>
