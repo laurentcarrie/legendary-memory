@@ -152,21 +152,20 @@ yyy
                                                 // log!("edit") ;
                                                 log!("edit {}",mjf) ;
                                                 // let mjf = mjf.as_str().clone() ;
-                                                // let data = AsyncDerived::new_unsync(move || fetch_file(mjf));
+                                                let data = AsyncDerived::new_unsync(move || {
+                                                    let mjf = "/input-songs/depeche_mode/enjoy_the_silence/song.json".to_string() ;
+                                                    fetch_file(mjf)});
                                                 // let data = AsyncDerived::new_unsync(move || fetch_file(value));
-//                                                {move || Suspend::new(async move {
-//                                                    let data= match data.await {
-//                                                        Ok(data) => data,
-//                                                        Err(e) => format!("{:?}",e)
-//                                                        } ;
-//                                                    log!("{}",&data) ;
-//                                                    let aedit=my_edit("editor",&data) ;
-//                                                    ()
-//                                                    }
-//                                                )
-//                                                }
 //                                                // let aedit = my_edit("editor") ;
                                                 // editor.setTheme("ace/theme/twilight");
+                                                {
+                                                    move || Suspend::new(async move {
+                                                    let text = match data.await {
+                                                        Ok(t) => {log!("{}",t); ()},
+                                                        Err(e) =>{log!("{:?}",e);()}
+                                                    } ;
+                                                })
+                                                } ;
                                                 ()
 
                                             } >
