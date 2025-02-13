@@ -155,15 +155,12 @@ yyy
                                                 let data = AsyncDerived::new_unsync(move || {
                                                     let mjf = "/input-songs/depeche_mode/enjoy_the_silence/song.json".to_string() ;
                                                     fetch_file(mjf)});
-                                                // let data = AsyncDerived::new_unsync(move || fetch_file(value));
-//                                                // let aedit = my_edit("editor") ;
-                                                // editor.setTheme("ace/theme/twilight");
                                                 {
                                                     move || Suspend::new(async move {
                                                     let text = match data.await {
                                                         Ok(t) => {
                                                             log!("{}",t);
-                                                            my_edit("editor",t.as_str()) ;
+                                                            let _ = my_edit("editor",t.as_str()) ;
                                                             ()
                                                         },
                                                         Err(e) =>{log!("{:?}",e);()}
