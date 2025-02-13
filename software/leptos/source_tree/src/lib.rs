@@ -145,7 +145,7 @@ yyy
                                         <button on:click=move |_| {
                                             log!("edit") ;
                                             let data= fs::read_to_string(mjf.as_str()).unwrap();
-                                            let aedit=my_edit("editor",data) ;
+                                            let aedit=my_edit("editor",&data) ;
                                             // let aedit = my_edit("editor") ;
                                             // editor.setTheme("ace/theme/twilight");
 
