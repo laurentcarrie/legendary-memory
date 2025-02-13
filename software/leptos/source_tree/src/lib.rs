@@ -88,7 +88,7 @@ pub fn App() -> impl IntoView {
 
         <div>
 
-            <pre id="editor">r#"
+            <textarea id="editor">r#"
 
 xxx
 
@@ -96,7 +96,7 @@ edit me...
 
 yyy
 
-            "#</pre>
+            "#</textarea>
 
 </div>
 
