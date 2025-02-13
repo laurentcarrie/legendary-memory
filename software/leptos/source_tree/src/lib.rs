@@ -100,6 +100,10 @@ yyy
 
 </div>
 
+        <script>
+        my_edit("editor") ;
+        </script>
+
 
 
             {view! {
@@ -142,7 +146,7 @@ yyy
                                         <li>
                                         <button on:click=move |_| {
                                             log!("edit") ;
-                                            my_edit("editor") ;
+                                            // my_edit("editor") ;
                                             // editor.setTheme("ace/theme/twilight");
 
                                         } >
