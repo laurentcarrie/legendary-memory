@@ -265,7 +265,8 @@ pub fn handle_source_tree(
     let mut ret: Vec<SourceTreeItem> = vec![];
     for song in world.songs {
         dbg!(&song.srcdir);
-        let root = song.srcdir.to_string() ;
+        // let root = song.srcdir.to_string();
+        let root = "/input-songs".to_string() ;
         let mut texfiles: Vec<String> = vec![];
         let mut lyricstexfiles: Vec<String> = vec![];
         let mut lyfiles: Vec<String> = vec![];
@@ -276,18 +277,10 @@ pub fn handle_source_tree(
         for section in &song.structure {
             match &section.item {
                 ItemChords(c) => {
-                    lyricstexfiles.push(format!(
-                        "{}/lyrics/{}.tex",
-                        root,
-                        c.section_id
-                    ));
+                    lyricstexfiles.push(format!("{}/lyrics/{}.tex", root, c.section_id));
                 }
                 ItemRef(c) => {
-                    lyricstexfiles.push(format!(
-                        "{}/lyrics/{}.tex",
-                        root,
-                        c.section_id
-                    ));
+                    lyricstexfiles.push(format!("{}/lyrics/{}.tex", root, c.section_id));
                 }
                 ItemHRule(_) => {}
             }
