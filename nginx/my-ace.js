@@ -10,5 +10,7 @@ function my_edit(id) {
 
 function my_set_data(editor,data) {
     console.log("set data in editor") ;
+    console.log(editor) ;
+    console.log(data) ;
     editor.setValue(data) ;
 }
