@@ -76,7 +76,6 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
 
-    let aedit = my_edit("editor") ;
 
 
     view! {
@@ -100,6 +99,8 @@ yyy
             "#</pre>
 
 </div>
+
+           {view!{let aedit = my_edit("editor") ;}}
 
 
 
