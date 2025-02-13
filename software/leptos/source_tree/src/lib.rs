@@ -11,7 +11,7 @@ extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
     #[wasm_bindgen]
-    fn my_edit(s: &str) -> JsValue ;
+    fn my_edit(s: &str,data:&str) -> JsValue ;
     fn my_set_data(e:JsValue,s:&str) ;
 }
 
@@ -144,9 +144,8 @@ yyy
                                         <li>
                                         <button on:click=move |_| {
                                             log!("edit") ;
-                                            let aedit=my_edit("editor") ;
                                             let data= fs::read_to_string(mjf.as_str()).unwrap();
-                                            my_set_data(aedit,data.as_str()) ;
+                                            let aedit=my_edit("editor",data) ;
                                             // let aedit = my_edit("editor") ;
                                             // editor.setTheme("ace/theme/twilight");
 

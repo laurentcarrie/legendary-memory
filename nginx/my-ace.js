@@ -1,10 +1,10 @@
-function my_edit(id) {
+function my_edit(id,value) {
     console.log("create edit") ;
     var editor = ace.edit(id);
     editor.setTheme("ace/theme/twilight");
     editor.session.setMode("ace/mode/javascript");
     console.log("set value") ;
-    editor.setValue("the new text here");
+    editor.setValue(value);
     return editor ;
 }
 
