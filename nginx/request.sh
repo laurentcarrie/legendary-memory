@@ -11,7 +11,7 @@ else
   exit 1
 fi
 
-if test "x$2" != "x" ; then
+if test "x$2" = "x" ; then
   MIME="application/json"
 else
   MIME=$2
