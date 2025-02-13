@@ -9,8 +9,11 @@ use wasm_bindgen::prelude::*;
 extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
+    #[wasm_bindgen(js_namespace = ace)]
+    type Editor ;
+
     #[wasm_bindgen(js_namespace = ace,js_name=edit)]
-    fn my_ace_edit(s: &str);
+    fn my_ace_edit(s: &str) -> Editor  ;
 }
 
 pub mod input_model;
@@ -143,6 +146,7 @@ yyy
                                             *set_expanded.write() = !expanded.get() ;
                                             log!("edit") ;
                                             let x = my_ace_edit("editor") ;
+
                                         } >
                                         {i.author.clone()} / {i.title.clone()}
                                         </button>
