@@ -75,7 +75,6 @@ pub fn App() -> impl IntoView {
     };
 
     let spreadable = style(("foreground-color", "red"));
-    let aedit = my_edit("editor") ;
 
 
     view! {
@@ -99,10 +98,6 @@ yyy
             "#</pre>
 
 </div>
-
-           {view!{log!("aedit");let aedit = my_edit("editor") ;}}
-
-
 
 
             {view! {
@@ -135,7 +130,7 @@ yyy
                                 view!{
                                 <h1> "number of items : " </h1>
                                 };
-
+                                let aedit = my_edit("editor") ;
                                 items.into_iter().map(|i| {
                                     // let i=&(p.0) ; // item
                                     // let (expanded,set_expanded)=&(p.1) ; // signal
