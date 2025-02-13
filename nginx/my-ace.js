@@ -1,5 +1,5 @@
 function my_edit(id) {
-    console.log("hello") ;
+    console.log("create edit") ;
     var editor = ace.edit(id);
     editor.setTheme("ace/theme/twilight");
     editor.session.setMode("ace/mode/javascript");
@@ -9,5 +9,6 @@ function my_edit(id) {
 }
 
 function my_set_data(editor,data) {
+    console.log("set data in editor") ;
     editor.setValue(data) ;
 }
