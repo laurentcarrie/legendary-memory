@@ -100,7 +100,7 @@ yyy
 
 </div>
 
-           {view!{let aedit = my_edit("editor") ;}}
+           {view!{log!("aedit");let aedit = my_edit("editor") ;}}
 
 
 
