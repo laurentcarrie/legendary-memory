@@ -48,6 +48,18 @@ async fn fetch_world() -> Result<SourceTree> {
 }
 
 
+async fn fetch_file(path:String) -> Result<String> {
+    gloo_timers::future::TimeoutFuture::new(1000).await;
+    // make the request
+    let data = reqwasm::http::Request::get(path)
+        .send()
+        .await?
+        .text()
+        .await?;
+    data
+}
+
+
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
@@ -145,7 +157,7 @@ yyy
                                         <button on:click=move |_| {
                                             log!("edit") ;
                                             log!("{}",mjf) ;
-                                            let data= match fs::read_to_string(mjf.as_str()) {
+                                            let data= match fetch_file(mjf) {
                                                 Ok(data) => data,
                                                 Err(e) => format!("{:?}",e)
                                                 } ;
