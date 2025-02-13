@@ -165,7 +165,7 @@ yyy
                                                         },
                                                         Err(e) =>{log!("{:?}",e);()}
                                                     } ;
-                                                    view!{<p> text </p>} ;
+                                                    view!{<p> "text" </p>} ;
                                                 })
                                                 } ;
 
