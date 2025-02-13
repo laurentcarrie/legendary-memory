@@ -9,11 +9,8 @@ use wasm_bindgen::prelude::*;
 extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
-    #[wasm_bindgen(js_namespace = ace)]
-    type Editor ;
-
-    #[wasm_bindgen(js_namespace = ace,js_name=edit)]
-    fn my_ace_edit(s: &str) -> Editor  ;
+    #[wasm_bindgen]
+    fn my_edit(s: &str) ;
 }
 
 pub mod input_model;
