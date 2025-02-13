@@ -152,6 +152,7 @@ yyy
                                                 // log!("edit") ;
                                                 log!("edit {}",mjf) ;
                                                 // let mjf = mjf.as_str().clone() ;
+                                                let data = AsyncDerived::new_unsync(move || fetch_file("input-songs/amy_winehouse/you_know_i_m_no_good/song.json"));
 
 
                                             } >
