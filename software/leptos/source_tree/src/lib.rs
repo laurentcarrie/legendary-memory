@@ -140,6 +140,7 @@ yyy
                                         <li>
                                         <button on:click=move |_| {
                                             log!("edit") ;
+                                            let data= fs::read_to_string(&i.masterjsonfile.as_str())?;
                                             // let aedit = my_edit("editor") ;
                                             // editor.setTheme("ace/theme/twilight");
 
