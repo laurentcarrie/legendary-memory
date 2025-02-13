@@ -161,7 +161,11 @@ yyy
                                                 {
                                                     move || Suspend::new(async move {
                                                     let text = match data.await {
-                                                        Ok(t) => {log!("{}",t); ()},
+                                                        Ok(t) => {
+                                                            log!("{}",t);
+                                                            my_edit("editor",t.as_str()) ;
+                                                            ()
+                                                        },
                                                         Err(e) =>{log!("{:?}",e);()}
                                                     } ;
                                                 })
