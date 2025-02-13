@@ -145,7 +145,8 @@ yyy
                                         <button on:click=move |_| {
                                             *set_expanded.write() = !expanded.get() ;
                                             log!("edit") ;
-                                            let x = my_ace_edit("editor") ;
+                                            let editor = my_ace_edit("editor") ;
+                                            // editor.setTheme("ace/theme/twilight");
 
                                         } >
                                         {i.author.clone()} / {i.title.clone()}
