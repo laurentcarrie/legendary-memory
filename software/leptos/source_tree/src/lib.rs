@@ -1,9 +1,10 @@
-use std::fs;
-use std::cmp::Ordering;
-use human_sort::compare;use leptos::prelude::*;
+use human_sort::compare;
+use leptos::logging::log;
+use leptos::prelude::*;
 use leptos::tachys::html::style::style;
 use leptos_meta::*;
-use leptos::logging::log;
+use std::cmp::Ordering;
+use std::fs;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -11,8 +12,8 @@ extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
     #[wasm_bindgen]
-    fn my_edit(s: &str,data:&str) -> JsValue ;
-    fn my_set_data(e:JsValue,s:&str) ;
+    fn my_edit(s: &str, data: &str) -> JsValue;
+    fn my_set_data(e: JsValue, s: &str);
 }
 
 pub mod input_model;
@@ -20,12 +21,8 @@ pub mod input_model;
 pub mod protocol;
 use protocol::model::answer::{Choice, EChoice, SourceTree};
 
-
 fn default_world() -> SourceTree {
-    SourceTree{
-         items: vec![],
-
-    }
+    SourceTree { items: vec![] }
 }
 
 async fn fetch_world() -> Result<SourceTree> {
@@ -40,25 +37,23 @@ async fn fetch_world() -> Result<SourceTree> {
     .await?;
     match world.choice {
         EChoice::ItemSourceTree(tree) => {
-            log!("size of tree : {}",tree.items.len()) ;
+            log!("size of tree : {}", tree.items.len());
             Ok(tree)
-        },
+        }
         _ => panic!("bad type"),
     }
 }
 
-
-async fn fetch_file(path:String) -> Result<String> {
+async fn fetch_file(path: String) -> Result<String> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
-    let data = reqwasm::http::Request::get(path)
+    let data = reqwasm::http::Request::get(path.as_str())
         .send()
         .await?
         .text()
         .await?;
-    data
+    Ok(data)
 }
-
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -90,18 +85,17 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
 
-
     view! {
-        <main>
-            <Script src="/src-noconflict/ace.js"></Script>
-            <Script src="/my-ace.js"> </Script>
-        </main>
+            <main>
+                <Script src="/src-noconflict/ace.js"></Script>
+                <Script src="/my-ace.js"> </Script>
+            </main>
 
-            <Title text="songbook" />
+                <Title text="songbook" />
 
-        <div>
+            <div>
 
-            <pre id="editor">r#"
+                <pre id="editor">r#"
 
 xxx
 
@@ -111,142 +105,151 @@ yyy
 
             "#</pre>
 
-</div>
+    </div>
 
 
-            {view! {
-            }}
-            <div>
-                   <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
-                    <ErrorBoundary fallback>
-                            <label>songs</label>
-                            <ul>
-                            {move || Suspend::new(async move {
-                                let w = match world.await {
-                                    Ok(w) => {
-                                         log!("number of items : {} ",&w.items.len()) ;
-                                        w
-                                    } ,
-                                    Err(_) => {
-                                         log!("default") ;
-                                        default_world()
-                                    }
-                                };
-                                // let w = &w.items.iter().map(|w| (w.clone(),signal( false))).collect::<Vec<_>>() ;
-                                let mut items = w.items ;
-                                items.sort_by(|a,b| match compare(a.author.as_str(),b.author.as_str()) {
-                                    Ordering::Equal => {
-                                        compare(a.title.as_str(),b.title.as_str())
-                                    },
-                                    x => x
-                                }) ;
+                {view! {
+                }}
+                <div>
+                       <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
+                        <ErrorBoundary fallback>
+                                <label>songs</label>
+                                <ul>
+                                {move || Suspend::new(async move {
+                                    let w = match world.await {
+                                        Ok(w) => {
+                                             log!("number of items : {} ",&w.items.len()) ;
+                                            w
+                                        } ,
+                                        Err(_) => {
+                                             log!("default") ;
+                                            default_world()
+                                        }
+                                    };
+                                    // let w = &w.items.iter().map(|w| (w.clone(),signal( false))).collect::<Vec<_>>() ;
+                                    let mut items = w.items ;
+                                    items.sort_by(|a,b| match compare(a.author.as_str(),b.author.as_str()) {
+                                        Ordering::Equal => {
+                                            compare(a.title.as_str(),b.title.as_str())
+                                        },
+                                        x => x
+                                    }) ;
 
-                                view!{
-                                <h1> "number of items : " </h1>
-                                };
-                                // let aedit = my_edit("editor") ;
-                                items.into_iter().map(|i| {
-                                    // let i=&(p.0) ; // item
-                                    // let (expanded,set_expanded)=&(p.1) ; // signal
-                                    // let expanded=&(p.1.0) ;
-                                    let (expanded,set_expanded) = signal(false) ;
-                                    let mjf = i.masterjsonfile.clone() ;
-                                    // let aeclone = aedit.clone() ;
-                                    view! {
-                                        <li>
-                                        <button on:click=move |_| {
-                                            log!("edit") ;
-                                            log!("{}",mjf) ;
-                                            let data= match fetch_file(mjf) {
-                                                Ok(data) => data,
-                                                Err(e) => format!("{:?}",e)
-                                                } ;
-                                            log!("{}",&data) ;
-                                            let aedit=my_edit("editor",&data) ;
-                                            // let aedit = my_edit("editor") ;
-                                            // editor.setTheme("ace/theme/twilight");
+                                    view!{
+                                    <h1> "number of items : " </h1>
+                                    };
+                                    // let aedit = my_edit("editor") ;
+                                    items.into_iter().map(|i| {
+                                        // let i=&(p.0) ; // item
+                                        // let (expanded,set_expanded)=&(p.1) ; // signal
+                                        // let expanded=&(p.1.0) ;
+                                        let (expanded,set_expanded) = signal(false) ;
+                                        let mjf = i.masterjsonfile.clone() ;
+                                        // let aeclone = aedit.clone() ;
+                                        view! {
+                                            <li>
+                                            <button on:click=move |_| {
+                                                // log!("edit") ;
+                                                log!("edit {}",mjf) ;
+                                                // let mjf = mjf.as_str().clone() ;
+                                                // let data = AsyncDerived::new_unsync(move || fetch_file(mjf));
+                                                // let data = AsyncDerived::new_unsync(move || fetch_file(value));
+//                                                {move || Suspend::new(async move {
+//                                                    let data= match data.await {
+//                                                        Ok(data) => data,
+//                                                        Err(e) => format!("{:?}",e)
+//                                                        } ;
+//                                                    log!("{}",&data) ;
+//                                                    let aedit=my_edit("editor",&data) ;
+//                                                    ()
+//                                                    }
+//                                                )
+//                                                }
+//                                                // let aedit = my_edit("editor") ;
+                                                // editor.setTheme("ace/theme/twilight");
+                                                ()
 
-                                        } >
-                                        {i.author.clone()} / {i.title.clone()}
-                                        </button>
-                                        <ul style:display=move || if expanded.get() { "none" } else { "none" }>
-                                            <li> master json
-                                            <ul><li>{ i.masterjsonfile.clone() }</li></ul>
-                                            </li>
+                                            } >
+                                            {i.author.clone()} / {i.title.clone()}
+                                            </button>
+                                            <ul style:display=move || if expanded.get() { "none" } else { "none" }>
+                                                <li> master json
+                                                <ul><li>{ i.masterjsonfile.clone() }</li></ul>
+                                                </li>
 
-                                            <li>tex files
-                                                <ul>
-                                                { i.texfiles.clone().into_iter().map(|f| {
-                                                    view! {
-                                                        <li>
-                                                        {f}
-                                                        </li>
+                                                <li>tex files
+                                                    <ul>
+                                                    { i.texfiles.clone().into_iter().map(|f| {
+                                                        view! {
+                                                            <li>
+                                                            {f}
+                                                            </li>
+                                                        }
+                                                        }).collect::<Vec<_>>()
                                                     }
-                                                    }).collect::<Vec<_>>()
-                                                }
-                                                </ul>
-                                            </li>
+                                                    </ul>
+                                                </li>
 
-                                            <li>lyrics tex files
-                                                <ul>
-                                                { i.lyricstexfiles.clone().into_iter().map(|f| {
-                                                    view! {
-                                                        <li>
-                                                        {f}
-                                                        </li>
+                                                <li>lyrics tex files
+                                                    <ul>
+                                                    { i.lyricstexfiles.clone().into_iter().map(|f| {
+                                                        view! {
+                                                            <li>
+                                                            {f}
+                                                            </li>
+                                                        }
+                                                        }).collect::<Vec<_>>()
                                                     }
-                                                    }).collect::<Vec<_>>()
-                                                }
-                                                </ul>
-                                            </li>
+                                                    </ul>
+                                                </li>
 
-                                            <li>lilypond files
-                                                <ul>
-                                                { i.lyfiles.clone().into_iter().map(|f| {
-                                                    view! {
-                                                        <li>
-                                                        {f}
-                                                        </li>
+                                                <li>lilypond files
+                                                    <ul>
+                                                    { i.lyfiles.clone().into_iter().map(|f| {
+                                                        view! {
+                                                            <li>
+                                                            {f}
+                                                            </li>
+                                                        }
+                                                        }).collect::<Vec<_>>()
                                                     }
-                                                    }).collect::<Vec<_>>()
-                                                }
-                                                </ul>
-                                            </li>
+                                                    </ul>
+                                                </li>
 
-                                        </ul>
-                                    </li>
-    }
-                                }).collect::<Vec<_>>()
-                                // w.songs.into_iter().map(|s| {
-                                //                 view! {
-                                //                     <li>
-                                //                         {s.path.clone()}
-                                //                     </li>
-                                //                 }
-                                //             })
-                                //             .collect::<Vec<_>>()
-                            })}
-                            </ul>
-
-                    </ErrorBoundary>
-                    // <ErrorBoundary fallback>
-                    //         <label>books</label>
-                    //         <ul>
-                    //         {move || Suspend::new(async move {
-                    //             let w = world.await.unwrap() ;
-                    //             w.books.into_iter().map(|s| {
-                    //                             view! {
-                    //                                 <li>
-                    //                                     {s.path.clone()}
-                    //                                 </li>
-                    //                             }
-                    //                         })
-                    //                         .collect::<Vec<_>>() ;
-                    //         })}
-                    //         </ul>
-                    //
-                    // </ErrorBoundary>
-                </Transition>
-        </div>
+                                            </ul>
+                                        </li>
         }
+                                    }).collect::<Vec<_>>()
+                                    // w.songs.into_iter().map(|s| {
+                                    //                 view! {
+                                    //                     <li>
+                                    //                         {s.path.clone()}
+                                    //                     </li>
+                                    //                 }
+                                    //             })
+                                    //             .collect::<Vec<_>>()
+                                })}
+                                </ul>
+
+                        </ErrorBoundary>
+                        // <ErrorBoundary fallback>
+                        //         <label>books</label>
+                        //         <ul>
+                        //         {move || Suspend::new(async move {
+                        //             let w = world.await.unwrap() ;
+                        //             w.books.into_iter().map(|s| {
+                        //                             view! {
+                        //                                 <li>
+                        //                                     {s.path.clone()}
+                        //                                 </li>
+                        //                             }
+                        //                         })
+                        //                         .collect::<Vec<_>>() ;
+                        //         })}
+                        //         </ul>
+                        //
+                        // </ErrorBoundary>
+                    </Transition>
+            </div>
+            }
 }
