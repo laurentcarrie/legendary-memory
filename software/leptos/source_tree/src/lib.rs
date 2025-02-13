@@ -165,9 +165,10 @@ yyy
                                                         },
                                                         Err(e) =>{log!("{:?}",e);()}
                                                     } ;
+                                                    view!{<p> text </p>} ;
                                                 })
                                                 } ;
-                                                ()
+
 
                                             } >
                                             {i.author.clone()} / {i.title.clone()}
