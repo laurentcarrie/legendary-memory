@@ -144,6 +144,7 @@ yyy
                                         <li>
                                         <button on:click=move |_| {
                                             log!("edit") ;
+                                            log!("{}",mjf) ;
                                             let data= match fs::read_to_string(mjf.as_str()) {
                                                 Ok(data) => data,
                                                 Err(e) => format!("{:?}",e)
