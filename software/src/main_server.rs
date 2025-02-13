@@ -265,26 +265,27 @@ pub fn handle_source_tree(
     let mut ret: Vec<SourceTreeItem> = vec![];
     for song in world.songs {
         dbg!(&song.srcdir);
+        let root = song.srcdir.to_string() ;
         let mut texfiles: Vec<String> = vec![];
         let mut lyricstexfiles: Vec<String> = vec![];
         let mut lyfiles: Vec<String> = vec![];
-        let masterjsonfile = format!("{}/song.json", song.srcdir.to_string());
+        let masterjsonfile = format!("{}/song.json", root);
         for f in &song.texfiles {
-            texfiles.push(format!("{}/{}", song.srcdir.to_string(), f));
+            texfiles.push(format!("{}/{}", root, f));
         }
         for section in &song.structure {
             match &section.item {
                 ItemChords(c) => {
                     lyricstexfiles.push(format!(
                         "{}/lyrics/{}.tex",
-                        song.srcdir.to_string(),
+                        root,
                         c.section_id
                     ));
                 }
                 ItemRef(c) => {
                     lyricstexfiles.push(format!(
                         "{}/lyrics/{}.tex",
-                        song.srcdir.to_string(),
+                        root,
                         c.section_id
                     ));
                 }
@@ -292,7 +293,7 @@ pub fn handle_source_tree(
             }
         }
         for lyfile in &song.lilypondfiles {
-            lyfiles.push(format!("{}/{}", song.srcdir.to_string(), lyfile));
+            lyfiles.push(format!("{}/{}", root, lyfile));
         }
         // for texfile in &s.texfiles {
         //     let path = PathBuf::from(song.path.as_str());
