@@ -145,7 +145,7 @@ yyy
                                         <li>
                                         <button on:click=move |_| {
                                             log!("edit") ;
-                                            // let aedit = my_edit("editor") ;
+                                            let aedit = my_edit("editor") ;
                                             // editor.setTheme("ace/theme/twilight");
 
                                         } >
