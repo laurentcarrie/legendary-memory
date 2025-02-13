@@ -83,7 +83,8 @@ pub fn App() -> impl IntoView {
 
     view! {
         <main>
-            <Script src="/src-noconflict/ace.js"> </Script>
+            <Script src="/src-noconflict/ace.js"></Script>
+            <Script src="/my-ace.js"> </Script>
         </main>
 
             <Title text="songbook" />
@@ -143,9 +144,8 @@ yyy
                                     view! {
                                         <li>
                                         <button on:click=move |_| {
-                                            *set_expanded.write() = !expanded.get() ;
                                             log!("edit") ;
-                                            let editor = my_ace_edit("editor") ;
+                                            my_edit("editor") ;
                                             // editor.setTheme("ace/theme/twilight");
 
                                         } >

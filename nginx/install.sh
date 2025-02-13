@@ -66,7 +66,6 @@ install_songbook_server_service_as_user() {
    systemctl --user daemon-reload
    # test
    bash $here/request.sh $(echo "{\"choice\":{\"ItemHealthCheck\":null}}" | base64 )
-   bash $here/request.sh $(echo "{\"choice\":{\"ItemHealthCheck\":null}}" | base64 ) text/text
 }
 
 install_packages(){
@@ -89,6 +88,7 @@ make_www_tree() {
   sudo cp $here/autoindex.xslt $wwwroot/.
   sudo cp $here/index.html $wwwroot/.
   sudo cp $here/xxx.html $wwwroot/.
+  sudo cp $here/my-ace.js $wwwroot/.
 
   # scripts
   sudo mkdir -p $wwwroot/scripts
