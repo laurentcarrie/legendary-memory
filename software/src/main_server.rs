@@ -266,7 +266,11 @@ pub fn handle_source_tree(
     for song in world.songs {
         dbg!(&song.srcdir);
         // let root = song.srcdir.to_string();
-        let root = format!("/input-songs/{}", song.srcdir);
+        let root = {
+            let root = song.srcdir.replace(songdir.to_str().unwrap(),"") ;
+            let root = format!("/input-songs{}", root);
+            root
+        } ;
         let root = root.replace(songdir.to_str().unwrap(), "");
         let mut texfiles: Vec<String> = vec![];
         let mut lyricstexfiles: Vec<String> = vec![];
