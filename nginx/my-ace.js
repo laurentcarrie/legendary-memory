@@ -3,4 +3,5 @@ function my_edit(id) {
     var editor = ace.edit(id);
     editor.setTheme("ace/theme/twilight");
     editor.session.setMode("ace/mode/javascript");
+    editor.setValue("the new text here");
 }
