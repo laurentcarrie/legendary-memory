@@ -1,3 +1,4 @@
+use std::fs;
 use std::cmp::Ordering;
 use human_sort::compare;use leptos::prelude::*;
 use leptos::tachys::html::style::style;
@@ -10,7 +11,8 @@ extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
     #[wasm_bindgen]
-    fn my_edit(s: &str) ;
+    fn my_edit(s: &str) -> JsValue ;
+    fn my_set_data(e:JsValue,s:&str) ;
 }
 
 pub mod input_model;
@@ -130,17 +132,21 @@ yyy
                                 view!{
                                 <h1> "number of items : " </h1>
                                 };
-                                let aedit = my_edit("editor") ;
+                                // let aedit = my_edit("editor") ;
                                 items.into_iter().map(|i| {
                                     // let i=&(p.0) ; // item
                                     // let (expanded,set_expanded)=&(p.1) ; // signal
                                     // let expanded=&(p.1.0) ;
                                     let (expanded,set_expanded) = signal(false) ;
+                                    let mjf = i.masterjsonfile.clone() ;
+                                    // let aeclone = aedit.clone() ;
                                     view! {
                                         <li>
                                         <button on:click=move |_| {
                                             log!("edit") ;
-                                            let data= fs::read_to_string(&i.masterjsonfile.as_str())?;
+                                            let aedit=my_edit("editor") ;
+                                            let data= fs::read_to_string(mjf.as_str()).unwrap();
+                                            my_set_data(aedit,data.as_str()) ;
                                             // let aedit = my_edit("editor") ;
                                             // editor.setTheme("ace/theme/twilight");
 

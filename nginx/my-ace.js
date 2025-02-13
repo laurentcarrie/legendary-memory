@@ -7,3 +7,7 @@ function my_edit(id) {
     editor.setValue("the new text here");
     return editor ;
 }
+
+function my_set_data(editor,data) {
+    editor.setValue(data) ;
+}
