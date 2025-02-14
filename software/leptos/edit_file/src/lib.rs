@@ -71,10 +71,10 @@ pub fn EditFile() -> impl IntoView {
     // let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
     let editor=my_edit("editor","",10) ;
     let (g_editor, s_editor) = signal::<String>("".to_string()) ;
-    let load = move |editor| {
+    let load = move |_| {
         let text = g_editor.get();
         let nblines = text.chars().filter(|c| *c == '\n').count();
-        my_set_data(editor, text.as_str(), nblines);
+        // my_set_data(editor, text.as_str(), nblines);
     } ;
 
     view! {
