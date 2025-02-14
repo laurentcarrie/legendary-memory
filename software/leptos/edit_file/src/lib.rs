@@ -94,7 +94,7 @@ yyy
                                     let text = match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
-                                            let nblines=text.chars().filter(|c| *c == 'z').count() ;
+                                            let nblines=text.chars().filter(|c| *c == '\n').count() ;
                                              log!("nblines : {} ",nblines) ;
                                              my_edit("editor",text.as_str(),nblines);
                                              text
