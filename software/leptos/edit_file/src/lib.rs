@@ -67,14 +67,14 @@ pub fn EditFile() -> impl IntoView {
     };
 
     let spreadable = style(("foreground-color", "red"));
-    // let (gfile_data,sfile_data) = query_signal::<String>("".to_string()) ;
-    let savecb = move |_:()|  { log!("save data ") ; () } ;
+    let (gfile_data,sfile_data) = query_signal::<String>("") ;
+    let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
-<div>
-        <button on:click=savecb >"save"</button>
+        <div>
+        <button on:click=savecb>"save"</button>
         </div>
 
         <div>
