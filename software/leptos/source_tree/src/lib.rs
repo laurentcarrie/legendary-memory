@@ -156,18 +156,23 @@ yyy
                                                 log!("got data") ;
                                                 {
                                                     move || Suspend::new(async move  {
-                                                    match data.await {
+                                                    let text = match data.await {
                                                         Ok(text) => {
                                                              log!("text") ;
-                                                             view! { <p> text </p>}
-                                                             // my_edit("editor",&text.to_string()) ;
-                                                             // text
+                                                             text
                                                         } ,
                                                         Err(e) => {
                                                              log!("error {:?}",e) ;
-                                                            view! { <p> "error"</p> }
+                                                            e.to_string()
                                                         }
+                                                    } ;
+                                                    let nblines = text.chars().filter(|c| *c == '\n').count();
+                                                    let editor=my_edit("editor","hello world",10) ;
+                                                    my_set_data(&editor,&text,nblines) ;
+                                                    view! {
+                                                        <button on:click=move |_| {my_get_data(&editor);}>"save"</button>
                                                     }
+
                                                 })} ;
                                             } >
                                             {i.author.clone()} / {i.title.clone()}
