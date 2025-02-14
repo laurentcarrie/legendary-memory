@@ -7,6 +7,7 @@ use std::cmp::Ordering;
 use std::fs;
 use wasm_bindgen::prelude::*;
 
+mod edit ;
 use edit::EditFile ;
 
 #[wasm_bindgen]
