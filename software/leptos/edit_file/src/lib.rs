@@ -68,7 +68,7 @@ pub fn EditFile() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     // let (gfile_data,sfile_data) = query_signal::<String>("".to_string()) ;
-    // let save = move |_|  log!("save data ") ;
+    let save = move |_|  log!("save data ") ;
 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
