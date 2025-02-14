@@ -69,8 +69,8 @@ pub fn EditFile() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     // let (gfile_data,sfile_data) = query_signal::<String>(Some("".to_string())) ;
     // let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
-    let editor=my_edit("editor","hello world",10) ;
-    my_set_data(editor,"hello world",10) ;
+    // let editor=my_edit("editor","hello world",10) ;
+    // my_set_data(editor,"hello world",10) ;
     // let xxx = move |a:&str,b:usize| {
     //     my_set_data(editor,a,b)
     // };
@@ -95,7 +95,11 @@ pub fn EditFile() -> impl IntoView {
                                     match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
-                                             s_editor.set(text) ;
+                                                    let nblines = text.chars().filter(|c| *c == '\n').count();
+
+                                                let editor=my_edit("editor","hello world",10) ;
+                                                my_set_data(editor,text,nblines) ;
+                                             // s_editor.set(text) ;
                                         } ,
                                         Err(e) => {
                                              log!("{:?}",e) ;
