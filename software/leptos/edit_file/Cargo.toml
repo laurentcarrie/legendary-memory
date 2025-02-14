@@ -25,7 +25,7 @@ leptos_meta = "0.7.5"
 human-sort = "0.2.2"
 wasm-bindgen = "0.2.100"
 wasm-bindgen-futures = "0.4.50"
-leptos_router = "0.7.7"
+leptos_router = { version="0.7.7",features=[]}
 
 
 [[workspace.metadata.leptos]]

@@ -67,7 +67,7 @@ pub fn EditFile() -> impl IntoView {
     };
 
     let spreadable = style(("foreground-color", "red"));
-    let (gfile_data,sfile_data) = query_signal::<String>("") ;
+    // let (gfile_data,sfile_data) = query_signal::<String>(Some("".to_string())) ;
     // let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
     let (count, set_count) = query_signal::<i32>("count");
     let clear = move |_| set_count.set(None);
