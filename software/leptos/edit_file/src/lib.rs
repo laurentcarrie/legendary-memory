@@ -13,7 +13,7 @@ extern "C" {
     // `log(..)`
     #[wasm_bindgen]
     fn my_edit(s: &str, data: &str,nblines:usize) -> JsValue;
-    fn my_set_data(e: JsValue, s: &str);
+    fn my_get_data(e: JsValue) -> JsValue ;
 }
 
 async fn fetch_file(path: String) -> Result<String> {
@@ -66,6 +66,8 @@ pub fn EditFile() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
 
+    let mut editor = my_edit("xxx","xxx",10) ;
+
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
@@ -96,18 +98,23 @@ yyy
                                              log!("found text, len is : {} ",text.len()) ;
                                             let nblines=text.chars().filter(|c| *c == '\n').count() ;
                                              log!("nblines : {} ",nblines) ;
-                                             my_edit("editor",text.as_str(),nblines);
-                                             text
+                                             let editor=my_edit("editor",text.as_str(),nblines);
+                                            view!{
+                                                <button on:click=
+                                                move |_| {
+                                                log!("save") ;
+                                                // let mjf = mjf.as_str().c
+                                                    }
+                                                >save</button>
+                                            } ;
+                                             ()
                                         } ,
                                         Err(e) => {
                                              log!("{:?}",e) ;
-                                            "???".to_string()
+                                            ()
                                         }
                                     };
 
-                                    view!{
-                                    <h1> text </h1>
-                                    };
                                     })}
 
                         </ErrorBoundary>

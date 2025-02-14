@@ -6,13 +6,11 @@ function my_edit(id,value,nblines) {
     console.log("set value") ;
     editor.setValue(value);
     editor.resize() ;
-    editor.setOption("maxLines", nblines).
+    editor.setOption("maxLines", nblines) ;
     return editor ;
 }
 
-function my_set_data(editor,data) {
-    console.log("set data in editor") ;
-    console.log(editor) ;
-    console.log(data) ;
-    editor.setValue(data) ;
+function my_get_data(editor) {
+    console.log("get data in editor") ;
+    return editor.getValue(data) ;
 }
