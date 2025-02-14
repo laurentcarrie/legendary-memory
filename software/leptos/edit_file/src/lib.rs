@@ -70,19 +70,6 @@ pub fn EditFile() -> impl IntoView {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
 
-            <div>
-
-                <pre id="editor">r#"
-
-xxx
-
-edit me...
-
-yyy
-
-            "#</pre>
-
-    </div>
 
 
                 {view! {
@@ -118,6 +105,20 @@ yyy
                         </ErrorBoundary>
                     </Transition>
             </div>
+                    <div>
+
+                <pre id="editor">r#"
+
+xxx
+
+edit me...
+
+yyy
+
+            "#</pre>
+
+    </div>
+
             }
 }
 
