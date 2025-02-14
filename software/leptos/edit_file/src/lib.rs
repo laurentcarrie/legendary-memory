@@ -71,34 +71,34 @@ pub fn EditFile() -> impl IntoView {
                 <Script src="/my-ace.js"> </Script>
 
 
-
-                {view! {
-                }}
-                <div>
+        <div>
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
                                 {move || Suspend::new(async move {
-                                    let text = match file_data.await {
+                                    match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
                                             let nblines=text.chars().filter(|c| *c == '\n').count() ;
                                              log!("nblines : {} ",nblines) ;
                                              let editor=my_edit("editor",text.as_str(),nblines);
-                                            view!{
+                                            view! {
                                                 <button on:click=
                                                 move |_| {
                                                 log!("save") ;
                                                 // let mjf = mjf.as_str().c
                                                     }
-                                                >save</button>
-                                            } ;
-                                             ()
+                                                >"save"</button>
+                                            };
+                                            ()
                                         } ,
                                         Err(e) => {
                                              log!("{:?}",e) ;
+                                            view!{
+
+                                            };
                                             ()
                                         }
-                                    };
+                                    }
 
                                     })}
 
