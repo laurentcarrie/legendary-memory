@@ -66,8 +66,6 @@ pub fn EditFile() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
 
-    let mut editor = my_edit("xxx","xxx",10) ;
-
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
