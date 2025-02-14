@@ -3,19 +3,19 @@ use leptos::logging::log;
 use leptos::prelude::*;
 use leptos::tachys::html::style::style;
 use leptos_meta::*;
+use leptos_router::hooks::query_signal;
 use std::cmp::Ordering;
 use std::fs;
 use wasm_bindgen::prelude::*;
-use leptos_router::hooks::query_signal;
 
 #[wasm_bindgen]
 extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
     #[wasm_bindgen]
-    fn my_edit(s: &str, data: &str,nblines:usize) -> JsValue;
-    fn my_set_data(editor:JsValue, data: &str,nblines:usize) -> JsValue;
-    fn my_get_data(e: JsValue) -> String ;
+    fn my_edit(s: &str, data: &str, nblines: usize) -> JsValue;
+    fn my_set_data(editor: JsValue, data: &str, nblines: usize) -> JsValue;
+    fn my_get_data(e: JsValue) -> String;
 }
 
 async fn fetch_file(path: String) -> Result<String> {
@@ -74,12 +74,12 @@ pub fn EditFile() -> impl IntoView {
     // let xxx = move |a:&str,b:usize| {
     //     my_set_data(editor,a,b)
     // };
-    let (g_editor, s_editor) = signal::<String>("".to_string()) ;
+    let (g_editor, s_editor) = signal::<String>("".to_string());
     let load = move |_| {
         let text = g_editor.get();
         let nblines = text.chars().filter(|c| *c == '\n').count();
         // xxx(text.as_str(), nblines);
-    } ;
+    };
 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
@@ -92,24 +92,24 @@ pub fn EditFile() -> impl IntoView {
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
                                 {move || Suspend::new(async move {
-                                    match file_data.await {
+                                    let text = match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
-                                                    let nblines = text.chars().filter(|c| *c == '\n').count();
-
-                                                let editor=my_edit("editor","hello world",10) ;
-                                                my_set_data(editor,&text,nblines) ;
-                                            view! {
-                                                <h1>"XXXXXXXXXXXXXXXXXX"</h1>
-                                                }
+                                            text
                                         } ,
                                         Err(e) => {
                                              log!("{:?}",e) ;
-                                            view!{
-                                                <h1>"XXXXXXXXXXXXXXXXXX"</h1>
-                                            }
+                                            e.to_string()
                                         }
-                                    }
+                                     } ;
+                                            let nblines = text.chars().filter(|c| *c == '\n').count();
+
+                                                let editor=my_edit("editor","hello world",10) ;
+                                                                                    my_set_data(editor,&text,nblines) ;
+                                            view! {
+                                                <h1>"XXXXXXXXXXXXXXXXXX"</h1>
+                                                }
+
 
                                     })}
 
