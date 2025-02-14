@@ -70,6 +70,7 @@ pub fn EditFile() -> impl IntoView {
     // let (gfile_data,sfile_data) = query_signal::<String>(Some("".to_string())) ;
     // let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
     let editor=my_edit("editor","hello world",10) ;
+    my_set_data(editor,"hello world",10) ;
     // let xxx = move |a:&str,b:usize| {
     //     my_set_data(editor,a,b)
     // };
