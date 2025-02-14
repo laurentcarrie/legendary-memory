@@ -69,10 +69,10 @@ pub fn EditFile() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     // let (gfile_data,sfile_data) = query_signal::<String>(Some("".to_string())) ;
     // let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
-    let (count, set_count) = signal::<i32>(0);
-    let clear = move |_| set_count.set(0);
-    let decrement = move |_| set_count.set(count.get() - 1);
-    let increment = move |_| set_count.set(count.get() + 1);
+    let (count, set_count) = signal::<String>("A".to_string());
+    let clear = move |_| set_count.set("reset".to_string());
+    let decrement = move |_| set_count.set("D".to_string());
+    let increment = move |_| set_count.set("I".to_string()) ;
 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
