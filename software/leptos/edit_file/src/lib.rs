@@ -99,14 +99,6 @@ yyy
                                             let nblines=text.chars().filter(|c| *c == '\n').count() ;
                                              log!("nblines : {} ",nblines) ;
                                              let editor=my_edit("editor",text.as_str(),nblines);
-                                            view!{
-                                                <button on:click=
-                                                move |_| {
-                                                log!("save") ;
-                                                // let mjf = mjf.as_str().c
-                                                    }
-                                                >save</button>
-                                            } ;
                                              ()
                                         } ,
                                         Err(e) => {
