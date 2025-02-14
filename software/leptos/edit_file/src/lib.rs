@@ -13,6 +13,7 @@ extern "C" {
     // `log(..)`
     #[wasm_bindgen]
     fn my_edit(s: &str, data: &str,nblines:usize) -> JsValue;
+    fn my_set_data(editor:JsValue, data: &str,nblines:usize) -> JsValue;
     fn my_get_data(e: JsValue) -> JsValue ;
 }
 
@@ -83,6 +84,7 @@ pub fn EditFile() -> impl IntoView {
                                             let nblines=text.chars().filter(|c| *c == '\n').count() ;
                                              log!("nblines : {} ",nblines) ;
                                              let editor=my_edit("editor",text.as_str(),nblines);
+                                            my_set_data(editor,text.as_str(),nblines) ;
                                             view! {
                                                 <button on:click=
                                                 move |_| {
