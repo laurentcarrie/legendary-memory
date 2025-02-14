@@ -5,6 +5,7 @@ function my_edit(id,value) {
     editor.session.setMode("ace/mode/javascript");
     console.log("set value") ;
     editor.setValue(value);
+    editor.resize()
     return editor ;
 }
 
