@@ -107,7 +107,7 @@ pub fn EditFile() -> impl IntoView {
                                      my_set_data(editor,&text,nblines) ;
                                     view! {
                                                 <h1>"XXXXXXXXXXXXXXXXXX"</h1>
-                                                <button on:click=move |_| {my_get_data(editor)}>"save"</button>
+                                                <button on:click=move |_| {my_get_data(editor);}>"save"</button>
                                     }
                                     })}
 
