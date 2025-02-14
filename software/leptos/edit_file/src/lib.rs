@@ -18,36 +18,33 @@ extern "C" {
 
 async fn fetch_file(path: String) -> Result<String> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
-    log!("{}",path) ;
+    log!("{}", path);
     // make the request
-    let response  = reqwasm::http::Request::get(path.as_str())
+    let response = reqwasm::http::Request::get(path.as_str())
         // .mode(reqwasm::http::RequestMode::Cors)
         .send()
         .await;
     match response {
         Ok(x) => {
-            log!("status {}",x.status()) ;
-            let x=x.text().await? ;
+            log!("status {}", x.status());
+            let x = x.text().await?;
             Ok(x)
         }
         Err(e) => {
-            log!("error : {:?}",e) ;
-            Ok(format!("{:?}",e))
+            log!("error : {:?}", e);
+            Ok(format!("{:?}", e))
         }
     }
 }
 
 #[component]
-pub fn App() -> impl IntoView {
-    provide_meta_context();
-
-    // we use new_unsync here because the reqwasm request type isn't Send
-    // if we were doing SSR, then
-    // 1) we'd want to use a Resource, so the data would be serialized to the client
-    // 2) we'd need to make sure there was a thread-local spawner set up
-    // let file_data = AsyncDerived::new_unsync(move || fetch_file("https://www.google.com/search?client=ubuntu-sn&channel=fs&q=curl+get+parameters".
-    // to_string())) ;
-    let file_data = AsyncDerived::new_unsync(move || fetch_file("http://185.247.117.231/input-songs/amy_winehouse/you_know_i_m_no_good/song.json".to_string()));
+pub fn EditFile() -> impl IntoView {
+    let file_data = AsyncDerived::new_unsync(move || {
+        fetch_file(
+            "http://185.247.117.231/input-songs/amy_winehouse/you_know_i_m_no_good/song.json"
+                .to_string(),
+        )
+    });
 
     let fallback = move |errors: ArcRwSignal<Errors>| {
         let error_list = move || {
@@ -70,12 +67,8 @@ pub fn App() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
 
     view! {
-            <main>
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
-            </main>
-
-                <Title text="songbook" />
 
             <div>
 
@@ -120,4 +113,16 @@ yyy
                     </Transition>
             </div>
             }
+}
+
+#[component]
+pub fn App() -> impl IntoView {
+    provide_meta_context();
+
+    view! {
+            <Title text="songbook" />
+        <div>
+    <EditFile/>
+        </div>
+        }
 }

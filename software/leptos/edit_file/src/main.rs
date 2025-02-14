@@ -1,6 +1,6 @@
 // use leptos::html::Title;
-use leptos::prelude::*;
 use edit_file::App;
+use leptos::prelude::*;
 pub fn main() {
     use tracing_subscriber::fmt;
     use tracing_subscriber_wasm::MakeConsoleWriter;
