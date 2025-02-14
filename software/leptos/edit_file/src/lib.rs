@@ -98,7 +98,7 @@ pub fn EditFile() -> impl IntoView {
                                                     let nblines = text.chars().filter(|c| *c == '\n').count();
 
                                                 let editor=my_edit("editor","hello world",10) ;
-                                                my_set_data(editor,text,nblines) ;
+                                                my_set_data(editor,&text,nblines) ;
                                              // s_editor.set(text) ;
                                         } ,
                                         Err(e) => {
