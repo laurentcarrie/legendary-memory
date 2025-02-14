@@ -93,8 +93,7 @@ yyy
                                 {move || Suspend::new(async move {
                                     let text = match file_data.await {
                                         Ok(text) => {
-                                             log!("found text : {} ",text.len()) ;
-                                            log!("{}",text) ;
+                                             log!("found text, len is : {} ",text.len()) ;
                                              my_edit("editor",text.as_str());
                                              text
                                         } ,
