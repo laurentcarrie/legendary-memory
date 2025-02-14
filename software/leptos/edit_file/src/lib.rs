@@ -15,7 +15,7 @@ extern "C" {
     #[wasm_bindgen]
     fn my_edit(s: &str, data: &str, nblines: usize) -> JsValue;
     fn my_set_data(editor: JsValue, data: &str, nblines: usize) -> JsValue;
-    fn my_get_data(e: JsValue) -> String;
+    fn my_get_data(e: &JsValue) -> String;
 }
 
 async fn fetch_file(path: String) -> Result<String> {
@@ -107,7 +107,7 @@ pub fn EditFile() -> impl IntoView {
                                      my_set_data(editor,&text,nblines) ;
                                     view! {
                                                 <h1>"XXXXXXXXXXXXXXXXXX"</h1>
-                                                <button on:click=move |_| {my_get_data(&editor);}>"save"</button>
+                                                <button on:click=move |_| {my_get_data(editor);}>"save"</button>
                                     }
                                     })}
 
