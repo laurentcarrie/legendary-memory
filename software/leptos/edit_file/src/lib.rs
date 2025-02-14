@@ -77,7 +77,7 @@ pub fn EditFile() -> impl IntoView {
     let load = move |_| {
         let text = g_editor.get();
         let nblines = text.chars().filter(|c| *c == '\n').count();
-        // my_set_data(editor, text.as_str(), nblines);
+        xxx(text.as_str(), nblines);
     } ;
 
     view! {
