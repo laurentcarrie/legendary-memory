@@ -17,7 +17,7 @@ extern "C" {
 }
 
 async fn fetch_file(path: String) -> Result<String> {
-    gloo_timers::future::TimeoutFuture::new(5000).await;
+    // gloo_timers::future::TimeoutFuture::new(5000).await;
     log!("{}",path) ;
     // make the request
     let response  = reqwasm::http::Request::get(path.as_str())
