@@ -21,7 +21,7 @@ async fn fetch_file(path: String) -> Result<String> {
     log!("{}",path) ;
     // make the request
     let response  = reqwasm::http::Request::get(path.as_str())
-        .mode(reqwasm::http::RequestMode::Cors)
+        // .mode(reqwasm::http::RequestMode::Cors)
         .send()
         .await;
     match response {
