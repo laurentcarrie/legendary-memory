@@ -153,21 +153,22 @@ yyy
                                                 log!("edit {}",mjf) ;
                                                 // let mjf = mjf.as_str().clone() ;
                                                 let data = AsyncDerived::new_unsync(move || fetch_file("input-songs/amy_winehouse/you_know_i_m_no_good/song.json".to_string()));
+                                                log!("got data") ;
                                                 {
                                                     move || Suspend::new(async move  {
                                                     match data.await {
                                                         Ok(text) => {
                                                              log!("text") ;
-                                                             my_edit("editor",&text.to_string()) ;
-                                                             ()
+                                                             view! { <p> text </p>}
+                                                             // my_edit("editor",&text.to_string()) ;
+                                                             // text
                                                         } ,
                                                         Err(e) => {
                                                              log!("error {:?}",e) ;
-                                                            ()
+                                                            view! { <p> "error"</p> }
                                                         }
-                                                    } ;
+                                                    }
                                                 })} ;
-                                                ()
                                             } >
                                             {i.author.clone()} / {i.title.clone()}
                                             </button>
