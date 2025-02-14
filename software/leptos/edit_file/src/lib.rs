@@ -6,6 +6,7 @@ use leptos_meta::*;
 use std::cmp::Ordering;
 use std::fs;
 use wasm_bindgen::prelude::*;
+use leptos_router::hooks::query_signal;
 
 #[wasm_bindgen]
 extern "C" {
@@ -66,12 +67,14 @@ pub fn EditFile() -> impl IntoView {
     };
 
     let spreadable = style(("foreground-color", "red"));
+    let (gfile_data,sfile_data) = query_signal::<String>("".to_string()) ;
+    let save = move |_|  log!("save data ") ;
 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
 <div>
-        <button>"hello"</button>
+        <button on:click=save>"save"</button>
         </div>
 
         <div>
@@ -85,6 +88,7 @@ pub fn EditFile() -> impl IntoView {
                                              log!("nblines : {} ",nblines) ;
                                              let editor=my_edit("editor",text.as_str(),nblines);
                                             my_set_data(editor,text.as_str(),nblines) ;
+
                                             view! {
                                                 <button on:click=
                                                 move |_| {
