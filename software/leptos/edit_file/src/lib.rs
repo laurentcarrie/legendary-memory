@@ -99,6 +99,11 @@ pub fn EditFile() -> impl IntoView {
 
                                                 let editor=my_edit("editor","hello world",10) ;
                                                 my_set_data(editor,&text,nblines) ;
+                                            view! {
+                                                <h1>"XXXXXXXXXXXXXXXXXX"</h1>
+                                                } ;
+                                            ()
+                                            }
                                              // s_editor.set(text) ;
                                         } ,
                                         Err(e) => {
