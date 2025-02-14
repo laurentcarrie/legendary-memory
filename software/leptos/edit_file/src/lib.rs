@@ -12,7 +12,7 @@ extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
     #[wasm_bindgen]
-    fn my_edit(s: &str, data: &str,nblines:u32) -> JsValue;
+    fn my_edit(s: &str, data: &str,nblines:usize) -> JsValue;
     fn my_set_data(e: JsValue, s: &str);
 }
 
