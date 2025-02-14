@@ -5,7 +5,8 @@ function my_edit(id,value) {
     editor.session.setMode("ace/mode/json");
     console.log("set value") ;
     editor.setValue(value);
-    editor.resize()
+    editor.resize() ;
+    editor.setOption("maxLines", 1000).
     return editor ;
 }
 
