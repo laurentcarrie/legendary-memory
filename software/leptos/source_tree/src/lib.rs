@@ -7,6 +7,8 @@ use std::cmp::Ordering;
 use std::fs;
 use wasm_bindgen::prelude::*;
 
+use edit::EditFile ;
+
 #[wasm_bindgen]
 extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
@@ -150,33 +152,7 @@ yyy
                                         // let aeclone = aedit.clone() ;
                                         view! {
                                             <li>
-                                            <button on:click=move |_| {
-                                                // log!("edit") ;
-                                                log!("edit {}",mjf) ;
-                                                // let mjf = mjf.as_str().clone() ;
-                                                let data = AsyncDerived::new_unsync(move || fetch_file("input-songs/amy_winehouse/you_know_i_m_no_good/song.json".to_string()));
-                                                log!("got data") ;
-                                                {
-                                                    move || Suspend::new(async move  {
-                                                    let text = match data.await {
-                                                        Ok(text) => {
-                                                             log!("text") ;
-                                                             text
-                                                        } ,
-                                                        Err(e) => {
-                                                             log!("error {:?}",e) ;
-                                                            e.to_string()
-                                                        }
-                                                    } ;
-                                                    let nblines = text.chars().filter(|c| *c == '\n').count();
-                                                    let editor=my_edit("editor","hello world",10) ;
-                                                    my_set_data(&editor,&text,nblines) ;
-                                                    view! {
-                                                        <button on:click=move |_| {my_get_data(&editor);}>"save"</button>
-                                                    }
-
-                                                })} ;
-                                            } >
+                                            <EditFile/>
                                             {i.author.clone()} / {i.title.clone()}
                                             </button>
                                             <ul style:display=move || if expanded.get() { "none" } else { "none" }>
