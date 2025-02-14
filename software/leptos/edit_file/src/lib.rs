@@ -69,10 +69,10 @@ pub fn EditFile() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     // let (gfile_data,sfile_data) = query_signal::<String>(Some("".to_string())) ;
     // let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
-    let (count, set_count) = query_signal::<i32>(0);
-    let clear = move |_| set_count.set(None);
-    let decrement = move |_| set_count.set(Some(count.get().unwrap_or(0) - 1));
-    let increment = move |_| set_count.set(Some(count.get().unwrap_or(0) + 1));
+    let (count, set_count) = signal::<i32>(0);
+    let clear = move |_| set_count.set(0);
+    let decrement = move |_| set_count.set(count.get() - 1);
+    let increment = move |_| set_count.set(count.get() + 1);
 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
@@ -80,7 +80,7 @@ pub fn EditFile() -> impl IntoView {
         <div>
             <button on:click=clear>"Clear"</button>
             <button on:click=decrement>"-1"</button>
-            <span>"Value: " {move || count.get().unwrap_or(0)} "!"</span>
+            <span>"Value: " {move || count.get()} "!"</span>
             <button on:click=increment>"+1"</button>
         </div>
 
