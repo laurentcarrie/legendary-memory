@@ -74,7 +74,7 @@ pub fn EditFile() -> impl IntoView {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
 <div>
-        <button on:click=save >"save"</button>
+        <button  >"save"</button>
         </div>
 
         <div>
