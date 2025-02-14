@@ -15,7 +15,7 @@ extern "C" {
     #[wasm_bindgen]
     fn my_edit(s: &str, data: &str,nblines:usize) -> JsValue;
     fn my_set_data(editor:JsValue, data: &str,nblines:usize) -> JsValue;
-    fn my_get_data(e: JsValue) -> JsValue ;
+    fn my_get_data(e: JsValue) -> String ;
 }
 
 async fn fetch_file(path: String) -> Result<String> {
@@ -69,19 +69,19 @@ pub fn EditFile() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     // let (gfile_data,sfile_data) = query_signal::<String>(Some("".to_string())) ;
     // let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
-    let (count, set_count) = signal::<String>("A".to_string());
-    let clear = move |_| set_count.set("reset".to_string());
-    let decrement = move |_| set_count.set("D".to_string());
-    let increment = move |_| set_count.set("I".to_string()) ;
+    let editor=my_edit("editor","".to_string(),10) ;
+    let (g_editor, s_editor) = signal::<String>("".to_string()) ;
+    let load = move |_| {
+        let text = g_editor.get();
+        let nblines = text.chars().filter(|c| *c == '\n').count();
+        my_set_data(editor, text.as_str(), nblines);
+    } ;
 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
         <div>
-            <button on:click=clear>"Clear"</button>
-            <button on:click=decrement>"-1"</button>
-            <span>"Value: " {move || count.get()} "!"</span>
-            <button on:click=increment>"+1"</button>
+            <button on:click=load>"load"</button>
         </div>
 
         <div>
@@ -91,21 +91,7 @@ pub fn EditFile() -> impl IntoView {
                                     match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
-                                            let nblines=text.chars().filter(|c| *c == '\n').count() ;
-                                             log!("nblines : {} ",nblines) ;
-                                             let editor=my_edit("editor",text.as_str(),nblines);
-                                            my_set_data(editor,text.as_str(),nblines) ;
-                                            set_count.set("YYYYYYYYYYYYY".to_string()) ;
-
-                                            view! {
-                                                <button on:click=
-                                                move |_| {
-                                                log!("save") ;
-                                                // let mjf = mjf.as_str().c
-                                                    }
-                                                >"save"</button>
-                                            };
-                                            ()
+                                            s_editor.set(text.as_str()) ;
                                         } ,
                                         Err(e) => {
                                              log!("{:?}",e) ;
