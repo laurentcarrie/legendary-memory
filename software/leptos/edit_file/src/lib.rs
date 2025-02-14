@@ -69,7 +69,7 @@ pub fn EditFile() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     // let (gfile_data,sfile_data) = query_signal::<String>(Some("".to_string())) ;
     // let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
-    let editor=my_edit("editor","",10) ;
+    let editor=my_edit("editor","hello world",10) ;
     // let xxx = move |a:&str,b:usize| {
     //     my_set_data(editor,a,b)
     // };
@@ -84,7 +84,7 @@ pub fn EditFile() -> impl IntoView {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
         <div>
-            <button on:click=load>"load"</button>
+            <button >"load"</button>
         </div>
 
         <div>
@@ -94,7 +94,7 @@ pub fn EditFile() -> impl IntoView {
                                     match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
-                                            s_editor.set(text) ;
+                                             s_editor.set(text) ;
                                         } ,
                                         Err(e) => {
                                              log!("{:?}",e) ;
