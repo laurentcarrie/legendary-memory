@@ -2,7 +2,7 @@ function my_edit(id,value) {
     console.log("create edit") ;
     var editor = ace.edit(id);
     editor.setTheme("ace/theme/twilight");
-    editor.session.setMode("ace/mode/javascript");
+    editor.session.setMode("ace/mode/json");
     console.log("set value") ;
     editor.setValue(value);
     editor.resize()
