@@ -72,7 +72,7 @@ pub fn EditFile() -> impl IntoView {
     let editor=my_edit("editor","",10) ;
     let xxx = move |a:&str,b:usize| {
         my_set_data(editor,a,b)
-    }
+    };
     let (g_editor, s_editor) = signal::<String>("".to_string()) ;
     let load = move |_| {
         let text = g_editor.get();
