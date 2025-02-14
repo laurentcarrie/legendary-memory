@@ -103,8 +103,6 @@ pub fn EditFile() -> impl IntoView {
                                                 <h1>"XXXXXXXXXXXXXXXXXX"</h1>
                                                 } ;
                                             ()
-                                            }
-                                             // s_editor.set(text) ;
                                         } ,
                                         Err(e) => {
                                              log!("{:?}",e) ;
