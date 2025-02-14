@@ -69,7 +69,9 @@ pub fn EditFile() -> impl IntoView {
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
-
+<div>
+        <button>"hello"</button>
+        </div>
 
         <div>
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
