@@ -27,11 +27,12 @@ async fn fetch_file(path: String) -> Result<String> {
     match response {
         Ok(x) => {
             log!("status {}",x.status()) ;
+            let x=x.text().await? ;
             Ok(x)
         }
         Err(e) => {
             log!("error : {:?}",e) ;
-            Ok(format("{:?}",e))
+            Ok(format!("{:?}",e))
         }
     }
 }
