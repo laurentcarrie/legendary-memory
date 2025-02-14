@@ -12,7 +12,7 @@ extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
     #[wasm_bindgen]
-    fn my_edit(s: &str, data: &str) -> JsValue;
+    fn my_edit(s: &str, data: &str,nblines:u32) -> JsValue;
     fn my_set_data(e: JsValue, s: &str);
 }
 
@@ -94,7 +94,9 @@ yyy
                                     let text = match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
-                                             my_edit("editor",text.as_str());
+                                            let nblines=text.chars().filter(|c| *c == 'z').count() ;
+                                             log!("nblines : {} ",nblines) ;
+                                             my_edit("editor",text.as_str(),nblines);
                                              text
                                         } ,
                                         Err(e) => {

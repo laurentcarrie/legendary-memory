@@ -1,4 +1,4 @@
-function my_edit(id,value) {
+function my_edit(id,value,nblines) {
     console.log("create edit") ;
     var editor = ace.edit(id);
     editor.setTheme("ace/theme/twilight");
@@ -6,7 +6,7 @@ function my_edit(id,value) {
     console.log("set value") ;
     editor.setValue(value);
     editor.resize() ;
-    editor.setOption("maxLines", 1000).
+    editor.setOption("maxLines", nblines).
     return editor ;
 }
 
