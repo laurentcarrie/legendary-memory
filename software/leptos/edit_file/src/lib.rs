@@ -27,12 +27,13 @@ async fn fetch_file(path: String) -> Result<String> {
     match response {
         Ok(x) => {
             log!("status {}",x.status()) ;
+            Ok(x)
         }
         Err(e) => {
-            log!("error : {:?}",e)
+            log!("error : {:?}",e) ;
+            Ok(format("{:?}",e))
         }
     }
-    Ok("xxxx".to_string())
 }
 
 #[component]
