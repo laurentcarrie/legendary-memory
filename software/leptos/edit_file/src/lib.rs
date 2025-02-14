@@ -91,7 +91,7 @@ pub fn EditFile() -> impl IntoView {
                                     match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
-                                            s_editor.set(text.as_str()) ;
+                                            s_editor.set(text) ;
                                         } ,
                                         Err(e) => {
                                              log!("{:?}",e) ;
