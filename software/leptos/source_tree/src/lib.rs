@@ -154,7 +154,6 @@ yyy
                                             <li>
                                             <EditFile/>
                                             {i.author.clone()} / {i.title.clone()}
-                                            </button>
                                             <ul style:display=move || if expanded.get() { "none" } else { "none" }>
                                                 <li> master json
                                                 <ul><li>{ i.masterjsonfile.clone() }</li></ul>
