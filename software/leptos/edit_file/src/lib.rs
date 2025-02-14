@@ -95,6 +95,7 @@ pub fn EditFile() -> impl IntoView {
                                              log!("nblines : {} ",nblines) ;
                                              let editor=my_edit("editor",text.as_str(),nblines);
                                             my_set_data(editor,text.as_str(),nblines) ;
+                                            set_count.set("YYYYYYYYYYYYY".to_string()) ;
 
                                             view! {
                                                 <button on:click=
