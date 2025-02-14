@@ -106,6 +106,7 @@ pub fn EditFile() -> impl IntoView {
                                         Err(e) => {
                                              log!("{:?}",e) ;
                                             view!{
+                                                <h1>"XXXXXXXXXXXXXXXXXX"</h1>
                                             }
                                         }
                                     }
