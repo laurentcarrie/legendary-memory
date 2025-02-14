@@ -104,7 +104,7 @@ pub fn EditFile() -> impl IntoView {
                                      } ;
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
                                      let editor=my_edit("editor","hello world",10) ;
-                                     my_set_data(editor,&text,nblines) ;
+                                     my_set_data(&editor,&text,nblines) ;
                                     view! {
                                                 <h1>"XXXXXXXXXXXXXXXXXX"</h1>
                                                 <button on:click=move |_| {my_get_data(&editor);}>"save"</button>
