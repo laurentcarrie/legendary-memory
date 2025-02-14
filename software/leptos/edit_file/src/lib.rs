@@ -69,7 +69,7 @@ pub fn EditFile() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     // let (gfile_data,sfile_data) = query_signal::<String>(Some("".to_string())) ;
     // let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
-    let editor=my_edit("editor","".to_string(),10) ;
+    let editor=my_edit("editor","",10) ;
     let (g_editor, s_editor) = signal::<String>("".to_string()) ;
     let load = move |_| {
         let text = g_editor.get();
