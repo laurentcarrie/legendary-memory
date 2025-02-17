@@ -125,7 +125,7 @@ restart_nginx() {
 install_packages
 make_www_tree
 build_songbook
-for w in source_tree edit_file; do
+for w in source_tree ; do
 #for w in build_progress  source_tree edit_file; do
   build_wasm $w
 done
