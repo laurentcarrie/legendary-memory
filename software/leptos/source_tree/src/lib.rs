@@ -318,7 +318,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                     // let editor=my_edit(id.as_str(),"hello world",10) ;
                                     let editor=my_edit("editor","hello world",10) ;
                                     let editor2=editor.clone() ;
-                                    let url=url.clone() ;
+                                    let url=g_editor.get() ;
                                     view! {
                                         <button
                                         on:click=move |_| {
