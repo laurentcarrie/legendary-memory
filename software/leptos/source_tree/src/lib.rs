@@ -287,7 +287,7 @@ pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
                                                 <button
                                         // prop:name=move || label
                                         prop:name=move || "xxx"
-                                        on:click=move |_| {
+                                        on:click=move |_| Suspend::new(async move {
                                     let text = match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
@@ -301,7 +301,7 @@ pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
-                                        }>edit</button>
+                                        })>edit</button>
 
                                         <button on:click=move |_| {
                                             // my_get_data(&editor);
