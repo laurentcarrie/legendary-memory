@@ -10,10 +10,10 @@ use crate::config::model::World;
 use crate::config::world::make;
 use async_process::Command;
 use backtrace::Backtrace;
+use handlebars::template::Parameter::Path;
+use std::fs::File;
 use std::path::PathBuf;
 use std::{env, fs, thread, time};
-use std::fs::File;
-use handlebars::template::Parameter::Path;
 use sysinfo::Pid;
 
 pub mod config;
@@ -25,8 +25,8 @@ pub mod protocol;
 // use crate::protocol::model ;
 use crate::generate::all::generate_all;
 use crate::protocol::model::answer::{Progress, ProgressItem, SourceTree, SourceTreeItem};
-use crate::protocol::model::{answer, request};
 use crate::protocol::model::request::InfoSaveFile;
+use crate::protocol::model::{answer, request};
 
 pub async fn generate(
     songdir: PathBuf,
@@ -320,17 +320,14 @@ pub fn handle_source_tree(
     })
 }
 
-pub fn handle_save_file(
-    info:InfoSaveFile,
-) -> Result<answer::EChoice, MyError> {
-    log::info!("write file {:?}",info.path) ;
-    let mut p: PathBuf = PathBuf::from(info.path) ;
+pub fn handle_save_file(info: InfoSaveFile) -> Result<answer::EChoice, MyError> {
+    log::info!("write file {:?}", info.path);
+    let mut p: PathBuf = PathBuf::from(info.path);
     let _ = fs::create_dir_all(&p)?;
     let mut output = File::create(p)?;
-    let _ = output.write(info.data.as_bytes()).unwrap();
+    let _ = output.write(info.content.as_bytes()).unwrap();
     Ok(answer::EChoice::ItemOkMessage)
 }
-
 
 #[tokio::main]
 async fn main() -> () {
@@ -387,14 +384,11 @@ async fn main() -> () {
             request::EChoice::ItemHealthCheck => Ok(answer::EChoice::ItemHealthOk),
             request::EChoice::ItemSeeProgress => {
                 handle_build_progress(songdir.clone(), builddir.clone())
-            },
+            }
             request::EChoice::ItemSourceTree => {
                 handle_source_tree(songdir.clone(), bookdir.clone(), builddir.clone())
-            },
-            request::EChoice::ItemSaveFile(info) => {
-                handle_save_file(info.clone())
             }
-
+            request::EChoice::ItemSaveFile(info) => handle_save_file(info.clone()),
         };
         let answer = match answer_choice {
             Ok(x) => {
