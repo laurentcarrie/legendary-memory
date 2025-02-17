@@ -300,7 +300,7 @@ pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
-                                        }>{ move || label.clone() }</button>
+                                        }>{  label.clone() }</button>
 
                                         <button on:click=move |_| {
                                             // my_get_data(&editor);
