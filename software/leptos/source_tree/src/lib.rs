@@ -138,7 +138,7 @@ yyy
                                         let mjf = i.masterjsonfile.clone() ;
                                         view! {
                                             <li>
-                                            <EditFile url=mjf editor_id="editor".to_string() />
+                                            <EditFile label=mjf url=mjf editor_id="editor".to_string() />
                                             <button on:click=move |_| {
                                                 *set_expanded.write() = ! expanded.get()
                                             }>
@@ -237,7 +237,7 @@ extern "C" {
 }
 
 #[component]
-pub fn EditFile(url: String, editor_id: String) -> impl IntoView {
+pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
     let file_data = AsyncDerived::new_unsync(move || fetch_file(url.clone()));
 
     let fallback = move |errors: ArcRwSignal<Errors>| {
@@ -298,7 +298,7 @@ pub fn EditFile(url: String, editor_id: String) -> impl IntoView {
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
-                                        }>"load"</button>
+                                        }>label</button>
 
                                         <button on:click=move |_| {
                                             // my_get_data(&editor);
