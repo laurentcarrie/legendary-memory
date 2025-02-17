@@ -138,7 +138,7 @@ yyy
                                         let mjf = i.masterjsonfile.clone() ;
                                         view! {
                                             <li>
-                                            <EditFile label=mjf url=mjf editor_id="editor".to_string() />
+                                            <EditFile label=mjf.clone() url=mjf editor_id="editor".to_string() />
                                             <button on:click=move |_| {
                                                 *set_expanded.write() = ! expanded.get()
                                             }>
