@@ -296,8 +296,6 @@ pub fn EditFile(url: String, editor_id: String) -> impl IntoView {
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
                                         }>"load"</button>
-                                    }
-                                    view! {
                                                 <button on:click=move |_| {
                                             // my_get_data(&editor);
                                         }>"save"</button>
