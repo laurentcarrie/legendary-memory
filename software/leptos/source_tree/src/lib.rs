@@ -78,7 +78,7 @@ pub fn App() -> impl IntoView {
 
     view! {
             <main>
-                <Stylesheet id="leptos" href="/style.css"/>
+                <Stylesheet id="leptos" href="/style-source-tree.css"/>
 
                 <Meta name="viewport" content="width=device-width, initial-scale=1"></Meta>
 
@@ -89,7 +89,7 @@ pub fn App() -> impl IntoView {
                 <Title text="songbook" />
 <div id="container">
             <div class="split right">
-        <div class="centered">
+        <div class="xxxcentered">
 
                 <pre id="editor">r#"
 
