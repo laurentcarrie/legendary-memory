@@ -43,7 +43,7 @@ async fn save_file(path: String,content:String) -> Result<()> {
     // make the request
     let request=InfoSaveFile{path:path,content:content} ;
     let json_string = serde_json::to_string(&request)? ;
-    dbg!(&json_string) ;
+    // dbg!(&json_string) ;
     let b64= BASE64_STANDARD.encode(&json_string) ;
      dbg!(&b64) ;
 
