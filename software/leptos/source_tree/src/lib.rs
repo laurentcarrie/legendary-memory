@@ -275,6 +275,7 @@ pub fn EditFile() -> impl IntoView {
     // };
     let (g_editor, s_editor) = signal::<String>("".to_string());
     let load = move |_| {
+        log!("load...") ;
         let text = g_editor.get();
         let nblines = text.chars().filter(|c| *c == '\n').count();
         // xxx(text.as_str(), nblines);
