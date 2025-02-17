@@ -78,6 +78,8 @@ pub fn App() -> impl IntoView {
 
     view! {
             <main>
+                <Meta name="viewport" content="width=device-width, initial-scale=1">
+
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
             </main>
@@ -225,7 +227,8 @@ yyy
             </div>
         </div>
         </div>
-        </div>
+        </div><meta name="viewport" content="width=device-width, initial-scale=1">
+
             }
 }
 
