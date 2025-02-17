@@ -315,7 +315,6 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                     let editor2=editor.clone() ;
                                     view! {
                                         <button
-                                        class:"hello"
                                         on:click=move |_| {
                                              let nblines = text.chars().filter(|c| *c == '\n').count();
                                              my_set_data(&editor,&text,nblines) ;
