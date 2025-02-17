@@ -21,6 +21,13 @@ pub mod request {
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+    pub struct InfoSaveFile {
+        pub path: String,
+        pub content: String,
+    }
+
+
+    #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
     pub enum EChoice {
         ItemBuild,
         ItemOMakeChildrenInfo,
@@ -29,6 +36,7 @@ pub mod request {
         ItemHealthCheck,
         ItemSeeProgress,
         ItemSourceTree,
+        ItemSaveFile(InfoSaveFile)
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
