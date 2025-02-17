@@ -314,7 +314,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                     <div>
 
     </div>
+    </div>
 
             }
-    </div>
 }
