@@ -313,7 +313,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                         <button
                                         on:click=move |_| {
                                              let nblines = text.chars().filter(|c| *c == '\n').count();
-                                             data=my_get_data(&editor) ;
+                                             let data=my_get_data(&editor) ;
                                              log!(&data) ;
                                                     ()
                                         }>save</button>
