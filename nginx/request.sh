@@ -11,10 +11,16 @@ else
   exit 1
 fi
 
+if test "x$2" = "x" ; then
+  MIME="application/json"
+else
+  MIME=$2
+fi
+
 here=$(dirname $(realpath $0))
 request=$(echo $COMMAND | sed "s/^request=//")
 work() {
-  echo "Content-type:application/json\r\n"
+  echo "Content-type:$MIME\r\n"
   $here/songbook-client $request 2>/dev/null | jq "."
 }
 

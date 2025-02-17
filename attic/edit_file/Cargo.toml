@@ -1,5 +1,5 @@
 [package]
-name = "source_tree"
+name = "edit_file"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,7 +9,7 @@ lto = true
 
 [dependencies]
 #leptos = {features = ["csr", "tracing"] }
-reqwasm = "0.5.0"
+reqwasm = { version = "0.5.0", features = ["http"] }
 gloo-timers = { version = "0.3.0", features = ["futures"] }
 serde = { version = "1.0", features = ["derive"] }
 log = "0.4.22"
@@ -25,11 +25,11 @@ leptos_meta = "0.7.5"
 human-sort = "0.2.2"
 wasm-bindgen = "0.2.100"
 wasm-bindgen-futures = "0.4.50"
-base64 = "0.22.1"
+leptos_router = { version="0.7.7",features=[]}
 
 
 [[workspace.metadata.leptos]]
 # project name
-name = "build_progress"
+name = "edit_file"
 bin-package = "server"
 lib-package = "front"

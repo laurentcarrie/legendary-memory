@@ -81,5 +81,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./book/html
           publich_branch: ${{ github.ref }}
-
-          
