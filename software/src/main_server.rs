@@ -10,10 +10,12 @@ use crate::config::model::World;
 use crate::config::world::make;
 use async_process::Command;
 use backtrace::Backtrace;
+use handlebars::template::Parameter::Path;
+use std::fs::File;
+use std::io::Write;
 use std::path::PathBuf;
-use std::{env, thread, time};
+use std::{env, fs, thread, time};
 use sysinfo::Pid;
-
 pub mod config;
 pub mod errors;
 pub mod generate;
@@ -23,6 +25,7 @@ pub mod protocol;
 // use crate::protocol::model ;
 use crate::generate::all::generate_all;
 use crate::protocol::model::answer::{Progress, ProgressItem, SourceTree, SourceTreeItem};
+use crate::protocol::model::request::InfoSaveFile;
 use crate::protocol::model::{answer, request};
 
 pub async fn generate(
@@ -265,29 +268,33 @@ pub fn handle_source_tree(
     let mut ret: Vec<SourceTreeItem> = vec![];
     for song in world.songs {
         dbg!(&song.srcdir);
-        let mut files: Vec<String> = vec![];
-        files.push(format!("{}/song.json", song.srcdir.to_string()));
+        // let root = song.srcdir.to_string();
+        let root = {
+            let root = song.srcdir.replace(songdir.to_str().unwrap(), "");
+            let root = format!("/input-songs{}", root);
+            root
+        };
+        let root = root.replace(songdir.to_str().unwrap(), "");
+        let mut texfiles: Vec<String> = vec![];
+        let mut lyricstexfiles: Vec<String> = vec![];
+        let mut lyfiles: Vec<String> = vec![];
+        let masterjsonfile = format!("{}/song.json", root);
+        for f in &song.texfiles {
+            texfiles.push(format!("{}/{}", root, f));
+        }
         for section in &song.structure {
             match &section.item {
                 ItemChords(c) => {
-                    files.push(format!(
-                        "{}/lyrics/{}.tex",
-                        song.srcdir.to_string(),
-                        c.section_id
-                    ));
+                    lyricstexfiles.push(format!("{}/lyrics/{}.tex", root, c.section_id));
                 }
                 ItemRef(c) => {
-                    files.push(format!(
-                        "{}/lyrics/{}.tex",
-                        song.srcdir.to_string(),
-                        c.section_id
-                    ));
+                    lyricstexfiles.push(format!("{}/lyrics/{}.tex", root, c.section_id));
                 }
                 ItemHRule(_) => {}
             }
         }
         for lyfile in &song.lilypondfiles {
-            files.push(format!("{}/{}", song.srcdir.to_string(), lyfile));
+            lyfiles.push(format!("{}/{}", root, lyfile));
         }
         // for texfile in &s.texfiles {
         //     let path = PathBuf::from(song.path.as_str());
@@ -302,12 +309,27 @@ pub fn handle_source_tree(
         ret.push(SourceTreeItem {
             title: song.title.clone(),
             author: song.author.clone(),
-            files: files,
+            masterjsonfile: masterjsonfile,
+            lyricstexfiles: lyricstexfiles,
+            lyfiles: lyfiles,
+            texfiles: texfiles,
         });
     }
     Ok(answer::EChoice::ItemSourceTree {
         0: SourceTree { items: ret },
     })
+}
+
+pub fn handle_save_file(songdir: PathBuf, info: InfoSaveFile) -> Result<answer::EChoice, MyError> {
+    log::info!("write file {:?}", info.path);
+    let path = info.path.replace("/input-songs", songdir.to_str().unwrap());
+    log::info!("write file {:?}", &path);
+
+    let mut p: PathBuf = PathBuf::from(&path);
+    // let _ = fs::create_dir_all(&p)?;
+    let mut output = File::create(p)?;
+    let _ = output.write(info.content.as_bytes()).unwrap();
+    Ok(answer::EChoice::ItemOkMessage)
 }
 
 #[tokio::main]
@@ -369,6 +391,7 @@ async fn main() -> () {
             request::EChoice::ItemSourceTree => {
                 handle_source_tree(songdir.clone(), bookdir.clone(), builddir.clone())
             }
+            request::EChoice::ItemSaveFile(info) => handle_save_file(songdir.clone(), info.clone()),
         };
         let answer = match answer_choice {
             Ok(x) => {

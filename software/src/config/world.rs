@@ -32,6 +32,7 @@ pub fn make(srcdir: &PathBuf, srcbookdir: &PathBuf, builddir: &PathBuf) -> World
         })
         .collect();
     let songs: Vec<_> = songs_zip.iter().map(|s| s.0.clone()).collect();
+
     let usongs_with_path: Vec<_> = songs_zip.iter().map(|s| s.1.clone()).collect();
 
     let books_zip: Vec<(Book, UserBookWithPath)> = get_book_json_paths(&srcbookdir)
