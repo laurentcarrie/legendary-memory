@@ -264,12 +264,12 @@ pub fn EditFile(url: String, editor_id: String) -> impl IntoView {
     //     my_set_data(editor,a,b)
     // };
     let (g_editor, s_editor) = signal::<String>("".to_string());
-    let load = move |_| {
-        log!("load...");
-        let text = g_editor.get();
-        let nblines = text.chars().filter(|c| *c == '\n').count();
-        // xxx(text.as_str(), nblines);
-    };
+    // let load = move |_| {
+    //     log!("load...");
+    //     let text = g_editor.get();
+    //     let nblines = text.chars().filter(|c| *c == '\n').count();
+    //     // xxx(text.as_str(), nblines);
+    // };
 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
@@ -296,7 +296,8 @@ pub fn EditFile(url: String, editor_id: String) -> impl IntoView {
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
                                         }>"load"</button>
-                                                <button on:click=move |_| {
+
+                                        <button on:click=move |_| {
                                             // my_get_data(&editor);
                                         }>"save"</button>
                                     }
