@@ -143,6 +143,7 @@ yyy
                                                 *set_expanded().write() = ! expanded()
                                             }
                                             {i.author.clone()} / {i.title.clone()}
+                                            </button>
                                             <ul style:display=move || if expanded.get() { "block" } else { "none" }>
                                                 <li> master json
                                                 <ul><li>{ i.masterjsonfile.clone() }</li></ul>
