@@ -26,7 +26,6 @@ pub mod request {
         pub content: String,
     }
 
-
     #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
     pub enum EChoice {
         ItemBuild,
@@ -36,7 +35,7 @@ pub mod request {
         ItemHealthCheck,
         ItemSeeProgress,
         ItemSourceTree,
-        ItemSaveFile(InfoSaveFile)
+        ItemSaveFile(InfoSaveFile),
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
