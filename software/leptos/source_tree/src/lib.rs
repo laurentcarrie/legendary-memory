@@ -145,7 +145,7 @@ yyy
                                             </button>
                                             <ul style:display=move || if expanded.get() { "block" } else { "none" }>
                                                 <li>
-                                                    <EditFile label="master json" url=mjf editor_id="editor".to_string() />
+                                                    <EditFile label="master json".to_string() url=mjf editor_id="editor".to_string() />
                                                 </li>
 
                                                 <li>tex files
