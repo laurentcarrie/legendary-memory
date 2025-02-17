@@ -83,7 +83,7 @@ pub fn App() -> impl IntoView {
             </main>
 
                 <Title text="songbook" />
-
+<div id="container">
             <div id="top_div">
 
                 <pre id="editor">r#"
@@ -221,6 +221,7 @@ yyy
                         // </ErrorBoundary>
                     </Transition>
             </div>
+        </div>
         </div>
             }
 }
