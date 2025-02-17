@@ -278,21 +278,6 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
         <div>
-            <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
-            <ErrorBoundary fallback>
-            <button
-                                        on:click={move |_| Suspend::new(async move {
-            let text="blah blah blah" ;
-
-                                     let nblines = text.chars().filter(|c| *c == '\n').count();
-                                    let editor=my_edit("editor","hello world",10) ;
-                                     my_set_data(&editor,&text,nblines) ;
-                                            ()
-            })}
-        >
-            edit
-            </button>
-        </ErrorBoundary>
 
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
