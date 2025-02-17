@@ -3,7 +3,6 @@ use leptos::prelude::*;
 use source_tree::App;
 pub mod input_model;
 pub mod protocol;
-pub mod edit ;
 pub fn main() {
     use tracing_subscriber::fmt;
     use tracing_subscriber_wasm::MakeConsoleWriter;
