@@ -1,3 +1,5 @@
+use base64::prelude::BASE64_STANDARD;
+use base64::prelude::*;
 use human_sort::compare;
 use leptos::logging::log;
 use leptos::prelude::*;
