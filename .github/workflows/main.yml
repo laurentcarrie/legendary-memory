@@ -43,7 +43,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Generate summary
-        run: ./generate_summary.sh
+        run: bash ./generate_summary.sh
 
       - name: Generate ebook from markdown
         run: mdbook build
