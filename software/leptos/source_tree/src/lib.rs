@@ -140,7 +140,7 @@ yyy
                                             <li>
                                             <EditFile url=mjf editor_id="editor".to_string() />
                                             <button on:click=move |_| {
-                                                *set_expanded().write() = ! expanded.get()
+                                                *set_expanded.write() = ! expanded.get()
                                             }>
                                             {i.author.clone()} / {i.title.clone()}
                                             </button>
