@@ -40,7 +40,7 @@ async fn save_file(path: String,content:String) -> Result<()> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let request=InfoSaveFile{path:path,content:content} ;
-    let json_string = serde_json::to_string(request)? ;
+    let json_string = serde_json::to_string(&request)? ;
     dbg!(&json_string) ;
     // let b64= BASE64_STANDARD.encode(serde_json::to_string(request))? ;
     // dbg!(&b64) ;
