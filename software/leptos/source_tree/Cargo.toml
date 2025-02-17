@@ -25,6 +25,7 @@ leptos_meta = "0.7.5"
 human-sort = "0.2.2"
 wasm-bindgen = "0.2.100"
 wasm-bindgen-futures = "0.4.50"
+base64 = "0.22.1"
 
 
 [[workspace.metadata.leptos]]
