@@ -1,11 +1,11 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+    /*     background-color: #f4f4f9; */
+    /*     display: flex; */
+    /*     justify-content: center; */
+    /*     align-items: left; */
+    /*     height: 100vh; */
+    /*     margin: 0; */
 }
 
 .container {
@@ -13,20 +13,20 @@ body {
 }
 
 ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-/*
-display: none;  Initially hidden
- */
+    /*     list-style-type: none;
+        padding: 10px;
+        margin: 10px; */
+    /*
+    display: none;  Initially hidden
+     */
 }
 
 ul li {
-    background-color: #fff;
-    padding: 15px;
+    background-color: lavenderblush;
+    padding: 5px;
     margin: 10px 0;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px lavender;
     transition: background-color 0.3s ease;
 }
 
@@ -88,21 +88,21 @@ button:hover {
 
 .left {
     left: 0;
-    background-color: #111;
+    background-color: lavender;
 }
 
 .right {
     right: 0;
-    background-color: red;
+    background-color: steelblue;
 }
 
-.centered {
+/* .centered {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-}
+} */
 
 .centered img {
     width: 150px;

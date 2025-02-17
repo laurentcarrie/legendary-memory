@@ -285,8 +285,6 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
-        <div>
-
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
                                 {move || Suspend::new(async move {
@@ -317,7 +315,6 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
 
                         </ErrorBoundary>
                     </Transition>
-    </div>
 
             }
 }
