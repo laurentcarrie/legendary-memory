@@ -158,6 +158,7 @@ yyy
                                                     { i.texfiles.clone().into_iter().map(|f| {
                                                         view! {
                                                             <li>
+                                                             <EditFile label=f.clone() url=f.clone() editor_id="editor".to_string() />
                                                             {f}
                                                             </li>
                                                         }
@@ -171,6 +172,7 @@ yyy
                                                     { i.lyricstexfiles.clone().into_iter().map(|f| {
                                                         view! {
                                                             <li>
+                                                             <EditFile label=f.clone() url=f.clone() editor_id="editor".to_string() />
                                                             {f}
                                                             </li>
                                                         }
@@ -184,6 +186,7 @@ yyy
                                                     { i.lyfiles.clone().into_iter().map(|f| {
                                                         view! {
                                                             <li>
+                                                             <EditFile label=f.clone() url=f.clone() editor_id="editor".to_string() />
                                                             {f}
                                                             </li>
                                                         }
