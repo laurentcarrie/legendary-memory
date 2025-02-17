@@ -308,6 +308,7 @@ pub fn EditFile(
                                                 <button on:click=move |_| {
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
                                      my_set_data(&editor,&text,nblines) ;
+                                            ()
                                         }>"load"</button>
                                     }
                                     view! {
