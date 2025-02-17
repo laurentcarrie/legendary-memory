@@ -84,7 +84,7 @@ pub fn App() -> impl IntoView {
 
                 <Title text="songbook" />
 <div id="container">
-            <div id="top_div">
+            <div class="split right">
 
                 <pre id="editor">r#"
 
@@ -98,7 +98,7 @@ yyy
 
     </div>
 
-        <div id="bottom_div">
+        <div class="split left">
                 <div>
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
