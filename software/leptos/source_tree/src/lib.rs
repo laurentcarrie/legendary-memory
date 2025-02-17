@@ -10,7 +10,7 @@ use wasm_bindgen::prelude::*;
 pub mod input_model;
 
 pub mod protocol;
-use protocol::model::answer::{Choice, EChoice, SourceTree};
+use protocol::model::answer::{Choice, EChoice, SourceTree,InfoSaveFile};
 
 fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
@@ -314,7 +314,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                         <button
                                         on:click=move |_| {
                                              let data=my_get_data(&editor2) ;
-                                             let info = Protocol::model::InfoSaveFile(path:url.clone(),content=data.clone()) ;
+                                             // let info = InfoSaveFile(path:url.clone(),content=data.clone()) ;
                                              log!("{}",&data) ;
                                                     ()
                                         }>save</button>
