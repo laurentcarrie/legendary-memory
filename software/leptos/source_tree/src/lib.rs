@@ -329,7 +329,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                              let data=my_get_data(&editor2) ;
                                             log!("going to save file") ;
                                             let result = AsyncDerived::new_unsync(move ||  save_file(g_url.get(),data)) ;
-                                            log!("result : {}",result) ;
+                                            log!("result : {:?}",result) ;
                                                     ()
                                         }>save</button>
 
