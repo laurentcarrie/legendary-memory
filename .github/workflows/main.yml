@@ -46,7 +46,7 @@ jobs:
         run: bash ./generate_summary.sh
 
       - name: Generate ebook from markdown
-        run: mdbook build
+        run: ( cd doc/srs && mdbook build )
 
       # ePub upload as a Github release asset
       - name: Create Release
