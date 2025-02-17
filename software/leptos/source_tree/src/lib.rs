@@ -138,7 +138,6 @@ yyy
                                         let mjf = i.masterjsonfile.clone() ;
                                         view! {
                                             <li>
-                                            <EditFile label=mjf.clone() url=mjf editor_id="editor".to_string() />
                                             <button on:click=move |_| {
                                                 *set_expanded.write() = ! expanded.get()
                                             }>
@@ -146,7 +145,9 @@ yyy
                                             </button>
                                             <ul style:display=move || if expanded.get() { "block" } else { "none" }>
                                                 <li> master json
-                                                <ul><li>{ i.masterjsonfile.clone() }</li></ul>
+                                                <ul><li>
+                                            <EditFile label=mjf.clone() url=mjf editor_id="editor".to_string() />
+                                            </li></ul>
                                                 </li>
 
                                                 <li>tex files
