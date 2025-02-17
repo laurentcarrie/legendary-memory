@@ -99,9 +99,6 @@ yyy
     </div>
 
         <div id="bottom_div">
-
-                {view! {
-                }}
                 <div>
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
@@ -311,9 +308,8 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                         </ErrorBoundary>
                     </Transition>
             </div>
-                    <div>
+                    </div>
 
-    </div>
     </div>
 
             }
