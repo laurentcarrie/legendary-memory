@@ -279,7 +279,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                 <Script src="/my-ace.js"> </Script>
         <div>
             <button
-                                        on:click={move || Sustemd::new(async move {
+                                        on:click={move || Suspend::new(async move {
             let text="blah blah blah" ;
 
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
