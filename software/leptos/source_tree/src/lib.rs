@@ -139,7 +139,7 @@ yyy
                                         // let aeclone = aedit.clone() ;
                                         view! {
                                             <li>
-                                            <EditFile url=mjf id="editor".to_string() />
+                                            <EditFile url=mjf editor_id="editor".to_string() />
                                             {i.author.clone()} / {i.title.clone()}
                                             <ul style:display=move || if expanded.get() { "none" } else { "none" }>
                                                 <li> master json
@@ -223,9 +223,6 @@ yyy
             }
 }
 
-
-
-
 #[wasm_bindgen]
 extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
@@ -236,18 +233,9 @@ extern "C" {
     // fn my_get_data(e: &JsValue) -> String;
 }
 
-
-
 #[component]
-pub fn EditFile(
-    url:String,
-    id:String
-) -> impl IntoView {
-    let file_data = AsyncDerived::new_unsync(move || {
-        fetch_file(
-            url.clone()
-        )
-    });
+pub fn EditFile(url: String, id: String) -> impl IntoView {
+    let file_data = AsyncDerived::new_unsync(move || fetch_file(url.clone()));
 
     let fallback = move |errors: ArcRwSignal<Errors>| {
         let error_list = move || {
@@ -277,7 +265,7 @@ pub fn EditFile(
     // };
     let (g_editor, s_editor) = signal::<String>("".to_string());
     let load = move |_| {
-        log!("load...") ;
+        log!("load...");
         let text = g_editor.get();
         let nblines = text.chars().filter(|c| *c == '\n').count();
         // xxx(text.as_str(), nblines);
