@@ -310,8 +310,6 @@ pub fn EditFile(
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
                                         }>"load"</button>
-                                    }
-                                    view! {
                                                 <button on:click=move |_| {
                                             // my_get_data(&editor);
                                         }>"save"</button>
