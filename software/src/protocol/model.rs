@@ -35,7 +35,7 @@ pub mod request {
         ItemHealthCheck,
         ItemSeeProgress,
         ItemSourceTree,
-        ItemSaveFile(InfoSaveFile)
+        ItemSaveFile(InfoSaveFile),
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
