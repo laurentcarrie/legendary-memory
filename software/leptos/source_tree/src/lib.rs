@@ -300,7 +300,7 @@ pub fn EditFile(
                                             e.to_string()
                                         }
                                      } ;
-                                     let editor=my_edit(id.to_string(),"hello world",10) ;
+                                     let editor=my_edit(id.as_str(),"hello world",10) ;
                                     view! {
                                                 <button on:click=move |_| {
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
