@@ -18,6 +18,8 @@ function my_set_data(editor,value,nblines) {
 
 
 function my_get_data(editor) {
+    let data=editor.getValue() ;
     console.log("get data in editor") ;
-    return editor.getValue(data) ;
+    console.log(data) ;
+    return data ;
 }
