@@ -285,6 +285,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
 
     let spreadable = style(("foreground-color", "red"));
     let (g_url, s_url) = signal::<String>("".to_string()) ;
+    let url=url.clone() ;
     s_url.set(url) ;
 
     view! {
