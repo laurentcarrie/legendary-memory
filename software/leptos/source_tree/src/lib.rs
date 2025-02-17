@@ -238,7 +238,6 @@ extern "C" {
 #[component]
 pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
     let file_data = AsyncDerived::new_unsync(move || fetch_file(url.clone()));
-    let button_label = move || label;
 
     let fallback = move |errors: ArcRwSignal<Errors>| {
         let error_list = move || {
@@ -301,7 +300,7 @@ pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
-                                        }>{button_label}</button>
+                                        }>button_label</button>
 
                                         <button on:click=move |_| {
                                             // my_get_data(&editor);
