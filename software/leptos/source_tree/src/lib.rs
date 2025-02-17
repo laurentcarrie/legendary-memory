@@ -1,3 +1,4 @@
+use std::ascii::Char::InformationSeparatorFour;
 use human_sort::compare;
 use leptos::logging::log;
 use leptos::prelude::*;
@@ -10,7 +11,8 @@ use wasm_bindgen::prelude::*;
 pub mod input_model;
 
 pub mod protocol;
-use protocol::model::answer::{Choice, EChoice, SourceTree,InfoSaveFile};
+use protocol::model::answer::{Choice, EChoice, SourceTree};
+use protocol::model::request::{InfoSaveFile};
 
 fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
@@ -34,6 +36,19 @@ async fn fetch_world() -> Result<SourceTree> {
         _ => panic!("bad type"),
     }
 }
+
+async fn save_file(path: String,content:String) -> Result<()> {
+    gloo_timers::future::TimeoutFuture::new(1000).await;
+    // make the request
+    let request=InfoSaveFile{path:path,content:content} ;
+    // let data = reqwasm::http::Request::get(path.as_str())
+    //     .send()
+    //     .await?
+    //     .text()
+    //     .await?;
+    Ok(())
+}
+
 
 async fn fetch_file(path: String) -> Result<String> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
@@ -314,6 +329,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                         <button
                                         on:click=move |_| {
                                              let data=my_get_data(&editor2) ;
+                                            save_file(url,data) ;
                                              // let info = InfoSaveFile(path:url.clone(),content=data.clone()) ;
                                              log!("{}",&data) ;
                                                     ()
