@@ -15,7 +15,7 @@ use std::fs::File;
 use std::path::PathBuf;
 use std::{env, fs, thread, time};
 use sysinfo::Pid;
-
+use std::io::Write ;
 pub mod config;
 pub mod errors;
 pub mod generate;
