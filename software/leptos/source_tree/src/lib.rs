@@ -328,7 +328,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                         on:click=move |_| {
                                              let data=my_get_data(&editor2) ;
                                             log!("going to save file") ;
-                                            save_file(g_url.get(),data) ;
+                                            save_file(g_url.get(),data).await? ;
                                                     ()
                                         }>save</button>
 
