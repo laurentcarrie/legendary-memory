@@ -39,13 +39,15 @@ async fn fetch_world() -> Result<SourceTree> {
 }
 
 async fn save_file(path: String,content:String) -> Result<()> {
+    log!("save file") ;
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let request=InfoSaveFile{path:path,content:content} ;
     let json_string = serde_json::to_string(&request)? ;
+    log!("{}",&json_string) ;
     // dbg!(&json_string) ;
     let b64= BASE64_STANDARD.encode(&json_string) ;
-     dbg!(&b64) ;
+    log!("{}",&b64) ;
 
     let data = reqwasm::http::Request::get(format!("/scripts/request.sh?request={}",b64).as_str())
         .send()
@@ -325,6 +327,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                         <button
                                         on:click=move |_| {
                                              let data=my_get_data(&editor2) ;
+                                            log!("going to save file") ;
                                             save_file(g_url.get(),data) ;
                                                     ()
                                         }>save</button>
