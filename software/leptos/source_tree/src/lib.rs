@@ -136,12 +136,11 @@ yyy
                                         // let expanded=&(p.1.0) ;
                                         let (expanded,set_expanded) = signal(false) ;
                                         let mjf = i.masterjsonfile.clone() ;
-                                        // let aeclone = aedit.clone() ;
                                         view! {
                                             <li>
                                             <EditFile url=mjf editor_id="editor".to_string() />
                                             {i.author.clone()} / {i.title.clone()}
-                                            <ul style:display=move || if expanded.get() { "none" } else { "none" }>
+                                            <ul style:display=move || if expanded.get() { "block" } else { "none" }>
                                                 <li> master json
                                                 <ul><li>{ i.masterjsonfile.clone() }</li></ul>
                                                 </li>
