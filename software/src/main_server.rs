@@ -322,7 +322,10 @@ pub fn handle_source_tree(
 
 pub fn handle_save_file(info: InfoSaveFile) -> Result<answer::EChoice, MyError> {
     log::info!("write file {:?}", info.path);
-    let mut p: PathBuf = PathBuf::from(info.path);
+    let path = info.path.replace("/input-songs",song.srcdir) ;
+    log::info!("write file {:?}", &path);
+
+    let mut p: PathBuf = PathBuf::from(&path);
     let _ = fs::create_dir_all(&p)?;
     let mut output = File::create(p)?;
     let _ = output.write(info.content.as_bytes()).unwrap();
