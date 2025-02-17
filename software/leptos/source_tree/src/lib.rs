@@ -84,7 +84,7 @@ pub fn App() -> impl IntoView {
 
                 <Title text="songbook" />
 
-            <div>
+            <div id="top_div">
 
                 <pre id="editor">r#"
 
@@ -98,6 +98,7 @@ yyy
 
     </div>
 
+        <div id="bottom_div">
 
                 {view! {
                 }}
@@ -315,4 +316,5 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
     </div>
 
             }
+    </div>
 }
