@@ -1,9 +1,6 @@
 name: Generate ebook
 
-on:
-  push:
-    tags:
-      - "*"
+on: push
 
 jobs:
   ebook:
