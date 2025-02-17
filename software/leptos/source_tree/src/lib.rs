@@ -264,7 +264,7 @@ extern "C" {
 #[component]
 pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView {
     let url1=url.clone() ;
-    let file_data = AsyncDerived::new_unsync(move || fetch_file(url1));
+    let file_data = AsyncDerived::new_unsync(move || fetch_file(url1.clone()));
 
     let fallback = move |errors: ArcRwSignal<Errors>| {
         let error_list = move || {
