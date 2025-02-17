@@ -1,3 +1,6 @@
+navigate to mdbook documentation
+# [mdbook documentation](https://laurentcarrie.github.io/legendary-memory/)
+
 # What is this ?
 
 This is a tool to build pdf and wav files, in a form suitable ( for me ) to play in a pop/rock/jazz band.

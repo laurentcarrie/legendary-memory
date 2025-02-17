@@ -1,13 +1,14 @@
 use log::LevelFilter;
 use simple_logger::SimpleLogger;
+// use std::backtrace::Backtrace;
 use std::env;
 use std::path::PathBuf;
 
-pub mod config;
 pub mod errors;
 pub mod generate;
 pub mod helpers;
 pub mod makefiles;
+pub mod model;
 
 // pub mod protocol ;
 fn usage(prog: &str) -> String {
@@ -34,9 +35,11 @@ fn main() -> () {
     ) {
         Ok(()) => (),
         Err(e) => {
-            log::error!("{}", e);
+            log::error!("{}:{} {}", file!(), line!(), e);
+            // println!("Custom backtrace: {}", Backtrace::force_capture());
             std::process::exit(1)
         }
     };
+    log::info!("normal exit");
     ()
 }

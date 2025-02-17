@@ -1,9 +1,13 @@
+% for a section that has id xxx for example,
+% create three macros : \songbookcolorxxx \songbooksectionxxx and \songbooktitlexxx
+% to be usable in the tex code
+
 {{#each sections }}
 {{#with this}}
 
-\newcommand{\lolocolor{{{id}}}}{ {{{~color}}}}
-\newcommand{\lolosection{{id}}}[2]{\basecouplet{\lolocolor{{id}}}{#1}{#2}}
-\newcommand{\lolosection{{id}}title}[1]{\basetitle{\lolocolor{{color}}}{#1}}
+\newcommand{\songbookcolor{{{id}}}}{ {{{~color}}}}
+\newcommand{\songbooksection{{id}}}[2]{\basecouplet{\songbookcolor{{id}}}{#1}{#2}}
+\newcommand{\songbooksection{{id}}title}[1]{\basetitle{\songbookcolor{{color}}}{#1}}
 
 {{/with}}
 {{/each}}

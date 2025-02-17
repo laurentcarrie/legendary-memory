@@ -28,7 +28,7 @@ pub mod request {
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
     pub enum EChoice {
-        ItemBuild,
+        ItemBuild(String),
         ItemOMakeChildrenInfo,
         ItemOMakeKill,
         ItemCleanBuildTree,
@@ -36,6 +36,9 @@ pub mod request {
         ItemSeeProgress,
         ItemSourceTree,
         ItemSaveFile(InfoSaveFile),
+        ItemGetOMakeStdout,
+        ItemGetOMakeProgress,
+        ItemGetSourceFile(String),
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
@@ -67,8 +70,11 @@ pub mod answer {
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
     pub struct ProgressItem {
-        pub path: String,
-        pub status: bool,
+        pub status: String,
+        pub topic: String,
+        pub message: String,
+        pub start_date: i64,
+        pub end_date: Option<i64>,
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
@@ -81,6 +87,7 @@ pub mod answer {
         pub title: String,
         pub author: String,
         pub masterjsonfile: String,
+        pub mastertexfile: String,
         pub texfiles: Vec<String>,
         pub lyricstexfiles: Vec<String>,
         pub lyfiles: Vec<String>,
@@ -100,6 +107,7 @@ pub mod answer {
         ItemHealthOk,
         ItemSeeProgress(Progress),
         ItemSourceTree(SourceTree),
+        ItemFileData(String, String),
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]

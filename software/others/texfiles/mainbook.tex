@@ -19,11 +19,11 @@
 
 {{#each songs}}
 {{#with this}}
-\import{../../songs/{{author}}/{{title}}/}{data.tex}
+\import{ {{~path~}} }{data.tex}
 \section{ \songauthor / \songtitle }
 \lfoot{ \songauthor / \songtitle }
 \makesongtitle
-\import{../../songs/{{author}}/{{title}}/}{body.tex}
+\import{ {{~path~}} }{body.tex}
 \newpage
 {{/with}}
 {{/each}}

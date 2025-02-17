@@ -8,12 +8,12 @@
     "couplet.ly"
   ],
   "wavfiles": [],
-  "date": "2025-01-11",
-  "digest": "dbb8a166375eb8f1217841b40cc9c22c",
+  "date": "2025-03-16",
+  "digest": "c2d0ce343be2f5a79f081672a406749e",
   "hash": "0",
   "structure": [
     {
-      "id": "intro_batterie",
+      "id": "intro_batteriex",
       "item": {
         "Chords": {
           "section_title": "intro batterie",

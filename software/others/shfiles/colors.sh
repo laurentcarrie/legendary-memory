@@ -71,20 +71,19 @@ On_IPurple='\033[0;105m'  # Purple
 On_ICyan='\033[0;106m'    # Cyan
 On_IWhite='\033[0;107m'   # White
 
+#test "x$html_output" != "x" || ( echo "html_output not defined" ; exit 1 )
 
 printfc () {
   status=$1
   topic=$2
   message=$3
-  html_file=$4
-
   topic_fmt="${Blue}${On_Yellow}[${topic}]${Color_Off}"
   topic_html="<span style=\"color:blue\" background=\"yellow\">[${topic}]</span>"
 
   case $topic in
   lilypond)
-  topic_html="<span style=\"color:blue;background-color:yellow\">[${topic}]</span>"
-  ;;
+    topic_html="<span style=\"color:blue;background-color:yellow\">[${topic}]</span>"
+    ;;
   pdf)
       topic_html="<span style=\"color:blue;background-color:green\">[${topic}]</span>"
       ;;
@@ -95,28 +94,40 @@ printfc () {
     topic_html="<span style=\"color:blue;background-color:yellow\">[${topic}]</span>"
 esac
 
+now=$(date +"%Y-%m-%d %H:%M:%S")
+
   case $status in
   OK)
     status_fmt="${BGreen}${On_White}[DONE  ]${Color_Off}"
+    status_nocolor="[DONE  ]"
     status_html="<span style=\"color:white;background-color:green\">[DONE  ]</span>"
   ;;
   RUN)
-    status_fmt="${BBlue}${On_White}[START]${Color_Off}"
+    status_fmt="${BBlue}${On_White}[START ]${Color_Off}"
+    status_nocolor="[START ]"
     status_html="<span style=\"color:white;background-color:rgba(0,0,200,0.5);\">[START ]</span>"
   ;;
   FAILED)
     status_fmt="${BRed}${On_Cyan}[FAILED ]${Color_Off}"
+    status_nocolor="[FAILED]"
     status_html="<span style=\"color:blue;background-color:red\">[FAILED]</span>"
   ;;
   *)
+    status_nocolor="[unknown status $status]"
     status_fmt="${BRed}${On_Black}[unknown status $status]${Color_Off}"
     status_html="<span style=\"color:red;background-color:cyan\">[unknown status]</span>"
 esac
 
 message_fmt="${White}${On_Cyan}$message${Color_Off}"
-printf "${status_fmt}${topic_fmt}${message_fmt}\n"
+message_nocolor="$message"
+
+if test "x$omake_output_format" = "xtext"   ; then
+  printf "${status_nocolor}[${topic}][${message_nocolor}][$now]\n"
+else
+  printf "${status_fmt}${topic_fmt}[${message_fmt}][$now]\n"
+fi
 
 message_html="<span style=\"color:black;background-color:hsla(0,50%%,50%%,0.5)\">$message</span>"
-printf "${status_html}${topic_html}    ${message_html}<br/>\n" >> $html_file
+#printf "${status_html}${topic_html}    ${message_html}<br/>\n" >> $html_output
 
 }

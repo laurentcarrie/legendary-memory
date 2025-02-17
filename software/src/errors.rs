@@ -48,6 +48,8 @@ impl From<std::fmt::Error> for MyError {
 
 impl From<std::io::Error> for MyError {
     fn from(err: std::io::Error) -> MyError {
+        dbg!(&err);
+        log::error!("{}:{} {:?}", file!(), line!(), &err);
         MyError::IoError(err)
     }
 }

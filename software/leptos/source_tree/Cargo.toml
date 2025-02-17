@@ -26,6 +26,11 @@ human-sort = "0.2.2"
 wasm-bindgen = "0.2.100"
 wasm-bindgen-futures = "0.4.50"
 base64 = "0.22.1"
+index-map = "0.1.0"
+serde-wasm-bindgen = "0.6.5"
+chrono = "0.4.39"
+regex = "1.11.1"
+string-replace-all = "0.2.0"
 
 
 [[workspace.metadata.leptos]]

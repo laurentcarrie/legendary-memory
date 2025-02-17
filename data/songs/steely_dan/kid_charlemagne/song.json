@@ -1,0 +1,164 @@
+{
+  "tempo": 97,
+  "title": "Kid Charlemagne",
+  "author": "Steely Dan",
+  "texfiles": [],
+  "lilypondfiles": [
+    "solo.ly",
+    "chordscouplet.ly",
+    "chordsintro.ly",
+    "chordsrefrain.ly"
+  ],
+  "structure": [
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "rows": [
+            "C7 | C7 | C7 | C7"
+          ],
+          "section_type": "intro",
+          "section_title": "intro",
+          "section_body": "\\songly{chordsintro}"
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "rows": [
+            "Am7 | G | F | Bf | x2"
+          ],
+          "section_type": "couplet",
+          "section_title": "couplet",
+          "section_body": "\\songly{chordscouplet}"
+        }
+      }
+    },
+    {
+      "id": "pont1",
+      "item": {
+        "Chords": {
+          "rows": [
+            "G | C | F | Am"
+          ],
+          "section_type": "pont",
+          "section_title": "pont 1"
+        }
+      }
+    },
+    {
+      "id": "interlude1",
+      "item": {
+        "Chords": {
+          "rows": [
+            "C7 | C7 "
+          ],
+          "section_type": "intro",
+          "section_title": "interlude",
+          "section_body": "\\songly{chordsintro}"
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 2",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "pont2",
+      "item": {
+        "Ref": {
+          "section_type": "pont",
+          "section_title": "pont 2",
+          "link": "pont1"
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_type": "refrain",
+          "section_title": "refrain",
+          "rows": [
+            "F G| F G| F G| G F7",
+            "C7|C7"
+          ],
+          "section_body": "\\songly{chordsrefrain}"
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 3",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "pont3",
+      "item": {
+        "Ref": {
+          "section_type": "pont",
+          "section_title": "pont 3",
+          "link": "pont1"
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "section_type": "refrain",
+          "section_title": "refrain",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "pont",
+      "item": {
+        "Chords": {
+          "section_type": "pont",
+          "section_title": "1 mesure",
+          "rows": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "id": "hr",
+      "item": {
+        "HRule": 80
+      }
+    },
+    {
+      "id": "solo",
+      "item": {
+        "Chords": {
+          "section_title": "solo",
+          "section_type": "solo",
+          "rows": [
+            "Dm | Dm | Dm | Dm",
+            "Dm | Dm | Dm | Dm"
+          ]
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "digest": "46a2feeedae32948e40a0cb02533d87b",
+  "date": "2025-03-16",
+  "hash": "0"
+}

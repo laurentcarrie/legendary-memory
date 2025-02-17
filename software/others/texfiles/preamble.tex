@@ -162,29 +162,29 @@
 
 %\usepackage{paracol}
 
-\newfontfamily\lolofont[%%basic weight: 100, "bold" weight: 70
+\newfontfamily\songbookfont[%%basic weight: 100, "bold" weight: 70
 	Extension      = .ttf,
-	ItalicFont     = lolo,
-	BoldFont       = lolo,
-	BoldItalicFont = lolo]
-{lolo}
+	ItalicFont     = songbook,
+	BoldFont       = songbook,
+	BoldItalicFont = songbook]
+{songbook}
 
 
 
-\newfontfamily\lolofontflat[%%basic weight: 50, "bold" weight: 70\overline{}
+\newfontfamily\songbookfontflat[%%basic weight: 50, "bold" weight: 70\overline{}
 	Extension      = .ttf,
-	ItalicFont     = lolo_flat,
-	BoldFont       = lolo_flat,
-	BoldItalicFont = lolo_flat]
-{lolo_flat}
+	ItalicFont     = songbook_flat,
+	BoldFont       = songbook_flat,
+	BoldItalicFont = songbook_flat]
+{songbook_flat}
 
 
-\newfontfamily\lolofontsharp[%%basic weight: 50, "bold" weight: 70
+\newfontfamily\songbookfontsharp[%%basic weight: 50, "bold" weight: 70
 	Extension      = .ttf,
-	ItalicFont     = lolo_sharp,
-	BoldFont       = lolo_sharp,
-	BoldItalicFont = lolo_sharp]
-{lolo_sharp}
+	ItalicFont     = songbook_sharp,
+	BoldFont       = songbook_sharp,
+	BoldItalicFont = songbook_sharp]
+{songbook_sharp}
 
 
 % pour les livres
@@ -358,5 +358,9 @@
 
 \declare{}
 
-\newcommand{\xxxstruct}{}
+\newcommand{\songbooksongstruct}{}
 \newcommand{\xxxlyrics}{}
+
+\newcommand{\songly}[1]{ %
+	\subimport{#1.output}{#1}
+}

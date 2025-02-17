@@ -15,6 +15,10 @@ build_songbook() {
 #  sudo mkdir -p $wwwroot/scripts
   sudo cp ~/.cargo/bin/songbook-client $wwwroot/scripts/.
   sudo cp ~/.cargo/bin/songbook-server $wwwroot/scripts/.
+
+#  for f in add-missing-lyrics.sh check-existence-of-files.sh check-json.sh colors.sh ; do
+#    sudo cp $root/software/sh-helpers/$f $wwwroot/scripts/.
+#  done
   #sudo cp ~/.cargo/bin/songbook $wwwroot/scripts/.
 }
 
@@ -125,7 +129,13 @@ restart_nginx() {
   # sudo service nginx status
 }
 
-
+create_git_repo() {
+  git config --global --add safe.directory $wwwroot/input
+  cd $wwwroot/input
+  git init
+  git add .
+  git commit -a -m initial
+}
 
 install_packages
 make_www_tree
@@ -138,7 +148,7 @@ make_nginx_conf
 restart_nginx
 #install_songbook_server_service_as_root
 install_songbook_server_service_as_user
-
+create_git_repo
 
 cp -R /home/laurent/work/ace-builds/src-min-noconflict $wwwroot
 cp -R /home/laurent/work/ace-builds/src-noconflict $wwwroot

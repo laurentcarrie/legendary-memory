@@ -20,7 +20,7 @@ extern "C" {
 
 async fn fetch_file(path: String) -> Result<String> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
-    log!("{}", path);
+    log!("fetch_file {}", path);
     // make the request
     let response = reqwasm::http::Request::get(path.as_str())
         // .mode(reqwasm::http::RequestMode::Cors)
@@ -83,7 +83,7 @@ pub fn EditFile() -> impl IntoView {
 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
-                <Script src="/my-ace.js"> </Script>
+                <Script type_="module" src="/my-ace.js"> </Script>
         <div>
             <button on:click=load>"load"</button>
         </div>
@@ -103,8 +103,8 @@ pub fn EditFile() -> impl IntoView {
                                         }
                                      } ;
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
-                                     let editor=my_edit("editor","hello world",10) ;
-                                     my_set_data(&editor,&text,nblines) ;
+                                     // let editor=my_edit("editor","hello world",10) ;
+                                     // my_set_data(&editor,&text,nblines) ;
                                     view! {
                                                 <button on:click=move |_| {my_get_data(&editor);}>"save"</button>
                                     }

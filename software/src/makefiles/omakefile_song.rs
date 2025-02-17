@@ -1,12 +1,13 @@
+use std::collections::HashSet;
 use std::fs;
 use std::fs::File;
 use std::io::{Error, Write};
 use std::path::PathBuf;
 
-use crate::config::model::Song;
-use crate::config::model::World;
 use crate::errors::MyError;
 use crate::generate::handlebars_helpers::get_handlebar;
+use crate::model::model::Song;
+use crate::model::model::World;
 
 pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
     log::debug!("generate Omakefile in {}", song.builddir.display());
@@ -16,6 +17,19 @@ pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
     let mut output = File::create(p)?;
     let template =
         String::from_utf8(include_bytes!("../../others/makefiles/omakefile").to_vec()).unwrap();
+
+    let mut texset: HashSet<String> = HashSet::new();
+    for f in &song.lilypondfiles {
+        texset.insert(PathBuf::from(f).set_extension("").to_string());
+    }
+    let mut wavset: HashSet<String> = HashSet::new();
+    for f in &song.wavfiles {
+        wavset.insert(PathBuf::from(f).set_extension("").to_string());
+    }
+
+    // let lilytexfiles = texset.difference(&wavset).collect();
+    // let lilytexwavfiles = texset.union(&wavset).collect();
+    // let lilywavfiles = wavset.difference(&texset).collect();
 
     let mut h = get_handlebar()?;
     h.register_template_string("t1", template).unwrap();

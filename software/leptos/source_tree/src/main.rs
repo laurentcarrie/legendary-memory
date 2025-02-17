@@ -1,8 +1,11 @@
 // use leptos::html::Title;
 use leptos::prelude::*;
-use source_tree::App;
-pub mod input_model;
+// use source_tree::App;
+pub mod components;
 pub mod protocol;
+pub mod util;
+
+use components::app::App;
 pub fn main() {
     use tracing_subscriber::fmt;
     use tracing_subscriber_wasm::MakeConsoleWriter;
