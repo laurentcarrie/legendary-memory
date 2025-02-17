@@ -139,6 +139,9 @@ yyy
                                         view! {
                                             <li>
                                             <EditFile url=mjf editor_id="editor".to_string() />
+                                            <button on:click=move |_| {
+                                                *set_expanded().write() = ! expanded()
+                                            }
                                             {i.author.clone()} / {i.title.clone()}
                                             <ul style:display=move || if expanded.get() { "block" } else { "none" }>
                                                 <li> master json
