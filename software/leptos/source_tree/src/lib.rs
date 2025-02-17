@@ -13,7 +13,7 @@ pub mod input_model;
 
 pub mod protocol;
 use protocol::model::answer::{Choice, EChoice, SourceTree};
-use protocol::model::request::{InfoSaveFile};
+use protocol::model::request::{InfoSaveFile,Choice as rChoice};
 
 fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
@@ -42,7 +42,7 @@ async fn save_file(path: String,content:String) -> Result<()> {
     log!("save file") ;
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
-    let request=Choice{choice:InfoSaveFile{path:path,content:content}} ;
+    let request=rChoice{choice: ItemSaveFileInfoSaveFile{path:path,content:content}} ;
     let json_string = serde_json::to_string(&request)? ;
     log!("{}",&json_string) ;
     // dbg!(&json_string) ;
