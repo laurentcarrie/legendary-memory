@@ -303,9 +303,13 @@ pub fn EditFile(
                                             e.to_string()
                                         }
                                      } ;
-                                     let nblines = text.chars().filter(|c| *c == '\n').count();
                                      let editor=my_edit("editor","hello world",10) ;
+                                    view! {
+                                                <button on:click=move |_| {
+                                     let nblines = text.chars().filter(|c| *c == '\n').count();
                                      my_set_data(&editor,&text,nblines) ;
+                                        }>"load"</button>
+                                    }
                                     view! {
                                                 <button on:click=move |_| {
                                             // my_get_data(&editor);
