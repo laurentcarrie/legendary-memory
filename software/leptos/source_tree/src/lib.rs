@@ -278,16 +278,13 @@ pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
         <div>
+            <button>
+            edit
+            </button>
+
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
                                 {move || Suspend::new(async move {
-                                    // let editor=my_edit(id.as_str(),"hello world",10) ;
-                                    let editor=my_edit("editor","hello world",10) ;
-                                    view! {
-                                                <button
-                                        // prop:name=move || label
-                                        prop:name=move || "xxx"
-                                        on:click=move |_| Suspend::new(async move {
                                     let text = match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
@@ -298,14 +295,18 @@ pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
                                             e.to_string()
                                         }
                                      } ;
+                                    // let editor=my_edit(id.as_str(),"hello world",10) ;
+                                    let editor=my_edit("editor","hello world",10) ;
+                                    view! {
+                                                <button
+                                        // prop:name=move || label
+                                        prop:name=move || "xxx"
+                                        on:click=move |_| {
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
-                                        })>edit</button>
+                                        }>edit</button>
 
-                                        <button on:click=move |_| {
-                                            // my_get_data(&editor);
-                                        }>save</button>
                                     }
                                     })}
 
