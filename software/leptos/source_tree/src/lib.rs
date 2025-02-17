@@ -278,7 +278,15 @@ pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
         <div>
-            <button>
+            <button
+                                        on:click=move |_| {
+            let text="blah blah blah" ;
+
+                                     let nblines = text.chars().filter(|c| *c == '\n').count();
+                                     my_set_data(&editor,&text,nblines) ;
+                                            ()
+            }
+        >
             edit
             </button>
 
