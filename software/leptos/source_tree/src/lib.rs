@@ -1,4 +1,3 @@
-use std::ascii::Char::InformationSeparatorFour;
 use human_sort::compare;
 use leptos::logging::log;
 use leptos::prelude::*;
