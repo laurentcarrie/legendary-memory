@@ -329,9 +329,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                         <button
                                         on:click=move |_| {
                                              let data=my_get_data(&editor2) ;
-                                            save_file(url,data) ;
-                                             // let info = InfoSaveFile(path:url.clone(),content=data.clone()) ;
-                                             log!("{}",&data) ;
+                                            save_file(url,&data) ;
                                                     ()
                                         }>save</button>
 
