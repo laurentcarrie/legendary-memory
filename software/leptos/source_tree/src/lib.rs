@@ -237,7 +237,7 @@ extern "C" {
 }
 
 #[component]
-pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
+pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView {
     let file_data = AsyncDerived::new_unsync(move || fetch_file(url.clone()));
 
     let fallback = move |errors: ArcRwSignal<Errors>| {
@@ -283,6 +283,7 @@ pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
             let text="blah blah blah" ;
 
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
+                                    let editor=my_edit("editor","hello world",10) ;
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
             }
