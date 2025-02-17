@@ -281,6 +281,13 @@ pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
                                 {move || Suspend::new(async move {
+                                    // let editor=my_edit(id.as_str(),"hello world",10) ;
+                                    let editor=my_edit("editor","hello world",10) ;
+                                    view! {
+                                                <button
+                                        // prop:name=move || label
+                                        prop:name=move || "xxx"
+                                        on:click=move |_| {
                                     let text = match file_data.await {
                                         Ok(text) => {
                                              log!("found text, len is : {} ",text.len()) ;
@@ -291,13 +298,6 @@ pub fn EditFile(label:String,url: String, editor_id: String) -> impl IntoView {
                                             e.to_string()
                                         }
                                      } ;
-                                    // let editor=my_edit(id.as_str(),"hello world",10) ;
-                                    let editor=my_edit("editor","hello world",10) ;
-                                    view! {
-                                                <button
-                                        // prop:name=move || label
-                                        prop:name=move || "xxx"
-                                        on:click=move |_| {
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
