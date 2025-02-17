@@ -314,7 +314,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                         <button
                                         on:click=move |_| {
                                              let data=my_get_data(&editor2) ;
-                                             let info = Protocol::model::InfoSaveFile{path=url.clone(),content=data.clone()} ;
+                                             let info = Protocol::model::InfoSaveFile(path:url.clone(),content=data.clone()) ;
                                              log!("{}",&data) ;
                                                     ()
                                         }>save</button>
