@@ -221,6 +221,7 @@ yyy
                         // </ErrorBoundary>
                     </Transition>
             </div>
+        </div>
             }
 }
 
@@ -307,9 +308,6 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
 
                         </ErrorBoundary>
                     </Transition>
-            </div>
-                    </div>
-
     </div>
 
             }
