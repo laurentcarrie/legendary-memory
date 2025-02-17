@@ -42,7 +42,7 @@ async fn save_file(path: String,content:String) -> Result<()> {
     log!("save file") ;
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
-    let request=InfoSaveFile{path:path,content:content} ;
+    let request=Choice{choice:InfoSaveFile{path:path,content:content}} ;
     let json_string = serde_json::to_string(&request)? ;
     log!("{}",&json_string) ;
     // dbg!(&json_string) ;
