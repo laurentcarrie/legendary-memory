@@ -244,7 +244,7 @@ extern "C" {
     // #[wasm_bindgen]
     fn my_edit(s: &str, data: &str, nblines: usize) -> JsValue;
     fn my_set_data(editor: &JsValue, data: &str, nblines: usize) -> JsValue;
-    // fn my_get_data(e: &JsValue) -> String;
+    fn my_get_data(e: &JsValue) -> String;
 }
 
 #[component]
