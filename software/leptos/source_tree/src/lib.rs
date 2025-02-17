@@ -244,7 +244,7 @@ pub fn EditFile(
 ) -> impl IntoView {
     let file_data = AsyncDerived::new_unsync(move || {
         fetch_file(
-            url
+            url.clone()
         )
     });
 
