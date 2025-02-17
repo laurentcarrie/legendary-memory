@@ -47,7 +47,7 @@ async fn save_file(path: String,content:String) -> Result<()> {
     let b64= BASE64_STANDARD.encode(&json_string) ;
      dbg!(&b64) ;
 
-    let data = reqwasm::http::Request::get("/scripts/request.sh?request={}",b64)
+    let data = reqwasm::http::Request::get(format!("/scripts/request.sh?request={}",b64).as_str())
         .send()
         .await?
         .text()
