@@ -284,21 +284,8 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
     };
 
     let spreadable = style(("foreground-color", "red"));
-    // let (gfile_data,sfile_data) = query_signal::<String>(Some("".to_string())) ;
-    // let savecb = move |ev|  { log!("save data ") ; sfile_data.set(Some("xxx".to_string())) ; } ;
-    // let editor=my_edit("editor","hello world",10) ;
-    // my_set_data(editor,"hello world",10) ;
-    // let xxx = move |a:&str,b:usize| {
-    //     my_set_data(editor,a,b)
-    // };
     let (g_url, s_url) = signal::<String>("".to_string()) ;
     *s_url.write() = url.clone() ;
-    // let load = move |_| {
-    //     log!("load...");
-    //     let text = g_editor.get();
-    //     let nblines = text.chars().filter(|c| *c == '\n').count();
-    //     // xxx(text.as_str(), nblines);
-    // };
 
     view! {
                 <Script src="/src-noconflict/ace.js"></Script>
@@ -319,7 +306,6 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                     // let editor=my_edit(id.as_str(),"hello world",10) ;
                                     let editor=my_edit("editor","hello world",10) ;
                                     let editor2=editor.clone() ;
-                                    let url=g_url.get() ;
                                     view! {
                                         <button
                                         on:click=move |_| {
@@ -330,7 +316,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                         <button
                                         on:click=move |_| {
                                              let data=my_get_data(&editor2) ;
-                                            save_file(url.clone(),data) ;
+                                            save_file(g_url.get(),data) ;
                                                     ()
                                         }>save</button>
 
