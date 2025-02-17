@@ -40,6 +40,9 @@ async fn save_file(path: String,content:String) -> Result<()> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let request=InfoSaveFile{path:path,content:content} ;
+    let b64= BASE64_STANDARD.encode(request.to_json())? ;
+    dbg!(&b64) ;
+
     // let data = reqwasm::http::Request::get(path.as_str())
     //     .send()
     //     .await?
@@ -310,6 +313,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                     let editor2=editor.clone() ;
                                     view! {
                                         <button
+                                        class:"hello"
                                         on:click=move |_| {
                                              let nblines = text.chars().filter(|c| *c == '\n').count();
                                              my_set_data(&editor,&text,nblines) ;
