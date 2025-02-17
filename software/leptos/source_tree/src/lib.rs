@@ -292,7 +292,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
     //     my_set_data(editor,a,b)
     // };
     let (g_url, s_url) = signal::<String>("".to_string()) ;
-    *s_url.write() = url ;
+    *s_url.write() = url.clone() ;
     // let load = move |_| {
     //     log!("load...");
     //     let text = g_editor.get();
