@@ -314,7 +314,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                         on:click=move |_| {
                                              let nblines = text.chars().filter(|c| *c == '\n').count();
                                              let data=my_get_data(&editor) ;
-                                             log!(&data) ;
+                                             log!("{}",&data) ;
                                                     ()
                                         }>save</button>
 
