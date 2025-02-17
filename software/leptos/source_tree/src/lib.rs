@@ -144,10 +144,8 @@ yyy
                                             {i.author.clone()} / {i.title.clone()}
                                             </button>
                                             <ul style:display=move || if expanded.get() { "block" } else { "none" }>
-                                                <li> master json
-                                                <ul><li>
-                                            <EditFile label=mjf.clone() url=mjf editor_id="editor".to_string() />
-                                            </li></ul>
+                                                <li>
+                                                    <EditFile label="master json" url=mjf editor_id="editor".to_string() />
                                                 </li>
 
                                                 <li>tex files
