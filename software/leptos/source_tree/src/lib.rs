@@ -279,14 +279,14 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                 <Script src="/my-ace.js"> </Script>
         <div>
             <button
-                                        on:click=move |_| {
+                                        on:click={move || Sustemd::new(async move {
             let text="blah blah blah" ;
 
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
                                     let editor=my_edit("editor","hello world",10) ;
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
-            }
+            })}
         >
             edit
             </button>
