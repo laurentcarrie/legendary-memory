@@ -78,7 +78,7 @@ pub fn App() -> impl IntoView {
 
     view! {
             <main>
-                <Stylesheet id="leptos" href="style.css"/>
+                <Stylesheet id="leptos" href="/style.css"/>
 
                 <Meta name="viewport" content="width=device-width, initial-scale=1"></Meta>
 
