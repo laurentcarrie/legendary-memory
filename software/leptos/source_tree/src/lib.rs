@@ -139,7 +139,7 @@ yyy
                                         // let aeclone = aedit.clone() ;
                                         view! {
                                             <li>
-                                            <EditFile/>
+                                            <EditFile url=mjf/>
                                             {i.author.clone()} / {i.title.clone()}
                                             <ul style:display=move || if expanded.get() { "none" } else { "none" }>
                                                 <li> master json
@@ -239,7 +239,9 @@ extern "C" {
 
 
 #[component]
-pub fn EditFile() -> impl IntoView {
+pub fn EditFile(
+    url:String
+) -> impl IntoView {
     let file_data = AsyncDerived::new_unsync(move || {
         fetch_file(
             "http://185.247.117.231/input-songs/amy_winehouse/you_know_i_m_no_good/song.json"
