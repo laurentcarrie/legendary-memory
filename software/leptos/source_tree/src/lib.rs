@@ -139,7 +139,7 @@ yyy
                                         // let aeclone = aedit.clone() ;
                                         view! {
                                             <li>
-                                            <EditFile url=mjf/>
+                                            <EditFile url=mjf id="editor".to_string() />
                                             {i.author.clone()} / {i.title.clone()}
                                             <ul style:display=move || if expanded.get() { "none" } else { "none" }>
                                                 <li> master json
@@ -240,7 +240,8 @@ extern "C" {
 
 #[component]
 pub fn EditFile(
-    url:String
+    url:String,
+    id:String
 ) -> impl IntoView {
     let file_data = AsyncDerived::new_unsync(move || {
         fetch_file(
@@ -286,10 +287,6 @@ pub fn EditFile(
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
         <div>
-            <button on:click=load>"load"</button>
-        </div>
-
-        <div>
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
                                 {move || Suspend::new(async move {
@@ -303,13 +300,15 @@ pub fn EditFile(
                                             e.to_string()
                                         }
                                      } ;
-                                     let editor=my_edit("editor","hello world",10) ;
+                                     let editor=my_edit(id.to_string(),"hello world",10) ;
                                     view! {
                                                 <button on:click=move |_| {
                                      let nblines = text.chars().filter(|c| *c == '\n').count();
                                      my_set_data(&editor,&text,nblines) ;
                                             ()
                                         }>"load"</button>
+                                    }
+                                    view! {
                                                 <button on:click=move |_| {
                                             // my_get_data(&editor);
                                         }>"save"</button>
