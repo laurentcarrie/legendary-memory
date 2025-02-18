@@ -163,6 +163,7 @@ yyy
                                         x => x
                                     }) ;
                                     // let mut items : Vec<SourceTreeItem> = vec![] ;
+                                    log!("set_value") ;
                                     let data : String = BASE64_STANDARD.encode(serde_json::to_string(& items[0]).expect("serde-json") ) ;
                                     set_value.set(data) ;
 
@@ -172,6 +173,7 @@ yyy
                                     <label for="songs">Choose a song:</label>
                                     <select name="song" id="song-select"
                                         on:change:target=move |ev| {
+                                            log!("on change") ;
                                             set_value.set(ev.target().value().parse().expect("set_value"));
                                             log!("value is {}",value.get()) ;
                                         }
@@ -182,6 +184,7 @@ yyy
                                                 let c=c.1 ;
                                                 // log!("option {}",&c.author) ;
                                                 view! { <option value={
+                                                    log!("encode") ;
                                                     let data = BASE64_STANDARD.encode(serde_json::to_string(&c).expect("base64") ) ;
                                                     data
                                                     }>{c.author.clone()} @ {c.title.clone()}</option>}
