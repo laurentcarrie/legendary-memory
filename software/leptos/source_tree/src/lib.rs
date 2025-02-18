@@ -191,7 +191,9 @@ yyy
                                 </div>
 
                                 <div>{move || {
-                                            let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
+                                            log!(value.get()) ;
+                                            // let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
+                                            let data = BASE64_STANDARD.decode("blahb lah").expect("valid base64 string");
                                             let data = String::from_utf8(data).expect("utf8 string");
                                             let c:SourceTreeItem = serde_json::from_str(data.as_str()).unwrap() ;
                                             view! {
