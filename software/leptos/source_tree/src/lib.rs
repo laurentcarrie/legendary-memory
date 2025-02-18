@@ -201,17 +201,13 @@ yyy
                                                   <EditFile label="song.json".to_string() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
                                                 </li>
                                                 </ul>
+                                            } ;
+
+                                            view! {
                                                 <label> additional tex files</label>
-                                                <ul>
-                                                { c.texfiles.into_iter().map(|i|{
-                                                    view! {
-                                                <li>
-                                                  <EditFile label="song.json".to_string() url=i.clone() editor_id="editor".to_string() />
-                                                </li>
-                                                        }
-                                                    })}
-                                                </ul>
-                                            }}}
+                                            }
+
+                                        }}
                                 </div>
 
 
