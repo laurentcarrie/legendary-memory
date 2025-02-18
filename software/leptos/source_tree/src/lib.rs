@@ -219,7 +219,7 @@ yyy
                                 {move || {
                                             log!("{}",value.get()) ;
                                     <div>{value}</div>
-                                }
+                                }}
                                             // let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
 
 
