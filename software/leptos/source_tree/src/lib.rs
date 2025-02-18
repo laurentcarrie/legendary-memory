@@ -234,8 +234,7 @@ yyy
                                                 <li>
                                                     <EditFile label="master json".to_string() url=f.clone() editor_id="editor".to_string() />
                                                 </li>
-                                                }
-                                            }).collect::<Vec<_>>() ;
+                                            }}).collect::<Vec<_>>()
                                             }}
                                         </ul>
                                     }
