@@ -190,6 +190,9 @@ yyy
 
 
                                     view!{
+
+                                        <label>{song_value}</label></br>
+
                                         <div id="songpick-id">
                                             <label for="songs">Choose a song:</label>
                                             <select name="song" id="song-select"
