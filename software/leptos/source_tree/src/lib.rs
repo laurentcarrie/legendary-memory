@@ -75,7 +75,6 @@ async fn fetch_file(path: String) -> Result<String> {
 pub fn App() -> impl IntoView {
     provide_meta_context();
 
-    let cars = vec!["Audi","Mercedes","Bmw"] ;
 
     // we use new_unsync here because the reqwasm request type isn't Send
     // if we were doing SSR, then
@@ -170,7 +169,7 @@ yyy
                                         },
                                         x => x
                                     }) ;
-                                    let mut items : Vec<SourceTreeItem> = vec![] ;
+                                    // let mut items : Vec<SourceTreeItem> = vec![] ;
 
                                     view!{
                                     <h1> "number of items : " </h1>
@@ -178,8 +177,8 @@ yyy
                                     <label for="cars">Choose a car:</label>
                                     <select name="cars" id="cars">
                                         view! {
-                                            cars.into_iter().map(|c|{
-                                                view! { <option value={c}>{c}</option>}
+                                            items.into_iter().map(|c|{
+                                                view! { <option value={c.song}>{c.song}</option>}
                                             }).collect::<Vec<_>>()
                                         }
                                     </select>
