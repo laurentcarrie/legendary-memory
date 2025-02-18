@@ -100,7 +100,7 @@
           "link": "couplet1",
           "section_title": "couplet 5 - instrumental",
           "section_type": "couplet",
-          "section_body": "\\\\lolocomment{énervé}"
+          "section_body": "\\lolocomment{énervé}"
         }
       }
     },
@@ -111,7 +111,7 @@
           "link": "couplet1",
           "section_title": "couplet 6 - instrumental",
           "section_type": "couplet",
-          "section_body": "\\\\lolocomment{énervé}"
+          "section_body": "\\lolocomment{énervé}"
         }
       }
     },
@@ -122,7 +122,7 @@
           "link": "couplet1",
           "section_title": "couplet 7 ",
           "section_type": "couplet",
-          "section_body": "\\\\lolocomment{allemand}"
+          "section_body": "\\lolocomment{allemand}"
         }
       }
     }
