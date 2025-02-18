@@ -103,7 +103,7 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     let (g_song,w_song) = signal::<Vec<(String,String)>>(vec![]);
-    let (value, set_value) = signal(0usize);
+    let (value, set_value) = signal::<String>("???".to_string());
 
     view! {
             <main>
@@ -177,7 +177,7 @@ yyy
                                             items.clone().into_iter().enumerate().map(|c|{
                                                 let index=c.0 ;
                                                 let c=c.1 ;
-                                                view! { <option value={index}>{c.author.clone()} @ {c.title.clone()}</option>}
+                                                view! { <option value={c.author.clone()}>{c.author.clone()} @ {c.title.clone()}</option>}
                                             }).collect::<Vec<_>>()
                                         }
                                     </select>
@@ -185,8 +185,6 @@ yyy
 
                                 <div>
                                     <label>{value}</label>
-                                    <label>{ items[*value].author.clone()}</label>
-                                    <label>{ items[*value].title.clone()}</label>
                                 </div>
 
 
