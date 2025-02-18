@@ -145,10 +145,10 @@ yyy
                                           <option value="saab">Saab</option>
                                           <option value="mercedes">Mercedes</option>
                                           <option value="audi">Audi</option>
-                                            move |_| |_| {
+                                            move |_| {
                                                 g_song.get().into_iter().map(|s|{
                                                 view! {
-                                                    <option value=s.0>s.0 s.1</option>
+                                                    <Option value=s.0>s.0 s.1</option>
                                                 }
                                             })
                                             }
