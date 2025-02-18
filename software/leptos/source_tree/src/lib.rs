@@ -185,8 +185,8 @@ yyy
 
                                 <div>
                                     <label>{value}</label>
-                                    <label>{ items[value].author}</label>
-                                    <label>{ items[value].title}</label>
+                                    <label>{ items[value.get()].author}</label>
+                                    <label>{ items[value.get()].title}</label>
                                 </div>
 
 
