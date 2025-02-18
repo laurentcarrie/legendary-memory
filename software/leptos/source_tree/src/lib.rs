@@ -172,7 +172,7 @@ yyy
                                             set_value.set(ev.target().value().parse().unwrap());
                                             log!("value is {}",value.get()) ;
                                         }
-                                        prop:value=move || value.get().to_string()>
+                                        prop:value=move || value.get()>
                                         view! {
                                             items.into_iter().enumerate().map(|c|{
                                                 let index=c.0 ;
@@ -185,8 +185,8 @@ yyy
 
                                 <div>
                                     <label>{value}</label>
-                                    <label>{ items[value.get()].author}</label>
-                                    <label>{ items[value.get()].title}</label>
+                                    <label>{ items[value.get()].author.clone()}</label>
+                                    <label>{ items[value.get()].title.clone()}</label>
                                 </div>
 
 
