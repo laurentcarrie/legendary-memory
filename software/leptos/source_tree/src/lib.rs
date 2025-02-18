@@ -103,7 +103,7 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     let (g_song,w_song) = signal::<Vec<(String,String)>>(vec![]);
-    let (value, set_value) = signal(0i32);
+    let (value, set_value) = signal(0usize);
 
     view! {
             <main>
