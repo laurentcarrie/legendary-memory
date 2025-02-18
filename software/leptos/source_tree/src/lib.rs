@@ -207,7 +207,8 @@ yyy
                                                 <label> additional tex files</label>
                                                 <ul>
                                                 { c.texfiles.clone().into_iter().map(|f|
-                                                    view! { <li>{f.clone()}</li> };)
+                                                    view! { <li>{f.clone()}</li> }
+                                                )
                                                 }
                                                 </ul>
                                             };
