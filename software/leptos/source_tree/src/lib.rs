@@ -245,6 +245,24 @@ yyy
                                                         ).collect::<Vec<_>>()
                                                     }}
                                                 </optgroup>
+                                                <optgroup label="lyrics tex files">
+                                                    { move ||{
+                                                        c.lyricstexfiles.clone().into_iter().map(|f|{
+                                                            view!{
+                                                            <option value={f.clone()}>{f.clone()}</option>
+                                                            }}
+                                                        ).collect::<Vec<_>>()
+                                                    }}
+                                                </optgroup>
+                                                <optgroup label="lilypond files">
+                                                    { move ||{
+                                                        c.lyfiles.clone().into_iter().map(|f|{
+                                                            view!{
+                                                            <option value={f.clone()}>{f.clone()}</option>
+                                                            }}
+                                                        ).collect::<Vec<_>>()
+                                                    }}
+                                                </optgroup>
                                             }
                                         }
                                         </select>
