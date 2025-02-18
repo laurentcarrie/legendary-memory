@@ -221,9 +221,9 @@ yyy
                                     let c = base64_to_item(value.get()) ;
                                     view! {
                                         <ul>
+                                        json master file
                                         <li>
                                             <EditFile label="master json".to_string() url=c.masterjsonfile.clone() mode="ace/mode/json".to_string() editor_id="editor".to_string() />
-                                                    master.json
                                         </li>
                                         </ul>
                                     }
