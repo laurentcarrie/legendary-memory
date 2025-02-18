@@ -168,7 +168,7 @@ yyy
                                     <select name="cars" id="cars">
                                         view! {
                                             items.into_iter().map(|c|{
-                                                view! { <option value={c.song}>{c.song}</option>}
+                                                view! { <option value={c.title}>{c.title}</option>}
                                             }).collect::<Vec<_>>()
                                         }
                                     </select>
