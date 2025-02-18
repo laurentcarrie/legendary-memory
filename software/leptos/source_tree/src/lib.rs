@@ -157,6 +157,7 @@ yyy
                                         },
                                         x => x
                                     }) ;
+                                    let mut items : Vec<Song> = vec![] ;
 
                                     view!{
                                     <h1> "number of items : " </h1>
