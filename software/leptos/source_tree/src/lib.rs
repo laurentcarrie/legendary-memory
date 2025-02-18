@@ -194,8 +194,8 @@ yyy
                                             log!("{}",value.get()) ;
                                             // let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
                                             let data = BASE64_STANDARD.decode("blahb lah").ok() ;
-                                            let data = data.map(String::from_utf8);
-                                            let c:Option<SourceTreeItem> = data.map(|s| serde_json::from_str(s.as_str())) ;
+                                            let data = data.map(String::from_utf8).ok();
+                                            let c:Option<SourceTreeItem> = data.map(|s| serde_json::from_str(s.as_str()).ok());
                                             match c {
                                                 Some(c) =>
                                                     view! {
