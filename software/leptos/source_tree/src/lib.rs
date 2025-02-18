@@ -171,9 +171,11 @@ yyy
                                         on:change:target=move |ev| {
                                             set_value.set(ev.target().value().parse().unwrap());
                                             log!("value is {}",value.get()) ;
+                                            let x = value.get() ;
+                                            let i = items.get(i).unwrap().1 ;
                                             log!("song is {} {}",
-                                                items.get(value.get()).unwrap().author,
-                                                items.get(value.get()).unwrap().title
+                                                i.author,
+                                                i.title
                                             )
                                         }
                                         prop:value=move || value.get().to_string()>
