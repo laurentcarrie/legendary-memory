@@ -99,7 +99,7 @@ pub fn App() -> impl IntoView {
     };
 
     let spreadable = style(("foreground-color", "red"));
-    let (g_song,w_song) = signal::<(String,String)>(("a band".to_string(),"a song".to_string())) ;
+    let (g_song,w_song) = signal::<Vec<(String,String)>>(vec![]);
 
     view! {
             <main>
@@ -139,7 +139,7 @@ yyy
                                 <label>songs</label>
                                 <div id="songpick-id">
                                         <label for="cars">Choose a car:</label>
-        <select name="cars" id="cars">
+                                        <select name="cars" id="cars">
                                           <option value="volvo">Volvo</option>
                                           <option value="saab">Saab</option>
                                           <option value="mercedes">Mercedes</option>
