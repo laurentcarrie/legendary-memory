@@ -216,6 +216,32 @@ yyy
 
                                 })}
 
+                                {move ||
+                                    let c = base64_to_item(value.get()) ;
+                                    view! {
+                                        <div id="filepick-id">
+                                            <label for="songs">Choose a file:</label>
+                                            <select name="file" id="file-select"
+                                        on:change:target=move |ev| {
+                                            log!("on change") ;
+                                            set_file_value.set(ev.target().value().parse().expect("set_value"));
+                                            log!("value is {}",file_value.get()) ;
+                                        }
+                                        prop:value=move || file_value.get()>
+                                        {    c.items.clone().into_iter().enumerate().map(|c|{
+                                                let index=c.0 ;
+                                                let c=c.1 ;
+                                                // log!("option {}",&c.author) ;
+                                                view! { <option value={
+                                                    c.masterjsonfile.clone()
+                                                    }>{c.masterjsonfile.clone()}</option>}
+                                            }).collect::<Vec<_>>()
+                                        }
+                                        </select>
+                                        </div>
+                                }}
+
+
                                 {move || {
                                     log!("{}",value.get()) ;
                                     let c = base64_to_item(value.get()) ;
