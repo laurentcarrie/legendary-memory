@@ -92,6 +92,17 @@
           "section_type": "refrain"
         }
       }
+    },
+    {
+      "id": "couplet5",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 5 - instrumental",
+          "section_type": "couplet",
+          "section_body": "\\\\lolocomment{énervé}"
+        }
+      }
     }
   ],
   "wavfiles": [],
