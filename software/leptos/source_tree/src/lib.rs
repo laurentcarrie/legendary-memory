@@ -168,9 +168,8 @@ yyy
 
 
                                     view!{
-                                    <h1> "number of items : " </h1>
                                 <div id="songpick-id">
-                                    <label for="cars">Choose a song:</label>
+                                    <label for="songs">Choose a song:</label>
                                     <select name="song" id="song-select"
                                         on:change:target=move |ev| {
                                             set_value.set(ev.target().value().parse().unwrap());
@@ -181,7 +180,7 @@ yyy
                                             items.clone().into_iter().enumerate().map(|c|{
                                                 let index=c.0 ;
                                                 let c=c.1 ;
-                                                log!("option {}",&c.author) ;
+                                                // log!("option {}",&c.author) ;
                                                 view! { <option value={
                                                     let data = BASE64_STANDARD.encode(serde_json::to_string(&c).unwrap() ) ;
                                                     data
@@ -196,10 +195,21 @@ yyy
                                             let data = String::from_utf8(data).expect("utf8 string");
                                             let c:SourceTreeItem = serde_json::from_str(data.as_str()).unwrap() ;
                                             view! {
+                                                <label> master file</label>
                                                 <ul>
                                                 <li>
                                                   <EditFile label="song.json".to_string() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
                                                 </li>
+                                                </ul>
+                                                <label> additional tex files</label>
+                                                <ul>
+                                                { c.texfiles.into_iter().map(|i|{
+                                                    view! {
+                                                <li>
+                                                  <EditFile label="song.json".to_string() url=i.clone() editor_id="editor".to_string() />
+                                                </li>
+                                                        }
+                                                    })}
                                                 </ul>
                                             }}}
                                 </div>
@@ -212,23 +222,6 @@ yyy
                                 })}
 
                         </ErrorBoundary>
-                        // <ErrorBoundary fallback>
-                        //         <label>books</label>
-                        //         <ul>
-                        //         {move || Suspend::new(async move {
-                        //             let w = world.await.unwrap() ;
-                        //             w.books.into_iter().map(|s| {
-                        //                             view! {
-                        //                                 <li>
-                        //                                     {s.path.clone()}
-                        //                                 </li>
-                        //                             }
-                        //                         })
-                        //                         .collect::<Vec<_>>() ;
-                        //         })}
-                        //         </ul>
-                        //
-                        // </ErrorBoundary>
                     </Transition>
             </div>
         </div>
