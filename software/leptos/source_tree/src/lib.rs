@@ -182,7 +182,7 @@ yyy
                                                 let c=c.1 ;
                                                 // log!("option {}",&c.author) ;
                                                 view! { <option value={
-                                                    let data = BASE64_STANDARD.encode(serde_json::to_string(&c).unwrap() ) ;
+                                                    let data = BASE64_STANDARD.encode(serde_json::to_string(&c).expect("base64") ) ;
                                                     data
                                                     }>{c.author.clone()} @ {c.title.clone()}</option>}
                                             }).collect::<Vec<_>>()
