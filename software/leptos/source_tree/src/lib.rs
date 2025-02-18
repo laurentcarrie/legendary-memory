@@ -160,7 +160,6 @@ yyy
                                         },
                                         x => x
                                     }) ;
-                                    let items=items.iter.f({})
                                     // let mut items : Vec<SourceTreeItem> = vec![] ;
 
                                     view!{
