@@ -99,6 +99,7 @@ pub fn App() -> impl IntoView {
     };
 
     let spreadable = style(("foreground-color", "red"));
+    let (g_song,w_song) = signal<(String,String)>(("a band".to_string(),"a song".to_string())) ;
 
     view! {
             <main>
@@ -112,16 +113,7 @@ pub fn App() -> impl IntoView {
 
                 <Title text="songbook" />
 
-        <div id="songpick-id">
-         <label for="cars">Choose a car:</label>
 
-<select name="cars" id="cars">
-  <option value="volvo">Volvo</option>
-  <option value="saab">Saab</option>
-  <option value="mercedes">Mercedes</option>
-  <option value="audi">Audi</option>
-</select>
-        </div>
 
 <div id="container">
             <div class="split right">
@@ -169,6 +161,20 @@ yyy
                                     view!{
                                     <h1> "number of items : " </h1>
                                     };
+
+                                    view!{
+                                    <div id="songpick-id">
+                                        <label for="cars">Choose a car:</label>
+
+                                        <select name="cars" id="cars">
+                                          <option value="volvo">Volvo</option>
+                                          <option value="saab">Saab</option>
+                                          <option value="mercedes">Mercedes</option>
+                                          <option value="audi">Audi</option>
+                                        </select>
+                                    </div>
+                                    } ;
+
                                     // let aedit = my_edit("editor") ;
                                     items.into_iter().map(|i| {
                                         // let i=&(p.0) ; // item
