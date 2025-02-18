@@ -226,7 +226,7 @@ yyy
                                                     master.json
                                         </li>
                                         </ul>
-                                    } ;
+                                    }
                                 }}
                                             // let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
 
