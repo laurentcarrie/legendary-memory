@@ -277,7 +277,7 @@ yyy
                                 //     }
                                 // }}
 
-
+                                {file_value}
 
                                 // {move || {
                                 //     log!("{}",value.get()) ;
