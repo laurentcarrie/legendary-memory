@@ -103,6 +103,28 @@
           "section_body": "\\\\lolocomment{énervé}"
         }
       }
+    },
+    {
+      "id": "couplet6",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 6 - instrumental",
+          "section_type": "couplet",
+          "section_body": "\\\\lolocomment{énervé}"
+        }
+      }
+    },
+    {
+      "id": "couplet7",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 7 ",
+          "section_type": "couplet",
+          "section_body": "\\\\lolocomment{allemand}"
+        }
+      }
     }
   ],
   "wavfiles": [],
