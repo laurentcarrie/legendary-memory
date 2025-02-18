@@ -75,6 +75,8 @@ async fn fetch_file(path: String) -> Result<String> {
 pub fn App() -> impl IntoView {
     provide_meta_context();
 
+    let cars = vec!["Audi","Mercedes","Bmw"] ;
+
     // we use new_unsync here because the reqwasm request type isn't Send
     // if we were doing SSR, then
     // 1) we'd want to use a Resource, so the data would be serialized to the client
@@ -145,13 +147,6 @@ yyy
                                           <option value="saab">Saab</option>
                                           <option value="mercedes">Mercedes</option>
                                           <option value="audi">Audi</option>
-                                            move |_| {
-                                                g_song.get().into_iter().map(|s|{
-                                                view! {
-                                                    <Option value=s.0>s.0 s.1</option>
-                                                }
-                                            })
-                                            }
                                         </select>
                                     </div>
                                 <ul>
