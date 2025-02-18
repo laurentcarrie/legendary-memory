@@ -170,6 +170,7 @@ yyy
                                     <select name="song" id="song-select"
                                         on:change:target=move |ev| {
                                             set_value.set(ev.target().value().parse().unwrap());
+                                            log!("value is {}",value.get()) ;
                                         }
                                         prop:value=move || value.get().to_string()>
                                         view! {
