@@ -215,10 +215,8 @@ yyy
                                         }
                                         </select>
                                         </div>
+                                        <label>{song_value}</label><br/>
                                     }
-
-                                    <label>{song_value}</label><br/>
-
 
                                 })}
 
