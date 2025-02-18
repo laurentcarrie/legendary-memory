@@ -68,8 +68,8 @@
       "item": {
         "Ref": {
           "link": "couplet1",
-          "section_title": "couplet 3 - instrumental",
-          "section_type": "couplet"
+          "section_title": "couplet 3",
+          "section_type": "pont"
         }
       }
     },
@@ -100,7 +100,7 @@
         "Ref": {
           "link": "couplet1",
           "section_title": "couplet 5",
-          "section_type": "couplet",
+          "section_type": "pont",
           "section_body": "\\lolocomment{énervé}"
         }
       }
@@ -111,7 +111,7 @@
         "Ref": {
           "link": "couplet1",
           "section_title": "couplet 6",
-          "section_type": "couplet",
+          "section_type": "pont",
           "section_body": "\\lolocomment{énervé}"
         }
       }
