@@ -80,7 +80,7 @@
         "Ref": {
           "link": "couplet1",
           "section_title": "couplet 4",
-          "section_type": "refrain",
+          "section_type": "couplet",
           "section_body": "\\lolocomment{cool}"
         }
       }
