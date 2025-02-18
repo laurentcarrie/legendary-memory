@@ -226,8 +226,6 @@ yyy
                                                     master.json
                                         </li>
                                         </ul>
-                                    } ;
-                                    view! {
                                         <ul>
                                         {move || { c.texfiles.clone().into_iter().map(|f|{
                                             view! {
@@ -247,6 +245,7 @@ yyy
                         </ErrorBoundary>
                     </Transition>
             </div>
+
         </div>
         </div>
         </div>
