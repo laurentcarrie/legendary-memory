@@ -193,7 +193,7 @@ yyy
                                             log!("label value : {}",value.read()) ;
                                             let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
                                             let data = String::from_utf8(data).expect("utf8 string");
-                                            let c:SourceTreeItem = serde_json::from_str(data).unwrap() ;
+                                            let c:SourceTreeItem = serde_json::from_str(data.as_str()).unwrap() ;
                                             data
                                         }}</label><br/>
                                 </div>
