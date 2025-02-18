@@ -137,7 +137,6 @@ yyy
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
                                 <label>songs</label>
-                                <ul>
                                 {move || Suspend::new(async move {
                                     let w = match world.await {
                                         Ok(w) => {
@@ -175,6 +174,8 @@ yyy
                                         </select>
                                     </div>
                                     } ;
+
+                                    <ul>
 
                                     // let aedit = my_edit("editor") ;
                                     items.into_iter().map(|i| {
