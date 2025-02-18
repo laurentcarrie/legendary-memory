@@ -143,10 +143,6 @@ yyy
                                 <div id="songpick-id">
                                     <label for="cars">Choose a car:</label>
                                     <select name="cars" id="cars">
-                                        <option value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
                                         view! {
                                             cars.into_iter().map(|c|{
                                                 view! { <option value={c}>{c}</option>}
