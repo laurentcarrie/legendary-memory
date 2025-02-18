@@ -189,9 +189,9 @@ yyy
 
 
                                     view!{
-                                <div id="songpick-id">
-                                    <label for="songs">Choose a song:</label>
-                                    <select name="song" id="song-select"
+                                        <div id="songpick-id">
+                                            <label for="songs">Choose a song:</label>
+                                            <select name="song" id="song-select"
                                         on:change:target=move |ev| {
                                             log!("on change") ;
                                             set_value.set(ev.target().value().parse().expect("set_value"));
@@ -210,8 +210,9 @@ yyy
                                                     }>{c.author.clone()} @ {c.title.clone()}</option>}
                                             }).collect::<Vec<_>>()
                                         }
-                                    </select>
-                                </div>
+                                        </select>
+                                        </div>
+                                    }
 
                                 <div>{move || {
                                             log!("{}",value.get()) ;
