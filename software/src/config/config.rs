@@ -180,7 +180,7 @@ fn structure_of_structure(
                         }
                     },
                     section_type: match &other.item {
-                        model::StructureItemContent::ItemChords(ic) => match s.section_type {
+                        model::StructureItemContent::ItemChords(ic) => match &s.section_type {
                             Some(s) => s,
                             None => ic.section_type.clone(),
                         }, // ic.section_type.clone(),
@@ -534,7 +534,7 @@ mod tests {
                         section_title: "".to_string(),
                         link: "blahblah".to_string(),
                         section_body: None,
-                        section_type:None
+                        section_type: None,
                     }),
                     id: "".to_string(),
                 },
@@ -543,7 +543,7 @@ mod tests {
                         section_title: "".to_string(),
                         section_body: None,
                         link: "blahblah".to_string(),
-                        section_type:None
+                        section_type: None,
                     }),
                     id: "".to_string(),
                 },
