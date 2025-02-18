@@ -209,6 +209,7 @@ yyy
                                                 { c.texfiles.clone().into_iter().map(|f|
                                                     view! { <li>{f.clone()}</li> })
                                                 }
+                                                </ul>
                                             };
 
                                         }}
