@@ -203,26 +203,6 @@ yyy
                                                 </ul>
                                             } ;
 
-                                            view! {
-                                                <label> additional tex files</label>
-                                                <ul>
-                                                { c.texfiles.clone().into_iter().map(|f|
-                                                    view! { <li>{f.clone()}</li> }
-                                                ).collect::<Vec<_>>()
-                                                }
-                                                </ul>
-                                            };
-
-                                            view! {
-                                                <label> lilypond files</label>
-                                                <ul>
-                                                { c.lyfiles.clone().into_iter().map(|f|
-                                                    view! { <li>{f.clone()}</li> }
-                                                ).collect::<Vec<_>>()
-                                                }
-                                                </ul>
-                                            };
-
                                         }}
 
                                 </div>
