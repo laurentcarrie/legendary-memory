@@ -179,7 +179,7 @@ yyy
                                                 let index=c.0 ;
                                                 let c=c.1 ;
                                                 view! { <option value={
-                                                    let data = BASE64_STANDARD.encode(serde_json::to_str(c.clone()).unwrap() ) ;
+                                                    let data = BASE64_STANDARD.encode(serde_json::to_string(c.clone()).unwrap() ) ;
                                                     data
                                                     }>{c.author.clone()} @ {c.title.clone()}</option>}
                                             }).collect::<Vec<_>>()
