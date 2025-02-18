@@ -69,7 +69,8 @@
         "Ref": {
           "link": "couplet1",
           "section_title": "couplet 3",
-          "section_type": "pont"
+          "section_type": "pont",
+          "section_body": "\\lolocomment{instrumental}"
         }
       }
     },
