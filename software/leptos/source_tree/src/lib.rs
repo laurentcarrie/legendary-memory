@@ -111,6 +111,18 @@ pub fn App() -> impl IntoView {
             </main>
 
                 <Title text="songbook" />
+
+        <div id="songpick-id">
+         <label for="cars">Choose a car:</label>
+
+<select name="cars" id="cars">
+  <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="mercedes">Mercedes</option>
+  <option value="audi">Audi</option>
+</select>
+        </div>
+
 <div id="container">
             <div class="split right">
         <div class="xxxcentered">
