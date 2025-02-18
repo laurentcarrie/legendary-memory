@@ -99,7 +99,7 @@ pub fn App() -> impl IntoView {
     };
 
     let spreadable = style(("foreground-color", "red"));
-    let (g_song,w_song) = signal<(String,String)>(("a band".to_string(),"a song".to_string())) ;
+    let (g_song,w_song) = signal::<(String,String)>(("a band".to_string(),"a song".to_string())) ;
 
     view! {
             <main>
