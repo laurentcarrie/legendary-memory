@@ -24,7 +24,8 @@
           "section_title": "couplet 1",
           "section_type": "couplet",
           "rows": [
-            "Am Em | F Am | Am Em | F Am"
+            "Am | Em | F | Am",
+            "Am | Em | F G | Am "
           ],
           "section_body": "\\lolocomment{en fait F G Am Am}"
         }
