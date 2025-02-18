@@ -144,6 +144,13 @@ yyy
                                           <option value="saab">Saab</option>
                                           <option value="mercedes">Mercedes</option>
                                           <option value="audi">Audi</option>
+                                            {
+                                                g_songs.get().into_iter().map(|s|{
+                                                view! {
+                                                    <option value=s.0>s.0 s.1</option>
+                                                }
+                                            })
+                                            }
                                         </select>
                                     </div>
                                 <ul>
