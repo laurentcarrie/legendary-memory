@@ -218,8 +218,14 @@ yyy
 
                                 {move || {
                                     log!("{}",value.get()) ;
+                                    let c = base64_to_item(value.get()) ;
                                     view! {
-                                        <div>{value}</div>
+                                        <ul>
+                                        <li>
+                                            <EditFile label="master json".to_string() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
+                                                    master.json
+                                        </li>
+                                        </ul>
                                     }
                                 }}
                                             // let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
