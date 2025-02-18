@@ -190,7 +190,7 @@ yyy
                                 <div>
                                     <label>{value}</label><br/>
                                     <label>{
-                                            log!("value : {}",value.read()) ;
+                                            log!("label value : {}",value.read()) ;
                                             let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
                                             let data = String::from_utf8(data).expect("utf8 string");
                                             data
