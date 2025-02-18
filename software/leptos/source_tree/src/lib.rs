@@ -239,7 +239,7 @@ yyy
                                         { c.texfiles.clone().into_iter().map(|f| {
                                             view!{
                                         <li>
-                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/latex" editor_id="editor".to_string() />
+                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/latex".to_string() editor_id="editor".to_string() />
                                         </li>
                                                 }
                                             }).collect::<Vec<_>>()
@@ -256,7 +256,7 @@ yyy
                                         { c.lyricstexfiles.clone().into_iter().map(|f| {
                                             view!{
                                         <li>
-                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/latex" editor_id="editor".to_string() />
+                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/latex".to_string() editor_id="editor".to_string() />
                                         </li>
                                                 }
                                             }).collect::<Vec<_>>()
