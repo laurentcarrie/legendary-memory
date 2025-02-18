@@ -196,7 +196,11 @@ yyy
                                             let data = String::from_utf8(data).expect("utf8 string");
                                             let c:SourceTreeItem = serde_json::from_str(data.as_str()).unwrap() ;
                                             view! {
-                                                <label>{c.masterjsonfile.clone()}</label>
+                                                <ul>
+                                                <li>
+                                                  <EditFile label=c.masterjsonfile.clone() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
+                                                            {c.masterjsonfile.clone()}
+                                                </li>
                                             }}}
                                 </div>
 
