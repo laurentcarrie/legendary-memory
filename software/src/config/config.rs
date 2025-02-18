@@ -181,7 +181,7 @@ fn structure_of_structure(
                     },
                     section_type: match &other.item {
                         model::StructureItemContent::ItemChords(ic) => match &s.section_type {
-                            Some(s) => s,
+                            Some(s) => s.clone(),
                             None => ic.section_type.clone(),
                         }, // ic.section_type.clone(),
                         _ => panic!("not implemented"),
