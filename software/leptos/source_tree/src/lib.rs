@@ -215,7 +215,6 @@ yyy
                                         }
                                         </select>
                                         </div>
-                                        <label>{song_value}</label><br/>
                                     }
 
                                 })}
@@ -272,6 +271,13 @@ yyy
                                         </div>
                                     }
                                 }}
+
+                                {move || {
+                                    view!{
+                                      <label>{song_value}</label><br/>
+                                    }
+                                }}
+
 
                                 // {move || {
                                 //     log!("{}",file_value.get()) ;
@@ -438,6 +444,9 @@ pub fn EditFile(label: String, url: String, mode:String,editor_id: String) -> im
 
                                     }
                                     })}
+
+
+
 
                         </ErrorBoundary>
                     </Transition>
