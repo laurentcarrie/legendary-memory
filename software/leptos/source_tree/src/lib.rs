@@ -226,15 +226,6 @@ yyy
                                                     master.json
                                         </li>
                                         </ul>
-                                        <ul>
-                                        {move || { c.texfiles.clone().into_iter().map(|f|{
-                                            view! {
-                                                <li>
-                                                    <EditFile label="master json".to_string() url=f.clone() editor_id="editor".to_string() />
-                                                </li>
-                                            }}).collect::<Vec<_>>()
-                                            }}
-                                        </ul>
                                     } ;
                                 }}
                                             // let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
