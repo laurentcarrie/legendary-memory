@@ -208,7 +208,7 @@ yyy
                                                 <ul>
                                                 { c.texfiles.clone().into_iter().map(|f|
                                                     view! { <li>{f.clone()}</li> }
-                                                )
+                                                ).collect::<Vec<_>>()
                                                 }
                                                 </ul>
                                             };
