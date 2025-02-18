@@ -355,7 +355,7 @@ pub fn EditFile(label: String, url: String, mode:String,editor_id: String) -> im
                                         <button
                                         on:click=move |_| {
                                              let nblines = text.chars().filter(|c| *c == '\n').count();
-                                             my_set_data(&editor,&text,nblines) ;
+                                             my_set_data(&editor,&text,&mode,nblines) ;
                                                     ()
                                         }>{g_url.get()}</button>
                                         <button
