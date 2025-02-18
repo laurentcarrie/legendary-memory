@@ -216,7 +216,7 @@ yyy
 
                                 })}
 
-                                {move ||
+                                {move || {
                                     let c = base64_to_item(value.get()) ;
                                     view! {
                                         <div id="filepick-id">
@@ -239,6 +239,7 @@ yyy
                                         }
                                         </select>
                                         </div>
+                                    }
                                 }}
 
 
