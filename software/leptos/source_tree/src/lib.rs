@@ -201,6 +201,7 @@ yyy
                                                   <EditFile label=c.masterjsonfile.clone() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
                                                             {c.masterjsonfile.clone()}
                                                 </li>
+                                                </ul>
                                             }}}
                                 </div>
 
