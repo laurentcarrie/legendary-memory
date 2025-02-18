@@ -216,23 +216,11 @@ yyy
                                 <div>{move || {
                                             log!("{}",value.get()) ;
                                             let c:SourceTreeItem = base64_to_item(value.get()) ;
-                                            match c {
-                                                Some(c) =>
                                                     view! {
                                                         <label> master file</label>
                                                         <ul>
                                                         <li>
                                                           <EditFile label="song.json".to_string() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
-                                                        </li>
-                                                        </ul>
-                                                    } ,
-
-                                                None =>
-                                                    view! {
-                                                        <label> master file</label>
-                                                        <ul>
-                                                        <li>
-                                                          <EditFile label="song.json".to_string() url="".to_string() editor_id="editor".to_string() />
                                                         </li>
                                                         </ul>
                                                     }
@@ -242,18 +230,6 @@ yyy
                                 </div>
 
                                         {value}
-
-                                <div>{move || {
-                                            let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
-                                            let data = String::from_utf8(data).expect("utf8 string");
-                                            data
-                                        }}
-                                </div>
-
-
-
-                                        }
-
                                 })}
 
                         </ErrorBoundary>
