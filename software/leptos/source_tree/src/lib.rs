@@ -270,6 +270,14 @@ yyy
                                     }
                                 }}
 
+                                {move || {
+                                    log!("{}",file_value.get()) ;
+                                    view!{
+                                        {file_value}
+                                    }
+                                }}
+
+
 
                                 {move || {
                                     log!("{}",value.get()) ;
