@@ -188,10 +188,12 @@ yyy
                                 </div>
 
                                 <div>
-                                    <label>{value}</label>
-                                    <label>{let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
+                                    <label>{value}</label><br/>
+                                    <label>{
+                                            let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
                                             let data = String::from_utf8(data).expect("utf8 string");
-                                            data}</label>
+                                            data
+                                        }</label><br/>
                                 </div>
 
 
