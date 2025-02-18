@@ -236,33 +236,33 @@ yyy
                                                     c.masterjsonfile.clone()
                                                     }>{c.masterjsonfile.clone()}</option>
                                                 </optgroup>
-                                                <optgroup label="tex files">
-                                                    { move ||{
-                                                        c.texfiles.clone().into_iter().map(|f|{
-                                                            view!{
-                                                            <option value={f.clone()}>{f.clone()}</option>
-                                                            }}
-                                                        ).collect::<Vec<_>>()
-                                                    }}
-                                                </optgroup>
-                                                <optgroup label="lyrics tex files">
-                                                    { move ||{
-                                                        c.lyricstexfiles.clone().into_iter().map(|f|{
-                                                            view!{
-                                                            <option value={f.clone()}>{f.clone()}</option>
-                                                            }}
-                                                        ).collect::<Vec<_>>()
-                                                    }}
-                                                </optgroup>
-                                                <optgroup label="lilypond files">
-                                                    { move ||{
-                                                        c.lyfiles.clone().into_iter().map(|f|{
-                                                            view!{
-                                                            <option value={f.clone()}>{f.clone()}</option>
-                                                            }}
-                                                        ).collect::<Vec<_>>()
-                                                    }}
-                                                </optgroup>
+                                                // <optgroup label="tex files">
+                                                //     { move ||{
+                                                //         c.texfiles.clone().into_iter().map(|f|{
+                                                //             view!{
+                                                //             <option value={f.clone()}>{f.clone()}</option>
+                                                //             }}
+                                                //         ).collect::<Vec<_>>()
+                                                //     }}
+                                                // </optgroup>
+                                                // <optgroup label="lyrics tex files">
+                                                //     { move ||{
+                                                //         c.lyricstexfiles.clone().into_iter().map(|f|{
+                                                //             view!{
+                                                //             <option value={f.clone()}>{f.clone()}</option>
+                                                //             }}
+                                                //         ).collect::<Vec<_>>()
+                                                //     }}
+                                                // </optgroup>
+                                                // <optgroup label="lilypond files">
+                                                //     { move ||{
+                                                //         c.lyfiles.clone().into_iter().map(|f|{
+                                                //             view!{
+                                                //             <option value={f.clone()}>{f.clone()}</option>
+                                                //             }}
+                                                //         ).collect::<Vec<_>>()
+                                                //     }}
+                                                // </optgroup>
                                             }
                                         }
                                         </select>
