@@ -171,12 +171,6 @@ yyy
                                         on:change:target=move |ev| {
                                             set_value.set(ev.target().value().parse().unwrap());
                                             log!("value is {}",value.get()) ;
-                                            let index = value.get() as usize;
-                                            let i = &items.get(index).unwrap() ;
-                                            log!("song is {} {}",
-                                                i.author,
-                                                i.title
-                                            )
                                         }
                                         prop:value=move || value.get().to_string()>
                                         view! {
