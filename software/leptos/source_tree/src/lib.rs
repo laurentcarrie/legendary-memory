@@ -198,24 +198,13 @@ yyy
                                             view! {
                                                 <ul>
                                                 <li>
-                                                  <EditFile label=c.masterjsonfile.clone() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
-                                                            {c.masterjsonfile.clone()}
+                                                  <EditFile label="master" url=c.masterjsonfile.clone() editor_id="editor".to_string() />
                                                 </li>
                                                 </ul>
                                             }}}
                                 </div>
 
 
-                                <div>
-                                    <label>{value}</label><br/>
-                                    <label>{move || {
-                                            log!("label value : {}",value.read()) ;
-                                            let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
-                                            let data = String::from_utf8(data).expect("utf8 string");
-                                            let c:SourceTreeItem = serde_json::from_str(data.as_str()).unwrap() ;
-                                            data
-                                        }}</label><br/>
-                                </div>
 
 
                                         }
