@@ -150,7 +150,7 @@ yyy
                                         view! {
                                             cars.into_iter(|c|{
                                                 view! { <option value="x">x</option>}
-                                            })
+                                            }).collect::<Vec<_>>
                                         }
                                     </select>
                                 </div>
