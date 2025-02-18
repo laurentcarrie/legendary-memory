@@ -176,9 +176,9 @@ yyy
                                         prop:value=move || value.get()>
                                         view! {
                                             items.clone().into_iter().enumerate().map(|c|{
-                                                log!("option {}",&c.author) ;
                                                 let index=c.0 ;
                                                 let c=c.1 ;
+                                                log!("option {}",&c.author) ;
                                                 view! { <option value={
                                                     let data = BASE64_STANDARD.encode(serde_json::to_string(&c).unwrap() ) ;
                                                     data
