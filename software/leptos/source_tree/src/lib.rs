@@ -177,7 +177,7 @@ yyy
                                             items.clone().into_iter().enumerate().map(|c|{
                                                 let index=c.0 ;
                                                 let c=c.1 ;
-                                                view! { <option value={c.author.clone()}>{c.author.clone()} @ {c.title.clone()}</option>}
+                                                view! { <option value={(index,c.author.clone())}>{c.author.clone()} @ {c.title.clone()}</option>}
                                             }).collect::<Vec<_>>()
                                         }
                                     </select>
@@ -253,7 +253,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
     };
 
     let spreadable = style(("foreground-color", "red"));
-    let (g_url, s_url) = signal::<String>("".to_string()) ;
+    let (g_url, s_url) = signal::<usize,String>((0,"".to_string())) ;
     let url=url.clone() ;
     s_url.set(url) ;
 
