@@ -163,7 +163,7 @@ yyy
                                         x => x
                                     }) ;
                                     // let mut items : Vec<SourceTreeItem> = vec![] ;
-                                    let data : String = BASE64_STANDARD.encode(serde_json::to_string(& items[0]).unwrap() ) ;
+                                    let data : String = BASE64_STANDARD.encode(serde_json::to_string(& items[0]).expect("serde-json") ) ;
                                     set_value.set(data) ;
 
 
@@ -172,7 +172,7 @@ yyy
                                     <label for="songs">Choose a song:</label>
                                     <select name="song" id="song-select"
                                         on:change:target=move |ev| {
-                                            set_value.set(ev.target().value().parse().unwrap());
+                                            set_value.set(ev.target().value().parse().expect("set_value"));
                                             log!("value is {}",value.get()) ;
                                         }
                                         prop:value=move || value.get()>
