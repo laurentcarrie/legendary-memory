@@ -214,23 +214,6 @@ yyy
                                         </div>
                                     }
 
-                                <div>{move || {
-                                            log!("{}",value.get()) ;
-                                            let c:SourceTreeItem = base64_to_item(value.get()) ;
-                                                    view! {
-                                                        <label> master file</label>
-                                                        <ul>
-                                                        <li>
-                                                          <EditFile label="song.json".to_string() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
-                                                        </li>
-                                                        </ul>
-                                                    }
-                                                }
-                                        }
-
-                                </div>
-
-                                        {value}
                                 })}
 
                         </ErrorBoundary>
