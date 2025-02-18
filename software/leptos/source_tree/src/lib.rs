@@ -230,9 +230,22 @@ yyy
                                         }
                                         prop:value=move || file_value.get()>
                                         {
-                                                view! { <option value={
+                                            view! {
+                                                <optgroup label="master file">
+                                                    <option value={
                                                     c.masterjsonfile.clone()
-                                                    }>{c.masterjsonfile.clone()}</option>}
+                                                    }>{c.masterjsonfile.clone()}</option>
+                                                </optgroup>
+                                                <optgroup label="tex files">
+                                                    { move ||{
+                                                        c.texfiles.clone().into_iter().map(|f|{
+                                                            view!{
+                                                            <option value={f.clone()}{f.clone()}</option>
+                                                            }}
+                                                        ).collect::<Vec<_>>()
+                                                    }}
+                                                </optgroup>
+                                            }
                                         }
                                         </select>
                                         </div>
