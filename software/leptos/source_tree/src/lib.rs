@@ -226,7 +226,7 @@ yyy
                                                     master.json
                                         </li>
                                         </ul>
-                                    }
+                                    } ;
                                     view! {
                                         <ul>
                                         {move || { c.texfiles.into_iter().map(|f|{
@@ -237,7 +237,7 @@ yyy
                                             }}).collect::<Vec<_>>()
                                             }}
                                         </ul>
-                                    }
+                                    } ;
                                 }}
                                             // let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
 
