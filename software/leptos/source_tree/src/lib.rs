@@ -176,6 +176,7 @@ yyy
                                         prop:value=move || value.get()>
                                         view! {
                                             items.clone().into_iter().enumerate().map(|c|{
+                                                log!("option {}",&c.author) ;
                                                 let index=c.0 ;
                                                 let c=c.1 ;
                                                 view! { <option value={
