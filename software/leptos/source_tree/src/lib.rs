@@ -123,7 +123,7 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     let (g_song,w_song) = signal::<Vec<(String,String)>>(vec![]);
-    let (value, set_value) = signal::<String>(BASE64_STANDARD.encode("???")) ;
+    let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???")) ;
     let (file_value, set_file_value) = signal::<String>("???".to_string()) ;
 
 
@@ -186,7 +186,7 @@ yyy
                                     // let mut items : Vec<SourceTreeItem> = vec![] ;
                                     log!("set_value") ;
                                     let data : String = BASE64_STANDARD.encode(serde_json::to_string(& items[0]).expect("serde-json") ) ;
-                                    set_value.set(data) ;
+                                    set_song_value.set(data) ;
 
 
                                     view!{
@@ -195,10 +195,10 @@ yyy
                                             <select name="song" id="song-select"
                                         on:change:target=move |ev| {
                                             log!("on change") ;
-                                            set_value.set(ev.target().value().parse().expect("set_value"));
-                                            log!("value is {}",value.get()) ;
+                                            set_song_value.set(ev.target().value().parse().expect("set_value"));
+                                            log!("value is {}",song_value.get()) ;
                                         }
-                                        prop:value=move || value.get()>
+                                        prop:value=move || song_value.get()>
                                         view! {
                                             items.clone().into_iter().enumerate().map(|c|{
                                                 let index=c.0 ;
@@ -218,7 +218,7 @@ yyy
                                 })}
 
                                 {move || {
-                                    let c = base64_to_item(value.get()) ;
+                                    let c = base64_to_item(song_value.get()) ;
                                     view! {
                                         <div id="filepick-id">
                                             <label for="songs">Choose a file:</label>
@@ -277,7 +277,7 @@ yyy
                                 //     }
                                 // }}
 
-                                {value}
+                                {song_value}
 
                                 // {move || {
                                 //     log!("{}",value.get()) ;
