@@ -171,8 +171,8 @@ yyy
                                         on:change:target=move |ev| {
                                             set_value.set(ev.target().value().parse().unwrap());
                                             log!("value is {}",value.get()) ;
-                                            let x = value.get() ;
-                                            let i = items.get(i).unwrap().1 ;
+                                            let index = value.get() ;
+                                            let i = items.get(index).unwrap().1 ;
                                             log!("song is {} {}",
                                                 i.author,
                                                 i.title
