@@ -10,10 +10,13 @@ function my_edit(id,value,mode,nblines) {
     return editor ;
 }
 
-function my_set_data(editor,value,mode,nblines) {
+function my_set_data(editor,value,nblines) {
     console.log("set value for editor")
     editor.setValue(value);
     editor.setOption("maxLines", nblines) ;
+}
+
+function my_set_mode(editor,mode) {
     editor.setOption("mode",mode) ;
 }
 

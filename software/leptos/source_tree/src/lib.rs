@@ -300,7 +300,8 @@ extern "C" {
     // `log(..)`
     // #[wasm_bindgen]
     fn my_edit(s: &str, data: &str, nblines: usize) -> JsValue;
-    fn my_set_data(editor: &JsValue, data: &str, mode:&str,nblines: usize) -> JsValue;
+    fn my_set_data(editor: &JsValue, data: &str,nblines: usize) -> JsValue;
+    fn my_set_mode(editor: &JsValue, mode:&str) -> JsValue;
     fn my_get_data(e: &JsValue) -> String;
 }
 
@@ -352,12 +353,13 @@ pub fn EditFile(label: String, url: String, mode:String,editor_id: String) -> im
                                     // let editor=my_edit(id.as_str(),"hello world",10) ;
                                     let editor=my_edit("editor","hello world",10) ;
                                     let editor2=editor.clone() ;
+                                    editor2.my_set_mode(mode) ;
                                     view! {
                                         <button
                                         on:click=move |_| {
                                              let nblines = text.chars().filter(|c|
                                                 *c == '\n').count();
-                                             my_set_data(&editor,&text,mode1.clone().as_str(),nblines) ;
+                                             my_set_data(&editor,&text,nblines) ;
                                                     ()
                                         }>{g_url.get()}</button>
                                         <button
