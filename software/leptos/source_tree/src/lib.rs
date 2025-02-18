@@ -216,7 +216,7 @@ yyy
                                             view! {
                                                 <label> lilypond files</label>
                                                 <ul>
-                                                { c.lilypondfiles.clone().into_iter().map(|f|
+                                                { c.lyfiles.clone().into_iter().map(|f|
                                                     view! { <li>{f.clone()}</li> }
                                                 ).collect::<Vec<_>>()
                                                 }
