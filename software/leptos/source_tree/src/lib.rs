@@ -228,14 +228,10 @@ yyy
                                             log!("value is {}",file_value.get()) ;
                                         }
                                         prop:value=move || file_value.get()>
-                                        {    c.items.clone().into_iter().enumerate().map(|c|{
-                                                let index=c.0 ;
-                                                let c=c.1 ;
-                                                // log!("option {}",&c.author) ;
+                                        {
                                                 view! { <option value={
                                                     c.masterjsonfile.clone()
                                                     }>{c.masterjsonfile.clone()}</option>}
-                                            }).collect::<Vec<_>>()
                                         }
                                         </select>
                                         </div>
