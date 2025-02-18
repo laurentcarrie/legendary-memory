@@ -168,7 +168,7 @@ yyy
                                     <select name="cars" id="cars">
                                         view! {
                                             items.into_iter().map(|c|{
-                                                view! { <option value={c.title.clone()}>{c.title.clone()}</option>}
+                                                view! { <option value={c.title.clone()}>{c.author.clone()} @ {c.title.clone()}</option>}
                                             }).collect::<Vec<_>>()
                                         }
                                     </select>
