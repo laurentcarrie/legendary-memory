@@ -193,18 +193,30 @@ yyy
                                 <div>{move || {
                                             log!("{}",value.get()) ;
                                             // let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
-                                            let data = BASE64_STANDARD.decode("blahb lah");
-                                            let data = String::from_utf8(data).expect("utf8 string");
-                                            let c:SourceTreeItem = serde_json::from_str(data.as_str()).unwrap() ;
-                                            view! {
-                                                <label> master file</label>
-                                                <ul>
-                                                <li>
-                                                  <EditFile label="song.json".to_string() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
-                                                </li>
-                                                </ul>
-                                            } ;
+                                            let data = BASE64_STANDARD.decode("blahb lah").ok() ;
+                                            let data = data.map(String::from_utf8);
+                                            let c:Option<SourceTreeItem> = data.map(|s| serde_json::from_str(s.as_str())) ;
+                                            match c {
+                                                Some(c) =>
+                                                    view! {
+                                                        <label> master file</label>
+                                                        <ul>
+                                                        <li>
+                                                          <EditFile label="song.json".to_string() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
+                                                        </li>
+                                                        </ul>
+                                                    } ,
 
+                                                None =>
+                                                    view! {
+                                                        <label> master file</label>
+                                                        <ul>
+                                                        <li>
+                                                          error
+                                                        </li>
+                                                        </ul>
+                                                    }
+                                                } ;
                                         }}
 
                                 </div>
