@@ -52,6 +52,26 @@
           "section_type": "couplet"
         }
       }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "link": "refrain1",
+          "section_title": "refrain 2",
+          "section_type": "refrain"
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "link": "couplet 1",
+          "section_title": "couplet 4 - instrumental",
+          "section_type": "couplet"
+        }
+      }
     }
   ],
   "wavfiles": [],
