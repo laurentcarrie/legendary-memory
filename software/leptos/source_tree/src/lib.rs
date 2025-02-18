@@ -124,7 +124,7 @@ pub fn App() -> impl IntoView {
         </div>
 
 <div id="container">
-            <div class="splitx rightx">
+            <div class="split right">
         <div class="xxxcentered">
 
                 <pre id="editor">r#"
