@@ -185,8 +185,8 @@ yyy
 
                                 <div>
                                     <label>{value}</label>
-                                    <label>{ items[value].author.clone()}</label>
-                                    <label>{ items[value].title.clone()}</label>
+                                    <label>{ items[*value].author.clone()}</label>
+                                    <label>{ items[*value].title.clone()}</label>
                                 </div>
 
 
