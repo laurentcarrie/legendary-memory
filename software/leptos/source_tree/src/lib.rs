@@ -198,7 +198,7 @@ yyy
                                             view! {
                                         <ul>
                                                 <li>
-                                                    <EditFile label="master json".to_string() url=mjf editor_id="editor".to_string() />
+                                                    <EditFile label="master json".to_string() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
                                                     master.json
                                                 </li>
 
