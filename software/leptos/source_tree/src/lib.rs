@@ -124,7 +124,7 @@ pub fn App() -> impl IntoView {
         </div>
 
 <div id="containerxx">
-            <div class="split right">
+            <div class="splitx rightx">
         <div class="xxxcentered">
 
                 <pre id="editor">r#"
@@ -139,7 +139,7 @@ yyy
 </div>
     </div>
 
-        <div class="split left">
+        <div class="splitx leftx">
         <div class="centered">
                 <div>
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
