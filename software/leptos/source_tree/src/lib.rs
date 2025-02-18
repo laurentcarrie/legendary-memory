@@ -103,6 +103,7 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     let (g_song,w_song) = signal::<Vec<(String,String)>>(vec![]);
+    let (value, set_value) = signal(0i32);
 
     view! {
             <main>
@@ -166,7 +167,11 @@ yyy
                                     <h1> "number of items : " </h1>
                                 <div id="songpick-id">
                                     <label for="cars">Choose a song:</label>
-                                    <select name="song" id="song-select">
+                                    <select name="song" id="song-select"
+                                        on:change:target=move |ev| {
+                                            set_value.set(ev.target().value().parse().unwrap());
+                                        }
+                                        prop:value=move || value.get().to_string()>
                                         view! {
                                             items.into_iter().enumerate().map(|c|{
                                                 let index=c.0 ;
