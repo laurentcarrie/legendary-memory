@@ -188,6 +188,8 @@ yyy
 
                         </ErrorBoundary>
                         <label>{value}</label>
+                        <label>{ items.get(value).unwrap().author}</label>
+                        <label>{ items.get(value).unwrap().title}</label>
                         // <ErrorBoundary fallback>
                         //         <label>books</label>
                         //         <ul>
