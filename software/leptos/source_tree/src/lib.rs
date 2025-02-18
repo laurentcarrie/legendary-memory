@@ -222,7 +222,7 @@ yyy
                                     view! {
                                         <ul>
                                         <li>
-                                            <EditFile label="master json".to_string() url=c.masterjsonfile.clone() editor_id="editor".to_string() />
+                                            <EditFile label="master json".to_string() url=c.masterjsonfile.clone() mode="ace/mode/json" editor_id="editor".to_string() />
                                                     master.json
                                         </li>
                                         </ul>
@@ -239,7 +239,7 @@ yyy
                                         { c.texfiles.clone().into_iter().map(|f| {
                                             view!{
                                         <li>
-                                            <EditFile label="master json".to_string() url=f.clone() editor_id="editor".to_string() />
+                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/latex" editor_id="editor".to_string() />
                                         </li>
                                                 }
                                             }).collect::<Vec<_>>()
@@ -256,7 +256,7 @@ yyy
                                         { c.lyricstexfiles.clone().into_iter().map(|f| {
                                             view!{
                                         <li>
-                                            <EditFile label="master json".to_string() url=f.clone() editor_id="editor".to_string() />
+                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/latex" editor_id="editor".to_string() />
                                         </li>
                                                 }
                                             }).collect::<Vec<_>>()
@@ -273,7 +273,7 @@ yyy
                                         { c.lyfiles.clone().into_iter().map(|f| {
                                             view!{
                                         <li>
-                                            <EditFile label="master json".to_string() url=f.clone() editor_id="editor".to_string() />
+                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/lilypond" editor_id="editor".to_string() />
                                         </li>
                                                 }
                                             }).collect::<Vec<_>>()
@@ -299,13 +299,13 @@ extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
     // #[wasm_bindgen]
-    fn my_edit(s: &str, data: &str, nblines: usize) -> JsValue;
+    fn my_edit(s: &str, data: &str, mode:&str,nblines: usize) -> JsValue;
     fn my_set_data(editor: &JsValue, data: &str, nblines: usize) -> JsValue;
     fn my_get_data(e: &JsValue) -> String;
 }
 
 #[component]
-pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView {
+pub fn EditFile(label: String, url: String, mode:String,editor_id: String) -> impl IntoView {
     let url1=url.clone() ;
     let file_data = AsyncDerived::new_unsync(move || fetch_file(url1.clone()));
 
@@ -349,7 +349,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
                                         }
                                      } ;
                                     // let editor=my_edit(id.as_str(),"hello world",10) ;
-                                    let editor=my_edit("editor","hello world",10) ;
+                                    let editor=my_edit("editor","hello world",mode,10) ;
                                     let editor2=editor.clone() ;
                                     view! {
                                         <button
