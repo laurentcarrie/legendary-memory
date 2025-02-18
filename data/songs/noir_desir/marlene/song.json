@@ -126,6 +126,19 @@
           "section_body": "\\lolocomment{allemand}"
         }
       }
+    },
+    {
+      "id": "outtro",
+      "item": {
+        "Chords": {
+          "section_title": "intro",
+          "section_type": "intro",
+          "rows": [
+            "Am | Am | Am | Am "
+          ],
+          "section_body": "\\lolocomment{ triolets ?}"
+        }
+      }
     }
   ],
   "wavfiles": [],
