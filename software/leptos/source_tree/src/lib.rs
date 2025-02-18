@@ -240,7 +240,7 @@ yyy
                                                     { move ||{
                                                         c.texfiles.clone().into_iter().map(|f|{
                                                             view!{
-                                                            <option value={f.clone()}{f.clone()}</option>
+                                                            <option value={f.clone()}>{f.clone()}</option>
                                                             }}
                                                         ).collect::<Vec<_>>()
                                                     }}
