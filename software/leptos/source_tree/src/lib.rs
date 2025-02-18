@@ -191,7 +191,6 @@ yyy
 
                                     view!{
 
-                                        <label>{song_value}</label><br/>
 
                                         <div id="songpick-id">
                                             <label for="songs">Choose a song:</label>
@@ -217,6 +216,9 @@ yyy
                                         </select>
                                         </div>
                                     }
+
+                                    <label>{song_value}</label><br/>
+
 
                                 })}
 
