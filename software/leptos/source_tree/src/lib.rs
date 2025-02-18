@@ -103,7 +103,7 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     let (g_song,w_song) = signal::<Vec<(String,String)>>(vec![]);
-    let (value, set_value) = signal::<String>("???".to_string());
+    let (value, set_value) = signal::<(usize,String)>((0usize,"???".to_string()));
 
     view! {
             <main>
@@ -253,7 +253,7 @@ pub fn EditFile(label: String, url: String, editor_id: String) -> impl IntoView 
     };
 
     let spreadable = style(("foreground-color", "red"));
-    let (g_url, s_url) = signal::<usize,String>((0,"".to_string())) ;
+    let (g_url, s_url) = signal::<String>("".to_string()) ;
     let url=url.clone() ;
     s_url.set(url) ;
 
