@@ -163,7 +163,8 @@ yyy
                                         x => x
                                     }) ;
                                     // let mut items : Vec<SourceTreeItem> = vec![] ;
-                                    let data : SourceTreeItem = BASE64_STANDARD.encode(serde_json::to_string(items[0]).unwrap() ) ;
+                                    let data : String = BASE64_STANDARD.encode(serde_json::to_string(items[0]).unwrap() )
+                                    * value.set() = data ;
 
 
                                     view!{
