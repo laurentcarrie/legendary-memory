@@ -292,57 +292,57 @@ yyy
                                 //     }
                                 // }}
                                 //
+                                //
+                                // {move || {
+                                //     log!("{}",value.get()) ;
+                                //     let c = base64_to_item(value.get()) ;
+                                //     view! {
+                                //         <ul> tex files
+                                //         { c.texfiles.clone().into_iter().map(|f| {
+                                //             view!{
+                                //         <li>
+                                //             <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/latex".to_string() editor_id="editor".to_string() />
+                                //         </li>
+                                //                 }
+                                //             }).collect::<Vec<_>>()
+                                //             }
+                                //         </ul>
+                                //     }
+                                // }}
 
-                                {move || {
-                                    log!("{}",value.get()) ;
-                                    let c = base64_to_item(value.get()) ;
-                                    view! {
-                                        <ul> tex files
-                                        { c.texfiles.clone().into_iter().map(|f| {
-                                            view!{
-                                        <li>
-                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/latex".to_string() editor_id="editor".to_string() />
-                                        </li>
-                                                }
-                                            }).collect::<Vec<_>>()
-                                            }
-                                        </ul>
-                                    }
-                                }}
+                                // {move || {
+                                //     log!("{}",value.get()) ;
+                                //     let c = base64_to_item(value.get()) ;
+                                //     view! {
+                                //         <ul> tex files for lyrics sections
+                                //         { c.lyricstexfiles.clone().into_iter().map(|f| {
+                                //             view!{
+                                //         <li>
+                                //             <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/latex".to_string() editor_id="editor".to_string() />
+                                //         </li>
+                                //                 }
+                                //             }).collect::<Vec<_>>()
+                                //             }
+                                //         </ul>
+                                //     }
+                                // }}
 
-                                {move || {
-                                    log!("{}",value.get()) ;
-                                    let c = base64_to_item(value.get()) ;
-                                    view! {
-                                        <ul> tex files for lyrics sections
-                                        { c.lyricstexfiles.clone().into_iter().map(|f| {
-                                            view!{
-                                        <li>
-                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/latex".to_string() editor_id="editor".to_string() />
-                                        </li>
-                                                }
-                                            }).collect::<Vec<_>>()
-                                            }
-                                        </ul>
-                                    }
-                                }}
-
-                                {move || {
-                                    log!("{}",value.get()) ;
-                                    let c = base64_to_item(value.get()) ;
-                                    view! {
-                                        <ul> lilypond files
-                                        { c.lyfiles.clone().into_iter().map(|f| {
-                                            view!{
-                                        <li>
-                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/lilypond".to_string() editor_id="editor".to_string() />
-                                        </li>
-                                                }
-                                            }).collect::<Vec<_>>()
-                                            }
-                                        </ul>
-                                    }
-                                }}
+                                // {move || {
+                                //     log!("{}",value.get()) ;
+                                //     let c = base64_to_item(value.get()) ;
+                                //     view! {
+                                //         <ul> lilypond files
+                                //         { c.lyfiles.clone().into_iter().map(|f| {
+                                //             view!{
+                                //         <li>
+                                //             <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/lilypond".to_string() editor_id="editor".to_string() />
+                                //         </li>
+                                //                 }
+                                //             }).collect::<Vec<_>>()
+                                //             }
+                                //         </ul>
+                                //     }
+                                // }}
 
 
                         </ErrorBoundary>
