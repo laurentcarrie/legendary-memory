@@ -299,8 +299,8 @@ extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
     // #[wasm_bindgen]
-    fn my_edit(s: &str, data: &str, mode:&str,nblines: usize) -> JsValue;
-    fn my_set_data(editor: &JsValue, data: &str, nblines: usize) -> JsValue;
+    fn my_edit(s: &str, data: &str, nblines: usize) -> JsValue;
+    fn my_set_data(editor: &JsValue, data: &str, mode:&str,nblines: usize) -> JsValue;
     fn my_get_data(e: &JsValue) -> String;
 }
 
@@ -349,7 +349,7 @@ pub fn EditFile(label: String, url: String, mode:String,editor_id: String) -> im
                                         }
                                      } ;
                                     // let editor=my_edit(id.as_str(),"hello world",10) ;
-                                    let editor=my_edit("editor","hello world",mode.clone().as_str(),10) ;
+                                    let editor=my_edit("editor","hello world",10) ;
                                     let editor2=editor.clone() ;
                                     view! {
                                         <button
