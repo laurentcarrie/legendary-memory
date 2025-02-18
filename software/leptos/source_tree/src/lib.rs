@@ -172,7 +172,7 @@ yyy
                                             set_value.set(ev.target().value().parse().unwrap());
                                             log!("value is {}",value.get()) ;
                                             let index = value.get() as usize;
-                                            let i = items.get(index).unwrap() ;
+                                            let i = &items.get(index).unwrap() ;
                                             log!("song is {} {}",
                                                 i.author,
                                                 i.title
