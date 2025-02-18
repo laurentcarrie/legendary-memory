@@ -139,16 +139,6 @@ yyy
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
                                 <label>songs</label>
-                                <div id="songpick-id">
-                                    <label for="cars">Choose a car:</label>
-                                    <select name="cars" id="cars">
-                                        view! {
-                                            cars.into_iter().map(|c|{
-                                                view! { <option value={c}>{c}</option>}
-                                            }).collect::<Vec<_>>()
-                                        }
-                                    </select>
-                                </div>
                                 {move || Suspend::new(async move {
                                     let w = match world.await {
                                         Ok(w) => {
