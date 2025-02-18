@@ -78,8 +78,9 @@
       "item": {
         "Ref": {
           "link": "couplet1",
-          "section_title": "couplet 4 - cool",
-          "section_type": "couplet"
+          "section_title": "couplet 4",
+          "section_type": "couplet",
+          "section_body": "\\lolocomment{cool}"
         }
       }
     },
@@ -98,7 +99,7 @@
       "item": {
         "Ref": {
           "link": "couplet1",
-          "section_title": "couplet 5 - instrumental",
+          "section_title": "couplet 5",
           "section_type": "couplet",
           "section_body": "\\lolocomment{énervé}"
         }
@@ -109,7 +110,7 @@
       "item": {
         "Ref": {
           "link": "couplet1",
-          "section_title": "couplet 6 - instrumental",
+          "section_title": "couplet 6",
           "section_type": "couplet",
           "section_body": "\\lolocomment{énervé}"
         }
