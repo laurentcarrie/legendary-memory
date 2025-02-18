@@ -147,6 +147,8 @@ yyy
                                         <option value="saab">Saab</option>
                                         <option value="mercedes">Mercedes</option>
                                         <option value="audi">Audi</option>
+                                        view! {
+                                        }
                                     </select>
                                 </div>
                                 <ul>
