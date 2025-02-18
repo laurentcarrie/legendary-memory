@@ -273,7 +273,7 @@ yyy
                                         { c.lyfiles.clone().into_iter().map(|f| {
                                             view!{
                                         <li>
-                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/lilypond" editor_id="editor".to_string() />
+                                            <EditFile label="master json".to_string() url=f.clone() mode="ace/mode/lilypond".to_string() editor_id="editor".to_string() />
                                         </li>
                                                 }
                                             }).collect::<Vec<_>>()
