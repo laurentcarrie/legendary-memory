@@ -1,3 +1,4 @@
+use index_map::IndexMap;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
 use human_sort::compare;
@@ -159,13 +160,14 @@ yyy
                                         },
                                         x => x
                                     }) ;
+                                    let items=items.iter.f({})
                                     // let mut items : Vec<SourceTreeItem> = vec![] ;
 
                                     view!{
                                     <h1> "number of items : " </h1>
-                                <div id="songpick-id2">
-                                    <label for="cars">Choose a car:</label>
-                                    <select name="cars" id="cars">
+                                <div id="songpick-id">
+                                    <label for="cars">Choose a song:</label>
+                                    <select name="song" id="song-select">
                                         view! {
                                             items.into_iter().map(|c|{
                                                 view! { <option value={c.title.clone()}>{c.author.clone()} @ {c.title.clone()}</option>}
