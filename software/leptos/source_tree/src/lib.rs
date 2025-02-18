@@ -148,6 +148,9 @@ yyy
                                         <option value="mercedes">Mercedes</option>
                                         <option value="audi">Audi</option>
                                         view! {
+                                            cars.into_iter(|c|{
+                                                view! { <option value="x">x</option>}
+                                            })
                                         }
                                     </select>
                                 </div>
