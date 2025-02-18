@@ -124,7 +124,7 @@ pub fn App() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     let (g_song,w_song) = signal::<Vec<(String,String)>>(vec![]);
     let (value, set_value) = signal::<String>(BASE64_STANDARD.encode("???")) ;
-    let (file_value, set_file_value) = signal::<String>("???") ;
+    let (file_value, set_file_value) = signal::<String>("???".to_string()) ;
 
 
     view! {
