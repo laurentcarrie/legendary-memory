@@ -42,6 +42,16 @@
           ]
         }
       }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 2",
+          "section_type": "couplet"
+        }
+      }
     }
   ],
   "wavfiles": [],
