@@ -12,6 +12,7 @@ pub struct UserChordSection {
 pub struct UserRef {
     pub section_title: String,
     pub section_body: Option<String>,
+    pub section_type: Option<String>,
     pub link: String,
 }
 
