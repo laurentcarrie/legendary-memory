@@ -191,9 +191,27 @@ yyy
                                     </select>
                                 </div>
 
+                                <div>{move || {
+                                            let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
+                                            let data = String::from_utf8(data).expect("utf8 string");
+                                            let c:SourceTreeItem = serde_json::from_str(data.as_str()).unwrap() ;
+                                            view! {
+                                        <ul>
+                                                <li>
+                                                    <EditFile label="master json".to_string() url=mjf editor_id="editor".to_string() />
+                                                    master.json
+                                                </li>
+
+                                        </ul>
+                                                }}}
+                                </div>
+
+
                                 <div>
                                     <label>{value}</label><br/>
                                     <label>{move || {
+                                            <ul>
+                                            <li>
                                             log!("label value : {}",value.read()) ;
                                             let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
                                             let data = String::from_utf8(data).expect("utf8 string");
