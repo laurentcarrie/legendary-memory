@@ -277,7 +277,7 @@ yyy
                                 //     }
                                 // }}
 
-                                {song_value}
+                                // {song_value}
 
                                 // {move || {
                                 //     log!("{}",value.get()) ;
