@@ -142,12 +142,12 @@ yyy
                                 <label>songs</label>
                                 <div id="songpick-id">
                                     <label for="cars">Choose a car:</label>
-                                    <Select name="cars" id="cars">
-                                        <Option value="volvo">Volvo</Option>
-                                        <Option value="saab">Saab</Option>
-                                        <Option value="mercedes">Mercedes</Option>
-                                        <Option value="audi">Audi</Option>
-                                    </Select>
+                                    <select name="cars" id="cars">
+                                        <option value="volvo">Volvo</option>
+                                        <option value="saab">Saab</option>
+                                        <option value="mercedes">Mercedes</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
                                 </div>
                                 <ul>
                                 {move || Suspend::new(async move {
