@@ -140,15 +140,7 @@ yyy
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
                                 <label>songs</label>
-                                <div id="songpick-id">
-                                        <label for="cars">Choose a car:</label>
-                                        <Select name="cars" id="cars">
-                                          <option value="volvo">Volvo</option>
-                                          <option value="saab">Saab</option>
-                                          <option value="mercedes">Mercedes</option>
-                                          <option value="audi">Audi</option>
-                                        </Select>
-                                    </div>
+
                                 <ul>
                                 {move || Suspend::new(async move {
                                     let w = match world.await {
