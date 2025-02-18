@@ -1,5 +1,5 @@
 {
-  "tempo": 80,
+  "tempo": 134,
   "title": "Marlene",
   "author": "Noir Desir",
   "texfiles": [],
@@ -12,7 +12,7 @@
           "section_title": "intro",
           "section_type": "intro",
           "rows": [
-            "Am Em | F Am "
+            "Am E | F Am "
           ]
         }
       }
@@ -24,7 +24,7 @@
           "section_title": "couplet 1",
           "section_type": "couplet",
           "rows": [
-            "Am | Em | F G | Am | x2"
+            "Am | E | F G | Am | x2"
           ],
           "section_body": "\\lolocomment{en fait F G Am Am}"
         }
