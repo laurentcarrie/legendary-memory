@@ -148,7 +148,7 @@ yyy
                                         <option value="mercedes">Mercedes</option>
                                         <option value="audi">Audi</option>
                                         view! {
-                                            cars.into_iter.map(|c|{
+                                            cars.into_iter().map(|c|{
                                                 view! { <option value="x">x</option>}
                                             }).collect::<Vec<_>>()
                                         }
