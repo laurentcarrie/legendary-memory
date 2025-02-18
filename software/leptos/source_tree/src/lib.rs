@@ -150,7 +150,6 @@ yyy
                                         }
                                     </select>
                                 </div>
-                                <ul>
                                 {move || Suspend::new(async move {
                                     let w = match world.await {
                                         Ok(w) => {
@@ -162,6 +161,7 @@ yyy
                                             default_world()
                                         }
                                     };
+
                                     // let w = &w.items.iter().map(|w| (w.clone(),signal( false))).collect::<Vec<_>>() ;
                                     let mut items = w.items ;
                                     items.sort_by(|a,b| match compare(a.author.as_str(),b.author.as_str()) {
@@ -176,83 +176,7 @@ yyy
                                     <h1> "number of items : " </h1>
                                     };
 
-
-                                    // let aedit = my_edit("editor") ;
-                                    items.into_iter().map(|i| {
-                                        // let i=&(p.0) ; // item
-                                        // let (expanded,set_expanded)=&(p.1) ; // signal
-                                        // let expanded=&(p.1.0) ;
-                                        let (expanded,set_expanded) = signal(false) ;
-                                        let mjf = i.masterjsonfile.clone() ;
-                                        view! {
-                                            <li>
-                                            <button on:click=move |_| {
-                                                *set_expanded.write() = ! expanded.get()
-                                            }>
-                                            {i.author.clone()} / {i.title.clone()}
-                                            </button>
-                                            <ul style:display=move || if expanded.get() { "block" } else { "none" }>
-                                                <li>
-                                                    <EditFile label="master json".to_string() url=mjf editor_id="editor".to_string() />
-                                                    master.json
-                                                </li>
-
-                                                <li>tex files
-                                                    <ul>
-                                                    { i.texfiles.clone().into_iter().map(|f| {
-                                                        view! {
-                                                            <li>
-                                                             <EditFile label=f.clone() url=f.clone() editor_id="editor".to_string() />
-                                                            {f}
-                                                            </li>
-                                                        }
-                                                        }).collect::<Vec<_>>()
-                                                    }
-                                                    </ul>
-                                                </li>
-
-                                                <li>lyrics tex files
-                                                    <ul>
-                                                    { i.lyricstexfiles.clone().into_iter().map(|f| {
-                                                        view! {
-                                                            <li>
-                                                             <EditFile label=f.clone() url=f.clone() editor_id="editor".to_string() />
-                                                            {f}
-                                                            </li>
-                                                        }
-                                                        }).collect::<Vec<_>>()
-                                                    }
-                                                    </ul>
-                                                </li>
-
-                                                <li>lilypond files
-                                                    <ul>
-                                                    { i.lyfiles.clone().into_iter().map(|f| {
-                                                        view! {
-                                                            <li>
-                                                             <EditFile label=f.clone() url=f.clone() editor_id="editor".to_string() />
-                                                            {f}
-                                                            </li>
-                                                        }
-                                                        }).collect::<Vec<_>>()
-                                                    }
-                                                    </ul>
-                                                </li>
-
-                                            </ul>
-                                        </li>
-        }
-                                    }).collect::<Vec<_>>()
-                                    // w.songs.into_iter().map(|s| {
-                                    //                 view! {
-                                    //                     <li>
-                                    //                         {s.path.clone()}
-                                    //                     </li>
-                                    //                 }
-                                    //             })
-                                    //             .collect::<Vec<_>>()
                                 })}
-                                </ul>
 
                         </ErrorBoundary>
                         // <ErrorBoundary fallback>
