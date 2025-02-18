@@ -168,7 +168,9 @@ yyy
                                     <label for="cars">Choose a song:</label>
                                     <select name="song" id="song-select">
                                         view! {
-                                            items.into_iter().map(|c|{
+                                            items.into_iter().enumerate().map(|c|{
+                                                let index=c.0 ;
+                                                let c=c.1 ;
                                                 view! { <option value={c.title.clone()}>{c.author.clone()} @ {c.title.clone()}</option>}
                                             }).collect::<Vec<_>>()
                                         }
