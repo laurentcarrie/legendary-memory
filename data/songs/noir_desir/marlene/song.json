@@ -82,6 +82,16 @@
           "section_type": "couplet"
         }
       }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "link": "refrain1",
+          "section_title": "refrain 3",
+          "section_type": "refrain"
+        }
+      }
     }
   ],
   "wavfiles": [],
