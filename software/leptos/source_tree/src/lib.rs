@@ -222,7 +222,7 @@ yyy
                                     view! {
                                         <ul>
                                         <li>
-                                            <EditFile label="master json".to_string() url=c.masterjsonfile.clone() mode="ace/mode/json" editor_id="editor".to_string() />
+                                            <EditFile label="master json".to_string() url=c.masterjsonfile.clone() mode="ace/mode/json".to_string() editor_id="editor".to_string() />
                                                     master.json
                                         </li>
                                         </ul>
