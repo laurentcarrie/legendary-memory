@@ -174,7 +174,6 @@ yyy
 
                                     view!{
                                     <h1> "number of items : " </h1>
-                                    };
                                 <div id="songpick-id2">
                                     <label for="cars">Choose a car:</label>
                                     <select name="cars" id="cars">
@@ -185,6 +184,7 @@ yyy
                                         }
                                     </select>
                                 </div>
+                                        }
 
                                 })}
 
