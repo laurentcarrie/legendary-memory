@@ -205,7 +205,11 @@ yyy
 
                                             view! {
                                                 <label> additional tex files</label>
-                                            }
+                                                <ul>
+                                                { c.texfiles.into_iter.map(|f|
+                                                    view! { <li>{f.clone()}</li> })
+                                                }
+                                            };
 
                                         }}
                                 </div>
