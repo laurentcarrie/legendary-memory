@@ -12,7 +12,7 @@ use wasm_bindgen::prelude::*;
 pub mod input_model;
 
 pub mod protocol;
-use protocol::model::answer::{Choice, EChoice, SourceTree};
+use protocol::model::answer::{Choice, EChoice, SourceTree,SourceTreeItem};
 use protocol::model::request as request ;
 
 fn default_world() -> SourceTree {
