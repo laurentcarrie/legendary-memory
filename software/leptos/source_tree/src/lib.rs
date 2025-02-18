@@ -123,7 +123,7 @@ pub fn App() -> impl IntoView {
 </select>
         </div>
 
-<div id="containerxx">
+<div id="container">
             <div class="splitx rightx">
         <div class="xxxcentered">
 
