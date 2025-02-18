@@ -353,7 +353,7 @@ pub fn EditFile(label: String, url: String, mode:String,editor_id: String) -> im
                                     // let editor=my_edit(id.as_str(),"hello world",10) ;
                                     let editor=my_edit("editor","hello world",10) ;
                                     let editor2=editor.clone() ;
-                                    editor2.my_set_mode(mode) ;
+                                    my_set_mode(editor2,mode) ;
                                     view! {
                                         <button
                                         on:click=move |_| {
