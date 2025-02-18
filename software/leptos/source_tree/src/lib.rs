@@ -349,7 +349,7 @@ pub fn EditFile(label: String, url: String, mode:String,editor_id: String) -> im
                                         }
                                      } ;
                                     // let editor=my_edit(id.as_str(),"hello world",10) ;
-                                    let editor=my_edit("editor","hello world",mode.as_str(),10) ;
+                                    let editor=my_edit("editor","hello world",mode.clone().as_str(),10) ;
                                     let editor2=editor.clone() ;
                                     view! {
                                         <button
