@@ -171,7 +171,7 @@ yyy
                                             items.into_iter().enumerate().map(|c|{
                                                 let index=c.0 ;
                                                 let c=c.1 ;
-                                                view! { <option value={c.title.clone()}>{c.author.clone()} @ {c.title.clone()}</option>}
+                                                view! { <option value={index}>{c.author.clone()} @ {c.title.clone()}</option>}
                                             }).collect::<Vec<_>>()
                                         }
                                     </select>
