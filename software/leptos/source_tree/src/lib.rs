@@ -21,6 +21,26 @@ fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
 }
 
+fn base64_to_item(input:String) -> SourceTreeItem {
+    let data : Option<Vec<u8>> = BASE64_STANDARD.decode(input.as_str()).ok() ;
+    let data : Option<String> = data.map(|c| String::from_utf8(c).ok()).flatten() ;
+    let c:Option<SourceTreeItem> = data.map(|s| serde_json::from_str(s.as_str()).ok()).flatten();
+    match c {
+        Some(c) => c,
+        None => {
+            log!("could not parse input string to SourceTreeItem : {}",&input) ;
+            SourceTreeItem{
+                title:"error".to_string(),
+                author:"error".to_string(),
+                masterjsonfile: "error".to_string(),
+                texfiles:vec![],
+                lyricstexfiles:vec![],
+                lyfiles:vec![]
+            }
+        }
+    }
+}
+
 async fn fetch_world() -> Result<SourceTree> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
@@ -195,10 +215,7 @@ yyy
 
                                 <div>{move || {
                                             log!("{}",value.get()) ;
-                                            // let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
-                                            let data : Option<Vec<u8>> = BASE64_STANDARD.decode("blahb lah").ok() ;
-                                            let data : Option<String> = data.map(|c| String::from_utf8(c).ok()).flatten() ;
-                                            let c:Option<SourceTreeItem> = data.map(|s| serde_json::from_str(s.as_str()).ok()).flatten();
+                                            let c:SourceTreeItem = base64_to_item(value.get()) ;
                                             match c {
                                                 Some(c) =>
                                                     view! {
