@@ -183,12 +183,11 @@ yyy
                                     </select>
                                 </div>
 
-                                        <div>
-
-                                                                <label>{value}</label>
-                        <label>{ items.get(value).unwrap().author}</label>
-                        <label>{ items.get(value).unwrap().title}</label>
-                                        </div>
+                                <div>
+                                    <label>{value}</label>
+                                    <label>{ items[value].author}</label>
+                                    <label>{ items[value].title}</label>
+                                </div>
 
 
                                         }
