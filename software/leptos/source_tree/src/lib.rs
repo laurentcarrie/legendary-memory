@@ -229,7 +229,7 @@ yyy
                                     } ;
                                     view! {
                                         <ul>
-                                        {move || { c.texfiles.into_iter().map(|f|{
+                                        {move || { c.texfiles.clone().into_iter().map(|f|{
                                             view! {
                                                 <li>
                                                     <EditFile label="master json".to_string() url=f.clone() editor_id="editor".to_string() />
