@@ -212,7 +212,7 @@ yyy
                                                         <label> master file</label>
                                                         <ul>
                                                         <li>
-                                                          <EditFile label="song.json".to_string() url="" editor_id="editor".to_string() />
+                                                          <EditFile label="song.json".to_string() url="".to_string() editor_id="editor".to_string() />
                                                         </li>
                                                         </ul>
                                                     }
