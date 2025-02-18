@@ -179,7 +179,7 @@ yyy
                                                 let index=c.0 ;
                                                 let c=c.1 ;
                                                 view! { <option value={
-                                                    let data = BASE64_STANDARD.encode(c.author.clone() ) ;
+                                                    let data = BASE64_STANDARD.encode(c.clone() ) ;
                                                     data
                                                     }>{c.author.clone()} @ {c.title.clone()}</option>}
                                             }).collect::<Vec<_>>()
@@ -193,6 +193,7 @@ yyy
                                             log!("label value : {}",value.read()) ;
                                             let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
                                             let data = String::from_utf8(data).expect("utf8 string");
+                                            let c:SourceTreeItem = serde_json::from_str(data).unwrap() ;
                                             data
                                         }}</label><br/>
                                 </div>
