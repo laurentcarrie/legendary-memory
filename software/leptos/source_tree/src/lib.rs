@@ -147,7 +147,7 @@ yyy
                                           <option value="saab">Saab</option>
                                           <option value="mercedes">Mercedes</option>
                                           <option value="audi">Audi</option>
-                                        </select>
+                                        </Select>
                                     </div>
                                 <ul>
                                 {move || Suspend::new(async move {
