@@ -279,20 +279,19 @@ yyy
 
 
 
-                                {move || {
-                                    log!("{}",value.get()) ;
-                                    let c = base64_to_item(value.get()) ;
-                                    view! {
-                                        <ul>
-                                        json master file
-                                        <li>
-                                            <EditFile label="master json".to_string() url=c.masterjsonfile.clone() mode="ace/mode/json".to_string() editor_id="editor".to_string() />
-                                        </li>
-                                        </ul>
-                                    }
-                                }}
-                                            // let data = BASE64_STANDARD.decode(value.get()).expect("valid base64 string");
-
+                                // {move || {
+                                //     log!("{}",value.get()) ;
+                                //     let c = base64_to_item(value.get()) ;
+                                //     view! {
+                                //         <ul>
+                                //         json master file
+                                //         <li>
+                                //             <EditFile label="master json".to_string() url=c.masterjsonfile.clone() mode="ace/mode/json".to_string() editor_id="editor".to_string() />
+                                //         </li>
+                                //         </ul>
+                                //     }
+                                // }}
+                                //
 
                                 {move || {
                                     log!("{}",value.get()) ;
