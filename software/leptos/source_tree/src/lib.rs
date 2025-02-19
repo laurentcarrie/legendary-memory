@@ -149,7 +149,7 @@ pub fn App() -> impl IntoView {
                                         log!("{:?}",e) ;
                                         e.to_string()
                                     }
-                                } ;}}
+                                } ;})}
                             let editor = my_edit("editor","sss",10) ;
                             p
                         }
