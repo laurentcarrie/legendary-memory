@@ -124,12 +124,12 @@ pub fn App() -> impl IntoView {
 
     Effect::new(move |prev_value| {
         // first, access the signal’s value and convert it to a string
-        let text = file_value.get().clone() ;
+        let path = file_value.get().clone() ;
 
         match prev_value {
             None=>log!("none"),
             Some(s) => {
-                if s == text {
+                if s == path {
                     log!("no change")
                 } else {
                     log!("change") ;
@@ -137,7 +137,21 @@ pub fn App() -> impl IntoView {
                     let p = match document.get_element_by_id("xxx") {
                         Some(p) => {
                             log!("found document xxx") ;
-                            let editor = my_edit("editor","sss",10) ;
+                            let file_data = AsyncDerived::new_unsync(move || fetch_file(url1.clone()));
+                            {move || Suspend::new(async move {
+                                let text = match file_data.await {
+                                    Ok(text) => {
+                                        log!("found text, len is : {} ",text.len()) ;
+                                        text
+                                    } ,
+                                    Err(e) => {
+                                        log!("{:?}",e) ;
+                                        e.to_string()
+                                    }
+                                } ;
+                                // let editor=my_edit(id.as_str(),"hello world",10) ;
+
+                                let editor = my_edit("editor","sss",10) ;
                             p
                         }
                         None => {
