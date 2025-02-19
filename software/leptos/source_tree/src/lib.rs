@@ -120,6 +120,23 @@ pub fn App() -> impl IntoView {
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???")) ;
     let (file_value, set_file_value) = signal::<String>("???".to_string()) ;
 
+    let document = leptos::document();
+    let p = document.create_element("p").unwrap();
+
+
+    Effect::new(move |prev_value| {
+        // first, access the signal’s value and convert it to a string
+        let text = file_value.get().to_string();
+
+        // if this is different from the previous value, update the node
+        if prev_value != Some(text) {
+            p.set_text_content(&text);
+        }
+
+        // return this value so we can memoize the next update
+        text
+    });
+
 
     view! {
             <main>
