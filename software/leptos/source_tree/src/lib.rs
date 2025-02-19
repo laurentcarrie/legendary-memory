@@ -130,7 +130,7 @@ pub fn App() -> impl IntoView {
 
         // if this is different from the previous value, update the node
         if prev_value != Some(text) {
-            p.set_text_content(Some(&text));
+            p.set_text_content(Some(text));
         }
 
         // return this value so we can memoize the next update
