@@ -17,21 +17,10 @@ use protocol::model::answer::{Choice, EChoice, SourceTree,SourceTreeItem};
 use protocol::model::request as request ;
 
 pub mod util ;
-use util::{base64_to_item,default_world,fetch_world,save_file} ;
+use util::{base64_to_item,default_world,fetch_world,save_file,fetch_file} ;
 
 
 
-async fn fetch_file(path: String) -> Result<String> {
-    log!("fetch file {}",path) ;
-    gloo_timers::future::TimeoutFuture::new(1000).await;
-    // make the request
-    let data = reqwasm::http::Request::get(path.as_str())
-        .send()
-        .await?
-        .text()
-        .await?;
-    Ok(data)
-}
 
 #[component]
 pub fn App() -> impl IntoView {
