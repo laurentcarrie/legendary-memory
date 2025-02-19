@@ -31,7 +31,7 @@ pub fn base64_to_item(input:String) -> SourceTreeItem {
 
 
 // get all songs
-async fn fetch_world() -> Result<SourceTree> {
+pub async fn fetch_world() -> Result<SourceTree> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let world = reqwasm::http::Request::get(&format!(
