@@ -120,7 +120,7 @@ pub fn App() -> impl IntoView {
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???")) ;
     let (file_value, set_file_value) = signal::<String>("???".to_string()) ;
 
-    let document = leptos::document();
+    let document = document();
     let p = document.create_element("p").unwrap();
 
 
