@@ -159,7 +159,7 @@ pub fn App() -> impl IntoView {
         // }
 
         // return this value so we can memoize the next update
-        text
+        path
     });
 
 
