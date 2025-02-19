@@ -138,7 +138,6 @@ pub fn App() -> impl IntoView {
                         Some(p) => {
                             log!("found document xxx") ;
                             let p2=path.clone() ;
-                            let file_data = AsyncDerived::new_unsync(move || fetch_file(p2.clone()));
                         }
                         None => {
                             log!("DID NOT find document xxx") ;
@@ -146,6 +145,7 @@ pub fn App() -> impl IntoView {
 
                         }
                     } ;
+                    let file_data = AsyncDerived::new_unsync(move || fetch_file(p2.clone()));
                     let p2=path.clone() ;
                     p.set_text_content(Some(p2.as_str())) ;
                 }
