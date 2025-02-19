@@ -128,11 +128,19 @@ pub fn App() -> impl IntoView {
         // first, access the signal’s value and convert it to a string
         let text = file_value.get().clone() ;
 
-        // if this is different from the previous value, update the node
-        if prev_value != Some(&text) {
-            log!("change") ;
-        //     p.set_text_content(Some(text.as_str()));
+        match prev_value {
+            None=>log!("none"),
+            Some(s) => {
+                if s == text {
+                    log!("no change")
+                } else { log!("change")}
+            }
         }
+        // if this is different from the previous value, update the node
+        // if prev_value != Some(text) {
+        //     log!("change") ;
+        //     p.set_text_content(Some(text.as_str()));
+        // }
 
         // return this value so we can memoize the next update
         text
