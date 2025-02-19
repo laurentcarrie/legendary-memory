@@ -137,7 +137,7 @@ pub fn App() -> impl IntoView {
                     let p = match document.get_element_by_id("xxx") {
                         Some(p) => {
                             log!("found document xxx") ;
-                            let file_data = AsyncDerived::new_unsync(move || fetch_file(&path.clone()));
+                            let file_data = AsyncDerived::new_unsync(move || fetch_file(path.clone()));
                             let editor = my_edit("editor","sss",10) ;
                             p
                         }
@@ -147,8 +147,8 @@ pub fn App() -> impl IntoView {
 
                         }
                     } ;
-
-                    p.set_text_content(Some(path.clone().as_str())) ;
+                    let p2=path.clone() ;
+                    p.set_text_content(Some(p2.as_str())) ;
                 }
             }
         }
