@@ -117,7 +117,6 @@ pub fn App() -> impl IntoView {
     };
 
     let spreadable = style(("foreground-color", "red"));
-    let (g_song,w_song) = signal::<Vec<(String,String)>>(vec![]);
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???")) ;
     let (file_value, set_file_value) = signal::<String>("???".to_string()) ;
 
@@ -353,82 +352,4 @@ extern "C" {
     fn my_set_data(editor: &JsValue, data: &str,nblines: usize) -> JsValue;
     fn my_set_mode(editor: &JsValue, mode:&str) -> JsValue;
     fn my_get_data(e: &JsValue) -> String;
-}
-
-#[component]
-pub fn EditFile(label: String, url: String, mode:String,editor_id: String) -> impl IntoView {
-    let url1=url.clone() ;
-    let mode1=mode.clone() ;
-    let file_data = AsyncDerived::new_unsync(move || fetch_file(url1.clone()));
-
-    let fallback = move |errors: ArcRwSignal<Errors>| {
-        let error_list = move || {
-            errors.with(|errors| {
-                errors
-                    .iter()
-                    .map(|(_, e)| view! { <li>{e.to_string()}</li> })
-                    .collect::<Vec<_>>()
-            })
-        };
-
-        view! {
-            <div class="error">
-                <h2>"Error"</h2>
-                <ul>{error_list}</ul>
-            </div>
-        }
-    };
-
-    let spreadable = style(("foreground-color", "red"));
-    let (g_url, s_url) = signal::<String>("".to_string()) ;
-    let url=url.clone() ;
-    s_url.set(url) ;
-
-    view! {
-                <Script src="/src-noconflict/ace.js"></Script>
-                <Script src="/my-ace.js"> </Script>
-                       <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
-                        <ErrorBoundary fallback>
-                                {move || Suspend::new(async move {
-                                    let text = match file_data.await {
-                                        Ok(text) => {
-                                             log!("found text, len is : {} ",text.len()) ;
-                                            text
-                                        } ,
-                                        Err(e) => {
-                                             log!("{:?}",e) ;
-                                            e.to_string()
-                                        }
-                                     } ;
-                                    // let editor=my_edit(id.as_str(),"hello world",10) ;
-                                    let editor=my_edit("editor","hello world","xx",10) ;
-                                    let editor2=editor.clone() ;
-                                    // my_set_mode(&editor2,mode.as_str()) ;
-                                    view! {
-                                        <button
-                                        on:click=move |_| {
-                                             let nblines = text.chars().filter(|c|
-                                                *c == '\n').count();
-                                             my_set_data(&editor,&text,nblines) ;
-                                                    ()
-                                        }>{g_url.get()}</button>
-                                        <button
-                                        on:click=move |_| {
-                                             let data=my_get_data(&editor2) ;
-                                            log!("going to save file") ;
-                                            let result = AsyncDerived::new_unsync(move ||  save_file(g_url.get(),data.clone())) ;
-                                            log!("result : {:?}",result) ;
-                                                    ()
-                                        }>save</button>
-
-                                    }
-                                    })}
-
-
-
-
-                        </ErrorBoundary>
-                    </Transition>
-
-            }
 }
