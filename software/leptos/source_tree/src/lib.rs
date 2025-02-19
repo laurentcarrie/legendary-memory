@@ -129,9 +129,9 @@ pub fn App() -> impl IntoView {
         let text = file_value.get().clone() ;
 
         // if this is different from the previous value, update the node
-        if prev_value != Some(&text) {
-            p.set_text_content(Some(text.as_str()));
-        }
+        // if prev_value != Some(text) {
+        //     p.set_text_content(Some(text.as_str()));
+        // }
 
         // return this value so we can memoize the next update
         text
