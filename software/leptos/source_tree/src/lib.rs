@@ -120,10 +120,10 @@ pub fn App() -> impl IntoView {
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???")) ;
     let (file_value, set_file_value) = signal::<String>("???".to_string()) ;
 
-    let async_data = LocalResource::new(move || fetch_file(file_value.get())) ;
+    let async_file_data = LocalResource::new(move || fetch_file(file_value.get())) ;
 
-    let async_result = move || {
-        async_data
+    let async_file_result = move || {
+        async_file_data
             .get()
             .as_deref()
             .map(|value| {
@@ -143,6 +143,7 @@ pub fn App() -> impl IntoView {
     };
     view!{
     }
+
 
     // Effect::new(move |prev_value| {
     //     // first, access the signal’s value and convert it to a string
@@ -209,7 +210,7 @@ yyy
                 </div>
             </div>
 
-        <p><pre>{async_result}</pre></p>
+        <p><pre>{async_file_result}</pre></p>
 
 
             <div class="splitx leftx">
@@ -247,9 +248,11 @@ yyy
                                             <label for="songs">Choose a song:</label>
                                             <select name="song" id="song-select"
                                         on:change:target=move |ev| {
-                                            log!("on change") ;
+                                            log!("on change song") ;
                                             set_song_value.set(ev.target().value().parse().expect("set_value"));
-                                            log!("value is {}",song_value.get()) ;
+                                            log!("song value is {}",song_value.get()) ;
+                                            // let c  = base64_to_item(song_value.get()) ;
+                                            // log!("after change, pointing to ")
                                         }
                                         prop:value=move || song_value.get()>
                                         view! {
