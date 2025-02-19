@@ -137,6 +137,7 @@ pub fn App() -> impl IntoView {
                     let p = match document.get_element_by_id("xxx") {
                         Some(p) => {
                             log!("found document xxx") ;
+                            p
                         }
                         None => {
                             log!("DID NOT find document xxx") ;
