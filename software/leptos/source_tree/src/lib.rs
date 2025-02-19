@@ -134,7 +134,7 @@ pub fn App() -> impl IntoView {
                     Ok(t) => {
                         let editor = my_edit("editor","sss","ace/mode/json",10) ;
                         my_set_data(&editor,t.clone().as_str(),30) ;
-                        t.clone()
+                        format!("file {}",t.clone())
                     },
                     Err(e) => format!("Erreur {:?}",e)
                 }
@@ -209,6 +209,9 @@ yyy
                 "#</pre>
                 </div>
             </div>
+
+        <p><pre>{async_result}</pre></p>
+
 
             <div class="splitx leftx">
                 <div class="centered">
