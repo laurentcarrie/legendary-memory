@@ -148,7 +148,7 @@ pub fn App() -> impl IntoView {
                         }
                     } ;
 
-                    p.set_text_content(Some(text.as_str())) ;
+                    p.set_text_content(Some(path.as_str())) ;
                 }
             }
         }
