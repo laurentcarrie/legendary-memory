@@ -264,7 +264,9 @@ yyy
                                 {move || {
                                     view!{
                                         <label>blah</label><br/>
-                                      <label>{song_value}</label><br/>
+                                      <label>{
+                                            log!("current song : {}",song_value.get())}
+                                        </label><br/>
                                     }
                                 }}
         </div>
