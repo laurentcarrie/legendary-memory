@@ -66,7 +66,7 @@ pub async fn save_file(path: String,content:String) -> Result<()> {
     let request= request::Choice{choice:choice} ;
     let json_string = serde_json::to_string(&request)? ;
     let b64= BASE64_STANDARD.encode(&json_string) ;
-    let _data = reqwasm::http::Request::get(format!("/scripts/request.sh?request={}",b64).as_str())
+    let _ = reqwasm::http::Request::get(format!("/scripts/request.sh?request={}",b64).as_str())
         .send()
         .await?
         .text()
