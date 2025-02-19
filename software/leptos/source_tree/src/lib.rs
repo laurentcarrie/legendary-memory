@@ -133,10 +133,12 @@ pub fn App() -> impl IntoView {
             Some(s) => {
                 if s == text {
                     log!("no change")
-                } else { log!("change")}
+                } else {
+                    log!("change") ;
+                        p.set_text_content(Some(text.as_str())) ;
+                }
             }
         }
-        p.set_text_content(Some("xxx")) ;
         // if this is different from the previous value, update the node
         // if prev_value != Some(text) {
         //     log!("change") ;
