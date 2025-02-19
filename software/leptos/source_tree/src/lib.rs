@@ -128,7 +128,7 @@ pub fn App() -> impl IntoView {
             .as_deref()
             .map(|value| format!("Server returned {value:?}"))
             // This loading state will only show before the first load
-            .unwrap_or_else(|| "Loading...".into())
+            .unwrap_or_else(|| "XXXXX Loading...".into())
     };
 
     Effect::new(move |prev_value| {
