@@ -156,9 +156,7 @@ pub fn App() -> impl IntoView {
                                     })}
                                 </ErrorBoundary>
                                 </Transition>
-                                }
-                            let editor = my_edit("editor","sss",10) ;
-                            p
+                            }
                         }
                         None => {
                             log!("DID NOT find document xxx") ;
