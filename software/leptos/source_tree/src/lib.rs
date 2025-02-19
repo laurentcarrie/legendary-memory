@@ -120,6 +120,7 @@ pub fn App() -> impl IntoView {
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???")) ;
     let (file_value, set_file_value) = signal::<String>("???".to_string()) ;
 
+    let async_data = LocalResource::new(move || fetch_file(file_value.get())) ;
 
 
     Effect::new(move |prev_value| {
@@ -147,7 +148,6 @@ pub fn App() -> impl IntoView {
                     } ;
                     let p2=path.clone() ;
                     let file_data = AsyncDerived::new_unsync(move || fetch_file(p2.clone()));
-                    let x = file_data.await ;
                     let p2=path.clone() ;
                     p.set_text_content(Some(p2.as_str())) ;
                 }
