@@ -183,10 +183,7 @@ yyy
                                         }
                                         prop:value=move || song_value.get()>
                                         view! {
-                                            items.clone().into_iter().enumerate().map(|c|{
-                                                let index=c.0 ;
-                                                let c=c.1 ;
-                                                // log!("option {}",&c.author) ;
+                                            items.clone().into_iter().map(|c|{
                                                 view! { <option value={
                                                     log!("encode") ;
                                                     let data = BASE64_STANDARD.encode(serde_json::to_string(&c).expect("base64") ) ;
