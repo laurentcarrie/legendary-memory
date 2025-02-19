@@ -153,7 +153,7 @@ pub fn App() -> impl IntoView {
                                                 e.to_string()
                                             }
                                         } ;
-                                    })} ;
+                                    })}
                                 </ErrorBoundary>
                                 </Transition>
                                 }
