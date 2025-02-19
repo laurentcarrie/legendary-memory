@@ -248,6 +248,34 @@ yyy
                                                     </div>
                                                 }
                                             };
+
+                                            view! {
+                                                <Script src="/src-noconflict/ace.js"></Script>
+                                                <Script src="/my-ace.js"> </Script>
+                                               <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
+                                                <ErrorBoundary fallback>
+                                                    {move || Suspend::new(async move {
+                                                        let text = match file_data.await {
+                                                            Ok(text) => {
+                                                                 log!("found text, len is : {} ",text.len()) ;
+                                                                text
+                                                            } ,
+                                                            Err(e) => {
+                                                                 log!("{:?}",e) ;
+                                                                e.to_string()
+                                                            }
+                                                         } ;
+                                                    // let editor=my_edit(id.as_str(),"hello world",10) ;
+                                                    let editor=my_edit("editor","hello world",10) ;
+                                                    let editor2=editor.clone() ;
+                                                    // my_set_mode(&editor2,mode.as_str()) ;
+                                                     let nblines = text.chars().filter(|c|
+                                                            *c == '\n').count();
+                                                     my_set_data(&editor,&text,nblines) ;
+                                                    })}
+                                            </ErrorBoundary>
+                                            </Transition>
+                                        } // view!
                                         } // on:change
                                         prop:value=move || file_value.get()>
                                         {
