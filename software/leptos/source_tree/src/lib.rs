@@ -60,7 +60,7 @@ pub fn App() -> impl IntoView {
                         let nblines = t.chars().filter(|c| *c == '\n').count();
                         let editor = my_edit("editor","sss","ace/mode/json",nblines) ;
                         my_set_data(&editor,t.clone().as_str(),30) ;
-                        ""
+                        "".to_string()
                     },
                     Err(e) => format!("Erreur {:?}",e)
                 }
