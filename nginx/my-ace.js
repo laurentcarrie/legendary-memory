@@ -6,7 +6,7 @@ function my_edit(id,value,mode,nblines) {
     // console.log("set value") ;
     // editor.setValue(value);
     // editor.resize() ;
-    // editor.setOption("maxLines", nblines) ;
+    editor.setOption("maxLines", nblines) ;
     return editor ;
 }
 

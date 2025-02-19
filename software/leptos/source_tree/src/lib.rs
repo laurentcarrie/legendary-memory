@@ -132,7 +132,7 @@ pub fn App() -> impl IntoView {
                 // format!("Server returned {value:?}")
                 match value {
                     Ok(t) => {
-                        // let editor = my_edit("editor","sss",10) ;
+                        let editor = my_edit("editor","sss","ace/mode/json",10) ;
                         // my_set_data(&editor,t.clone().as_str(),30) ;
                         t.clone()
                     },
@@ -349,7 +349,7 @@ extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
     // #[wasm_bindgen]
-    fn my_edit(s: &str, data: &str, nblines: usize) -> JsValue;
+    fn my_edit(s: &str, data: &str, mode:&str,nblines: usize) -> JsValue;
     fn my_set_data(editor: &JsValue, data: &str,nblines: usize) -> JsValue;
     fn my_set_mode(editor: &JsValue, mode:&str) -> JsValue;
     fn my_get_data(e: &JsValue) -> String;
