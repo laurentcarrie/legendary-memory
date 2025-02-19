@@ -229,6 +229,9 @@ yyy
                                             log!("on change") ;
                                             set_file_value.set(ev.target().value().parse().expect("set_value"));
                                             log!("value is {}",file_value.get()) ;
+                                            let url=file_value.get() ;
+                                            let file_data = AsyncDerived::new_unsync(move || fetch_file(url.clone()));
+
                                         }
                                         prop:value=move || file_value.get()>
                                         {
