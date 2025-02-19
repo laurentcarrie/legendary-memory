@@ -95,12 +95,6 @@ async fn fetch_file(path: String) -> Result<String> {
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
-
-
-    // we use new_unsync here because the reqwasm request type isn't Send
-    // if we were doing SSR, then
-    // 1) we'd want to use a Resource, so the data would be serialized to the client
-    // 2) we'd need to make sure there was a thread-local spawner set up
     let world = AsyncDerived::new_unsync(move || fetch_world());
 
     let fallback = move |errors: ArcRwSignal<Errors>| {
@@ -130,22 +124,15 @@ pub fn App() -> impl IntoView {
     view! {
             <main>
                 <Stylesheet id="leptos" href="/style-source-tree.css"/>
-
                 <Meta name="viewport" content="width=device-width, initial-scale=1"></Meta>
-
                 <Script src="/src-noconflict/ace.js"></Script>
                 <Script src="/my-ace.js"> </Script>
             </main>
-
-                <Title text="songbook" />
-
-
-
-<div id="container">
+            <Title text="songbook" />
+            <div id="container">
             <div class="split right">
-        <div class="xxxcentered">
-
-                <pre id="editor">r#"
+                <div class="xxxcentered">
+                    <pre id="editor">r#"
 
 xxx
 
@@ -153,13 +140,13 @@ edit me...
 
 yyy
 
-            "#</pre>
-</div>
-    </div>
+                "#</pre>
+                </div>
+            </div>
 
-        <div class="splitx leftx">
-        <div class="centered">
-                <div>
+            <div class="splitx leftx">
+                <div class="centered">
+                    <div>
                        <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                         <ErrorBoundary fallback>
                                 <label>songs</label>
@@ -187,11 +174,7 @@ yyy
                                     log!("set_value") ;
                                     let data : String = BASE64_STANDARD.encode(serde_json::to_string(& items[0]).expect("serde-json") ) ;
                                     set_song_value.set(data) ;
-
-
                                     view!{
-
-
                                         <div id="songpick-id">
                                             <label for="songs">Choose a song:</label>
                                             <select name="song" id="song-select"
@@ -229,53 +212,6 @@ yyy
                                             log!("on change") ;
                                             set_file_value.set(ev.target().value().parse().expect("set_value"));
                                             log!("value is {}",file_value.get()) ;
-                                            let url=file_value.get() ;
-                                            let file_data = AsyncDerived::new_unsync(move || fetch_file(url.clone()));
-                                            let fallback = move |errors: ArcRwSignal<Errors>| {
-                                                let error_list = move || {
-                                                    errors.with(|errors| {
-                                                        errors
-                                                            .iter()
-                                                            .map(|(_, e)| view! { <li>{e.to_string()}</li> })
-                                                            .collect::<Vec<_>>()
-                                                    })
-                                                };
-
-                                                view! {
-                                                    <div class="error">
-                                                        <h2>"Error"</h2>
-                                                        <ul>{error_list}</ul>
-                                                    </div>
-                                                }
-                                            };
-
-                                            view! {
-                                                <Script src="/src-noconflict/ace.js"></Script>
-                                                <Script src="/my-ace.js"> </Script>
-                                               <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
-                                                <ErrorBoundary fallback>
-                                                    {move || Suspend::new(async move {
-                                                        let text = match file_data.await {
-                                                            Ok(text) => {
-                                                                 log!("found text, len is : {} ",text.len()) ;
-                                                                text
-                                                            } ,
-                                                            Err(e) => {
-                                                                 log!("{:?}",e) ;
-                                                                e.to_string()
-                                                            }
-                                                         } ;
-                                                    // let editor=my_edit(id.as_str(),"hello world",10) ;
-                                                    let editor=my_edit("editor","hello world",10) ;
-                                                    let editor2=editor.clone() ;
-                                                    // my_set_mode(&editor2,mode.as_str()) ;
-                                                     let nblines = text.chars().filter(|c|
-                                                            *c == '\n').count();
-                                                     my_set_data(&editor,&text,nblines) ;
-                                                    })}
-                                            </ErrorBoundary>
-                                            </Transition>
-                                        } // view!
                                         } // on:change
                                         prop:value=move || file_value.get()>
                                         {
@@ -321,7 +257,7 @@ yyy
 
                                 {move || {
                                     view!{
-                                      <label>{song_value}</label><br/>
+                                      <label>{song_value.get()}</label><br/>
                                     }
                                 }}
 
