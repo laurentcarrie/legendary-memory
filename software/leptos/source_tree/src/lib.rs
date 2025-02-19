@@ -121,7 +121,7 @@ pub fn App() -> impl IntoView {
     let (file_value, set_file_value) = signal::<String>("???".to_string()) ;
 
     let document = document();
-    let p = document.create_element("p").unwrap();
+    let p = document.get_element_by_id("xxx").unwrap();
 
 
     Effect::new(move |prev_value| {
@@ -159,6 +159,7 @@ pub fn App() -> impl IntoView {
             </main>
             <Title text="songbook" />
             <div id="container">
+            <p id="xxx"/>
             <div class="split right">
                 <div class="xxxcentered">
                     <pre id="editor">r#"
