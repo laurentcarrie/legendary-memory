@@ -139,18 +139,24 @@ pub fn App() -> impl IntoView {
                             log!("found document xxx") ;
                             let p2=path.clone() ;
                             let file_data = AsyncDerived::new_unsync(move || fetch_file(p2.clone()));
-                            {move || Suspend::new(async move {
-                                let text = match file_data.await {
-                                    Ok(text) => {
-                                        log!("found text, len is : {} ",text.len()) ;
-                                        text
-                                    } ,
-                                    Err(e) => {
-                                        log!("{:?}",e) ;
-                                        e.to_string()
-                                    }
-                                } ;
-                            })()} ;
+                            view! {
+                                <Transition fallback=|| view!{<div>"Loading..."</div>}>
+                                <ErrorBoundary fallback>
+                                    {move || Suspend::new(async move {
+                                        let text = match file_data.await {
+                                            Ok(text) => {
+                                                log!("found text, len is : {} ",text.len()) ;
+                                                text
+                                            } ,
+                                            Err(e) => {
+                                                log!("{:?}",e) ;
+                                                e.to_string()
+                                            }
+                                        } ;
+                                    })} ;
+                                </ErrorBoundary>
+                                </Transition>
+                                }
                             let editor = my_edit("editor","sss",10) ;
                             p
                         }
