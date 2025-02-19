@@ -201,7 +201,7 @@ yyy
                 </div>
             </div>
 
-        <p>{async_result}</p>
+        <p><h2>async</h2><pre>{async_result}</pre></p>
 
 
             <div class="splitx leftx">
