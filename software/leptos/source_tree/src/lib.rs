@@ -204,7 +204,7 @@ yyy
                                 })}
 
                                 {move || {
-                                    let c = base64_to_item(song_value.get()) ;
+                                    let c = SourceTreeItem_of_base64(song_value.get()) ;
                                     view! {
                                         <div id="filepick-id">
                                             <label for="songs">Choose a file:</label>
