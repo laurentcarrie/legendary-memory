@@ -231,8 +231,24 @@ yyy
                                             log!("value is {}",file_value.get()) ;
                                             let url=file_value.get() ;
                                             let file_data = AsyncDerived::new_unsync(move || fetch_file(url.clone()));
+                                            let fallback = move |errors: ArcRwSignal<Errors>| {
+                                                let error_list = move || {
+                                                    errors.with(|errors| {
+                                                        errors
+                                                            .iter()
+                                                            .map(|(_, e)| view! { <li>{e.to_string()}</li> })
+                                                            .collect::<Vec<_>>()
+                                                    })
+                                                };
 
-                                        }
+                                                view! {
+                                                    <div class="error">
+                                                        <h2>"Error"</h2>
+                                                        <ul>{error_list}</ul>
+                                                    </div>
+                                                }
+                                            };
+                                        } // on:change
                                         prop:value=move || file_value.get()>
                                         {
                                             view! {
