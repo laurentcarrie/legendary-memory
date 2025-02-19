@@ -1,3 +1,4 @@
+use leptos::logging::log;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
 
