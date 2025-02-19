@@ -134,48 +134,47 @@ pub fn App() -> impl IntoView {
             .unwrap_or_else(|| "XXXXX Loading...".into())
     };
     view!{
-        <p>{async_result}</p>
     }
 
-    Effect::new(move |prev_value| {
-        // first, access the signal’s value and convert it to a string
-        let path = file_value.get().clone() ;
-
-        match prev_value {
-            None=>log!("none"),
-            Some(s) => {
-                if s == path {
-                    log!("no change")
-                } else {
-                    log!("change") ;
-                    let document = document();
-                    let p = match document.get_element_by_id("xxx") {
-                        Some(p) => {
-                            log!("found document xxx") ;
-                            p
-                        }
-                        None => {
-                            log!("DID NOT find document xxx") ;
-                            document.create_element("xxx").unwrap()
-
-                        }
-                    } ;
-                    let p2=path.clone() ;
-                    let file_data = AsyncDerived::new_unsync(move || fetch_file(p2.clone()));
-                    let p2=path.clone() ;
-                    p.set_text_content(Some(p2.as_str())) ;
-                }
-            }
-        }
-        // if this is different from the previous value, update the node
-        // if prev_value != Some(text) {
-        //     log!("change") ;
-        //     p.set_text_content(Some(text.as_str()));
-        // }
-
-        // return this value so we can memoize the next update
-        path
-    });
+    // Effect::new(move |prev_value| {
+    //     // first, access the signal’s value and convert it to a string
+    //     let path = file_value.get().clone() ;
+    //
+    //     match prev_value {
+    //         None=>log!("none"),
+    //         Some(s) => {
+    //             if s == path {
+    //                 log!("no change")
+    //             } else {
+    //                 log!("change") ;
+    //                 let document = document();
+    //                 let p = match document.get_element_by_id("xxx") {
+    //                     Some(p) => {
+    //                         log!("found document xxx") ;
+    //                         p
+    //                     }
+    //                     None => {
+    //                         log!("DID NOT find document xxx") ;
+    //                         document.create_element("xxx").unwrap()
+    //
+    //                     }
+    //                 } ;
+    //                 let p2=path.clone() ;
+    //                 let file_data = AsyncDerived::new_unsync(move || fetch_file(p2.clone()));
+    //                 let p2=path.clone() ;
+    //                 p.set_text_content(Some(p2.as_str())) ;
+    //             }
+    //         }
+    //     }
+    //     // if this is different from the previous value, update the node
+    //     // if prev_value != Some(text) {
+    //     //     log!("change") ;
+    //     //     p.set_text_content(Some(text.as_str()));
+    //     // }
+    //
+    //     // return this value so we can memoize the next update
+    //     path
+    // });
 
 
     view! {
@@ -201,6 +200,9 @@ yyy
                 "#</pre>
                 </div>
             </div>
+
+        <p>{async_result}</p>
+
 
             <div class="splitx leftx">
                 <div class="centered">
