@@ -150,7 +150,7 @@ pub fn App() -> impl IntoView {
                                         e.to_string()
                                     }
                                 } ;
-                            })} ;
+                            })()} ;
                             let editor = my_edit("editor","sss",10) ;
                             p
                         }
