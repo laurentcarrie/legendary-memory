@@ -131,7 +131,11 @@ pub fn App() -> impl IntoView {
                 log!("YYYYYY") ;
                 // format!("Server returned {value:?}")
                 match value {
-                    Ok(t) => t.clone(),
+                    Ok(t) => {
+                        let editor = my_edit("editor","sss",10) ;
+                        set_value(editor,t.clone().as_str(),"blah",30) ;
+                        t.clone()
+                    },
                     Err(e) => format!("Erreur {:?}",e)
                 }
             })
