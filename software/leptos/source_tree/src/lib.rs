@@ -126,7 +126,10 @@ pub fn App() -> impl IntoView {
         async_data
             .get()
             .as_deref()
-            .map(|value| format!("Server returned {value:?}"))
+            .map(|value| {
+                log!("YYYYYY") ;
+                format!("Server returned {value:?}")
+            })
             // This loading state will only show before the first load
             .unwrap_or_else(|| "XXXXX Loading...".into())
     };
