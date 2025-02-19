@@ -120,8 +120,6 @@ pub fn App() -> impl IntoView {
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???")) ;
     let (file_value, set_file_value) = signal::<String>("???".to_string()) ;
 
-    let document = document();
-    let p = document.get_element_by_id("xxx").unwrap();
 
 
     Effect::new(move |prev_value| {
@@ -135,7 +133,17 @@ pub fn App() -> impl IntoView {
                     log!("no change")
                 } else {
                     log!("change") ;
-                        p.set_text_content(Some(text.as_str())) ;
+                    let document = document();
+                    let p = match document.get_element_by_id("xxx") {
+                        Some(p) => {
+                            log!("found document xxx") ;
+                            p}
+                        None() => {
+                            log!("DID NOT find document xxx")
+                        }
+                    }
+
+                    p.set_text_content(Some(text.as_str())) ;
                 }
             }
         }
@@ -159,7 +167,7 @@ pub fn App() -> impl IntoView {
             </main>
             <Title text="songbook" />
             <div id="container">
-            <p id="xxx"/>
+            <p id="xxx">blab blah</p>
             <div class="split right">
                 <div class="xxxcentered">
                     <pre id="editor">r#"
