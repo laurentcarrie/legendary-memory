@@ -265,7 +265,7 @@ yyy
                                     view!{
                                         <label>blah</label><br/>
                                       <label>{
-                                            log!("current song : {}",song_value.get())}
+                                            log!("current file : {}",file_value.get())}
                                         </label><br/>
                                     }
                                 }}
