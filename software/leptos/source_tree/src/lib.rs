@@ -82,6 +82,7 @@ async fn save_file(path: String,content:String) -> Result<()> {
 
 
 async fn fetch_file(path: String) -> Result<String> {
+    log!("fetch file {}",path) ;
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let data = reqwasm::http::Request::get(path.as_str())
