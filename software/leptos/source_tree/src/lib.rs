@@ -263,6 +263,7 @@ yyy
         </div>
                                 {move || {
                                     view!{
+                                        <label>blah</label><br/>
                                       <label>{song_value.get()}</label><br/>
                                     }
                                 }}
