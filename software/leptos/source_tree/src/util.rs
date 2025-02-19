@@ -33,6 +33,8 @@ pub fn SourceTreeItem_of_base64(input:String) -> SourceTreeItem {
 }
 
 
+
+
 // get all songs
 pub async fn fetch_world() -> Result<SourceTree> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
@@ -63,11 +65,7 @@ pub async fn save_file(path: String,content:String) -> Result<()> {
     let choice=request::EChoice::ItemSaveFile(request::InfoSaveFile{path:path.clone(),content:content.clone()}) ;
     let request= request::Choice{choice:choice} ;
     let json_string = serde_json::to_string(&request)? ;
-    log!("{}",&json_string) ;
-    // dbg!(&json_string) ;
     let b64= BASE64_STANDARD.encode(&json_string) ;
-    log!("{}",&b64) ;
-
     let _data = reqwasm::http::Request::get(format!("/scripts/request.sh?request={}",b64).as_str())
         .send()
         .await?

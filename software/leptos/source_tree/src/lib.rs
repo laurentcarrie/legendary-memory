@@ -10,8 +10,8 @@ use wasm_bindgen::prelude::*;
 
 pub mod input_model;
 
+
 pub mod protocol;
-use protocol::model::answer::{Choice, EChoice, SourceTree,SourceTreeItem};
 
 pub mod util ;
 use util::{SourceTreeItem_of_base64,default_world,fetch_world,save_file,fetch_file} ;
