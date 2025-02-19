@@ -4,7 +4,7 @@ use base64::prelude::*;
 
 use protocol::model::answer::{Choice, EChoice, SourceTree,SourceTreeItem};
 
-fn default_world() -> SourceTree {
+pub fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
 }
 
