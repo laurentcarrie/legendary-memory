@@ -17,7 +17,7 @@ use protocol::model::answer::{Choice, EChoice, SourceTree,SourceTreeItem};
 use protocol::model::request as request ;
 
 pub mod util ;
-use util::base64_to_item ;
+use util::{base64_to_item,default_world} ;
 
 
 async fn fetch_world() -> Result<SourceTree> {
