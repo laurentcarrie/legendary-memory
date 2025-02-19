@@ -131,7 +131,8 @@ pub fn App() -> impl IntoView {
                 // format!("Server returned {value:?}")
                 match value {
                     Ok(t) => {
-                        let editor = my_edit("editor","sss","ace/mode/json",10) ;
+                        let nblines = t.chars().filter(|c| *c == '\n').count();
+                        let editor = my_edit("editor","sss","ace/mode/json",nblines) ;
                         my_set_data(&editor,t.clone().as_str(),30) ;
                         format!("file {}",t.clone())
                     },
