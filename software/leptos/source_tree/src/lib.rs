@@ -17,27 +17,9 @@ use protocol::model::answer::{Choice, EChoice, SourceTree,SourceTreeItem};
 use protocol::model::request as request ;
 
 pub mod util ;
-use util::{base64_to_item,default_world} ;
+use util::{base64_to_item,default_world,fetch_world} ;
 
 
-async fn fetch_world() -> Result<SourceTree> {
-    gloo_timers::future::TimeoutFuture::new(1000).await;
-    // make the request
-    let world = reqwasm::http::Request::get(&format!(
-        "/scripts/request.sh?request=eyJjaG9pY2UiOnsiSXRlbVNvdXJjZVRyZWUiOiBudWxsfX0K",
-    ))
-    .send()
-    .await?
-    .json::<Choice>()
-    .await?;
-    match world.choice {
-        EChoice::ItemSourceTree(tree) => {
-            log!("size of tree : {}", tree.items.len());
-            Ok(tree)
-        }
-        _ => panic!("bad type"),
-    }
-}
 
 async fn save_file(path: String,content:String) -> Result<()> {
     log!("save file") ;

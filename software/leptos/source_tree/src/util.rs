@@ -8,6 +8,7 @@ pub fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
 }
 
+// convert base64 string to a SourceTreeItem
 pub fn base64_to_item(input:String) -> SourceTreeItem {
     let data : Option<Vec<u8>> = BASE64_STANDARD.decode(input.as_str()).ok() ;
     let data : Option<String> = data.map(|c| String::from_utf8(c).ok()).flatten() ;
@@ -25,5 +26,26 @@ pub fn base64_to_item(input:String) -> SourceTreeItem {
                 lyfiles:vec![]
             }
         }
+    }
+}
+
+
+// get all songs
+async fn fetch_world() -> Result<SourceTree> {
+    gloo_timers::future::TimeoutFuture::new(1000).await;
+    // make the request
+    let world = reqwasm::http::Request::get(&format!(
+        "/scripts/request.sh?request=eyJjaG9pY2UiOnsiSXRlbVNvdXJjZVRyZWUiOiBudWxsfX0K",
+    ))
+        .send()
+        .await?
+        .json::<Choice>()
+        .await?;
+    match world.choice {
+        EChoice::ItemSourceTree(tree) => {
+            log!("size of tree : {}", tree.items.len());
+            Ok(tree)
+        }
+        _ => panic!("bad type"),
     }
 }
