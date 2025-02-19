@@ -129,7 +129,8 @@ pub fn App() -> impl IntoView {
             .as_deref()
             .map(|value| {
                 log!("YYYYYY") ;
-                format!("Server returned {value:?}")
+                // format!("Server returned {value:?}")
+                value
             })
             // This loading state will only show before the first load
             .unwrap_or_else(|| "XXXXX Loading...".into())
