@@ -126,7 +126,7 @@ pub fn App() -> impl IntoView {
 
     Effect::new(move |prev_value| {
         // first, access the signal’s value and convert it to a string
-        let text = file_value.get().to_string();
+        let text = file_value.get() ;
 
         // if this is different from the previous value, update the node
         if prev_value != Some(text) {
