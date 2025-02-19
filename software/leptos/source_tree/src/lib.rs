@@ -133,7 +133,7 @@ pub fn App() -> impl IntoView {
                 match value {
                     Ok(t) => {
                         let editor = my_edit("editor","sss",10) ;
-                        set_value(editor,t.clone().as_str(),"blah",30) ;
+                        my_set_data(editor,t.clone().as_str(),30) ;
                         t.clone()
                     },
                     Err(e) => format!("Erreur {:?}",e)
