@@ -139,7 +139,7 @@ pub fn App() -> impl IntoView {
                             log!("found document xxx") ;
                             p
                         }
-                        None() => {
+                        None => {
                             log!("DID NOT find document xxx") ;
                             document.create_element("xxx").unwrap()
                         }
