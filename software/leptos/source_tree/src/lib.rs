@@ -133,6 +133,9 @@ pub fn App() -> impl IntoView {
             // This loading state will only show before the first load
             .unwrap_or_else(|| "XXXXX Loading...".into())
     };
+    view!{
+        <p>{async_result}</p>
+    }
 
     Effect::new(move |prev_value| {
         // first, access the signal’s value and convert it to a string
