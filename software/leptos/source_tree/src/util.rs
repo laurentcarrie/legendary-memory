@@ -7,7 +7,7 @@ fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
 }
 
-fn base64_to_item(input:String) -> SourceTreeItem {
+pub fn base64_to_item(input:String) -> SourceTreeItem {
     let data : Option<Vec<u8>> = BASE64_STANDARD.decode(input.as_str()).ok() ;
     let data : Option<String> = data.map(|c| String::from_utf8(c).ok()).flatten() ;
     let c:Option<SourceTreeItem> = data.map(|s| serde_json::from_str(s.as_str()).ok()).flatten();
