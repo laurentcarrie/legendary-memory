@@ -210,9 +210,6 @@ yyy
                 </div>
             </div>
 
-        <p><h2>async</h2><pre>{async_result}</pre></p>
-
-
             <div class="splitx leftx">
                 <div class="centered">
                     <div>
