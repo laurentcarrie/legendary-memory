@@ -131,7 +131,7 @@ pub fn App() -> impl IntoView {
                 log!("YYYYYY") ;
                 // format!("Server returned {value:?}")
                 match value {
-                    Ok(t) => t,
+                    Ok(t) => t.clone(),
                     Err(e) => format!("Erreur {:?}",e)
                 }
             })
