@@ -2,6 +2,7 @@ use leptos::logging::log;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
 
+pub mod protocol ;
 use protocol::model::answer::{Choice, EChoice, SourceTree,SourceTreeItem};
 
 pub fn default_world() -> SourceTree {
