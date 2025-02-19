@@ -122,6 +122,14 @@ pub fn App() -> impl IntoView {
 
     let async_data = LocalResource::new(move || fetch_file(file_value.get())) ;
 
+    let async_result = move || {
+        async_data
+            .get()
+            .as_deref()
+            .map(|value| format!("Server returned {value:?}"))
+            // This loading state will only show before the first load
+            .unwrap_or_else(|| "Loading...".into())
+    };
 
     Effect::new(move |prev_value| {
         // first, access the signal’s value and convert it to a string
