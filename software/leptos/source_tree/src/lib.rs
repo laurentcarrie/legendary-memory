@@ -266,6 +266,7 @@ yyy
                                         <label>blah</label><br/>
                                       <label>{
                                             log!("current file : {}",file_value.get())}
+                                            let editor = my_edit("editor","sss",10) ;
                                         </label><br/>
                                     }
                                 }}
