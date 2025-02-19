@@ -20,7 +20,7 @@ extern "C" {
 
 async fn fetch_file(path: String) -> Result<String> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
-    log!("{}", path);
+    log!("fetch_file {}", path);
     // make the request
     let response = reqwasm::http::Request::get(path.as_str())
         // .mode(reqwasm::http::RequestMode::Cors)
