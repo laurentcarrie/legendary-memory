@@ -11,6 +11,7 @@ pub fn default_world() -> SourceTree {
 }
 
 // convert base64 string to a SourceTreeItem
+#[warn(non_snake_case)]
 pub fn SourceTreeItem_of_base64(input:String) -> SourceTreeItem {
     let data : Option<Vec<u8>> = BASE64_STANDARD.decode(input.as_str()).ok() ;
     let data : Option<String> = data.map(|c| String::from_utf8(c).ok()).flatten() ;
@@ -67,7 +68,7 @@ pub async fn save_file(path: String,content:String) -> Result<()> {
     let b64= BASE64_STANDARD.encode(&json_string) ;
     log!("{}",&b64) ;
 
-    let data = reqwasm::http::Request::get(format!("/scripts/request.sh?request={}",b64).as_str())
+    let _data = reqwasm::http::Request::get(format!("/scripts/request.sh?request={}",b64).as_str())
         .send()
         .await?
         .text()
