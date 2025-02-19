@@ -6,15 +6,12 @@ use leptos::prelude::*;
 use leptos::tachys::html::style::style;
 use leptos_meta::*;
 use std::cmp::Ordering;
-use std::fs;
 use wasm_bindgen::prelude::*;
-use leptos::html::Select ;
 
 pub mod input_model;
 
 pub mod protocol;
 use protocol::model::answer::{Choice, EChoice, SourceTree,SourceTreeItem};
-use protocol::model::request as request ;
 
 pub mod util ;
 use util::{SourceTreeItem_of_base64,default_world,fetch_world,save_file,fetch_file} ;
