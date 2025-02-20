@@ -168,8 +168,18 @@ yyy
                                     }) ;
                                     // let mut items : Vec<SourceTreeItem> = vec![] ;
                                     log!("set_value") ;
-                                    let data : String = BASE64_STANDARD.encode(serde_json::to_string(& items[0]).expect("serde-json") ) ;
-                                    set_song_value.set(data) ;
+                                    let _ = {
+                                        let first_item = &items[0] ;
+                                        match first_item {
+                                            None => ()
+                                            Some(item) => {
+                                                let data : String = BASE64_STANDARD.encode(serde_json::to_string(& item).expect("serde-json") ) ;
+                                                set_song_value.set(data) ;
+                                                set_file_value.set(item.masterjsonfile) ;
+                                                ()
+                                            }
+                                        }
+                                    };
                                     view!{
                                         <div id="songpick-id">
                                             <label for="songs">Choose a song:</label>
