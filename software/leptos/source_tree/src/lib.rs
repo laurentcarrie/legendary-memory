@@ -45,7 +45,7 @@ pub fn App() -> impl IntoView {
 
     let async_file_data = LocalResource::new(move || fetch_file(file_value.get()));
     let async_build_data = LocalResource::new(move || { let _ = build_value.get() ; build()});
-    let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; });
+    let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
 
     let async_file_result = move || {
         async_file_data
@@ -255,7 +255,7 @@ edit me...
             on:click=move |_|
                 {
                     log!("show running processes") ;
-                    set_omake_children_value.set(omake_children_info())
+                    set_omake_children_value.set("".to_string())
             }>"progress"</button>
 
 
