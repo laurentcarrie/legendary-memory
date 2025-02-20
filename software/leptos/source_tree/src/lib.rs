@@ -255,7 +255,7 @@ edit me...
             on:click=move |_|
                 {
                     log!("show running processes") ;
-                    set_omake_children_value.set(omake_childreninfo())
+                    set_omake_children_value.set(omake_children_info())
             }>"progress"</button>
 
 
