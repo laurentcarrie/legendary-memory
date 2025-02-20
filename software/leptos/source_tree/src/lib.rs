@@ -41,11 +41,13 @@ pub fn App() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
     let (file_value, set_file_value) = signal::<String>("???".to_string());
+    let (file_save_value, set_file_save_value) = signal::<(String,String)>("???".to_string(),"???".to_string());
     let (build_value, set_build_value) = signal::<String>("???".to_string());
     let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
     let (see_editor,set_see_editor) = signal::<bool>(false) ;
     let (see_html,set_see_html) = signal::<bool>(false) ;
     let async_file_data = LocalResource::new(move || fetch_file(file_value.get()));
+    let async_file_save_data = LocalResource::new(move || save_file(file_save_value.get()));
     let async_build_data = LocalResource::new(move || { let _ = build_value.get() ; build()});
     let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
 
@@ -90,6 +92,23 @@ pub fn App() -> impl IntoView {
             .unwrap_or_else(|| "Loading file ...".into())
     };
 
+    let async_file_save_result = move || {
+        async_file_data
+            .get()
+            .as_deref()
+            .map(|value| {
+                match value {
+                    Ok(_) => {
+                        "file saved".to_string()
+                    }
+                    Err(e) => format!("Erreur {:?}", e),
+                }
+            })
+            // This loading state will only show before the first load
+            .unwrap_or_else(|| "Saving file ...".into())
+    };
+
+
     let async_build_result = move || {
         async_build_data
             .get()
@@ -126,6 +145,7 @@ edit me...
         </div>
 
     <p><pre>{async_file_result}</pre></p>
+    <p><pre>{async_file_save_result}</pre></p>
     <p><pre>{async_build_result}</pre></p>
 
         <div class="splitx leftx">
@@ -285,7 +305,7 @@ edit me...
                     log!("show build progress") ;
                     set_see_editor.set(false) ;
                     set_see_html.set(true) ;
-                    set_file_value.set("/output/progress.html".to_string())
+                    set_file_value.set("/output/progress.html".to_string(),my_get_data(""))
             }>"progress (html)"</button>
 
 
