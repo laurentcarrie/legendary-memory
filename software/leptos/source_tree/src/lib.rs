@@ -57,9 +57,8 @@ pub fn App() -> impl IntoView {
                         let (url, t) = t;
                         let nblines = t.chars().filter(|c| *c == '\n').count();
                         let extension = {
-                            let default = OsStr::new("");
                             let p = PathBuf::from(&url) ;
-                            let e : &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or(Some("")) ;
+                            let e : &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("") ;
                             log!("extension : {:?}", &e);
                             ()
                         };
