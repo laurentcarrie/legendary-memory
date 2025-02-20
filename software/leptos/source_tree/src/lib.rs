@@ -69,7 +69,7 @@ pub fn App() -> impl IntoView {
                         match format {
                             "html" => {
                                 let e = document().get_element_by_id("editor").unwrap();
-                                e.set_html(t.clone().as_str());
+                                e.set_inner_html(t.clone().as_str());
                             }
                             _ => {
                                 let editor = my_edit("editor", "sss", format, nblines);
