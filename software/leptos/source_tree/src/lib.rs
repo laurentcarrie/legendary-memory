@@ -43,8 +43,8 @@ pub fn App() -> impl IntoView {
     let (file_value, set_file_value) = signal::<String>("???".to_string());
     let (build_value, set_build_value) = signal::<String>("???".to_string());
     let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
-    let (see_editor,set_see_editor) = signal::<Bool>(false) ;
-    let (see_html,set_see_html) = signal::<Bool>(false) ;
+    let (see_editor,set_see_editor) = signal::<bool>(false) ;
+    let (see_html,set_see_html) = signal::<bool>(false) ;
     let async_file_data = LocalResource::new(move || fetch_file(file_value.get()));
     let async_build_data = LocalResource::new(move || { let _ = build_value.get() ; build()});
     let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
