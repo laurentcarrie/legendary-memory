@@ -53,6 +53,7 @@ pub fn App() -> impl IntoView {
     let async_build_data = LocalResource::new(move || { let _ = build_value.get() ; build()});
     let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
     let (xeditor,set_xeditor) = signal::<Vec<u8>>({
+        log!("creating editor") ;
         let e = my_edit("","","",10) ;
         let array = Uint8Array::new(&e);
         let bytes: Vec<u8> = array.to_vec();
