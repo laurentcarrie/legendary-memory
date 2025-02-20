@@ -8,7 +8,6 @@ use leptos_meta::*;
 use std::cmp::Ordering;
 use wasm_bindgen::prelude::*;
 
-pub mod input_model;
 
 
 pub mod protocol;
