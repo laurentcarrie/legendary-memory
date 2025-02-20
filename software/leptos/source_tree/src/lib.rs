@@ -241,6 +241,14 @@ edit me...
                     set_build_value.set("xxx".to_string())
             }>"build"</button>
 
+        <button
+            on:click=move |_|
+                {
+                    log!("show build progress") ;
+                    set_file_value.set("/output/progress.html".to_string())
+            }>"progress"</button>
+
+
     </div>
     </div>
     </div>
