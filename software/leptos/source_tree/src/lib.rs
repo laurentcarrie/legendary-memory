@@ -84,7 +84,8 @@ pub fn App() -> impl IntoView {
                                 set_see_html.set(true) ;
                             }
                             _ => {
-                                let editor = my_edit("editor", "sss", format, nblines);
+                                // let editor = my_edit("editor", "sss", format, nblines);
+                                let editor = xeditor.get() ;
                                 my_set_data(&editor, t.clone().as_str(), 80);
                                 set_see_editor.set(true) ;
                                 set_see_html.set(false) ;
