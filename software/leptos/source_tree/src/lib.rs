@@ -169,7 +169,7 @@ yyy
                                     // let mut items : Vec<SourceTreeItem> = vec![] ;
                                     log!("set_value") ;
                                     let _ = {
-                                        let first_item = &items[0] ;
+                                        let first_item = &items.get(0) ;
                                         match first_item {
                                             None => ()
                                             Some(item) => {
