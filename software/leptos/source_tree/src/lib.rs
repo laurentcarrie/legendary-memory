@@ -60,7 +60,7 @@ pub fn App() -> impl IntoView {
                             log!("extension : {:?}", &extension);
                         let format = match extension {
                             "json" => "ace/mode/json",
-                            "tex" => "ace/mode/tex",
+                            "tex" => "ace/mode/latex",
                             _ => "ace/mode/text"
                         } ;
                         let editor = my_edit("editor", "sss", format, nblines);
