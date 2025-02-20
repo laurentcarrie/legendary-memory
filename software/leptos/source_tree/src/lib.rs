@@ -171,7 +171,7 @@ yyy
                                     let _ = {
                                         let first_item = &items.get(0) ;
                                         match first_item {
-                                            None => ()
+                                            None => (),
                                             Some(item) => {
                                                 let data : String = BASE64_STANDARD.encode(serde_json::to_string(& item).expect("serde-json") ) ;
                                                 set_song_value.set(data) ;
