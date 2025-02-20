@@ -178,8 +178,9 @@ yyy
                                             log!("on change song") ;
                                             set_song_value.set(ev.target().value().parse().expect("set_value"));
                                             log!("song value is {}",song_value.get()) ;
-                                            // let c  = base64_to_item(song_value.get()) ;
-                                            // log!("after change, pointing to ")
+                                            let c  = base64_to_item(song_value.get()) ;
+                                            set_file_value(c.masterjsonfile) ;
+                                            log!("after change, pointing to master json")
                                         }
                                         prop:value=move || song_value.get()>
                                         view! {
