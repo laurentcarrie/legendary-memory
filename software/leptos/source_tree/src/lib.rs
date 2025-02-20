@@ -3,6 +3,7 @@ use base64::prelude::*;
 use human_sort::compare;
 use leptos::logging::log;
 use leptos::prelude::*;
+use leptos::leptos_dom::* ;
 use leptos::tachys::html::style::style;
 use leptos_meta::*;
 use std::cmp::Ordering;
@@ -67,7 +68,7 @@ pub fn App() -> impl IntoView {
                         } ;
                         match format {
                             "html" => {
-                                let e = document.get_element_by_id("editor");
+                                let e = document().get_element_by_id("editor");
                                 e.set_html(t.clone.as_str());
                             }
                             _ => {
