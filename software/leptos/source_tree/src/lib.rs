@@ -221,7 +221,7 @@ edit me...
         </div>
 
         <button
-        on:clickmove |_| {build();}>"build"</button>
+            on:click=move |_| {build();}>"build"</button>
 
     </div>
     </div>
