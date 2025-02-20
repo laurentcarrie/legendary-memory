@@ -1,3 +1,4 @@
+use PathBuf ;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
 use human_sort::compare;
@@ -9,14 +10,10 @@ use std::cmp::Ordering;
 use wasm_bindgen::prelude::*;
 
 
-
 pub mod protocol;
 
 pub mod util ;
 use util::{SourceTreeItem_of_base64,default_world,fetch_world,fetch_file} ;
-
-
-
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -57,6 +54,8 @@ pub fn App() -> impl IntoView {
                 match value {
                     Ok(t) => {
                         let nblines = t.chars().filter(|c| *c == '\n').count();
+                        let extension = PathBuf::from(t) ;
+                        log!("extension : ",extension.to_string()) ;
                         let editor = my_edit("editor","sss","ace/mode/json",nblines) ;
                         my_set_data(&editor,t.clone().as_str(),30) ;
                         "".to_string()
@@ -65,13 +64,8 @@ pub fn App() -> impl IntoView {
                 }
             })
             // This loading state will only show before the first load
-            .unwrap_or_else(|| "XXXXX Loading...".into())
+            .unwrap_or_else(|| "Loading file ...".into())
     };
-    view!{
-    }
-
-
-
 
     view! {
             <main>
@@ -97,7 +91,6 @@ yyy
             </div>
 
         <p><pre>{async_file_result}</pre></p>
-
 
             <div class="splitx leftx">
                 <div class="centered">
