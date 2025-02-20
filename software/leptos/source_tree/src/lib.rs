@@ -41,7 +41,7 @@ pub fn App() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
     let (file_value, set_file_value) = signal::<String>("???".to_string());
-    let (file_save_value, set_file_save_value) = signal::<(String,String)>("???".to_string(),"???".to_string());
+    let (file_save_value, set_file_save_value) = signal::<(String,String)>(("???".to_string(),"???".to_string()));
     let (build_value, set_build_value) = signal::<String>("???".to_string());
     let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
     let (see_editor,set_see_editor) = signal::<bool>(false) ;
