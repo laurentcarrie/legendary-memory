@@ -62,10 +62,19 @@ pub fn App() -> impl IntoView {
                         let format = match extension {
                             "json" => "ace/mode/json",
                             "tex" => "ace/mode/latex",
+                            "html" => "html",
                             _ => "ace/mode/text"
                         } ;
-                        let editor = my_edit("editor", "sss", format, nblines);
-                        my_set_data(&editor, t.clone().as_str(), 80);
+                        match format {
+                            "html" => {
+                                let e = document.get_element_by_id("editor");
+                                e.set_html(t.clone.as_str());
+                            }
+                            _ => {
+                                let editor = my_edit("editor", "sss", format, nblines);
+                                my_set_data(&editor, t.clone().as_str(), 80);
+                            }
+                        } ;
                         "".to_string()
                     }
                     Err(e) => format!("Erreur {:?}", e),
