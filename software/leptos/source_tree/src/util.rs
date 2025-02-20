@@ -90,3 +90,20 @@ pub async fn fetch_file(path: String) -> Result<(String, String)> {
         .await?;
     Ok((path, data))
 }
+
+
+pub async fn build() -> Result<()> {
+    //   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
+    let path =  "/scripts/request.sh?request=eyJjaG9pY2UiOnsiSXRlbUJ1aWxkIjogbnVsbH19Cg==" ;
+    log!("fetch file {}", path);
+    gloo_timers::future::TimeoutFuture::new(1000).await;
+    // make the request
+    let data = reqwasm::http::Request::post(path)
+    .send()
+    .await?
+    .text()
+    .await?;
+    Ok(())
+}
+
+    <a href="/scripts/request.sh?request=eyJjaG9pY2UiOnsiSXRlbUJ1aWxkIjogbnVsbH19Cg==">build</a> : build the pdf and wav files

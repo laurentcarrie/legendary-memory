@@ -64,7 +64,7 @@ pub fn App() -> impl IntoView {
                             _ => "ace/mode/text"
                         } ;
                         let editor = my_edit("editor", "sss", format, nblines);
-                        my_set_data(&editor, t.clone().as_str(), nblines);
+                        my_set_data(&editor, t.clone().as_str(), 80);
                         "".to_string()
                     }
                     Err(e) => format!("Erreur {:?}", e),
@@ -86,13 +86,7 @@ pub fn App() -> impl IntoView {
         <div class="split right">
             <div class="xxxcentered">
                 <pre id="editor">r#"
-
-xxx
-
 edit me...
-
-yyy
-
                 "#</pre>
             </div>
         </div>
@@ -225,6 +219,8 @@ yyy
                     </ErrorBoundary>
                 </Transition>
         </div>
+
+        <button>build</button>
 
     </div>
     </div>
