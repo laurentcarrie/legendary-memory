@@ -278,6 +278,7 @@ edit me...
             on:click=move |_|
                 {
                     let file = file_value.get() ;
+                    set_file_save_data.set((file,my_get_data(""))) ;
                     log!("save {}",file) ;
             }>"save"</button>
 
@@ -305,7 +306,7 @@ edit me...
                     log!("show build progress") ;
                     set_see_editor.set(false) ;
                     set_see_html.set(true) ;
-                    set_file_value.set(("/output/progress.html".to_string(),my_get_data("")))
+                    set_file_value.set("/output/progress.html".to_string())
             }>"progress (html)"</button>
 
 
