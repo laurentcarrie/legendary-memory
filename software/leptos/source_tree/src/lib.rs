@@ -338,5 +338,5 @@ extern "C" {
     fn my_edit(s: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
     fn my_set_data(editor: &JsValue, data: &str, nblines: usize) -> JsValue;
     fn my_set_mode(editor: &JsValue, mode: &str) -> JsValue;
-    fn my_get_data(editor:&JSValue) -> String;
+    fn my_get_data(editor:&JsValue) -> String;
 }
