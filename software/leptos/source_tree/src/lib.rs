@@ -279,7 +279,7 @@ edit me...
             on:click=move |_|
                 {
                     let file = file_value.get() ;
-                    set_file_save_data.set((file,my_get_data())) ;
+                    // set_file_save_value.set((file,my_get_data())) ;
                     log!("save {}",file) ;
             }>"save"</button>
 
