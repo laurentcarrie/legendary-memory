@@ -279,6 +279,7 @@ pub fn handle_source_tree(
         let mut lyricstexfiles: Vec<String> = vec![];
         let mut lyfiles: Vec<String> = vec![];
         let masterjsonfile = format!("{}/song.json", root);
+        let mastertexfile = format!("{}/body.tex", root);
         for f in &song.texfiles {
             texfiles.push(format!("{}/{}", root, f));
         }
@@ -296,20 +297,11 @@ pub fn handle_source_tree(
         for lyfile in &song.lilypondfiles {
             lyfiles.push(format!("{}/{}", root, lyfile));
         }
-        // for texfile in &s.texfiles {
-        //     let path = PathBuf::from(song.path.as_str());
-        //     let path = path
-        //         .parent()
-        //         .ok_or(MyError::MessageError("internal error".to_string()))?;
-        //     let mut path = path.to_path_buf();
-        //     path.push(texfile);
-        //     ret.push(path.as_path().to_str().unwrap().to_string());
-        // }
-        //
         ret.push(SourceTreeItem {
             title: song.title.clone(),
             author: song.author.clone(),
             masterjsonfile: masterjsonfile,
+            mastertexfile: mastertexfile,
             lyricstexfiles: lyricstexfiles,
             lyfiles: lyfiles,
             texfiles: texfiles,
