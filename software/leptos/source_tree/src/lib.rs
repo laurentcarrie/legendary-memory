@@ -111,6 +111,7 @@ edit me...
 
     <p><pre>{async_file_result}</pre></p>
     <p><pre>{async_build_result}</pre></p>
+    <p><pre>{async_omake_children_result}</pre></p>
 
         <div class="splitx leftx">
             <div class="centered">
@@ -255,7 +256,8 @@ edit me...
             on:click=move |_|
                 {
                     log!("show running processes") ;
-                    set_omake_children_value.set("".to_string())
+                    set_file_value.set("/scripts/request.sh?request=eyJjaG9pY2UiOiB7Ikl0ZW1PTWFrZUNoaWxkcmVuSW5mbyI6IG51bGx9fQo=".to_string())
+                    // set_omake_children_value.set("".to_string())
             }>"progress"</button>
 
 
