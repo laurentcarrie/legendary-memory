@@ -175,7 +175,7 @@ yyy
                                             Some(item) => {
                                                 let data : String = BASE64_STANDARD.encode(serde_json::to_string(& item).expect("serde-json") ) ;
                                                 set_song_value.set(data) ;
-                                                set_file_value.set(item.masterjsonfile) ;
+                                                set_file_value.set(item.masterjsonfile.clone()) ;
                                                 ()
                                             }
                                         }
