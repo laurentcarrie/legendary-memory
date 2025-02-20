@@ -106,4 +106,3 @@ pub async fn build() -> Result<()> {
     Ok(())
 }
 
-    <a href="/scripts/request.sh?request=eyJjaG9pY2UiOnsiSXRlbUJ1aWxkIjogbnVsbH19Cg==">build</a> : build the pdf and wav files
