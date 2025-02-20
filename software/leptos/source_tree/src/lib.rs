@@ -169,8 +169,7 @@ yyy
                                     // let mut items : Vec<SourceTreeItem> = vec![] ;
                                     log!("set_value") ;
                                     let _ = {
-                                        let first_item = &items.get(0) ;
-                                        match first_item {
+                                        match &items.get(0)  {
                                             None => (),
                                             Some(item) => {
                                                 let data : String = BASE64_STANDARD.encode(serde_json::to_string(& item).expect("serde-json") ) ;
