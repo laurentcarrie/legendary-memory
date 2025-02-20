@@ -1,3 +1,4 @@
+use std::ffi::OsStr;
 use std::path::PathBuf ;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
@@ -56,7 +57,7 @@ pub fn App() -> impl IntoView {
                     Ok(t) => {
                         let (url,t) = t ;
                         let nblines = t.chars().filter(|c| *c == '\n').count();
-                        let extension = PathBuf::from(url).extension().unwrap_or("".into()) ;
+                        let extension = PathBuf::from(url).extension().unwrap_or(OsString::from("")) ;
                         log!("extension : {:?}",extension) ;
                         let editor = my_edit("editor","sss","ace/mode/json",nblines) ;
                         my_set_data(&editor,t.clone().as_str(),30) ;
