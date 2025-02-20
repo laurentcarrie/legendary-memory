@@ -88,7 +88,7 @@ pub fn App() -> impl IntoView {
                                 // let array = Uint8Array::new(&editor);
                                 // let bytes: Vec<u8> = array.to_vec();
                                 // set_xeditor.set(Some(bytes)) ;
-                                let s = JsValue::into_serde(editor) ;
+                                let s = serde_wasm_bindgen::JsValue::into_serde(editor) ;
                                 my_set_data(&editor, t.clone().as_str(), 80);
                                 set_see_editor.set(true) ;
                                 set_see_html.set(false) ;
