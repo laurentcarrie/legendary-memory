@@ -13,7 +13,7 @@ use wasm_bindgen::prelude::*;
 pub mod protocol;
 
 pub mod util;
-use util::{default_world, fetch_file, fetch_world, build,SourceTreeItem_of_base64,omake_children_info};
+use util::{default_world, fetch_file,save_file, fetch_world, build,SourceTreeItem_of_base64,omake_children_info};
 
 #[component]
 pub fn App() -> impl IntoView {
