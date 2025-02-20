@@ -50,7 +50,7 @@ pub fn App() -> impl IntoView {
             .as_deref()
             .map(|value| {
                 log!("YYYYYY") ;
-                let value=value.1 ;
+                // let value=value.1 ;
                 // format!("Server returned {value:?}")
                 match value {
                     Ok(t) => {
