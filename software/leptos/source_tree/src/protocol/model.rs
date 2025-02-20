@@ -81,6 +81,7 @@ pub mod answer {
         pub title: String,
         pub author: String,
         pub masterjsonfile: String,
+        pub mastertexfile: String,
         pub texfiles: Vec<String>,
         pub lyricstexfiles: Vec<String>,
         pub lyfiles: Vec<String>,

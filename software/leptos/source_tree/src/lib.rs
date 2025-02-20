@@ -184,6 +184,11 @@ yyy
                                                 c.masterjsonfile.clone()
                                                 }>{c.masterjsonfile.clone()}</option>
                                             </optgroup>
+                                            <optgroup label="master tex file">
+                                                <option value={
+                                                c.mastertexfile.clone()
+                                                }>{c.mastertexfile.clone()}</option>
+                                            </optgroup>
                                             <optgroup label="tex files">
                                                 { move ||{
                                                     c.texfiles.clone().into_iter().map(|f|{
