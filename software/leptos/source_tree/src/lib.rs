@@ -56,9 +56,14 @@ pub fn App() -> impl IntoView {
                         let (url, t) = t;
                         let nblines = t.chars().filter(|c| *c == '\n').count();
                             let p = PathBuf::from(&url) ;
-                            let e : &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("") ;
-                            log!("extension : {:?}", &e);
-                        let editor = my_edit("editor", "sss", "ace/mode/json", nblines);
+                            let extension : &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("") ;
+                            log!("extension : {:?}", &extension);
+                        let format = match extension {
+                            "json" => "ace/mode/json",
+                            "tex" => "ace/mode/tex",
+                            _ => "ace/mode/text"
+                        } ;
+                        let editor = my_edit("editor", "sss", format, nblines);
                         my_set_data(&editor, t.clone().as_str(), 30);
                         "".to_string()
                     }
