@@ -22,7 +22,7 @@ function my_set_mode(editor,mode) {
 
 
 function my_get_data(editor) {
-    console.log(type of (editor)) ;
+    console.log(type_of (editor)) ;
     let data=editor.getValue() ;
     console.log("get data in editor") ;
     // console.log(data) ;
