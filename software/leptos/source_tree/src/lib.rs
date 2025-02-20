@@ -219,7 +219,7 @@ edit me...
         <button
             on:click=move |_|
                 {
-                    set_build_value.set()
+                    set_build_value.set("xxx".to_string())
             }>"build"</button>
 
     </div>
