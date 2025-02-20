@@ -43,7 +43,8 @@ pub fn App() -> impl IntoView {
     let (file_value, set_file_value) = signal::<String>("???".to_string());
     let (build_value, set_build_value) = signal::<String>("???".to_string());
     let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
-
+    let (see_editor,set_see_editor) = signal::<Bool>(false) ;
+    let (see_html,set_see_html) = signal::<Bool>(false) ;
     let async_file_data = LocalResource::new(move || fetch_file(file_value.get()));
     let async_build_data = LocalResource::new(move || { let _ = build_value.get() ; build()});
     let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
@@ -68,12 +69,16 @@ pub fn App() -> impl IntoView {
                         } ;
                         match format {
                             "html" => {
-                                let e = document().get_element_by_id("editor").unwrap();
+                                let e = document().get_element_by_id("editorx").unwrap();
                                 e.set_inner_html(t.clone().as_str());
+                                set_see_editor.set(true) ;
+                                set_see_html.set(false) ;
                             }
                             _ => {
                                 let editor = my_edit("editor", "sss", format, nblines);
                                 my_set_data(&editor, t.clone().as_str(), 80);
+                                set_see_editor.set(false) ;
+                                set_see_html.set(true) ;
                             }
                         } ;
                         "".to_string()
@@ -112,11 +117,12 @@ pub fn App() -> impl IntoView {
         <Title text="songbook" />
         <div id="container">
         <div class="split right">
-            <div class="xxxcentered">
-                <pre id="editor">r#"
+                <pre id="editor" style:display=move || if see_editor.get() { "block" } else { "none" }>r#"
 edit me...
                 "#</pre>
-            </div>
+                <p id="showhtml" style:display=move || if see_html.get() { "block" } else { "none" }>r#"
+edit me...
+                "#</p>
         </div>
 
     <p><pre>{async_file_result}</pre></p>
@@ -167,6 +173,7 @@ edit me...
                                         log!("song value is {}",song_value.get()) ;
                                         let c  = SourceTreeItem_of_base64(song_value.get()) ;
                                         set_file_value.set(c.masterjsonfile) ;
+                                        set_see_editor(true) ;
                                         log!("after change, pointing to master json")
                                     }
                                     prop:value=move || song_value.get()>
