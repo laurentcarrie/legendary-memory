@@ -305,7 +305,7 @@ edit me...
                     log!("show build progress") ;
                     set_see_editor.set(false) ;
                     set_see_html.set(true) ;
-                    set_file_value.set("/output/progress.html".to_string(),my_get_data(""))
+                    set_file_value.set(("/output/progress.html".to_string(),my_get_data("")))
             }>"progress (html)"</button>
 
 
