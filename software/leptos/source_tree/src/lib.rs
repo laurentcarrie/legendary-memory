@@ -86,7 +86,7 @@ pub fn App() -> impl IntoView {
                             }
                             _ => {
                                 // let editor = my_edit("editor", "sss", format, nblines);
-                                let editor = serde_wasm_bindgen::to_value(xeditor.get()) ;
+                                let editor = serde_wasm_bindgen::to_value(& xeditor.get()) ;
                                 my_set_data(&editor, t.clone().as_str(), 80);
                                 set_see_editor.set(true) ;
                                 set_see_html.set(false) ;
