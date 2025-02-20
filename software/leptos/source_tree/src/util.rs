@@ -106,3 +106,17 @@ pub async fn build() -> Result<()> {
     Ok(())
 }
 
+pub async fn omake_children_info() -> Result<String> {
+    //   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
+    let path =  "/scripts/request.sh?request=eyJjaG9pY2UiOiB7Ikl0ZW1PTWFrZUNoaWxkcmVuSW5mbyI6IG51bGx9fQo=" ;
+    gloo_timers::future::TimeoutFuture::new(1000).await;
+    // make the request
+    let data = reqwasm::http::Request::post(path)
+        .send()
+        .await?
+        .text()
+        .await?;
+    Ok(data)
+}
+
+

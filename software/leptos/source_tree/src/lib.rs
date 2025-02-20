@@ -12,7 +12,7 @@ use wasm_bindgen::prelude::*;
 pub mod protocol;
 
 pub mod util;
-use util::{default_world, fetch_file, fetch_world, build,SourceTreeItem_of_base64};
+use util::{default_world, fetch_file, fetch_world, build,SourceTreeItem_of_base64,omake_children_info};
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -41,9 +41,11 @@ pub fn App() -> impl IntoView {
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
     let (file_value, set_file_value) = signal::<String>("???".to_string());
     let (build_value, set_build_value) = signal::<String>("???".to_string());
+    let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
 
     let async_file_data = LocalResource::new(move || fetch_file(file_value.get()));
     let async_build_data = LocalResource::new(move || { let _ = build_value.get() ; build()});
+    let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() });
 
     let async_file_result = move || {
         async_file_data
@@ -241,11 +243,19 @@ edit me...
                     set_build_value.set("xxx".to_string())
             }>"build"</button>
 
+
         <button
             on:click=move |_|
                 {
                     log!("show build progress") ;
                     set_file_value.set("/output/omake.stdout".to_string())
+            }>"progress"</button>
+
+        <button
+            on:click=move |_|
+                {
+                    log!("show running processes") ;
+                    set_omake_children.set(omake_children_info())
             }>"progress"</button>
 
 
