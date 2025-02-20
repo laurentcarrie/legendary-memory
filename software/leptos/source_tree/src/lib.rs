@@ -111,7 +111,6 @@ edit me...
 
     <p><pre>{async_file_result}</pre></p>
     <p><pre>{async_build_result}</pre></p>
-    <p><pre>{async_omake_children_result}</pre></p>
 
         <div class="splitx leftx">
             <div class="centered">
