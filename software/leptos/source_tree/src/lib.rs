@@ -142,7 +142,6 @@ edit me...
                                     view! {
                                         items.clone().into_iter().map(|c|{
                                             view! { <option value={
-                                                log!("encode") ;
                                                 let data = BASE64_STANDARD.encode(serde_json::to_string(&c).expect("base64") ) ;
                                                 data
                                                 }>{c.author.clone()} @ {c.title.clone()}</option>}
@@ -219,6 +218,7 @@ edit me...
         <button
             on:click=move |_|
                 {
+                    log("build") ;
                     set_build_value.set("xxx".to_string())
             }>"build"</button>
 
