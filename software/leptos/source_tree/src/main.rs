@@ -1,7 +1,6 @@
 // use leptos::html::Title;
 use leptos::prelude::*;
 use source_tree::App;
-pub mod input_model;
 pub mod protocol;
 pub fn main() {
     use tracing_subscriber::fmt;
