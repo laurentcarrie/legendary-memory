@@ -7,7 +7,6 @@ use leptos::tachys::html::style::style;
 use leptos_meta::*;
 use std::cmp::Ordering;
 use std::ffi::OsStr;
-use std::ffi::OsString;
 use std::path::PathBuf;
 use wasm_bindgen::prelude::*;
 
@@ -61,8 +60,9 @@ pub fn App() -> impl IntoView {
                             let default = OsStr::new("");
                             let p = PathBuf::from(&url) ;
                             let e = &p.extension().unwrap_or(default);
-                            log!("extension : {:?}", &e);
-                            e.clone()
+                            // log!("extension : {:?}", &e);
+                            // e.clone()
+                            ()
                         };
                         let editor = my_edit("editor", "sss", "ace/mode/json", nblines);
                         my_set_data(&editor, t.clone().as_str(), 30);
@@ -118,7 +118,6 @@ yyy
                                     }
                                 };
 
-                                // let w = &w.items.iter().map(|w| (w.clone(),signal( false))).collect::<Vec<_>>() ;
                                 let mut items = w.items ;
                                 items.sort_by(|a,b| match compare(a.author.as_str(),b.author.as_str()) {
                                     Ordering::Equal => {
