@@ -61,8 +61,8 @@ pub fn App() -> impl IntoView {
                             let p = PathBuf::from(&url) ;
                             let e = &p.extension().unwrap_or(default);
                             log!("extension : {:?}", &e);
-                            // e.clone()
-                            ()
+                            e.clone()
+                            // ()
                         };
                         let editor = my_edit("editor", "sss", "ace/mode/json", nblines);
                         my_set_data(&editor, t.clone().as_str(), 30);
