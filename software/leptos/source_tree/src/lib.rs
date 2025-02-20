@@ -173,7 +173,7 @@ edit me...
                                         log!("song value is {}",song_value.get()) ;
                                         let c  = SourceTreeItem_of_base64(song_value.get()) ;
                                         set_file_value.set(c.masterjsonfile) ;
-                                        set_see_editor(true) ;
+                                        set_see_editor.set(true) ;
                                         log!("after change, pointing to master json")
                                     }
                                     prop:value=move || song_value.get()>
