@@ -82,9 +82,8 @@ pub fn App() -> impl IntoView {
                             _ => {
                                 // let editor = my_edit("editor", "sss", format, nblines);
                                 log!("before unwrap") ;
-                                let editor = my_edit("","","",10) ;
+                                let editor = my_edit("editor","xxx","yyy",10) ;
                                 // let editor = serde_wasm_bindgen::to_value(& xeditor.get()).unwrap() ;
-
                                 my_set_data(&editor, t.clone().as_str(), 80);
                                 set_see_editor.set(true) ;
                                 set_see_html.set(false) ;
