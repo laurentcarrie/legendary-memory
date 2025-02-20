@@ -77,8 +77,8 @@ pub async fn save_file(path: String,content:String) -> Result<()> {
 
 
 
-// get file data from url
-pub async fn fetch_file(path: String) -> Result<String> {
+// get file data from url, return value is url,data
+pub async fn fetch_file(path: String) -> Result<(String,String)> {
     log!("fetch file {}",path) ;
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
@@ -87,5 +87,5 @@ pub async fn fetch_file(path: String) -> Result<String> {
         .await?
         .text()
         .await?;
-    Ok(data)
+    Ok((path,data))
 }
