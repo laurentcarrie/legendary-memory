@@ -221,10 +221,11 @@ edit me...
         </div>
 
         <button
-            on:click=move |_| {
-            log!("build") ;
-            build();
-        }>"build"</button>
+            on:click=
+                {move || Suspend::new(async move {
+                    log!("build") ;
+                    build();
+            })}>"build"</button>
 
     </div>
     </div>
