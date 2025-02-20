@@ -64,7 +64,7 @@ pub fn App() -> impl IntoView {
                             _ => "ace/mode/text"
                         } ;
                         let editor = my_edit("editor", "sss", format, nblines);
-                        my_set_data(&editor, t.clone().as_str(), 30);
+                        my_set_data(&editor, t.clone().as_str(), nblines);
                         "".to_string()
                     }
                     Err(e) => format!("Erreur {:?}", e),
@@ -104,7 +104,6 @@ yyy
                 <div>
                    <Transition fallback=|| view! { <div>"Loading..."</div> } {..spreadable}>
                     <ErrorBoundary fallback>
-                            <label>songs</label>
                             {move || Suspend::new(async move {
                                 let w = match world.await {
                                     Ok(w) => {
