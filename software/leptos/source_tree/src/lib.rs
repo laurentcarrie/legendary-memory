@@ -218,7 +218,7 @@ edit me...
         <button
             on:click=move |_|
                 {
-                    log("build") ;
+                    log!("build") ;
                     set_build_value.set("xxx".to_string())
             }>"build"</button>
 
