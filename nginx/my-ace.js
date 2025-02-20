@@ -1,7 +1,7 @@
 function my_edit(id,value,mode,nblines) {
     console.log("create edit") ;
     var editor = ace.edit(id);
-    console.log("editor type " + typeof(editor)) ;
+    console.log(typeof(editor)) ;
     editor.setTheme("ace/theme/twilight");
     editor.session.setMode(mode);
     // console.log("set value") ;
