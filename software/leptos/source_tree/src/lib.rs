@@ -42,7 +42,7 @@ pub fn App() -> impl IntoView {
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???")) ;
     let (file_value, set_file_value) = signal::<String>("???".to_string()) ;
 
-    let async_file_data = LocalResource::new(move || fetch_file(file_value.get())) ;
+    let async_file_data = LocalResource::new(move || (file_value.get(),fetch_file(file_value.get()))) ;
 
     let async_file_result = move || {
         async_file_data
@@ -50,6 +50,7 @@ pub fn App() -> impl IntoView {
             .as_deref()
             .map(|value| {
                 log!("YYYYYY") ;
+                let value=value.1 ;
                 // format!("Server returned {value:?}")
                 match value {
                     Ok(t) => {
