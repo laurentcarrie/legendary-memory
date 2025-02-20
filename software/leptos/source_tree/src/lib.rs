@@ -54,9 +54,9 @@ pub fn App() -> impl IntoView {
                 // format!("Server returned {value:?}")
                 match value {
                     Ok(t) => {
-                        let (_,t) = t ;
+                        let (url,t) = t ;
                         let nblines = t.chars().filter(|c| *c == '\n').count();
-                        let extension = PathBuf::from(t) ;
+                        let extension = PathBuf::from(url) ;
                         log!("extension : {:?}",extension) ;
                         let editor = my_edit("editor","sss","ace/mode/json",nblines) ;
                         my_set_data(&editor,t.clone().as_str(),30) ;
