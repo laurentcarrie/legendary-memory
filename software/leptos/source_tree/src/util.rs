@@ -51,7 +51,7 @@ pub async fn fetch_world() -> Result<SourceTree> {
     .await?;
     match world.choice {
         EChoice::ItemSourceTree(tree) => {
-            log!("size of tree : {}", tree.items.len());
+            // log!("size of tree : {}", tree.items.len());
             Ok(tree)
         }
         _ => panic!("bad type"),

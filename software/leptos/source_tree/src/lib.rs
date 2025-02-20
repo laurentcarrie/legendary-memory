@@ -40,6 +40,7 @@ pub fn App() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
     let (file_value, set_file_value) = signal::<String>("???".to_string());
+    let (build_value, set_build_value) = signal::<String>("???".to_string());
 
     let async_file_data = LocalResource::new(move || fetch_file(file_value.get()));
 
@@ -48,9 +49,6 @@ pub fn App() -> impl IntoView {
             .get()
             .as_deref()
             .map(|value| {
-                log!("YYYYYY");
-                // let value=value.1 ;
-                // format!("Server returned {value:?}")
                 match value {
                     Ok(t) => {
                         let (url, t) = t;
@@ -101,11 +99,11 @@ edit me...
                             {move || Suspend::new(async move {
                                 let w = match world.await {
                                     Ok(w) => {
-                                         log!("number of items : {} ",&w.items.len()) ;
+                                         // log!("number of items : {} ",&w.items.len()) ;
                                         w
                                     } ,
-                                    Err(_) => {
-                                         log!("default") ;
+                                    Err(e) => {
+                                         log!("error {:?}",e) ;
                                         default_world()
                                     }
                                 };
@@ -117,8 +115,6 @@ edit me...
                                     },
                                     x => x
                                 }) ;
-                                // let mut items : Vec<SourceTreeItem> = vec![] ;
-                                log!("set_value") ;
                                 let _ = {
                                     match &items.get(0)  {
                                         None => (),
@@ -221,11 +217,10 @@ edit me...
         </div>
 
         <button
-            on:click=
-                {move |_| { Suspend::new(async move {
-                    log!("build") ;
-                    build();
-            });}}>"build"</button>
+            on:click=move |_|
+                {
+                    set_build_value.set()
+            }>"build"</button>
 
     </div>
     </div>
