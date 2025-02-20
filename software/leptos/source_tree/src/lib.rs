@@ -50,7 +50,7 @@ pub fn App() -> impl IntoView {
     let async_file_save_data = LocalResource::new(move || save_file(file_save_value.get()));
     let async_build_data = LocalResource::new(move || { let _ = build_value.get() ; build()});
     let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
-    let (xeditor,set_xeditor) = signal::<bool>(my_edit("","","",10)) ;
+    let (xeditor,set_xeditor) = signal::<JsValue>(my_edit("","","",10)) ;
 
     let async_file_result = move || {
         async_file_data
