@@ -259,15 +259,14 @@ edit me...
                 {
                     log!("show build progress") ;
                     set_file_value.set("/output/omake.stdout".to_string())
-            }>"progress"</button>
+            }>"progress (stdout)"</button>
 
         <button
             on:click=move |_|
                 {
-                    log!("show running processes") ;
-                    set_file_value.set("/scripts/request.sh?request=eyJjaG9pY2UiOiB7Ikl0ZW1PTWFrZUNoaWxkcmVuSW5mbyI6IG51bGx9fQo=".to_string())
-                    // set_omake_children_value.set("".to_string())
-            }>"progress"</button>
+                    log!("show build progress") ;
+                    set_file_value.set("/output/progress.html".to_string())
+            }>"progress (html)"</button>
 
 
     </div>
