@@ -29,6 +29,7 @@ pub fn SourceTreeItem_of_base64(input: String) -> SourceTreeItem {
                 title: "error".to_string(),
                 author: "error".to_string(),
                 masterjsonfile: "error".to_string(),
+                mastertexfile: "error".to_string(),
                 texfiles: vec![],
                 lyricstexfiles: vec![],
                 lyfiles: vec![],
