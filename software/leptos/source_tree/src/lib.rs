@@ -245,7 +245,7 @@ edit me...
             on:click=move |_|
                 {
                     log!("show build progress") ;
-                    set_file_value.set("/output/progress.html".to_string())
+                    set_file_value.set("/output/omake.stdout".to_string())
             }>"progress"</button>
 
 
