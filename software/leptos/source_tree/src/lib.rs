@@ -12,7 +12,7 @@ use wasm_bindgen::prelude::*;
 pub mod protocol;
 
 pub mod util;
-use util::{default_world, fetch_file, fetch_world, SourceTreeItem_of_base64};
+use util::{default_world, fetch_file, fetch_world, build,SourceTreeItem_of_base64};
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -220,7 +220,8 @@ edit me...
                 </Transition>
         </div>
 
-        <button>build</button>
+        <button
+        on:clickmove |_| {build();}>"build"</button>
 
     </div>
     </div>
