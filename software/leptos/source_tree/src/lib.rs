@@ -6,7 +6,6 @@ use leptos::prelude::*;
 use leptos::tachys::html::style::style;
 use leptos_meta::*;
 use std::cmp::Ordering;
-use std::ffi::OsStr;
 use std::path::PathBuf;
 use wasm_bindgen::prelude::*;
 
@@ -60,7 +59,7 @@ pub fn App() -> impl IntoView {
                             let p = PathBuf::from(&url) ;
                             let e : &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("") ;
                             log!("extension : {:?}", &e);
-                            &e.copy()
+                            &e.clone()
                         };
                         let editor = my_edit("editor", "sss", "ace/mode/json", nblines);
                         my_set_data(&editor, t.clone().as_str(), 30);
