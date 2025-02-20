@@ -83,6 +83,7 @@ pub fn App() -> impl IntoView {
                                 // let editor = my_edit("editor", "sss", format, nblines);
                                 log!("before unwrap") ;
                                 let editor = my_edit("editor","xxx","yyy",10) ;
+                                let x = serde_wasm_bindgen::from_value(editor).unwrap();
                                 // let editor = serde_wasm_bindgen::to_value(& xeditor.get()).unwrap() ;
                                 let array = Uint8Array::new(&editor);
                                 let bytes: Vec<u8> = array.to_vec();
