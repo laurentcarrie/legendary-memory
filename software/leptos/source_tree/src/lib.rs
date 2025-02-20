@@ -55,7 +55,7 @@ pub fn App() -> impl IntoView {
                     Ok(t) => {
                         let nblines = t.chars().filter(|c| *c == '\n').count();
                         let extension = PathBuf::from(t) ;
-                        log!("extension : ",extension.to_string()) ;
+                        log!("extension : {}",extension.to_string()) ;
                         let editor = my_edit("editor","sss","ace/mode/json",nblines) ;
                         my_set_data(&editor,t.clone().as_str(),30) ;
                         "".to_string()
