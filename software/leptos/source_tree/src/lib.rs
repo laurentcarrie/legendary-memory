@@ -84,6 +84,7 @@ pub fn App() -> impl IntoView {
                                 log!("before unwrap") ;
                                 let editor = my_edit("editor","xxx","yyy",10) ;
                                 // let editor = serde_wasm_bindgen::to_value(& xeditor.get()).unwrap() ;
+                                set_xeditor.set(editor) ;
                                 my_set_data(&editor, t.clone().as_str(), 80);
                                 set_see_editor.set(true) ;
                                 set_see_html.set(false) ;
@@ -284,6 +285,10 @@ edit me...
             on:click=move |_|
                 {
                     let file = file_value.get() ;
+                    log!("get editor") ;
+                    let editor = serde_wasm_bindgen::to_value(& xeditor.get()).unwrap() ;
+                    log!("{}",my_get_data(editor)) ;
+
                     // set_file_save_value.set((file,my_get_data())) ;
                     log!("save {}",file) ;
             }>"save"</button>
