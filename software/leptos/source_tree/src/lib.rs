@@ -71,14 +71,14 @@ pub fn App() -> impl IntoView {
                             "html" => {
                                 let e = document().get_element_by_id("editorx").unwrap();
                                 e.set_inner_html(t.clone().as_str());
-                                set_see_editor.set(true) ;
-                                set_see_html.set(false) ;
+                                set_see_editor.set(false) ;
+                                set_see_html.set(true) ;
                             }
                             _ => {
                                 let editor = my_edit("editor", "sss", format, nblines);
                                 my_set_data(&editor, t.clone().as_str(), 80);
-                                set_see_editor.set(false) ;
-                                set_see_html.set(true) ;
+                                set_see_editor.set(true) ;
+                                set_see_html.set(false) ;
                             }
                         } ;
                         "".to_string()
