@@ -222,7 +222,7 @@ edit me...
 
         <button
             on:click=
-                {move || Suspend::new(async move {
+                {move |_| Suspend::new(async move {
                     log!("build") ;
                     build();
             })}>"build"</button>
