@@ -59,7 +59,7 @@ pub fn App() -> impl IntoView {
                         let (url,t) = t ;
                         let nblines = t.chars().filter(|c| *c == '\n').count();
                         let extension = {
-                            let e= PathBuf::from(url.clone()).extension().unwrap_or(OsStr::new("")) ;
+                            let e= PathBuf::from(&url).extension().unwrap_or(OsStr::new("")) ;
                         log!("extension : {:?}",e) ;
                             e.clone()
                                 } ;
