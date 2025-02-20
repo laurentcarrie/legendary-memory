@@ -68,7 +68,7 @@ pub fn App() -> impl IntoView {
                         } ;
                         match format {
                             "html" => {
-                                let e = document().get_element_by_id("editor");
+                                let e = document().get_element_by_id("editor").unwrap();
                                 e.set_html(t.clone().as_str());
                             }
                             _ => {
