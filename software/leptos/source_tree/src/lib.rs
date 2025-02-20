@@ -1,3 +1,4 @@
+use serde_wasm::bindgen ;
 use wasm_bindgen_futures::js_sys::Uint8Array ;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
