@@ -174,6 +174,7 @@ edit me...
                                         let c  = SourceTreeItem_of_base64(song_value.get()) ;
                                         set_file_value.set(c.masterjsonfile) ;
                                         set_see_editor.set(true) ;
+                                        set_see_html.set(false) ;
                                         log!("after change, pointing to master json")
                                     }
                                     prop:value=move || song_value.get()>
@@ -272,6 +273,8 @@ edit me...
             on:click=move |_|
                 {
                     log!("show build progress") ;
+                    set_see_editor.set(false) ;
+                    set_see_html.set(true) ;
                     set_file_value.set("/output/progress.html".to_string())
             }>"progress (html)"</button>
 
