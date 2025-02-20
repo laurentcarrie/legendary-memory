@@ -221,7 +221,10 @@ edit me...
         </div>
 
         <button
-            on:click=move |_| {build();}>"build"</button>
+            on:click=move |_| {
+            log!("build") ;
+            build();
+        }>"build"</button>
 
     </div>
     </div>
