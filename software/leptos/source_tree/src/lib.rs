@@ -289,7 +289,7 @@ edit me...
                     let file = file_value.get() ;
                     log!("get editor") ;
                     let editor = serde_wasm_bindgen::to_value(& xeditor.get()).unwrap() ;
-                    log!("{}",my_get_data(editor)) ;
+                    log!("{}",my_get_data(&editor)) ;
 
                     // set_file_save_value.set((file,my_get_data())) ;
                     log!("save {}",file) ;
