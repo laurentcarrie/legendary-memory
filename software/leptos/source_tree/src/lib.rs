@@ -257,6 +257,16 @@ edit me...
         <button
             on:click=move |_|
                 {
+                    let file = file_value.get() ;
+                    log!("save {}",file) ;
+            }>"save"</button>
+
+
+        <hr/>
+
+        <button
+            on:click=move |_|
+                {
                     log!("build") ;
                     set_build_value.set("xxx".to_string())
             }>"build"</button>
