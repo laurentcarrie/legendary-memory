@@ -59,7 +59,7 @@ pub fn App() -> impl IntoView {
                         let (url,t) = t ;
                         let nblines = t.chars().filter(|c| *c == '\n').count();
                         let extension = PathBuf::from(url.clone()).extension().unwrap_or(OsStr::new("")) ;
-                        // log!("extension : {:?}",&extension) ;
+                        log!("extension : {:?}",&extension.clone()) ;
                         let editor = my_edit("editor","sss","ace/mode/json",nblines) ;
                         my_set_data(&editor,t.clone().as_str(),30) ;
                         "".to_string()
