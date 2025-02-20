@@ -43,6 +43,7 @@ pub fn App() -> impl IntoView {
     let (build_value, set_build_value) = signal::<String>("???".to_string());
 
     let async_file_data = LocalResource::new(move || fetch_file(file_value.get()));
+    let async_build_data = LocalResource::new(move || { let _ = build_value.get() ; build()});
 
     let async_file_result = move || {
         async_file_data
@@ -72,6 +73,23 @@ pub fn App() -> impl IntoView {
             .unwrap_or_else(|| "Loading file ...".into())
     };
 
+    let async_build_result = move || {
+        async_build_data
+            .get()
+            .as_deref()
+            .map(|value| {
+                match value {
+                    Ok(t) => {
+                        "".to_string()
+                    }
+                    Err(e) => format!("Erreur {:?}", e),
+                }
+            })
+            // This loading state will only show before the first load
+            .unwrap_or_else(|| "Building ...".into())
+    };
+
+
     view! {
         <main>
             <Stylesheet id="leptos" href="/style-source-tree.css"/>
@@ -90,6 +108,7 @@ edit me...
         </div>
 
     <p><pre>{async_file_result}</pre></p>
+    <p><pre>{async_build_result}</pre></p>
 
         <div class="splitx leftx">
             <div class="centered">
