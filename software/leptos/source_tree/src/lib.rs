@@ -306,7 +306,9 @@ edit me...
             on:click=move |_|
                 {
                     log!("build") ;
-                    set_build_value.set("xxx".to_string())
+                    let now : DateTime<Utc> = Utc::now();       // e.g. `2014-11-28T12:45:59.324310806Z`
+                    let now = now.format("%Y-%m-%d-%H-%M-%S").to_string() ;
+                    set_build_value.set(now)
             }>"build"</button>
 
 
