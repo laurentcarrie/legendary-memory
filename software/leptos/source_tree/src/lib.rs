@@ -91,7 +91,7 @@ pub fn App() -> impl IntoView {
                                 // let bytes: Vec<u8> = array.to_vec();
                                 // set_xeditor.set(Some(bytes)) ;
                                 // let s = serde_wasm_bindgen::into_serde(editor) ;
-                                my_set_data(&editor, t.clone().as_str(), 80);
+                                my_set_data("editor", t.clone().as_str(), 80);
                                 set_see_editor.set(true) ;
                                 set_see_html.set(false) ;
                             }
@@ -292,8 +292,7 @@ edit me...
                 {
                     let file = file_value.get() ;
                     log!("get editor") ;
-                    let editor = serde_wasm_bindgen::to_value(& xeditor.get()).unwrap() ;
-                    log!("{}",my_get_data(&editor)) ;
+                    log!("{}",my_get_data("editor")) ;
 
                     // set_file_save_value.set((file,my_get_data())) ;
                     log!("save {}",file) ;
@@ -339,8 +338,8 @@ extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just
     // `log(..)`
     // #[wasm_bindgen]
-    fn my_edit(s: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
-    fn my_set_data(editor: &JsValue, data: &str, nblines: usize) -> JsValue;
-    fn my_set_mode(editor: &JsValue, mode: &str) -> JsValue;
-    fn my_get_data(editor:&JsValue) -> String;
+    fn my_edit(id: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
+    fn my_set_data(id:&str, data: &str, nblines: usize) -> JsValue;
+    fn my_set_mode(id:&str, mode: &str) -> JsValue;
+    fn my_get_data(id:&str) -> String;
 }

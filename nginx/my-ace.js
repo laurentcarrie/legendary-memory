@@ -14,20 +14,22 @@ function my_edit(id,value,mode,nblines) {
     return editor ;
 }
 
-function my_set_data(editor,value,nblines) {
+function my_set_data(id,value,nblines) {
+    var editor = ace.edit(id);
     console.log("set value for editor")
     editor.setValue(value);
     editor.setOption("maxLines", nblines) ;
 }
 
-function my_set_mode(editor,mode) {
+function my_set_mode(id,mode) {
+    var editor = ace.edit(id);
     editor.setOption("mode",mode) ;
 }
 
 
-function my_get_data(editor) {
+function my_get_data(id) {
     // console.log(type_of (editor)) ;
-    var editor = ace.edit("editor");
+    var editor = ace.edit(id);
     let data= editor.getValue() ;
     console.log("get data in editor") ;
     console.log(data) ;
