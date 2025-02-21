@@ -87,7 +87,7 @@ pub async fn generate(
 }
 
 pub async fn omake(id: String, builddir: PathBuf) -> Result<u32, MyError> {
-    log::info!("omake id={}, builddir={:?}",&id, &builddir);
+    log::info!("omake id={}, builddir={:?}", &id, &builddir);
     let mut sh = builddir
         .clone()
         .parent()
