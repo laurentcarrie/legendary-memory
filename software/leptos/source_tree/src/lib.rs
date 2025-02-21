@@ -292,8 +292,14 @@ edit me...
                     let file = file_value.get() ;
                     log!("save {}",file) ;
                     // log!("{}",my_get_data("editor")) ;
-                    set_file_save_value.set((file,my_get_data("editor"))) ;
+                    let message = my_commit_message() ;
             }>"save"</button>
+
+        <button
+            on:click=move |_|
+                {
+                    let message =
+            }>"commit"</button>
 
 
         <hr/>
@@ -339,4 +345,5 @@ extern "C" {
     fn my_set_data(id:&str, data: &str, nblines: usize) -> JsValue;
     fn my_set_mode(id:&str, mode: &str) -> JsValue;
     fn my_get_data(id:&str) -> String;
+    fn my_commit_message() -> String;
 }
