@@ -37,4 +37,6 @@ jobs:
           path: 'doc/srs/book'
       - name: Deploy to GitHub Pages
         id: deployment
+        environment:
+          name: github-pages
         uses: actions/deploy-pages@v4
