@@ -3,6 +3,7 @@
 // use log::LevelFilter;
 use crate::errors::MyError;
 use simple_logger::SimpleLogger;
+use log::LevelFilter;
 use sysinfo;
 // use std::process::{Command, Stdio};
 use crate::config::model::StructureItemContent::{ItemChords, ItemHRule, ItemRef};
