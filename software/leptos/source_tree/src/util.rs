@@ -95,8 +95,9 @@ pub async fn fetch_file(path: String) -> Result<(String, String)> {
 pub async fn build(id:String) -> Result<()> {
     log!("build in util.ml") ;
     let choice = request::Choice { choice:request::EChoice::ItemBuild(id) } ;
-    let json = serde_json::to_string(&choice).unwrap();//   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
-    let path =  format!("/scripts/request.sh?request={}",&json) ;
+    let json_string = serde_json::to_string(&choice).unwrap();//   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
+    let b64 = BASE64_STANDARD.encode(&json_string);
+    let path =  BASE64_STANDARD::format!("/scripts/request.sh?request={}",&json) ;
     log!("build, url is {}", &path);
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
