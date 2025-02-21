@@ -22,7 +22,7 @@ $root/software/target/debug/songbook $songsdir $booksdir $builddir
 
 
 f() {
-    ( cd $builddir && omake all -j 8 && echo DONE )
+    ( cd $builddir && build_id=42 omake all -j 8 && echo DONE )
     tar cvzf delivery.tar.gz $builddir/delivery
     #dedix-put delivery.tar.gz
     aws s3 cp delivery.tar.gz s3://dsaa-cph-ai-s3-dev/laurent_carrie/delivery.tar.gz --profile dev
