@@ -85,7 +85,7 @@ pub async fn generate(
     // }
 }
 
-pub async fn omake(id:String,builddir: PathBuf) -> Result<u32, MyError> {
+pub async fn omake(id: String, builddir: PathBuf) -> Result<u32, MyError> {
     log::info!("omake in {:?}", &builddir);
     let mut sh = builddir
         .clone()
@@ -115,7 +115,7 @@ pub async fn omake(id:String,builddir: PathBuf) -> Result<u32, MyError> {
 }
 
 pub async fn handle_build_request(
-    id:String,
+    id: String,
     songdir: PathBuf,
     bookdir: PathBuf,
     builddir: PathBuf,
@@ -130,7 +130,7 @@ pub async fn handle_build_request(
     // logpath.push("build.log");
     generate(songdir.clone(), bookdir.clone(), builddir.clone()).await?;
     log::info!("generate done");
-    let pid = omake(id,builddir).await?;
+    let pid = omake(id, builddir).await?;
     Ok(answer::EChoice::ItemOmakeBuild(pid))
 }
 
@@ -369,7 +369,7 @@ async fn main() -> () {
         log::info!("received command");
         let answer_choice = match what.choice {
             request::EChoice::ItemBuild(id) => {
-                handle_build_request(songdir.clone(), bookdir.clone(), builddir.clone()).await
+                handle_build_request(id,songdir.clone(), bookdir.clone(), builddir.clone()).await
             }
             request::EChoice::ItemOMakeChildrenInfo => {
                 log::info!("request check pid");
