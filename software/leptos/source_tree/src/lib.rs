@@ -65,13 +65,13 @@ pub fn App() -> impl IntoView {
                         let p = PathBuf::from(&url) ;
                         let extension : &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("") ;
                         // log!("extension : {:?}", &extension);
-                        let format = match extension {
+                        let mode = match extension {
                             "json" => "ace/mode/json",
                             "tex" => "ace/mode/latex",
                             "html" => "html",
                             _ => "ace/mode/text"
                         } ;
-                        match format {
+                        match mode {
                             "html" => {
                                 let e = document().get_element_by_id("showhtml").unwrap();
                                 e.set_inner_html(t.clone().as_str());
@@ -81,7 +81,7 @@ pub fn App() -> impl IntoView {
                             _ => {
                                 // let editor = my_edit("editor", "sss", format, nblines);
                                 log!("before unwrap") ;
-                                my_edit("editor","xxx","yyy",10) ;
+                                // my_edit("editor","xxx","yyy",10) ;
                                 // let example = serde_wasm_bindgen::from_value(editor);
                                 // log!("example : {:?}",&example) ;
                                 // let x = s.from_value(editor).unwrap();
@@ -90,7 +90,7 @@ pub fn App() -> impl IntoView {
                                 // let bytes: Vec<u8> = array.to_vec();
                                 // set_xeditor.set(Some(bytes)) ;
                                 // let s = serde_wasm_bindgen::into_serde(editor) ;
-                                my_set_data("editor", t.clone().as_str(), 80);
+                                my_set_data("editor", t.clone().as_str(),mode, 80);
                                 set_see_editor.set(true) ;
                                 set_see_html.set(false) ;
                             }
@@ -341,7 +341,7 @@ extern "C" {
     // `log(..)`
     // #[wasm_bindgen]
     fn my_edit(id: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
-    fn my_set_data(id:&str, data: &str, nblines: usize) -> JsValue;
+    fn my_set_data(id:&str, data: &str, mode:&str,nblines: usize) -> JsValue;
     fn my_set_mode(id:&str, mode: &str) -> JsValue;
     fn my_get_data(id:&str) -> String;
     fn my_commit_message() -> String;
