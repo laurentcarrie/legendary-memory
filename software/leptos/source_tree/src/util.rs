@@ -93,7 +93,7 @@ pub async fn fetch_file(path: String) -> Result<(String, String)> {
 
 
 pub async fn build(id:String) -> Result<()> {
-    log!("build in util.ml") ;
+    log!("build in util.ml, id = {}",id) ;
     let choice = request::Choice { choice:request::EChoice::ItemBuild(id) } ;
     let json_string = serde_json::to_string(&choice).unwrap();//   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
     let b64 = BASE64_STANDARD.encode(&json_string);
