@@ -52,7 +52,6 @@ pub fn App() -> impl IntoView {
     let async_file_save_data = LocalResource::new(move || save_file(file_save_value.get().0,file_save_value.get().1));
     let async_build_data = LocalResource::new(move || { let _ = build_value.get() ; build()});
     let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
-    let (xeditor,set_xeditor) = signal::<Option<u8>>(None) ;
 
     let async_file_result = move || {
         async_file_data
@@ -62,10 +61,10 @@ pub fn App() -> impl IntoView {
                 match value {
                     Ok(t) => {
                         let (url, t) = t;
-                        let nblines = t.chars().filter(|c| *c == '\n').count();
-                            let p = PathBuf::from(&url) ;
-                            let extension : &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("") ;
-                            log!("extension : {:?}", &extension);
+                        let _nblines = t.chars().filter(|c| *c == '\n').count();
+                        let p = PathBuf::from(&url) ;
+                        let extension : &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("") ;
+                        // log!("extension : {:?}", &extension);
                         let format = match extension {
                             "json" => "ace/mode/json",
                             "tex" => "ace/mode/latex",
@@ -82,7 +81,7 @@ pub fn App() -> impl IntoView {
                             _ => {
                                 // let editor = my_edit("editor", "sss", format, nblines);
                                 log!("before unwrap") ;
-                                let editor : JsValue = my_edit("editor","xxx","yyy",10) ;
+                                my_edit("editor","xxx","yyy",10) ;
                                 // let example = serde_wasm_bindgen::from_value(editor);
                                 // log!("example : {:?}",&example) ;
                                 // let x = s.from_value(editor).unwrap();
@@ -128,7 +127,7 @@ pub fn App() -> impl IntoView {
             .as_deref()
             .map(|value| {
                 match value {
-                    Ok(t) => {
+                    Ok(_) => {
                         "".to_string()
                     }
                     Err(e) => format!("Erreur {:?}", e),
