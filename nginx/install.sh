@@ -125,7 +125,11 @@ restart_nginx() {
   # sudo service nginx status
 }
 
-
+create_git_repo() {
+  cd $wwwroot/input
+  git init
+  git commit -a -m initial
+}
 
 install_packages
 make_www_tree
@@ -138,7 +142,7 @@ make_nginx_conf
 restart_nginx
 #install_songbook_server_service_as_root
 install_songbook_server_service_as_user
-
+create_git_repo
 
 cp -R /home/laurent/work/ace-builds/src-min-noconflict $wwwroot
 cp -R /home/laurent/work/ace-builds/src-noconflict $wwwroot
