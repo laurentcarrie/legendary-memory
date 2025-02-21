@@ -7,7 +7,7 @@ songs_dir = {{ srcdir }}
 # where you will build the pdf and wav files
 build_dir = $(absname .)
 buildroot = $(build_dir)
-html_output = $(build_dir)/progress.html
+html_output = $(build_dir)/progress.$(build_id).html
 
 # the remote on google drive
 # see rclone documentation

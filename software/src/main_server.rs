@@ -85,7 +85,7 @@ pub async fn generate(
     // }
 }
 
-pub async fn omake(builddir: PathBuf) -> Result<u32, MyError> {
+pub async fn omake(builddir: PathBuf,id:String) -> Result<u32, MyError> {
     log::info!("omake in {:?}", &builddir);
     let mut sh = builddir
         .clone()
@@ -96,7 +96,7 @@ pub async fn omake(builddir: PathBuf) -> Result<u32, MyError> {
     sh.push("omake.sh");
     dbg!(&sh);
     let child = Command::new(sh)
-        // .arg("-j")
+        .arg(id.as_str())
         // .arg("8")
         // .arg("-k")
         // .env("PATH", "/bin")
