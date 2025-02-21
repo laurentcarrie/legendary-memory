@@ -291,11 +291,9 @@ edit me...
             on:click=move |_|
                 {
                     let file = file_value.get() ;
-                    log!("get editor") ;
-                    log!("{}",my_get_data("editor")) ;
-
-                    // set_file_save_value.set((file,my_get_data())) ;
                     log!("save {}",file) ;
+                    // log!("{}",my_get_data("editor")) ;
+                    set_file_save_value.set((file,my_get_data())) ;
             }>"save"</button>
 
 
