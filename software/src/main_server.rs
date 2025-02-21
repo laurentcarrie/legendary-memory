@@ -2,8 +2,8 @@
 // use file_rotate::{compression::Compression, suffix::AppendCount, ContentLimit, FileRotate};
 // use log::LevelFilter;
 use crate::errors::MyError;
-use simple_logger::SimpleLogger;
 use log::LevelFilter;
+use simple_logger::SimpleLogger;
 use sysinfo;
 // use std::process::{Command, Stdio};
 use crate::config::model::StructureItemContent::{ItemChords, ItemHRule, ItemRef};
@@ -87,7 +87,7 @@ pub async fn generate(
 }
 
 pub async fn omake(id: String, builddir: PathBuf) -> Result<u32, MyError> {
-    log::info!("omake in {:?}", &builddir);
+    log::info!("omake id={}, builddir={:?}",&id, &builddir);
     let mut sh = builddir
         .clone()
         .parent()
