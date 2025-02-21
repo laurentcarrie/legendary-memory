@@ -367,7 +367,7 @@ async fn main() -> () {
         dbg!(&what);
         log::info!("received command");
         let answer_choice = match what.choice {
-            request::EChoice::ItemBuild => {
+            request::EChoice::ItemBuild(id) => {
                 handle_build_request(songdir.clone(), bookdir.clone(), builddir.clone()).await
             }
             request::EChoice::ItemOMakeChildrenInfo => {
