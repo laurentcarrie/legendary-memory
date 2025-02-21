@@ -1,5 +1,5 @@
 navigate to mdbook documentation
-# [mdbook documentation](https://laurentcarrie.github.io/legendary-memory/])
+# [mdbook documentation](https://laurentcarrie.github.io/legendary-memory/)
 
 # What is this ?
 
