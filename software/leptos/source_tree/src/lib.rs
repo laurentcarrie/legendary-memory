@@ -293,7 +293,7 @@ edit me...
                     let file = file_value.get() ;
                     log!("save {}",file) ;
                     // log!("{}",my_get_data("editor")) ;
-                    set_file_save_value.set((file,my_get_data())) ;
+                    set_file_save_value.set((file,my_get_data("editor"))) ;
             }>"save"</button>
 
 
