@@ -98,7 +98,7 @@ pub async fn build() -> Result<()> {
     log!("build, url is {}", path);
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
-    let data = reqwasm::http::Request::post(path)
+    let _ = reqwasm::http::Request::post(path)
     .send()
     .await?
     .text()
