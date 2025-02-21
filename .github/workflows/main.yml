@@ -2,7 +2,7 @@ name: Deploy
 on:
   push:
     branches:
-      - work
+      - main
 
 jobs:
   deploy:
