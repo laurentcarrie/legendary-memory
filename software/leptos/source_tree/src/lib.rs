@@ -318,7 +318,7 @@ edit me...
             on:click=move |_|
                 {
                     log!("show build progress") ;
-                    set_file_value.set("/output/omake.{}.stdout".to_string())
+                    set_file_value.set(format!("/output/omake.{}.stdout",build_value.get()))
             }>"progress (stdout)"</button>
 
         <button
@@ -327,7 +327,7 @@ edit me...
                     log!("show build progress") ;
                     set_see_editor.set(false) ;
                     set_see_html.set(true) ;
-                    let filename=format!("/progress.{}.html",build_value.get()) ;
+                    let filename=format!("/output/progress.{}.html",build_value.get()) ;
                     set_file_value.set(filename)
             }>"progress (html)"</button>
 
