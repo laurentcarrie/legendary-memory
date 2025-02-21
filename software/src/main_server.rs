@@ -341,7 +341,7 @@ async fn main() -> () {
     //     None,
     // );
 
-    // log::set_max_level(LevelFilter::Debug);
+    log::set_max_level(LevelFilter::Info);
     let mut args: std::env::Args = env::args();
     log::info!("found {} args on command line", args.len());
     let songdir = PathBuf::from(args.nth(1).unwrap());
