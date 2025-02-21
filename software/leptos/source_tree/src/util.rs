@@ -93,8 +93,9 @@ pub async fn fetch_file(path: String) -> Result<(String, String)> {
 
 
 pub async fn build(id:String) -> Result<()> {
-    let choice = request::Choice { choice:request::EChoice::ItemBuild(id) } ;//   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
-    let path =  "/scripts/request.sh?request=eyJjaG9pY2UiOnsiSXRlbUJ1aWxkIjogbnVsbH19Cg==" ;
+    let choice = request::Choice { choice:request::EChoice::ItemBuild(id) } ;
+    let json = serde_json::to_str(choice) ;//   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
+    let path =  format!("/scripts/request.sh?request={}",json).as_str() ;
     log!("build, url is {}", path);
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
