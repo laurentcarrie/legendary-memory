@@ -129,6 +129,7 @@ create_git_repo() {
   git config --global --add safe.directory $wwwroot/input
   cd $wwwroot/input
   git init
+  git add .
   git commit -a -m initial
 }
 
