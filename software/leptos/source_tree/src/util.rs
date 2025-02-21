@@ -96,7 +96,7 @@ pub async fn build(id:String) -> Result<()> {
     let choice = request::Choice { choice:request::EChoice::ItemBuild(id) } ;
     let json = serde_json::to_string(&choice).unwrap();//   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
     let path =  format!("/scripts/request.sh?request={}",&json).as_str() ;
-    log!("build, url is {}", path);
+    log!("build, url is {}", &path);
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let _ = reqwasm::http::Request::post(path)
