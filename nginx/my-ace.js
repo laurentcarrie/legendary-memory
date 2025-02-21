@@ -28,7 +28,6 @@ function my_get_data(id) {
 }
 
 function my_commit_message() {
-    let text;
-    let person = prompt("enter a commit message:", "no message");
+    let text = prompt("enter a commit message:", "no message");
     return text ;
 }
