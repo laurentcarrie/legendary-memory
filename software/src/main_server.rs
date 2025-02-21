@@ -85,7 +85,7 @@ pub async fn generate(
     // }
 }
 
-pub async fn omake(builddir: PathBuf,id:String) -> Result<u32, MyError> {
+pub async fn omake(id:String,builddir: PathBuf) -> Result<u32, MyError> {
     log::info!("omake in {:?}", &builddir);
     let mut sh = builddir
         .clone()
@@ -115,6 +115,7 @@ pub async fn omake(builddir: PathBuf,id:String) -> Result<u32, MyError> {
 }
 
 pub async fn handle_build_request(
+    id:String,
     songdir: PathBuf,
     bookdir: PathBuf,
     builddir: PathBuf,
@@ -129,7 +130,7 @@ pub async fn handle_build_request(
     // logpath.push("build.log");
     generate(songdir.clone(), bookdir.clone(), builddir.clone()).await?;
     log::info!("generate done");
-    let pid = omake(builddir).await?;
+    let pid = omake(id,builddir).await?;
     Ok(answer::EChoice::ItemOmakeBuild(pid))
 }
 
