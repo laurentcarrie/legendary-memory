@@ -51,7 +51,7 @@ pub fn App() -> impl IntoView {
     let async_file_data = LocalResource::new(move || fetch_file(file_value.get()));
     // let async_file_save_data = LocalResource::new(move || save_file(file_save_value.get().0,file_save_value.get().1));
     let async_build_data = LocalResource::new(move || { let _ = build_value.get() ; build()});
-    let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
+    // let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
 
     let async_file_result = move || {
         async_file_data
