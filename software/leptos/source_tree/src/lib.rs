@@ -83,7 +83,8 @@ pub fn App() -> impl IntoView {
                                 // let editor = my_edit("editor", "sss", format, nblines);
                                 log!("before unwrap") ;
                                 let editor : JsValue = my_edit("editor","xxx","yyy",10) ;
-                                let s = serde_wasm_bindgen::Serializer::new() ;
+                                let example: Example = serde_wasm_bindgen::from_value(editor);
+                                log!("example : {:?}",&example) ;
                                 // let x = s.from_value(editor).unwrap();
                                 // let editor = serde_wasm_bindgen::to_value(& xeditor.get()).unwrap() ;
                                 // let array = Uint8Array::new(&editor);
