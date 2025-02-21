@@ -28,7 +28,7 @@ pub mod request {
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
     pub enum EChoice {
-        ItemBuild,
+        ItemBuild(String),
         ItemOMakeChildrenInfo,
         ItemOMakeKill,
         ItemCleanBuildTree,
