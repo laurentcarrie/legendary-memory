@@ -93,7 +93,7 @@ pub async fn fetch_file(path: String) -> Result<(String, String)> {
 
 
 pub async fn build(id:String) -> Result<()> {
-    let choice = request::Choice { choice:request::EChoice::ItemBuild{id:id} } ;//   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
+    let choice = request::Choice { choice:request::EChoice::ItemBuild(id) } ;//   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
     let path =  "/scripts/request.sh?request=eyJjaG9pY2UiOnsiSXRlbUJ1aWxkIjogbnVsbH19Cg==" ;
     log!("build, url is {}", path);
     gloo_timers::future::TimeoutFuture::new(1000).await;
