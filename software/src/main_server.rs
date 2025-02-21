@@ -369,7 +369,7 @@ async fn main() -> () {
         log::info!("received command");
         let answer_choice = match what.choice {
             request::EChoice::ItemBuild(id) => {
-                handle_build_request(id,songdir.clone(), bookdir.clone(), builddir.clone()).await
+                handle_build_request(id, songdir.clone(), bookdir.clone(), builddir.clone()).await
             }
             request::EChoice::ItemOMakeChildrenInfo => {
                 log::info!("request check pid");
