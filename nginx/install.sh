@@ -126,6 +126,7 @@ restart_nginx() {
 }
 
 create_git_repo() {
+  git config --global --add safe.directory $wwwroot/input
   cd $wwwroot/input
   git init
   git commit -a -m initial
