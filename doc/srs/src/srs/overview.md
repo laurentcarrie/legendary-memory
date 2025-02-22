@@ -1,0 +1,95 @@
+# inputs and outputs requirements
+
+| Requirement                    | Description                                |
+|--------------------------------|--------------------------------------------|
+| [pdf output](io.md#srs/output) | the tool output will be pdf files          |
+| [wav output]()                 | the tool will output wav files when needed |
+| [input](#srs/input)            | the input are text files                   |
+
+
+# export requirements
+
+| Requirement                    | Description            |
+|--------------------------------|------------------------|
+| [google drive](#srs/gdrive) | export to google drive |
+
+
+# dependencies requirements
+| Requirement      | Description                                            |
+|------------------|--------------------------------------------------------|
+| [os](#srs/os) | OS and required tools |
+
+
+# interface requirements : two user modes
+| Requirement                                     | Description                 |
+|-------------------------------------------------|-----------------------------|
+| [text editor](<a name="srs/text-editor-mode"/>) | text editor mode            |
+| [web mode](<a name="srs/web-modes"/>)           | web browser mode |
+
+
+# dependencies requirements
+| Requirement              | Description                                            |
+|--------------------------|--------------------------------------------------------|
+| [os](<a name="srs/os"/>) | OS and required tools |
+
+
+# rendering requirements : 
+
+what to find in the pdf output
+
+| Requirement                                            | Description                                        |
+|--------------------------------------------------------|----------------------------------------------------|
+| [sections](<a name="srs/sections"/>)                   | a song is structured as sections                   |
+| [refs](<a name="srs/references"/>)                     | a section can be a reference to another one        |
+| [musicsheet](<a name="srs/musicsnippet"/>)             | insertion of music sheet snippet                   |
+| [tempo](render.md#tempo)          | insertion of tempo                                 |
+| [color](<a name="srs/color"/>)                         | coloring of sections                               |
+| [bar numbering](<a name="srs/barnumber"/>)             | show numbering of bars                             |
+| [time](<a name="srs/time"/>)                           | show time on bars                                  |
+| [book](<a name="srs/book"/>)                           | definition of book                                 |
+| [last modified time](<a name="srs/lastmodifiedtime"/>) | the last modified time of a song will be rendered  |                         
+| [lyrics](<a name="srs/lyrics"/>)                       | lyrics will be rendered, synced with the sections  |
+
+
+
+
+
+# <a name="srs/wav"/> wav files
+
+whenever a piece of music sheet is present in the song, it will be possible to generate a wav output for
+that piece.
+
+# <a name="srs/input"/> input
+
+all inputs are readable text files. It will therefore be possible to put them in a git repo and manage the
+life of these files
+
+
+# <a name="srs/mode"/> two edit modes
+
+there will be two modes : the local and the web mode
+
+
+## local mode
+
+in local mode, you have access to a machine where you cloned the repo that has the songs, and you also
+cloned the repo that has the code of the tool. (currently they are in the same repo)
+
+it requires that you have some computer science knowledge, as you will have to install a few things,
+edit the data files and run the tool
+
+## OS
+
+the software will run on ubuntu. There is no requirement that it runs on windows.
+
+## output export
+
+provided correct configuration, it will be possible to export the pdf outputs to a google drive
+
+## web mode
+
+in web mode, you edit the remote files via a web interface, you trigger the generate of the pdf file by
+clicking a button on the web interface
+
+
+

@@ -1,5 +1,8 @@
 # Overview
 
+This is a personal project, the target is to help me generate and maintain synthetic
+songbooks, that I can use when playing with my amateur pop band.
+
 Standard music notation looks something like this :
 
 ![music sheet](real-music-sheet2.png)
