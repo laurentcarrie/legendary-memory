@@ -102,7 +102,7 @@ pub async fn omake(id: String, builddir: PathBuf) -> Result<u32, MyError> {
         // .arg("-k")
         // .env("PATH", "/bin")
         // .env("PATH", "/bin")
-        .env("html_output",format!("{}/progress.{}.html",&builddir,&id))
+        .env("html_output",format!("{}/progress.{}.html",&builddir.to_string(),&id))
         .current_dir(&builddir)
         // .stdout(Stdio::piped())
         .reap_on_drop(true)
