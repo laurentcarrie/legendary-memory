@@ -327,8 +327,14 @@ edit me...
                     log!("show build progress") ;
                     set_see_editor.set(false) ;
                     set_see_html.set(true) ;
-                    let filename=format!("/output/progress.{}.html",build_value.get()) ;
-                    set_file_value.set(filename)
+                    match build_value.get() {
+                        Some(v) => {
+                    let filename=format!("/output/progress.{}.html",v) ;
+                    set_file_value.set(filename) ;
+                        ()
+                        },
+                    None => ()
+                    }
             }>"progress (html)"</button>
 
 
