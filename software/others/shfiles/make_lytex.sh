@@ -34,7 +34,7 @@ echo "\lilypondfile{$lyfile}" >> $lytexfile
 fstdout=$1.lytex.stdout
 fstderr=$1.lytex.stderr
 
-printfc RUN lilypond $pprintworkdir $html_output
+printfc RUN lilypond $pprintworkdir
 
 
 rm -rf $1.output
@@ -49,11 +49,11 @@ else
 #    rm $1.tex
 #    rm -f $1.dep
 #    rm -rf $1.output
-    printfc FAILED lilypond $pprintworkdir $html_output
+    printfc FAILED lilypond $pprintworkdir
     #cat $fstdout
 #    cat $fstderr
     #exit 1
   else
-    printfc OK lilypond $pprintworkdir $html_output
+    printfc OK lilypond $pprintworkdir
   fi
 fi
