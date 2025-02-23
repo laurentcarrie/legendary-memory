@@ -76,8 +76,7 @@ printfc () {
   status=$1
   topic=$2
   message=$3
-  html_file=$4
-
+  html_file=$html_output
   topic_fmt="${Blue}${On_Yellow}[${topic}]${Color_Off}"
   topic_html="<span style=\"color:blue\" background=\"yellow\">[${topic}]</span>"
 
