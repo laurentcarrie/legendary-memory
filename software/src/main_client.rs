@@ -1,3 +1,5 @@
+use std::fs ;
+use sysinfo::get_current_pid;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
 // pub mod protocol ;
@@ -61,6 +63,15 @@ fn main() {
         .unwrap();
     // let _ = simple_logging::log_to_file("test.log", LevelFilter::Info);
     log::info!("start client");
+
+    match get_current_pid() {
+        Some(pid) => {
+            fs::write("/var/www/songbook/songbook-client.pid", pid).expect("Unable to write pid file");
+        }
+        None() => {
+            log::error!("could not get pid")
+        }
+    } ;
 
     let mut args = env::args();
     let _ = args.next().expect("arg0 should be the name of the program"); // pop arg0
