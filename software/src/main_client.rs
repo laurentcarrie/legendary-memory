@@ -69,6 +69,7 @@ fn main() {
         Ok(pid) => {
             let mut file = std::fs::OpenOptions::new()
                 .write(true)
+                .create(true)
                 .append(true)
                 .open("/var/www/songbook/songbook-client.pid")
                 .unwrap();
