@@ -92,7 +92,7 @@ pub async fn fetch_file(path: String) -> Result<(String, String)> {
 }
 
 pub async fn build(id: Option<String>) -> Result<()> {
-    log!("build in util.ml, id = {}", id);
+    log!("build in util.ml, id = {:?}", id);
     match id {
         Some(id) => {
             let choice = request::Choice {
