@@ -111,7 +111,7 @@ pub async fn build(id: Option<String>) -> Result<()> {
                 .await?;
             Ok(())
         },
-        None => ()
+        None => Ok(())
     }
 }
 
