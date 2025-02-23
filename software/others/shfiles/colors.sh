@@ -116,6 +116,6 @@ message_fmt="${White}${On_Cyan}$message${Color_Off}"
 printf "${status_fmt}${topic_fmt}${message_fmt}\n"
 
 message_html="<span style=\"color:black;background-color:hsla(0,50%%,50%%,0.5)\">$message</span>"
-printf "${status_html}${topic_html}    ${message_html}<br/>\n" >> $html_file
+printf "${status_html}${topic_html}    ${message_html}<br/>\n" >> $html_output
 
 }
