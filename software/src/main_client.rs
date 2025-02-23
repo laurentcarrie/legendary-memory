@@ -65,23 +65,23 @@ fn main() {
     // let _ = simple_logging::log_to_file("test.log", LevelFilter::Info);
     log::info!("start client");
 
-    match get_current_pid() {
-        Ok(pid) => {
-            let mut file = std::fs::OpenOptions::new()
-                .write(true)
-                .create(true)
-                .append(true)
-                .open("/var/www/songbook/songbook-client.pid")
-                .unwrap();
-            match writeln!(file, "{}", pid) {
-                Ok(_) => log::info!("append pid {}", pid),
-                Err(e) => log::error!("write pid failed"),
-            }
-        }
-        Err(e) => {
-            log::error!("could not get pid {:?}", &e)
-        }
-    };
+    // match get_current_pid() {
+    //     Ok(pid) => {
+    //         let mut file = std::fs::OpenOptions::new()
+    //             .write(true)
+    //             .create(true)
+    //             .append(true)
+    //             .open("/var/www/songbook/songbook-client.pid")
+    //             .unwrap();
+    //         match writeln!(file, "{}", pid) {
+    //             Ok(_) => log::info!("append pid {}", pid),
+    //             Err(e) => log::error!("write pid failed"),
+    //         }
+    //     }
+    //     Err(e) => {
+    //         log::error!("could not get pid {:?}", &e)
+    //     }
+    // };
 
     let mut args = env::args();
     let _ = args.next().expect("arg0 should be the name of the program"); // pop arg0
