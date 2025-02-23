@@ -104,7 +104,7 @@ pub async fn omake(id: String, builddir: PathBuf) -> Result<u32, MyError> {
         // .env("PATH", "/bin")
         .env(
             "html_output",
-            format!("{}/progress.{}.html", &builddir.to_str(), &id),
+            format!("{}/progress.{}.html", &builddir.to_str().unwrap(), &id),
         )
         .current_dir(&builddir)
         // .stdout(Stdio::piped())
