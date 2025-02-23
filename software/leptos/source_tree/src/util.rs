@@ -91,27 +91,29 @@ pub async fn fetch_file(path: String) -> Result<(String, String)> {
     Ok((path, data))
 }
 
-
-pub async fn build(id:String) -> Result<()> {
-    log!("build in util.ml, id = {}",id) ;
-    let choice = request::Choice { choice:request::EChoice::ItemBuild(id) } ;
-    let json_string = serde_json::to_string(&choice).unwrap();//   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
+pub async fn build(id: String) -> Result<()> {
+    log!("build in util.ml, id = {}", id);
+    let choice = request::Choice {
+        choice: request::EChoice::ItemBuild(id),
+    };
+    let json_string = serde_json::to_string(&choice).unwrap(); //   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
     let b64 = BASE64_STANDARD.encode(&json_string);
-    let path =  format!("/scripts/request.sh?request={}",&b64) ;
+    let path = format!("/scripts/request.sh?request={}", &b64);
     log!("build, url is {}", &path);
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let _ = reqwasm::http::Request::get(&path)
-    .send()
-    .await?
-    .text()
-    .await?;
+        .send()
+        .await?
+        .text()
+        .await?;
     Ok(())
 }
 
 pub async fn omake_children_info() -> Result<String> {
     //   echo "{\"choice\":{\"ItemBuild\": null}}" | base64
-    let path =  "/scripts/request.sh?request=eyJjaG9pY2UiOiB7Ikl0ZW1PTWFrZUNoaWxkcmVuSW5mbyI6IG51bGx9fQo=" ;
+    let path =
+        "/scripts/request.sh?request=eyJjaG9pY2UiOiB7Ikl0ZW1PTWFrZUNoaWxkcmVuSW5mbyI6IG51bGx9fQo=";
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let data = reqwasm::http::Request::post(path)
@@ -121,5 +123,3 @@ pub async fn omake_children_info() -> Result<String> {
         .await?;
     Ok(data)
 }
-
-
