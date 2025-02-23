@@ -37,7 +37,7 @@ main.pdf : main.tex preamble.tex sections.tex chords.tex body.tex data.tex \
 {{#each lilypondfiles}}
 {{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex : {{this}}
     echo "make lytex"
-    bash $(buildroot)/make_lytex.sh {{remove-file-extension-helper this ".ly"}} $(html_output)
+    bash $(buildroot)/make_lytex.sh {{remove-file-extension-helper this ".ly"}}
 
 {{/each}}
 
@@ -48,6 +48,6 @@ wav : {{this}}
 midi : {{remove-file-extension-helper this ".wav"}}.midi
 
 {{this}} {{remove-file-extension-helper this ".wav"}}.midi : {{remove-file-extension-helper this ".wav"}}.ly
-    bash $(buildroot)/make_wav.sh {{remove-file-extension-helper this ".wav"}} $(html_output)
+    bash $(buildroot)/make_wav.sh {{remove-file-extension-helper this ".wav"}}
 
 {{/each}}

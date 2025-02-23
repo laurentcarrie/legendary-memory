@@ -15,7 +15,7 @@ fi
 
 lyfile=$1.ly
 lytexfile=$1.lytex
-html_output=$2
+#html_output=$2
 
 if ! test -f $lyfile ; then
   printfc FAILED "file not found" $lyfile
