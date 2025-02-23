@@ -3,21 +3,21 @@
 .PHONY: all install clean pdf delivery delivery_songs delivery_books clean gdrive
 
 .BUILD_BEGIN:
-    echo "<h3>BUILD BEGIN at" > $(html_output)
-    date >> $(html_output)
-    echo "</h3>" >> $(html_output)
+    #echo "<h3>BUILD BEGIN at" > $(html_output)
+    #date >> $(html_output)
+    #echo "</h3>" >> $(html_output)
 
 .BUILD_SUCCESS:
-    echo "<h3>BUILD END at" >> $(html_output)
-    date >> $(html_output)
-    echo "</h3>" >> $(html_output)
-    echo "<h3 style=\"color:green\"> SUCCESS </h3>" >> $(html_output)
+    #echo "<h3>BUILD END at" >> $(html_output)
+    #date >> $(html_output)
+    #echo "</h3>" >> $(html_output)
+    #echo "<h3 style=\"color:green\"> SUCCESS </h3>" >> $(html_output)
 
 .BUILD_FAILURE:
-    echo "<h3>BUILD END at" >> $(html_output)
-    date >> $(html_output)
-    echo "</h3>" >> $(html_output)
-    echo "<h3 style=\"color:red\"> FAILURE </h3>" >> $(html_output)
+    #echo "<h3>BUILD END at" >> $(html_output)
+    #date >> $(html_output)
+    #echo "</h3>" >> $(html_output)
+    #echo "<h3 style=\"color:red\"> FAILURE </h3>" >> $(html_output)
 
 .DEFAULT: all
 
