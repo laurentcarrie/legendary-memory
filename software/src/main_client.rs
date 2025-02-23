@@ -66,7 +66,7 @@ fn main() {
 
     match get_current_pid() {
         Ok(pid) => {
-            fs::write("/var/www/songbook/songbook-client.pid", pid.as_u32())
+            fs::write("/var/www/songbook/songbook-client.pid", format!("{}",pid))
                 .expect("Unable to write pid file");
         }
         Err(e) => {
