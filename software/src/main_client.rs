@@ -1,7 +1,7 @@
-use std::io::Write;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
 use std::fs;
+use std::io::Write;
 use sysinfo::get_current_pid;
 // pub mod protocol ;
 pub mod config;
@@ -72,7 +72,7 @@ fn main() {
                 .append(true)
                 .open("/var/www/songbook/songbook-client.pid")
                 .unwrap();
-            match writeln!(file, format!("{}", pid)) {
+            match writeln!(file, "{}", pid) {
                 Ok(_) => log::info!("append pid {}", pid),
                 Err(e) => log::error!("write pid failed"),
             }
