@@ -1,3 +1,4 @@
+use std::io::Write;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
 use std::fs;
@@ -71,11 +72,11 @@ fn main() {
                 .append(true)
                 .open("/var/www/songbook/songbook-client.pid")
                 .unwrap();
-            match writeln!(file,format!("{}", pid)) {
-                Ok(_) => log::info!("append pid {}",pid),
-                Err(e) => log::error!("write pid failed")
+            match writeln!(file, format!("{}", pid)) {
+                Ok(_) => log::info!("append pid {}", pid),
+                Err(e) => log::error!("write pid failed"),
             }
-        },
+        }
         Err(e) => {
             log::error!("could not get pid {:?}", &e)
         }
