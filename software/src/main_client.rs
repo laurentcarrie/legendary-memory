@@ -66,9 +66,16 @@ fn main() {
 
     match get_current_pid() {
         Ok(pid) => {
-            fs::write("/var/www/songbook/songbook-client.pid", format!("{}",pid))
-                .expect("Unable to write pid file");
-        }
+            let mut file = std::fs::OpenOptions::new()
+                .write(true)
+                .append(true)
+                .open("/var/www/songbook/songbook-client.pid")
+                .unwrap();
+            match writeln!(file,format!("{}", pid)) {
+                Ok(_) => log::info!("append pid {}",pid),
+                Err(e) => log::error!("write pid failed")
+            }
+        },
         Err(e) => {
             log::error!("could not get pid {:?}", &e)
         }
