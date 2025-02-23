@@ -1,7 +1,7 @@
-use std::fs ;
-use sysinfo::get_current_pid;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
+use std::fs;
+use sysinfo::get_current_pid;
 // pub mod protocol ;
 pub mod config;
 pub mod errors;
@@ -66,12 +66,13 @@ fn main() {
 
     match get_current_pid() {
         Ok(pid) => {
-            fs::write("/var/www/songbook/songbook-client.pid", pid.as_str()).expect("Unable to write pid file");
+            fs::write("/var/www/songbook/songbook-client.pid", pid.as_u32())
+                .expect("Unable to write pid file");
         }
         Err(e) => {
-            log::error!("could not get pid {:?}",&e)
+            log::error!("could not get pid {:?}", &e)
         }
-    } ;
+    };
 
     let mut args = env::args();
     let _ = args.next().expect("arg0 should be the name of the program"); // pop arg0
