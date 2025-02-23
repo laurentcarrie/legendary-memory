@@ -71,6 +71,7 @@ On_IPurple='\033[0;105m'  # Purple
 On_ICyan='\033[0;106m'    # Cyan
 On_IWhite='\033[0;107m'   # White
 
+test "x$html_output" != "x" || ( echo "html_output not defined" ; exit 1 )
 
 printfc () {
   status=$1
