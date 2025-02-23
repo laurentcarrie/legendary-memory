@@ -65,11 +65,11 @@ fn main() {
     log::info!("start client");
 
     match get_current_pid() {
-        Some(pid) => {
+        Ok(pid) => {
             fs::write("/var/www/songbook/songbook-client.pid", pid).expect("Unable to write pid file");
         }
-        None() => {
-            log::error!("could not get pid")
+        Err(e) => {
+            log::error!("could not get pid {:?}",&e)
         }
     } ;
 
