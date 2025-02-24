@@ -250,7 +250,7 @@ edit me...
                                         <select name="file" id="file-select"
                                     on:change:target=move |ev| {
                                         log!("on change") ;
-                                        let what = string_of_what_to_show(WhatToShow::SourceFile(ev.target().value().parse().expect("set_value")));
+                                        let what = WhatToShow::SourceFile(ev.target().value().parse().expect("set_value"));
                                         log!("what is {}",what) ;
                                         set_file_value.set(ev.target().value().parse().expect("set_value"));
                                         set_what_to_show.set(what) ;
