@@ -79,7 +79,7 @@ pub async fn save_file(path: String, content: String) -> Result<()> {
 }
 
 pub async fn get_file(path: String) -> Result<(String,String)> {
-    log!("get file");
+    log!("get file '{}'",&path);
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let choice = request::Choice {
