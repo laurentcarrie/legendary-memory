@@ -193,7 +193,9 @@ edit me...
                                         Some(item) => {
                                             let data : String = BASE64_STANDARD.encode(serde_json::to_string(& item).expect("serde-json") ) ;
                                             set_song_value.set(data) ;
-                                            set_file_value.set(WhatToShow::SourceFile(item.masterjsonfile.clone())) ;
+                                            set_file_value.set(
+                                                serde_json::to_string(&WhatToShow::SourceFile(item.masterjsonfile.clone()))
+                                            ) ;
                                             ()
                                         }
                                     }
