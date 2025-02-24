@@ -19,6 +19,16 @@ pub enum WhatToShow {
     OmakeStdout
 }
 
+pub fn string_of_what_to_show(s:WhatToShow) -> &str {
+    match serde_json::to_str(&s) {
+        Ok(s) => s,
+        Err(e) => {
+            log!("error in string_of_what_to_show");
+            ""
+        }
+    }
+}
+
 // convert base64 string to a SourceTreeItem
 #[allow(non_snake_case)]
 pub fn SourceTreeItem_of_base64(input: String) -> SourceTreeItem {
