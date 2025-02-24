@@ -378,7 +378,7 @@ pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer:
         PathBuf::from(spath)
     } else {
         spath
-    }
+    };
     path.push(&spath);
     log::info!("get source file '{:?}'", &path);
     let data = match fs::read_to_string(path) {
