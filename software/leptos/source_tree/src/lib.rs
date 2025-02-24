@@ -320,12 +320,7 @@ edit me...
             on:click=move |_|
                 {
                     log!("show build progress") ;
-                    match build_value.get() {
-                    Some(v)=> {
-                        set_file_value.set(format!("/output/omake.{}.stdout",v))
-                    }
-                    None=>()
-                    }
+                    set_file_value.set(WhatToShow::OmakeStdout)
             }>"progress (stdout)"</button>
 
         <button
