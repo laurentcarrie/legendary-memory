@@ -96,8 +96,8 @@ pub async fn get_file(path: String) -> Result<(String,String)> {
     match  serde_json::from_str::<Choice>(json.as_str())  {
         Ok(o) => {
             match o.choice {
-                EChoice::ItemFileData(data) => Ok((path, data)),
-                _ => Ok((path,"wrong return type".to_string()))
+                EChoice::ItemFileData(data) => Ok((&path, data)),
+                _ => Ok((&path,"wrong return type".to_string()))
             }
         },
         Err(e) => Err(e.into())
