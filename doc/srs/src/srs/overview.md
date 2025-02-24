@@ -25,7 +25,7 @@
 | Requirement                                     | Description                 |
 |-------------------------------------------------|-----------------------------|
 | [text editor](<a name="srs/text-editor-mode"/>) | text editor mode            |
-| [web mode](<a name="srs/web-modes"/>)           | web browser mode |
+| [web mode](srs/web-modes)                     | web browser mode |
 
 
 # dependencies requirements
