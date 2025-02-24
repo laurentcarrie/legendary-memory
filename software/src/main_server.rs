@@ -1,5 +1,5 @@
 use human_sort::compare;
-use regex::Regex ;
+use regex::Regex;
 // use async_process::Stdio;
 // use async_process::Stdio;
 // use file_rotate::{compression::Compression, suffix::AppendCount, ContentLimit, FileRotate};
@@ -15,11 +15,11 @@ use crate::config::world::make;
 use async_process::Command;
 use backtrace::Backtrace;
 use handlebars::template::Parameter::Path;
+use std::ffi::OsStr;
 use std::fs::File;
 use std::io::{read_to_string, Write};
 use std::path::PathBuf;
 use std::{env, fs, thread, time};
-use std::ffi::OsStr;
 use sysinfo::Pid;
 pub mod config;
 pub mod errors;
@@ -335,34 +335,33 @@ pub fn handle_save_file(songdir: PathBuf, info: InfoSaveFile) -> Result<answer::
 }
 
 pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
-    let mut candidates : Vec<PathBuf> = vec![] ;
+    let mut candidates: Vec<PathBuf> = vec![];
     for p in builddir.read_dir().expect("read dir failed") {
         if let Ok(p) = p {
             if let Ok(file_type) = p.file_type() {
                 if file_type.is_file() {
                     let re = Regex::new(r"omake\..*\.stdout").unwrap();
                     if re.is_match(p.file_name().as_os_str().to_str().unwrap()) {
-                        candidates.push(p.clone()) ;
+                        candidates.push(p.clone());
                     }
                 }
             }
         }
-    } ;
-    candidates.sort_by(|a,b| {
-        let x= a.file_name().unwrap().to_str().unwrap() ;
-            compare(a.file_name().unwrap().to_str().unwrap(),b.file_name().unwrap().to_str().unwrap())
-        }) ;
+    }
+    candidates.sort_by(|a, b| {
+        let x = a.file_name().unwrap().to_str().unwrap();
+        compare(
+            a.file_name().unwrap().to_str().unwrap(),
+            b.file_name().unwrap().to_str().unwrap(),
+        )
+    });
     let data = match candidates.first() {
         None => "no build yet".to_string(),
-        Some(p) => {
-            read_to_string(p)
-        }
-    }  ;
-
+        Some(p) => read_to_string(p),
+    };
 
     Ok(answer::EChoice::ItemData(data))
 }
-
 
 #[tokio::main]
 async fn main() -> () {
@@ -424,9 +423,7 @@ async fn main() -> () {
                 handle_source_tree(songdir.clone(), bookdir.clone(), builddir.clone())
             }
             request::EChoice::ItemSaveFile(info) => handle_save_file(songdir.clone(), info.clone()),
-            request::EChoice::ItemGetOMakeStdout => {
-                handle_get_omake_stdout(builddir.clone())
-            }
+            request::EChoice::ItemGetOMakeStdout => handle_get_omake_stdout(builddir.clone()),
         };
         let answer = match answer_choice {
             Ok(x) => {
