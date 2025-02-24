@@ -251,7 +251,7 @@ edit me...
                                     on:change:target=move |ev| {
                                         log!("on change") ;
                                         let what = WhatToShow::SourceFile(ev.target().value().parse().expect("set_value"));
-                                        log!("what is {}",what) ;
+                                        log!("what is {:?}",what) ;
                                         set_file_value.set(ev.target().value().parse().expect("set_value"));
                                         set_what_to_show.set(what) ;
                                         log!("value is {:?}",file_value.get()) ;
