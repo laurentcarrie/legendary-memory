@@ -93,7 +93,7 @@ pub async fn get_file(path: String) -> Result<(String,String)> {
         .await?
         .json()
         .await?;
-    match  serde_json::from_str(json)  {
+    match  serde_json::from_str<Choice>(json)  {
         Ok(o) => {
             match o.choice {
                 EChoice::ItemFileData(data) => Ok((path, data)),
