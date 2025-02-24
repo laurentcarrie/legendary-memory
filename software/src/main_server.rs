@@ -358,10 +358,9 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
     let data = match candidates.first() {
         None => "no build yet".to_string(),
         Some(p) => {
-            let data = fs::read_to_string(p) ;
+            let data = fs::read_to_string(p);
             data.expect("could read data")
-        },
-
+        }
     };
 
     Ok(answer::EChoice::ItemData(data))

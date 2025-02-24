@@ -91,6 +91,25 @@ pub async fn fetch_file(path: String) -> Result<(String, String)> {
     Ok((path, data))
 }
 
+pub async fn get_omake_stdout() -> Result<String> {
+    log!("get_omake_stdout");
+    gloo_timers::future::TimeoutFuture::new(1000).await;
+    // make the request
+    let choice = request::Choice {
+        choice: request::EChoice::ItemGetOMakeStdout,
+    };
+    let json_string = serde_json::to_string(&choice).unwrap();
+    let b64 = BASE64_STANDARD.encode(&json_string);
+    let path = format!("/scripts/request.sh?request={}", &b64);
+    let data = reqwasm::http::Request::get(path.as_str())
+        .send()
+        .await?
+        .text()
+        .await?;
+    Ok(data)
+}
+
+
 pub async fn build(id: Option<String>) -> Result<()> {
     log!("build in util.ml, id = {:?}", id);
     match id {
