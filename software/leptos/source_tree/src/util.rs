@@ -99,7 +99,8 @@ pub async fn get_file(path: String) -> Result<(String,String)> {
                 EChoice::ItemFileData(data) => Ok((path, data)),
                 _ => Ok((path,"wrong return type".to_string()))
             }
-        }
+        },
+        Err(e) => Err(e)
     }}
 
 
