@@ -100,7 +100,7 @@ pub async fn get_file(path: String) -> Result<(String,String)> {
                 _ => Ok((path,"wrong return type".to_string()))
             }
         },
-        Err(e) => Err(e)
+        Err(e) => Err(e.into())
     }}
 
 
