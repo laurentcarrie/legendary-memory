@@ -234,7 +234,7 @@ edit me...
                                         <select name="file" id="file-select"
                                     on:change:target=move |ev| {
                                         log!("on change") ;
-                                        let what = WhatToShow::SourceFile(ev.target().value().parse().expect("set_value")) ;
+                                        let what = serde_json::to_string(&WhatToShow::SourceFile(ev.target().value().parse().expect("set_value"))).unwrap() ;
                                         set_file_value.set(what) ; // ev.target().value().parse().expect("set_value"));
                                         log!("value is {:?}",file_value.get()) ;
                                     } // on:change
