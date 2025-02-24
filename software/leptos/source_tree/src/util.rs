@@ -20,7 +20,7 @@ pub enum WhatToShow {
 }
 
 pub fn string_of_what_to_show(s:WhatToShow) -> &str {
-    match serde_json::to_str(&s) {
+    match serde_json::to_string(&s) {
         Ok(s) => s,
         Err(e) => {
             log!("error in string_of_what_to_show");
