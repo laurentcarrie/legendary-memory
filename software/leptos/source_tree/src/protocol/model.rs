@@ -37,7 +37,7 @@ pub mod request {
         ItemSourceTree,
         ItemSaveFile(InfoSaveFile),
         ItemGetOMakeStdout,
-        ItemGetSourceFile(String)
+        ItemGetSourceFile(String),
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
@@ -103,7 +103,7 @@ pub mod answer {
         ItemHealthOk,
         ItemSeeProgress(Progress),
         ItemSourceTree(SourceTree),
-        ItemData(String),
+        ItemFileData(String),
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]

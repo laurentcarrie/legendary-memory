@@ -91,10 +91,9 @@ pub async fn get_file(path: String) -> Result<(String,String)> {
     let data = reqwasm::http::Request::get(path.as_str())
         .send()
         .await?
-        .json()
+        .text()
         .await?;
-    let data : (String,String) = serde_json::from_str(data) ;
-    Ok(data)
+    Ok((path,data))
 }
 
 
