@@ -234,7 +234,8 @@ edit me...
                                         <select name="file" id="file-select"
                                     on:change:target=move |ev| {
                                         log!("on change") ;
-                                        // set_file_value.set(ev.target().value().parse().expect("set_value"));
+                                        let what = WhatToShow::SourceFile(v.target().value().parse().expect("set_value")) ;
+                                        set_file_value.set(what) ; // ev.target().value().parse().expect("set_value"));
                                         log!("value is {:?}",file_value.get()) ;
                                     } // on:change
                                     // prop:value=move || file_value.get()
