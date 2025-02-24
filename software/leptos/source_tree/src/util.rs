@@ -78,7 +78,7 @@ pub async fn save_file(path: String, content: String) -> Result<()> {
     Ok(())
 }
 
-pub async fn get_file(path: String) -> Result<String> {
+pub async fn get_file(path: String) -> Result<(String,String)> {
     log!("get file");
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
@@ -93,6 +93,7 @@ pub async fn get_file(path: String) -> Result<String> {
         .await?
         .json()
         .await?;
+    let data : (String,String) = serde_json::from_str(data) ;
     Ok(data)
 }
 
