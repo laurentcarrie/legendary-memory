@@ -16,7 +16,7 @@ pub mod protocol;
 pub mod util;
 use util::{
     build, default_world, fetch_world,  save_file,
-    SourceTreeItem_of_base64,get_something_to_see,WhatToShow,string_of_what_to_show
+    SourceTreeItem_of_base64,get_something_to_see,WhatToShow,string_of_what_to_show,what_to_show_of_string
 };
 
 
@@ -69,7 +69,7 @@ pub fn App() -> impl IntoView {
     let (see_html, set_see_html) = signal::<bool>(false);
 
     let async_file_data = LocalResource::new(move || get_something_to_see(
-        string_of_what_to_show(&file_value.get())
+        what_to_show_of_string(&file_value.get())
     )) ;
     let async_file_save_data =
         LocalResource::new(move || save_file(file_save_value.get().0, file_save_value.get().1));

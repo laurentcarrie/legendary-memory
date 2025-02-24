@@ -29,6 +29,16 @@ pub fn string_of_what_to_show(s:WhatToShow) -> String {
     }
 }
 
+pub fn what_to_show_of_string(s:String) -> WhatToShow {
+    match serde_json::from_str::<WhatToShow>(s) {
+        Ok(o) => o ,
+        Err(e) =>{
+        log("error in what_to_show_of_string {}",s) ;
+            WhatToShow::Nothing
+        }
+    }
+}
+
 // convert base64 string to a SourceTreeItem
 #[allow(non_snake_case)]
 pub fn SourceTreeItem_of_base64(input: String) -> SourceTreeItem {
