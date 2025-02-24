@@ -83,7 +83,7 @@ pub async fn get_file(path: String) -> Result<String> {
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let choice = request::Choice {
-        choice: request::EChoice::ItemGetFile(path),
+        choice: request::EChoice::ItemGetSourceFile(path),
     };
     let json_string = serde_json::to_string(&choice).unwrap();
     let b64 = BASE64_STANDARD.encode(&json_string);

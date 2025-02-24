@@ -37,6 +37,7 @@ pub mod request {
         ItemSourceTree,
         ItemSaveFile(InfoSaveFile),
         ItemGetOMakeStdout,
+        ItemGetSourceFile(String)
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
