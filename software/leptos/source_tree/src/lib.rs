@@ -16,7 +16,7 @@ pub mod protocol;
 pub mod util;
 use util::{
     build, default_world, fetch_world,  save_file,
-    SourceTreeItem_of_base64,get_something_to_see,WhatToShow
+    SourceTreeItem_of_base64,get_something_to_see,WhatToShow,string_of_what_to_show
 };
 
 #[component]
@@ -44,7 +44,7 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
-    let (file_value, set_file_value) = signal::<String>(serde_json::to_string(&WhatToShow::Nothing).unwrap()) ;
+    let (file_value, set_file_value) = signal::<String>(string_of_what_to_show(&WhatToShow::Nothing)) ;
     let (omake_stdout_value, set_omake_stdout_value) = signal::<String>("???".to_string());
     let (file_save_value, set_file_save_value) =
         signal::<(String, String)>(("???".to_string(), "???".to_string()));
