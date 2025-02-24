@@ -337,7 +337,7 @@ edit me...
                     match build_value.get() {
                         Some(v) => {
                     let filename=format!("/output/progress.{}.html",v) ;
-                    set_file_value.set(filename) ;
+                    set_file_value.set(WhatToShow::SourceFile(filename)) ;
                         ()
                         },
                     None => ()
