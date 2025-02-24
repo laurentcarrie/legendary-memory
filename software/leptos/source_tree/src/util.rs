@@ -91,7 +91,7 @@ pub async fn get_file(path: String) -> Result<String> {
     let data = reqwasm::http::Request::get(path.as_str())
         .send()
         .await?
-        .text()
+        .json()
         .await?;
     Ok(data)
 }
