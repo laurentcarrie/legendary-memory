@@ -16,7 +16,7 @@ pub mod protocol;
 pub mod util;
 use util::{
     build, default_world, get_file, fetch_world, omake_children_info, save_file,
-    SourceTreeItem_of_base64,
+    SourceTreeItem_of_base64,get_something_to_see
 };
 
 #[component]
@@ -44,7 +44,7 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
-    let (file_value, set_file_value) = signal::<String>("???".to_string());
+    let (file_value, set_file_value) = signal::<WhatToShow>(WhatToShow::Nothing);
     let (omake_stdout_value, set_omake_stdout_value) = signal::<String>("???".to_string());
     let (file_save_value, set_file_save_value) =
         signal::<(String, String)>(("???".to_string(), "???".to_string()));
@@ -53,7 +53,7 @@ pub fn App() -> impl IntoView {
     let (see_editor, set_see_editor) = signal::<bool>(false);
     let (see_html, set_see_html) = signal::<bool>(false);
 
-    let async_file_data = LocalResource::new(move || get_file(file_value.get()));
+    let async_file_data = LocalResource::new(move || get_something_to_see(file_value.get()));
     let async_file_save_data =
         LocalResource::new(move || save_file(file_save_value.get().0, file_save_value.get().1));
     let async_build_data = LocalResource::new(move || {

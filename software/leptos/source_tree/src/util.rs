@@ -14,6 +14,7 @@ pub fn default_world() -> SourceTree {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub enum WhatToShow {
+    Nothing,
     SourceFile(String),
     OmakeStdout
 }
