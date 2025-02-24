@@ -15,7 +15,7 @@ pub mod protocol;
 
 pub mod util;
 use util::{
-    build, default_world, fetch_file, fetch_world, omake_children_info, save_file,
+    build, default_world, get_file, fetch_world, omake_children_info, save_file,
     SourceTreeItem_of_base64,
 };
 
