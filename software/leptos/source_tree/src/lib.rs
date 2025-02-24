@@ -57,7 +57,10 @@ pub fn App() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
     let (file_value, set_file_value) =
-        signal::<String>(string_of_what_to_show(WhatToShow::Nothing));
+        signal::<String>("".to_string());
+
+    let (what_to_show,set_what_to_show) = signal<WhatToShow>(WhatToShow::Nothing) ;
+
     let (omake_stdout_value, set_omake_stdout_value) = signal::<String>("???".to_string());
     let (file_save_value, set_file_save_value) =
         signal::<(String, String)>(("???".to_string(), "???".to_string()));
@@ -67,7 +70,7 @@ pub fn App() -> impl IntoView {
     let (see_html, set_see_html) = signal::<bool>(false);
 
     let async_file_data =
-        LocalResource::new(move || get_something_to_see(what_to_show_of_string(file_value.get())));
+        LocalResource::new(move || get_something_to_see(what_to_show.get()));
     let async_file_save_data =
         LocalResource::new(move || save_file(file_save_value.get().0, file_save_value.get().1));
     let async_build_data = LocalResource::new(move || {
@@ -198,7 +201,10 @@ edit me...
                                             let data : String = BASE64_STANDARD.encode(serde_json::to_string(& item).expect("serde-json") ) ;
                                             set_song_value.set(data) ;
                                             set_file_value.set(
-                                                string_of_what_to_show(WhatToShow::SourceFile(item.masterjsonfile.clone()))
+                                                item.masterjsonfile.clone()
+                                            ) ;
+                                            set_what_to_show.set(
+                                                WhatToShow::SourceFile(item.masterjsonfile.clone())
                                             ) ;
                                             ()
                                         }
@@ -214,7 +220,9 @@ edit me...
                                         log!("song value is {}",song_value.get()) ;
                                         let c  = SourceTreeItem_of_base64(song_value.get()) ;
                                         set_file_value.set(
-                                            string_of_what_to_show(WhatToShow::SourceFile(c.masterjsonfile))) ;
+                                            c.masterjsonfile) ;
+                                        set_what_to_show.set(
+                                            WhatToShow::SourceFile(c.masterjsonfile)) ;
                                         set_see_editor.set(true) ;
                                         set_see_html.set(false) ;
                                         log!("after change, pointing to master json")
@@ -244,7 +252,8 @@ edit me...
                                         log!("on change") ;
                                         let what = string_of_what_to_show(WhatToShow::SourceFile(ev.target().value().parse().expect("set_value")));
                                         log!("what is {}",what) ;
-                                        set_file_value.set(what) ; // ev.target().value().parse().expect("set_value"));
+                                        set_file_value.set(ev.target().value().parse().expect("set_value"));
+                                        set_what_to_show(what) ;
                                         log!("value is {:?}",file_value.get()) ;
                                     } // on:change
                                     prop:value=move || file_value.get()
@@ -331,7 +340,9 @@ edit me...
             on:click=move |_|
                 {
                     log!("show build progress") ;
-                    set_file_value.set(string_of_what_to_show(WhatToShow::OmakeStdout))
+                    set_file_value.set("".to_string()) ;
+                    set_what_to_show(WhatToShow::OMakeStdout) ;
+                    ()
                 }>"progress (stdout)"</button>
 
         <button
@@ -343,7 +354,8 @@ edit me...
                     match build_value.get() {
                         Some(v) => {
                     let filename=format!("/output/progress.{}.html",v) ;
-                    set_file_value.set(string_of_what_to_show(WhatToShow::SourceFile(filename))) ;
+                    set_file_value.set(filename) ;
+                    set_what_to_show.set(WhatToShow::SourceFile(filename)) ;
                         ()
                         },
                     None => ()
