@@ -376,7 +376,7 @@ pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer:
         Ok(data) => data,
         Err(e) => format!("{:?}", e),
     };
-    Ok(answer::EChoice::ItemFileData(spath, data))
+    Ok(answer::EChoice::ItemFileData( data))
 }
 
 #[tokio::main]
