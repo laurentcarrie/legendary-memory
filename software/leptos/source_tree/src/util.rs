@@ -19,12 +19,12 @@ pub enum WhatToShow {
     OmakeStdout
 }
 
-pub fn string_of_what_to_show(s:WhatToShow) -> &str {
+pub fn string_of_what_to_show(s:WhatToShow) -> String {
     match serde_json::to_string(&s) {
         Ok(s) => s,
         Err(e) => {
             log!("error in string_of_what_to_show");
-            ""
+            "".to_string()
         }
     }
 }
