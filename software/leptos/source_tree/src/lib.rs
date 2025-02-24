@@ -115,7 +115,10 @@ pub fn App() -> impl IntoView {
                         };
                         "".to_string()
                     }
-                    Err(e) => format!("Erreur {:?}", e),
+                    Err(e) => {
+                        log!("error {:?}",e) ;
+                        format!("Erreur {:?}", e)
+                    },
                 }
             })
             // This loading state will only show before the first load
