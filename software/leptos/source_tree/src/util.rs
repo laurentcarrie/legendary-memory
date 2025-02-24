@@ -134,8 +134,8 @@ pub async fn get_omake_stdout() -> Result<String,String> {
 
 pub async fn get_something_to_see(what:WhatToShow) -> Result<(String,String)> {
     match what {
-        WhatToShow::SourceFile(path) => get_file(path),
-        WhatToShow::OmakeStdout => get_omake_stdout()
+        WhatToShow::SourceFile(path) => get_file(path).await,
+        WhatToShow::OmakeStdout => get_omake_stdout().await
     }
 }
 
