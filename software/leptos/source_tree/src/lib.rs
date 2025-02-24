@@ -322,7 +322,7 @@ edit me...
             on:click=move |_|
                 {
                     log!("show build progress") ;
-                    set_file_value.set(serde_json::to_string(&WhatToShow::OmakeStdout))
+                    set_file_value.set(serde_json::to_string(&WhatToShow::OmakeStdout).unwrap())
                 }>"progress (stdout)"</button>
 
         <button
