@@ -59,7 +59,7 @@ pub fn App() -> impl IntoView {
     let (file_value, set_file_value) =
         signal::<String>("".to_string());
 
-    let (what_to_show,set_what_to_show) = signal<WhatToShow>(WhatToShow::Nothing) ;
+    let (what_to_show,set_what_to_show) = signal::<WhatToShow>(WhatToShow::Nothing) ;
 
     let (omake_stdout_value, set_omake_stdout_value) = signal::<String>("???".to_string());
     let (file_save_value, set_file_save_value) =
