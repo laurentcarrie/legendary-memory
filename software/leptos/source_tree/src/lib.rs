@@ -334,7 +334,7 @@ edit me...
                     match build_value.get() {
                         Some(v) => {
                     let filename=format!("/output/progress.{}.html",v) ;
-                    set_file_value.set(serde_json::to_string(WhatToShow::SourceFile(filename)).unwrap()) ;
+                    set_file_value.set(serde_json::to_string(&WhatToShow::SourceFile(filename)).unwrap()) ;
                         ()
                         },
                     None => ()
