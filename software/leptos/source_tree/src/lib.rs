@@ -354,7 +354,7 @@ edit me...
                     match build_value.get() {
                         Some(v) => {
                     let filename=format!("/output/progress.{}.html",v) ;
-                    set_file_value.set(&filename) ;
+                    set_file_value.set(filename.clone()) ;
                     set_what_to_show.set(WhatToShow::SourceFile(filename)) ;
                         ()
                         },
