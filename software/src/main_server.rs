@@ -284,6 +284,7 @@ pub fn handle_source_tree(
             // let root = format!("/input-songs{}", root);
             root
         };
+        log::info!("ROOT is {}",&root) ;
         let root = root.replace(songdir.to_str().unwrap(), "");
         let mut texfiles: Vec<String> = vec![];
         let mut lyricstexfiles: Vec<String> = vec![];
