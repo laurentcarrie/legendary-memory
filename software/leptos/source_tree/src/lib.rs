@@ -19,6 +19,21 @@ use util::{
     SourceTreeItem_of_base64,get_something_to_see,WhatToShow,string_of_what_to_show
 };
 
+
+
+#[wasm_bindgen]
+extern "C" {
+    // Use `js_namespace` here to bind `console.log(..)` instead of just
+    // `log(..)`
+    // #[wasm_bindgen]
+    fn my_edit(id: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
+    fn my_set_data(id: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
+    fn my_set_mode(id: &str, mode: &str) -> JsValue;
+    fn my_get_data(id: &str) -> String;
+    fn my_commit_message() -> String;
+}
+
+
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
@@ -102,7 +117,7 @@ pub fn App() -> impl IntoView {
                                 // let bytes: Vec<u8> = array.to_vec();
                                 // set_xeditor.set(Some(bytes)) ;
                                 // let s = serde_wasm_bindgen::into_serde(editor) ;
-                                my_set_data("editor", t.clone().as_str(), mode, 80);
+                                // my_set_data("editor", t.clone().as_str(), mode, 80);
                                 set_see_editor.set(true);
                                 set_see_html.set(false);
                             }
@@ -352,16 +367,4 @@ edit me...
     </div>
 
         }
-}
-
-#[wasm_bindgen]
-extern "C" {
-    // Use `js_namespace` here to bind `console.log(..)` instead of just
-    // `log(..)`
-    // #[wasm_bindgen]
-    fn my_edit(id: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
-    fn my_set_data(id: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
-    fn my_set_mode(id: &str, mode: &str) -> JsValue;
-    fn my_get_data(id: &str) -> String;
-    fn my_commit_message() -> String;
 }
