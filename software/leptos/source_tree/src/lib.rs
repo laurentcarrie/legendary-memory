@@ -107,17 +107,7 @@ pub fn App() -> impl IntoView {
                                 set_see_html.set(true);
                             }
                             _ => {
-                                // let editor = my_edit("editor", "sss", format, nblines);
                                 log!("before unwrap");
-                                // my_edit("editor","xxx","yyy",10) ;
-                                // let example = serde_wasm_bindgen::from_value(editor);
-                                // log!("example : {:?}",&example) ;
-                                // let x = s.from_value(editor).unwrap();
-                                // let editor = serde_wasm_bindgen::to_value(& xeditor.get()).unwrap() ;
-                                // let array = Uint8Array::new(&editor);
-                                // let bytes: Vec<u8> = array.to_vec();
-                                // set_xeditor.set(Some(bytes)) ;
-                                // let s = serde_wasm_bindgen::into_serde(editor) ;
                                 my_set_data("editor", t.clone().as_str(), mode, 80);
                                 set_see_editor.set(true);
                                 set_see_html.set(false);
