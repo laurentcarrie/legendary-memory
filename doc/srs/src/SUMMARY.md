@@ -22,7 +22,9 @@
 
 
 # SDD - Software Detailed Design
-- [Installation](guide/installation.md)
-- [Reading Books](guide/reading.md)
-- [Creating a Book](guide/creating.md)
+- [input](ssdd/input.md)
+  - [master json](ssdd/master.md)
+  - [lilypond](ssdd/lilypond.md)
+- [omake](ssdd/omake/.md)
+- [server](ssdd/server.md)
 

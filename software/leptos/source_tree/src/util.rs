@@ -78,18 +78,25 @@ pub async fn save_file(path: String, content: String) -> Result<()> {
     Ok(())
 }
 
-// get file data from url, return value is url,data
-pub async fn fetch_file(path: String) -> Result<(String, String)> {
-    log!("fetch file {}", path);
+pub async fn get_file(path: String) -> Result<String> {
+    log!("get file");
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
+    let choice = request::Choice {
+        choice: request::EChoice::ItemGetFile(path),
+    };
+    let json_string = serde_json::to_string(&choice).unwrap();
+    let b64 = BASE64_STANDARD.encode(&json_string);
+    let path = format!("/scripts/request.sh?request={}", &b64);
     let data = reqwasm::http::Request::get(path.as_str())
         .send()
         .await?
         .text()
         .await?;
-    Ok((path, data))
+    Ok(data)
 }
+
+
 
 pub async fn get_omake_stdout() -> Result<String> {
     log!("get_omake_stdout");

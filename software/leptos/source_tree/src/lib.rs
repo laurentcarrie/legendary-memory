@@ -45,12 +45,14 @@ pub fn App() -> impl IntoView {
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
     let (file_value, set_file_value) = signal::<String>("???".to_string());
+    let (omake_stdout_value, set_omake_stdout_value) = signal::<String>("???".to_string());
     let (file_save_value, set_file_save_value) =
         signal::<(String, String)>(("???".to_string(), "???".to_string()));
     let (build_value, set_build_value) = signal::<Option<String>>(None);
     // let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
     let (see_editor, set_see_editor) = signal::<bool>(false);
     let (see_html, set_see_html) = signal::<bool>(false);
+
     let async_file_data = LocalResource::new(move || fetch_file(file_value.get()));
     let async_file_save_data =
         LocalResource::new(move || save_file(file_save_value.get().0, file_save_value.get().1));
@@ -320,8 +322,8 @@ edit me...
                     log!("show build progress") ;
                     match build_value.get() {
                     Some(v)=> {
-                    set_file_value.set(format!("/output/omake.{}.stdout",v))
-                        }
+                        set_file_value.set(format!("/output/omake.{}.stdout",v))
+                    }
                     None=>()
                     }
             }>"progress (stdout)"</button>
