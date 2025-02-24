@@ -210,7 +210,7 @@ edit me...
                                         log!("song value is {}",song_value.get()) ;
                                         let c  = SourceTreeItem_of_base64(song_value.get()) ;
                                         set_file_value.set(
-                                            serde_json::to_string(&WhatToShow::SourceFile(c.masterjsonfile)).unwrap()) ;
+                                            string_of_what_to_show(WhatToShow::SourceFile(c.masterjsonfile))) ;
                                         set_see_editor.set(true) ;
                                         set_see_html.set(false) ;
                                         log!("after change, pointing to master json")
@@ -238,7 +238,8 @@ edit me...
                                         <select name="file" id="file-select"
                                     on:change:target=move |ev| {
                                         log!("on change") ;
-                                        let what = serde_json::to_string(&WhatToShow::SourceFile(ev.target().value().parse().expect("set_value"))).unwrap() ;
+                                        let what = string_of_what_to_show(WhatToShow::SourceFile(ev.target().value().parse().expect("set_value")));
+                                        log!("what is {}",what) ;
                                         set_file_value.set(what) ; // ev.target().value().parse().expect("set_value"));
                                         log!("value is {:?}",file_value.get()) ;
                                     } // on:change
