@@ -363,10 +363,7 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
         }
     };
 
-    Ok(answer::EChoice::ItemFileData(
-        "omake.stdout".to_string(),
-        data,
-    ))
+    Ok(answer::EChoice::ItemFileData(    data    ))
 }
 
 pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer::EChoice, MyError> {
@@ -376,7 +373,7 @@ pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer:
         Ok(data) => data,
         Err(e) => format!("{:?}", e),
     };
-    Ok(answer::EChoice::ItemFileData( data))
+    Ok(answer::EChoice::ItemFileData(data))
 }
 
 #[tokio::main]
