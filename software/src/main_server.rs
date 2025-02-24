@@ -281,7 +281,7 @@ pub fn handle_source_tree(
         // let root = song.srcdir.to_string();
         let root = {
             let root = song.srcdir.replace(songdir.to_str().unwrap(), "");
-            let root = format!("/input-songs{}", root);
+            // let root = format!("/input-songs{}", root);
             root
         };
         let root = root.replace(songdir.to_str().unwrap(), "");
@@ -367,8 +367,8 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
 }
 
 pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer::EChoice, MyError> {
-log::info!("{:?}",songdir) ;
-    log::info!("{:?}",spath) ;
+    log::info!("{:?}", songdir);
+    log::info!("{:?}", spath);
     let mut path = songdir.clone();
     path.push(&spath);
     log::info!("get source file '{:?}'", &path);
