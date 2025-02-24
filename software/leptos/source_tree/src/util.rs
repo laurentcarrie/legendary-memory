@@ -1,8 +1,8 @@
-use serde::{Deserialize, Serialize};
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
 use leptos::logging::log;
 use leptos::prelude::*;
+use serde::{Deserialize, Serialize};
 
 use crate::protocol::model::answer::{Choice, EChoice, SourceTree, SourceTreeItem};
 use crate::protocol::model::request;
@@ -11,29 +11,28 @@ pub fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
 }
 
-
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub enum WhatToShow {
     Nothing,
     SourceFile(String),
-    OmakeStdout
+    OmakeStdout,
 }
 
-pub fn string_of_what_to_show(s:WhatToShow) -> String {
+pub fn string_of_what_to_show(s: WhatToShow) -> String {
     match serde_json::to_string(&s) {
         Ok(s) => s,
         Err(e) => {
-            log!("error in string_of_what_to_show {:?}",e);
+            log!("error in string_of_what_to_show {:?}", e);
             "".to_string()
         }
     }
 }
 
-pub fn what_to_show_of_string(s:String) -> WhatToShow {
-    match serde_json::from_str::<WhatToShow>(s) {
-        Ok(o) => o ,
-        Err(e) =>{
-        log("error in what_to_show_of_string {}",s) ;
+pub fn what_to_show_of_string(s: String) -> WhatToShow {
+    match serde_json::from_str::<WhatToShow>(&s) {
+        Ok(o) => o,
+        Err(e) => {
+            log("error in what_to_show_of_string {}", s);
             WhatToShow::Nothing
         }
     }
@@ -107,8 +106,8 @@ pub async fn save_file(path: String, content: String) -> Result<()> {
     Ok(())
 }
 
-pub async fn get_file(path: String) -> Result<(String,String)> {
-    log!("get file '{}'",&path);
+pub async fn get_file(path: String) -> Result<(String, String)> {
+    log!("get file '{}'", &path);
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
     let choice = request::Choice {
@@ -123,26 +122,22 @@ pub async fn get_file(path: String) -> Result<(String,String)> {
         .text()
         .await?;
 
-    match  serde_json::from_str::<Choice>(json.as_str())  {
-        Ok(o) => {
-            match o.choice {
-                EChoice::ItemFileData(data) => {
-                    log!("data : {}",&data) ;
-                    Ok((path, data))
-                },
-                _ => Ok((path,"wrong return type".to_string()))
+    match serde_json::from_str::<Choice>(json.as_str()) {
+        Ok(o) => match o.choice {
+            EChoice::ItemFileData(data) => {
+                log!("data : {}", &data);
+                Ok((path, data))
             }
+            _ => Ok((path, "wrong return type".to_string())),
         },
         Err(e) => {
-            log!("error {:?}",e) ;
+            log!("error {:?}", e);
             Err(e.into())
         }
-    }}
+    }
+}
 
-
-
-
-pub async fn get_omake_stdout() -> Result<(String,String)> {
+pub async fn get_omake_stdout() -> Result<(String, String)> {
     log!("get_omake_stdout");
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
@@ -157,17 +152,16 @@ pub async fn get_omake_stdout() -> Result<(String,String)> {
         .await?
         .text()
         .await?;
-    Ok(("omake.stdout".to_string(),data))
+    Ok(("omake.stdout".to_string(), data))
 }
 
-pub async fn get_something_to_see(what:WhatToShow) -> Result<(String,String)> {
+pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> {
     match what {
-        WhatToShow::Nothing => Ok(("".to_string(),"".to_string())),
+        WhatToShow::Nothing => Ok(("".to_string(), "".to_string())),
         WhatToShow::SourceFile(path) => get_file(path).await,
-        WhatToShow::OmakeStdout => get_omake_stdout().await
+        WhatToShow::OmakeStdout => get_omake_stdout().await,
     }
 }
-
 
 pub async fn build(id: Option<String>) -> Result<()> {
     log!("build in util.ml, id = {:?}", id);
@@ -188,8 +182,8 @@ pub async fn build(id: Option<String>) -> Result<()> {
                 .text()
                 .await?;
             Ok(())
-        },
-        None => Ok(())
+        }
+        None => Ok(()),
     }
 }
 

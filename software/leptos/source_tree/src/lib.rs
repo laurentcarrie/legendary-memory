@@ -15,11 +15,9 @@ pub mod protocol;
 
 pub mod util;
 use util::{
-    build, default_world, fetch_world,  save_file,
-    SourceTreeItem_of_base64,get_something_to_see,WhatToShow,string_of_what_to_show,what_to_show_of_string
+    build, default_world, fetch_world, get_something_to_see, save_file, string_of_what_to_show,
+    what_to_show_of_string, SourceTreeItem_of_base64, WhatToShow,
 };
-
-
 
 #[wasm_bindgen]
 extern "C" {
@@ -32,7 +30,6 @@ extern "C" {
     fn my_get_data(id: &str) -> String;
     fn my_commit_message() -> String;
 }
-
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -59,7 +56,8 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
-    let (file_value, set_file_value) = signal::<String>(string_of_what_to_show(WhatToShow::Nothing)) ;
+    let (file_value, set_file_value) =
+        signal::<String>(string_of_what_to_show(WhatToShow::Nothing));
     let (omake_stdout_value, set_omake_stdout_value) = signal::<String>("???".to_string());
     let (file_save_value, set_file_save_value) =
         signal::<(String, String)>(("???".to_string(), "???".to_string()));
@@ -68,14 +66,13 @@ pub fn App() -> impl IntoView {
     let (see_editor, set_see_editor) = signal::<bool>(false);
     let (see_html, set_see_html) = signal::<bool>(false);
 
-    let async_file_data = LocalResource::new(move || get_something_to_see(
-        what_to_show_of_string(&file_value.get())
-    )) ;
+    let async_file_data =
+        LocalResource::new(move || get_something_to_see(what_to_show_of_string(&file_value.get())));
     let async_file_save_data =
         LocalResource::new(move || save_file(file_save_value.get().0, file_save_value.get().1));
     let async_build_data = LocalResource::new(move || {
-        let now=build_value.get() ;
-        log!("xxx build {:?}",now) ;
+        let now = build_value.get();
+        log!("xxx build {:?}", now);
         build(now)
     });
     // let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
@@ -84,42 +81,39 @@ pub fn App() -> impl IntoView {
         async_file_data
             .get()
             .as_deref()
-            .map(|value| {
-                match value {
-                    Ok(t) => {
-                        let (url, t) = t;
-                        let _nblines = t.chars().filter(|c| *c == '\n').count();
-                        let p = PathBuf::from(&url);
-                        let extension: &str =
-                            p.extension().map(|x| x.to_str()).flatten().unwrap_or("");
-                        log!("extension : {:?}", &extension);
-                        log!("data : {}",t) ;
-                        let mode = match extension {
-                            "json" => "ace/mode/json",
-                            "tex" => "ace/mode/latex",
-                            "html" => "html",
-                            _ => "ace/mode/text",
-                        };
-                        match mode {
-                            "html" => {
-                                let e = document().get_element_by_id("showhtml").unwrap();
-                                e.set_inner_html(t.clone().as_str());
-                                set_see_editor.set(false);
-                                set_see_html.set(true);
-                            }
-                            _ => {
-                                log!("before unwrap");
-                                my_set_data("editor", t.clone().as_str(), mode, 80);
-                                set_see_editor.set(true);
-                                set_see_html.set(false);
-                            }
-                        };
-                        "".to_string()
-                    }
-                    Err(e) => {
-                        log!("error {:?}",e) ;
-                        format!("Erreur {:?}", e)
-                    },
+            .map(|value| match value {
+                Ok(t) => {
+                    let (url, t) = t;
+                    let _nblines = t.chars().filter(|c| *c == '\n').count();
+                    let p = PathBuf::from(&url);
+                    let extension: &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("");
+                    log!("extension : {:?}", &extension);
+                    log!("data : {}", t);
+                    let mode = match extension {
+                        "json" => "ace/mode/json",
+                        "tex" => "ace/mode/latex",
+                        "html" => "html",
+                        _ => "ace/mode/text",
+                    };
+                    match mode {
+                        "html" => {
+                            let e = document().get_element_by_id("showhtml").unwrap();
+                            e.set_inner_html(t.clone().as_str());
+                            set_see_editor.set(false);
+                            set_see_html.set(true);
+                        }
+                        _ => {
+                            log!("before unwrap");
+                            my_set_data("editor", t.clone().as_str(), mode, 80);
+                            set_see_editor.set(true);
+                            set_see_html.set(false);
+                        }
+                    };
+                    "".to_string()
+                }
+                Err(e) => {
+                    log!("error {:?}", e);
+                    format!("Erreur {:?}", e)
                 }
             })
             // This loading state will only show before the first load
