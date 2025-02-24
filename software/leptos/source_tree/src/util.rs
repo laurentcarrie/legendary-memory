@@ -112,6 +112,7 @@ pub async fn get_file(path: String) -> Result<(String,String)> {
         .await?
         .text()
         .await?;
+
     match  serde_json::from_str::<Choice>(json.as_str())  {
         Ok(o) => {
             match o.choice {
@@ -119,7 +120,10 @@ pub async fn get_file(path: String) -> Result<(String,String)> {
                 _ => Ok((path,"wrong return type".to_string()))
             }
         },
-        Err(e) => Err(e.into())
+        Err(e) => {
+            log!("error {:?}",e) ;
+            Err(e.into())
+        }
     }}
 
 
