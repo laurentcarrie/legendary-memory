@@ -15,7 +15,7 @@ pub mod protocol;
 
 pub mod util;
 use util::{
-    build, default_world, fetch_world, omake_children_info, save_file,
+    build, default_world, fetch_world,  save_file,
     SourceTreeItem_of_base64,get_something_to_see,WhatToShow
 };
 
@@ -192,7 +192,7 @@ edit me...
                                         Some(item) => {
                                             let data : String = BASE64_STANDARD.encode(serde_json::to_string(& item).expect("serde-json") ) ;
                                             set_song_value.set(data) ;
-                                            set_file_value.set(item.masterjsonfile.clone()) ;
+                                            set_file_value.set(WhatToShow::SourceFile(item.masterjsonfile.clone())) ;
                                             ()
                                         }
                                     }
