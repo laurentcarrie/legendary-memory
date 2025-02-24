@@ -284,7 +284,7 @@ pub fn handle_source_tree(
             // let root = format!("/input-songs{}", root);
             root
         };
-        log::info!("ROOT is {}",&root) ;
+        log::info!("ROOT is {}", &root);
         let root = root.replace(songdir.to_str().unwrap(), "");
         let mut texfiles: Vec<String> = vec![];
         let mut lyricstexfiles: Vec<String> = vec![];
@@ -371,6 +371,7 @@ pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer:
     log::info!("{:?}", songdir);
     log::info!("{:?}", spath);
     let mut path = songdir.clone();
+    let spath = PathBuf::from(spath) ;
     path.push(&spath);
     log::info!("get source file '{:?}'", &path);
     let data = match fs::read_to_string(path) {
