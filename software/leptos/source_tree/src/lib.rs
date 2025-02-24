@@ -321,7 +321,7 @@ edit me...
                 {
                     log!("show build progress") ;
                     set_file_value.set(WhatToShow::OmakeStdout)
-            }>"progress (stdout)"</button>
+                }>"progress (stdout)"</button>
 
         <button
             on:click=move |_|
