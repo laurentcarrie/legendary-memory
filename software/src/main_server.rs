@@ -334,7 +334,7 @@ pub fn handle_save_file(songdir: PathBuf, info: InfoSaveFile) -> Result<answer::
     Ok(answer::EChoice::ItemOkMessage)
 }
 
-pub fn handle_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
+pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
     let mut candidates : Vec<PathBuf> = vec![] ;
     for p in builddir.read_dir().expect("read dir failed") {
         if let Ok(p) = p {
@@ -425,7 +425,7 @@ async fn main() -> () {
             }
             request::EChoice::ItemSaveFile(info) => handle_save_file(songdir.clone(), info.clone()),
             request::EChoice::ItemGetOMakeStdout => {
-                handle_get_omake_stdout(builddir.clone()),
+                handle_get_omake_stdout(builddir.clone())
             }
         };
         let answer = match answer_choice {

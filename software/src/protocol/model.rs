@@ -102,7 +102,7 @@ pub mod answer {
         ItemHealthOk,
         ItemSeeProgress(Progress),
         ItemSourceTree(SourceTree),
-        ItemData(String)
+        ItemData(String),
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
