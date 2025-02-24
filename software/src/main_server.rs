@@ -342,7 +342,7 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
                 if file_type.is_file() {
                     let re = Regex::new(r"omake\..*\.stdout").unwrap();
                     if re.is_match(p.file_name().as_os_str().to_str().unwrap()) {
-                        candidates.push(p.clone());
+                        candidates.push(p);
                     }
                 }
             }
