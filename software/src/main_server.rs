@@ -366,6 +366,18 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
     Ok(answer::EChoice::ItemData(data))
 }
 
+pub fn handle_get_source_file(srcdir: PathBuf,spath:String) -> Result<answer::EChoice, MyError> {
+    let mut path = srcdir.clone() ;
+    path.push(spath) ;
+    let data = match fs::read_to_string(path) {
+        Ok(data) => data,
+        Err(e) => format!("{:?}", e)
+    } ;
+    Ok(answer::EChoice::ItemData(data))
+}
+
+
+
 #[tokio::main]
 async fn main() -> () {
     let _ = SimpleLogger::new().init().unwrap();
@@ -427,6 +439,7 @@ async fn main() -> () {
             }
             request::EChoice::ItemSaveFile(info) => handle_save_file(songdir.clone(), info.clone()),
             request::EChoice::ItemGetOMakeStdout => handle_get_omake_stdout(builddir.clone()),
+            request::EChoice::ItemGetSourceFile(path) => handle_get_source_file(srcdir.clone(),path),
         };
         let answer = match answer_choice {
             Ok(x) => {
