@@ -114,7 +114,7 @@ pub async fn get_file(path: String) -> Result<(String,String)> {
 
 
 
-pub async fn get_omake_stdout() -> Result<String> {
+pub async fn get_omake_stdout() -> Result<String,String> {
     log!("get_omake_stdout");
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
@@ -129,13 +129,13 @@ pub async fn get_omake_stdout() -> Result<String> {
         .await?
         .text()
         .await?;
-    Ok(data)
+    Ok(("omake.stdout".to_string(),data))
 }
 
 pub async fn get_something_to_see(what:WhatToShow) -> Result<(String,String)> {
     match what {
         WhatToShow::SourceFile(path) => get_file(path),
-        WhatToShow::OmakeStdout => ("omake.stdout",get_omake_stdout())
+        WhatToShow::OmakeStdout => get_omake_stdout()
     }
 }
 
