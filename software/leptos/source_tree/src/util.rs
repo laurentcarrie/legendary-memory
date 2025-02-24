@@ -10,6 +10,13 @@ pub fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
 }
 
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub enum WhatToShow {
+    SourceFile(String),
+    OmakeStdout
+}
+
 // convert base64 string to a SourceTreeItem
 #[allow(non_snake_case)]
 pub fn SourceTreeItem_of_base64(input: String) -> SourceTreeItem {
@@ -122,6 +129,13 @@ pub async fn get_omake_stdout() -> Result<String> {
         .text()
         .await?;
     Ok(data)
+}
+
+pub async fn get_something_to_see(what:WhatToShow) -> Result<String,String> {
+    match what {
+        WhatToShow::SourceFile(path) => get_file(path),
+        WhatToShow::OmakeStdout => ("omake.stdout",get_omake_stdout())
+    }
 }
 
 
