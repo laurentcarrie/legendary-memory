@@ -92,6 +92,7 @@ pub fn App() -> impl IntoView {
                         let extension: &str =
                             p.extension().map(|x| x.to_str()).flatten().unwrap_or("");
                         log!("extension : {:?}", &extension);
+                        log!("data : {}",t) ;
                         let mode = match extension {
                             "json" => "ace/mode/json",
                             "tex" => "ace/mode/latex",
