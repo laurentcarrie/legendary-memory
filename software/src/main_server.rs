@@ -363,7 +363,10 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
         }
     };
 
-    Ok(answer::EChoice::ItemFileData("omake.stdout".to_string(),data))
+    Ok(answer::EChoice::ItemFileData(
+        "omake.stdout".to_string(),
+        data,
+    ))
 }
 
 pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer::EChoice, MyError> {
