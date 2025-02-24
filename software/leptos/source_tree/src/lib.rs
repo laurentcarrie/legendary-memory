@@ -44,7 +44,7 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
-    let (file_value, set_file_value) = signal::<String>(serde_json::to_string(WhatToShow::Nothing).unwrap()) ;
+    let (file_value, set_file_value) = signal::<String>(serde_json::to_string(&WhatToShow::Nothing).unwrap()) ;
     let (omake_stdout_value, set_omake_stdout_value) = signal::<String>("???".to_string());
     let (file_save_value, set_file_save_value) =
         signal::<(String, String)>(("???".to_string(), "???".to_string()));
