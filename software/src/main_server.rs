@@ -374,7 +374,7 @@ pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer:
     let spath = PathBuf::from(spath);
     let spath = if spath.is_absolute() {
         let mut spath = spath.to_str().unwrap().to_string() ;
-        if spath.len() > 0 spath.remove(0) ;
+        if spath.len() > 0 { spath.remove(0) ;} ;
         PathBuf::from(spath)
     } else {
         spath
