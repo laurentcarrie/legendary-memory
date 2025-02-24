@@ -238,7 +238,7 @@ edit me...
                                         set_file_value.set(what) ; // ev.target().value().parse().expect("set_value"));
                                         log!("value is {:?}",file_value.get()) ;
                                     } // on:change
-                                    // prop:value=move || file_value.get()
+                                    prop:value=move || file_value.get()
                                     >
                                     {
                                         view! {
