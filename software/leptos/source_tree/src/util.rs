@@ -23,7 +23,7 @@ pub fn string_of_what_to_show(s:WhatToShow) -> String {
     match serde_json::to_string(&s) {
         Ok(s) => s,
         Err(e) => {
-            log!("error in string_of_what_to_show");
+            log!("error in string_of_what_to_show {:?}",e);
             "".to_string()
         }
     }
