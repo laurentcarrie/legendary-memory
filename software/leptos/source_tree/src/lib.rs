@@ -307,7 +307,7 @@ edit me...
             on:click=move |_|
                 {
                     log!("build") ;
-                    let now : chrono::DateTime<chrono::Utc> = Utc::now();       // e.g. `2014-11-28T12:45:59.324310806Z`
+                    let now : chrono::DateTime<chrono::Utc> = Utc::now();
                     let now = now.format("%Y-%m-%d-%H-%M-%S").to_string() ;
                     log!("build now : {}",now) ;
                     set_build_value.set(Some(now))
