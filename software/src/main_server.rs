@@ -367,6 +367,8 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
 }
 
 pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer::EChoice, MyError> {
+log::info!("{:?}",songdir) ;
+    log::info!("{:?}",spath) ;
     let mut path = songdir.clone();
     path.push(&spath);
     log::info!("get source file '{:?}'", &path);
