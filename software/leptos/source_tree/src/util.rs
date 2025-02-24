@@ -88,12 +88,13 @@ pub async fn get_file(path: String) -> Result<(String,String)> {
     let json_string = serde_json::to_string(&choice).unwrap();
     let b64 = BASE64_STANDARD.encode(&json_string);
     let path = format!("/scripts/request.sh?request={}", &b64);
-    let data = reqwasm::http::Request::get(path.as_str())
+    let json = reqwasm::http::Request::get(path.as_str())
         .send()
         .await?
-        .text()
+        .json()
         .await?;
-    Ok((path,data))
+    let o : ItemFileData = serde::from_json(json) ;
+    Ok((path,o.data))
 }
 
 
