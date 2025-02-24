@@ -5,7 +5,6 @@ here=$(dirname $(realpath $0))
 source $here/colors.sh
 
 buildroot=$2
-#html_output=$2
 
 #set -e
 #set -x

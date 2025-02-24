@@ -11,6 +11,7 @@
 
 | Requirement                    | Description            |
 |--------------------------------|------------------------|
+| [delivery dir](#srs/delivery-dir)| all export files (pdf and wav) will be available in one dir |
 | [google drive](#srs/gdrive) | export to google drive |
 
 
@@ -37,29 +38,36 @@
 
 what to find in the pdf output
 
-| Requirement                                            | Description                                        |
-|--------------------------------------------------------|----------------------------------------------------|
-| [sections](<a name="srs/sections"/>)                   | a song is structured as sections                   |
-| [refs](<a name="srs/references"/>)                     | a section can be a reference to another one        |
-| [musicsheet](<a name="srs/musicsnippet"/>)             | insertion of music sheet snippet                   |
-| [tempo](render.md#tempo)          | insertion of tempo                                 |
-| [color](<a name="srs/color"/>)                         | coloring of sections                               |
-| [bar numbering](<a name="srs/barnumber"/>)             | show numbering of bars                             |
-| [time](<a name="srs/time"/>)                           | show time on bars                                  |
-| [book](<a name="srs/book"/>)                           | definition of book                                 |
-| [last modified time](<a name="srs/lastmodifiedtime"/>) | the last modified time of a song will be rendered  |                         
-| [lyrics](<a name="srs/lyrics"/>)                       | lyrics will be rendered, synced with the sections  |
+| Requirement                                            | Description                                                                                      |
+|--------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| [sections](render.md#sections)                         | a song is structured as sections                                                                 |
+| [refs](<a name="srs/references"/>)                     | a section can be a reference to another one                                                      |
+| [musicsheet](render.md#musicsnippet)                   | insertion of music sheet snippet                                                                 |
+| [tempo](render.md#tempo)                               | show song tempo                                                                                  |
+| [time signature](render.md#time-signature)             | show time signature                                                                              |                                      
+| [color](<a name="srs/color"/>)                         | coloring of sections                                                                             |
+| [bar numbering](<a name="srs/barnumber"/>)             | show numbering of bars                                                                           |
+| [time](<a name="srs/time"/>)                           | show time on bars                                                                                |
+| [book](<a name="srs/book"/>)                           | definition of book                                                                               |
+| [last modified time](<a name="srs/lastmodifiedtime"/>) | the last modified time of a song will be rendered                                                |                         
+| [lyrics](<a name="srs/lyrics"/>)                       | lyrics will be rendered, synced with the sections                                                |
+| [coherence](render.md#coherence)                       | tempo, signature and bar numbers will be coherent in the doc                                     |
+| [table](render.md#grid)                                | the section chords will be rendered as tables                                                    |
+| [chord symbol](render.md#chord-symbol)                 | the chords in a table will be rendered in a standard way                                         |
+| [chords per bar](render.md#chords-per-bar)             | render up to 2 chords per bar                                                                    |
+| [line repeat](render.md#line-repeat)     | show line repeats to make rendering smaller |
 
 
 
 
 
-# <a name="srs/wav"/> wav files
+
+# <a id="srs/wav"/> wav files
 
 whenever a piece of music sheet is present in the song, it will be possible to generate a wav output for
 that piece.
 
-# <a name="srs/input"/> input
+# <a id="srs/input"/> input
 
 all inputs are readable text files. It will therefore be possible to put them in a git repo and manage the
 life of these files
@@ -78,9 +86,6 @@ cloned the repo that has the code of the tool. (currently they are in the same r
 it requires that you have some computer science knowledge, as you will have to install a few things,
 edit the data files and run the tool
 
-## OS
-
-the software will run on ubuntu. There is no requirement that it runs on windows.
 
 ## output export
 
@@ -91,5 +96,16 @@ provided correct configuration, it will be possible to export the pdf outputs to
 in web mode, you edit the remote files via a web interface, you trigger the generate of the pdf file by
 clicking a button on the web interface
 
+## <a id="srs/os"/> Operating System
+
+the software will run on standard ubuntu. There is no requirement that it runs on windows.
 
 
+## <a id="srs/delivery-dir"/> Delivery Directory
+
+All output files will be available in one directory.
+
+## <a id="srs/gdrive"/> google drive
+
+A command will allow to upload all pdf files to a google drive location, 
+if correct credentials are provided

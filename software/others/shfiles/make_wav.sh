@@ -12,7 +12,6 @@ CYAN='\033[0;36m'
 GREY="\e[37m"
 NC='\033[0m' # No Color
 workdir=$(dirname $(realpath $1))
-html_output=$2
 pprintworkdir=$(echo $workdir | sed "s#$here##")
 
 printfc RUN lilypond $pprintworkdir
