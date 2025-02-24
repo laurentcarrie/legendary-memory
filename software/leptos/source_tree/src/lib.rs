@@ -220,7 +220,7 @@ edit me...
                                         log!("song value is {}",song_value.get()) ;
                                         let c  = SourceTreeItem_of_base64(song_value.get()) ;
                                         set_file_value.set(
-                                            c.masterjsonfile) ;
+                                            c.masterjsonfile.clone()) ;
                                         set_what_to_show.set(
                                             WhatToShow::SourceFile(c.masterjsonfile)) ;
                                         set_see_editor.set(true) ;
