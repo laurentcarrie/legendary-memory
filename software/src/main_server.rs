@@ -342,7 +342,7 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
                 if file_type.is_file() {
                     let re = Regex::new(r"omake\..*\.stdout").unwrap();
                     if re.is_match(p.file_name().as_os_str().to_str().unwrap()) {
-                        candidates.push(p);
+                        candidates.push(p.path());
                     }
                 }
             }
@@ -357,7 +357,11 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
     });
     let data = match candidates.first() {
         None => "no build yet".to_string(),
-        Some(p) => read_to_string(p),
+        Some(p) => {
+            let data = fs::read_to_string(p) ;
+            data.expect("could read data")
+        },
+
     };
 
     Ok(answer::EChoice::ItemData(data))
