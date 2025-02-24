@@ -67,7 +67,7 @@ pub fn App() -> impl IntoView {
     let (see_html, set_see_html) = signal::<bool>(false);
 
     let async_file_data =
-        LocalResource::new(move || get_something_to_see(what_to_show_of_string(&file_value.get())));
+        LocalResource::new(move || get_something_to_see(what_to_show_of_string(file_value.get())));
     let async_file_save_data =
         LocalResource::new(move || save_file(file_save_value.get().0, file_save_value.get().1));
     let async_build_data = LocalResource::new(move || {
