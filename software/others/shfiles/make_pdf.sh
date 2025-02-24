@@ -24,7 +24,7 @@ pprintworkdir=$(echo $workdir | sed "s#$here##")
 
 
 #stats
-printfc RUN pdf $pprintworkdir $html_output
+printfc RUN pdf $pprintworkdir
 
 i="0"
 while [ $i -lt 4 ]
@@ -38,6 +38,6 @@ fi
 i=$[$i+1]
 done
 
-printfc OK pdf $pprintworkdir $html_output
+printfc OK pdf $pprintworkdir
 
 #stats

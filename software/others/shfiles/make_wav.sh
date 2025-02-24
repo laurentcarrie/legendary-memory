@@ -15,23 +15,23 @@ workdir=$(dirname $(realpath $1))
 html_output=$2
 pprintworkdir=$(echo $workdir | sed "s#$here##")
 
-printfc RUN lilypond $pprintworkdir $html_output
+printfc RUN lilypond $pprintworkdir
 
 # printf "building ${CYAN}$workdir/$1.wav$NC ...\n"
 
 # printf "${CYAN}lilypond $1$NC ...\n"
 rm -f $1.midi
 lilypond $1 1>$1.wav.stdout 2>$1.wav.stderr || true
-printfc OK lilypond $pprintworkdir  $html_output
+printfc OK lilypond $pprintworkdir
 
 
 test -f $1.midi
-printfc RUN fluidsynth $pprintworkdir  $html_output
+printfc RUN fluidsynth $pprintworkdir
 # printf "${CYAN}fluidsynth $1.midi$NC ...\n"
 rm -f $1.wav
 fluidsynth --gain 4 -F $1.wav /usr/share/sounds/sf2/FluidR3_GM.sf2  $1.midi 1>>$1.wav.stdout 2>>$1.wav.stderr || true
 test -f $1.wav
-printfc OK fluidsynth $pprintworkdir  $html_output
+printfc OK fluidsynth $pprintworkdir
 
 
 # printf "building ${GREEN}$workdir/$1.wav$NC done.\n"
