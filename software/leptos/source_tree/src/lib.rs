@@ -235,7 +235,7 @@ edit me...
                                     on:change:target=move |ev| {
                                         log!("on change") ;
                                         // set_file_value.set(ev.target().value().parse().expect("set_value"));
-                                        log!("value is {}",file_value.get()) ;
+                                        log!("value is {:?}",file_value.get()) ;
                                     } // on:change
                                     prop:value=move || file_value.get()>
                                     {
