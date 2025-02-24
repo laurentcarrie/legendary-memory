@@ -132,7 +132,7 @@ pub async fn get_omake_stdout() -> Result<String> {
     Ok(data)
 }
 
-pub async fn get_something_to_see(what:WhatToShow) -> Result<String,String> {
+pub async fn get_something_to_see(what:WhatToShow) -> Result<(String,String)> {
     match what {
         WhatToShow::SourceFile(path) => get_file(path),
         WhatToShow::OmakeStdout => ("omake.stdout",get_omake_stdout())
