@@ -341,7 +341,7 @@ edit me...
                 {
                     log!("show build progress") ;
                     set_file_value.set("".to_string()) ;
-                    set_what_to_show(WhatToShow::OmakeStdout) ;
+                    set_what_to_show.set(WhatToShow::OmakeStdout) ;
                     ()
                 }>"progress (stdout)"</button>
 
