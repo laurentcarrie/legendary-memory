@@ -253,7 +253,7 @@ edit me...
                                         let what = string_of_what_to_show(WhatToShow::SourceFile(ev.target().value().parse().expect("set_value")));
                                         log!("what is {}",what) ;
                                         set_file_value.set(ev.target().value().parse().expect("set_value"));
-                                        set_what_to_show(what) ;
+                                        set_what_to_show.set(what) ;
                                         log!("value is {:?}",file_value.get()) ;
                                     } // on:change
                                     prop:value=move || file_value.get()
