@@ -1,12 +1,12 @@
+use chrono::Utc ;
+use serde_wasm_bindgen ;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
-use chrono::Utc;
 use human_sort::compare;
 use leptos::logging::log;
 use leptos::prelude::*;
 use leptos::tachys::html::style::style;
 use leptos_meta::*;
-use serde_wasm_bindgen;
 use std::cmp::Ordering;
 use std::path::PathBuf;
 use wasm_bindgen::prelude::*;
@@ -14,22 +14,7 @@ use wasm_bindgen::prelude::*;
 pub mod protocol;
 
 pub mod util;
-use util::{
-    build, default_world, fetch_world, get_something_to_see, save_file, string_of_what_to_show,
-    what_to_show_of_string, SourceTreeItem_of_base64, WhatToShow,
-};
-
-#[wasm_bindgen]
-extern "C" {
-    // Use `js_namespace` here to bind `console.log(..)` instead of just
-    // `log(..)`
-    // #[wasm_bindgen]
-    fn my_edit(id: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
-    fn my_set_data(id: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
-    fn my_set_mode(id: &str, mode: &str) -> JsValue;
-    fn my_get_data(id: &str) -> String;
-    fn my_commit_message() -> String;
-}
+use util::{default_world, fetch_file,save_file, fetch_world, build,SourceTreeItem_of_base64,omake_children_info};
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -56,67 +41,62 @@ pub fn App() -> impl IntoView {
 
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
-    let (file_value, set_file_value) =
-        signal::<String>("".to_string());
-
-    let (what_to_show,set_what_to_show) = signal::<WhatToShow>(WhatToShow::Nothing) ;
-
-    let (omake_stdout_value, set_omake_stdout_value) = signal::<String>("???".to_string());
-    let (file_save_value, set_file_save_value) =
-        signal::<(String, String)>(("???".to_string(), "???".to_string()));
-    let (build_value, set_build_value) = signal::<Option<String>>(None);
+    let (file_value, set_file_value) = signal::<String>("???".to_string());
+    let (file_save_value, set_file_save_value) = signal::<(String,String)>(("???".to_string(),"???".to_string()));
+    let (build_value, set_build_value) = signal::<String>("???".to_string());
     // let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
-    let (see_editor, set_see_editor) = signal::<bool>(false);
-    let (see_html, set_see_html) = signal::<bool>(false);
-
-    let async_file_data =
-        LocalResource::new(move || get_something_to_see(what_to_show.get()));
-    let async_file_save_data =
-        LocalResource::new(move || save_file(file_save_value.get().0, file_save_value.get().1));
-    let async_build_data = LocalResource::new(move || {
-        let now = build_value.get();
-        log!("xxx build {:?}", now);
-        build(now)
-    });
+    let (see_editor,set_see_editor) = signal::<bool>(false) ;
+    let (see_html,set_see_html) = signal::<bool>(false) ;
+    let async_file_data = LocalResource::new(move || fetch_file(file_value.get()));
+    let async_file_save_data = LocalResource::new(move || save_file(file_save_value.get().0,file_save_value.get().1));
+    let async_build_data = LocalResource::new(move || { log!("xxx build") ; let now = build_value.get() ; build(now)});
     // let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
 
     let async_file_result = move || {
         async_file_data
             .get()
             .as_deref()
-            .map(|value| match value {
-                Ok(t) => {
-                    let (url, t) = t;
-                    let _nblines = t.chars().filter(|c| *c == '\n').count();
-                    let p = PathBuf::from(&url);
-                    let extension: &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("");
-                    log!("extension : {:?}", &extension);
-                    log!("data : {}", t);
-                    let mode = match extension {
-                        "json" => "ace/mode/json",
-                        "tex" => "ace/mode/latex",
-                        "html" => "html",
-                        _ => "ace/mode/text",
-                    };
-                    match mode {
-                        "html" => {
-                            let e = document().get_element_by_id("showhtml").unwrap();
-                            e.set_inner_html(t.clone().as_str());
-                            set_see_editor.set(false);
-                            set_see_html.set(true);
-                        }
-                        _ => {
-                            log!("before unwrap");
-                            my_set_data("editor", t.clone().as_str(), mode, 80);
-                            set_see_editor.set(true);
-                            set_see_html.set(false);
-                        }
-                    };
-                    "".to_string()
-                }
-                Err(e) => {
-                    log!("error {:?}", e);
-                    format!("Erreur {:?}", e)
+            .map(|value| {
+                match value {
+                    Ok(t) => {
+                        let (url, t) = t;
+                        let _nblines = t.chars().filter(|c| *c == '\n').count();
+                        let p = PathBuf::from(&url) ;
+                        let extension : &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("") ;
+                        // log!("extension : {:?}", &extension);
+                        let mode = match extension {
+                            "json" => "ace/mode/json",
+                            "tex" => "ace/mode/latex",
+                            "html" => "html",
+                            _ => "ace/mode/text"
+                        } ;
+                        match mode {
+                            "html" => {
+                                let e = document().get_element_by_id("showhtml").unwrap();
+                                e.set_inner_html(t.clone().as_str());
+                                set_see_editor.set(false) ;
+                                set_see_html.set(true) ;
+                            }
+                            _ => {
+                                // let editor = my_edit("editor", "sss", format, nblines);
+                                log!("before unwrap") ;
+                                // my_edit("editor","xxx","yyy",10) ;
+                                // let example = serde_wasm_bindgen::from_value(editor);
+                                // log!("example : {:?}",&example) ;
+                                // let x = s.from_value(editor).unwrap();
+                                // let editor = serde_wasm_bindgen::to_value(& xeditor.get()).unwrap() ;
+                                // let array = Uint8Array::new(&editor);
+                                // let bytes: Vec<u8> = array.to_vec();
+                                // set_xeditor.set(Some(bytes)) ;
+                                // let s = serde_wasm_bindgen::into_serde(editor) ;
+                                my_set_data("editor", t.clone().as_str(),mode, 80);
+                                set_see_editor.set(true) ;
+                                set_see_html.set(false) ;
+                            }
+                        } ;
+                        "".to_string()
+                    }
+                    Err(e) => format!("Erreur {:?}", e),
                 }
             })
             // This loading state will only show before the first load
@@ -127,25 +107,35 @@ pub fn App() -> impl IntoView {
         async_file_data
             .get()
             .as_deref()
-            .map(|value| match value {
-                Ok(_) => "file saved".to_string(),
-                Err(e) => format!("Erreur {:?}", e),
+            .map(|value| {
+                match value {
+                    Ok(_) => {
+                        "file saved".to_string()
+                    }
+                    Err(e) => format!("Erreur {:?}", e),
+                }
             })
             // This loading state will only show before the first load
             .unwrap_or_else(|| "Saving file ...".into())
     };
 
+
     let async_build_result = move || {
         async_build_data
             .get()
             .as_deref()
-            .map(|value| match value {
-                Ok(_) => "".to_string(),
-                Err(e) => format!("Erreur {:?}", e),
+            .map(|value| {
+                match value {
+                    Ok(_) => {
+                        "".to_string()
+                    }
+                    Err(e) => format!("Erreur {:?}", e),
+                }
             })
             // This loading state will only show before the first load
             .unwrap_or_else(|| "Building ...".into())
     };
+
 
     view! {
         <main>
@@ -167,7 +157,6 @@ edit me...
 
     <p><pre>{async_file_result}</pre></p>
     <p><pre>{async_file_save_result}</pre></p>
-    <p>build value : <pre>{build_value}</pre></p>
     <p><pre>{async_build_result}</pre></p>
 
         <div class="splitx leftx">
@@ -200,12 +189,7 @@ edit me...
                                         Some(item) => {
                                             let data : String = BASE64_STANDARD.encode(serde_json::to_string(& item).expect("serde-json") ) ;
                                             set_song_value.set(data) ;
-                                            set_file_value.set(
-                                                item.masterjsonfile.clone()
-                                            ) ;
-                                            set_what_to_show.set(
-                                                WhatToShow::SourceFile(item.masterjsonfile.clone())
-                                            ) ;
+                                            set_file_value.set(item.masterjsonfile.clone()) ;
                                             ()
                                         }
                                     }
@@ -219,10 +203,7 @@ edit me...
                                         set_song_value.set(ev.target().value().parse().expect("set_value"));
                                         log!("song value is {}",song_value.get()) ;
                                         let c  = SourceTreeItem_of_base64(song_value.get()) ;
-                                        set_file_value.set(
-                                            c.masterjsonfile.clone()) ;
-                                        set_what_to_show.set(
-                                            WhatToShow::SourceFile(c.masterjsonfile)) ;
+                                        set_file_value.set(c.masterjsonfile) ;
                                         set_see_editor.set(true) ;
                                         set_see_html.set(false) ;
                                         log!("after change, pointing to master json")
@@ -250,14 +231,10 @@ edit me...
                                         <select name="file" id="file-select"
                                     on:change:target=move |ev| {
                                         log!("on change") ;
-                                        let what = WhatToShow::SourceFile(ev.target().value().parse().expect("set_value"));
-                                        log!("what is {:?}",what) ;
                                         set_file_value.set(ev.target().value().parse().expect("set_value"));
-                                        set_what_to_show.set(what) ;
-                                        log!("value is {:?}",file_value.get()) ;
+                                        log!("value is {}",file_value.get()) ;
                                     } // on:change
-                                    prop:value=move || file_value.get()
-                                    >
+                                    prop:value=move || file_value.get()>
                                     {
                                         view! {
                                             <optgroup label="master file">
@@ -312,8 +289,8 @@ edit me...
             on:click=move |_|
                 {
                     let file = file_value.get() ;
-                    log!("save {:?}",file) ;
-                    // set_file_save_value.set((file,my_get_data("editor"))) ;
+                    log!("save {}",file) ;
+                    set_file_save_value.set((file,my_get_data("editor"))) ;
             }>"save"</button>
 
         <button
@@ -329,10 +306,10 @@ edit me...
             on:click=move |_|
                 {
                     log!("build") ;
-                    let now : chrono::DateTime<chrono::Utc> = Utc::now();
+                    let now : chrono::DateTime<chrono::Utc> = Utc::now();       // e.g. `2014-11-28T12:45:59.324310806Z`
                     let now = now.format("%Y-%m-%d-%H-%M-%S").to_string() ;
                     log!("build now : {}",now) ;
-                    set_build_value.set(Some(now))
+                    set_build_value.set(now)
             }>"build"</button>
 
 
@@ -340,10 +317,8 @@ edit me...
             on:click=move |_|
                 {
                     log!("show build progress") ;
-                    set_file_value.set("".to_string()) ;
-                    set_what_to_show.set(WhatToShow::OmakeStdout) ;
-                    ()
-                }>"progress (stdout)"</button>
+                    set_file_value.set("/output/omake.stdout".to_string())
+            }>"progress (stdout)"</button>
 
         <button
             on:click=move |_|
@@ -351,15 +326,8 @@ edit me...
                     log!("show build progress") ;
                     set_see_editor.set(false) ;
                     set_see_html.set(true) ;
-                    match build_value.get() {
-                        Some(v) => {
-                    let filename=format!("/output/progress.{}.html",v) ;
-                    set_file_value.set(filename.clone()) ;
-                    set_what_to_show.set(WhatToShow::SourceFile(filename)) ;
-                        ()
-                        },
-                    None => ()
-                    }
+                    let filename=format!("/output.{}.progress",build_value.get()) ;
+                    set_file_value.set(filename)
             }>"progress (html)"</button>
 
 
