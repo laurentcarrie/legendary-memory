@@ -36,7 +36,7 @@ jobs:
           cargo doc
           cp -R target/doc/songbook ../doc/srs/book/.
           cp -R target/doc/static.files ../doc/srs/book/.
-          ls -l ../doc/srs/book
+          ls -R ../doc/srs/book/songbook
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
