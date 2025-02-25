@@ -16,6 +16,19 @@ pub mod protocol;
 pub mod util;
 use util::{default_world, get_file,save_file, fetch_world, build,SourceTreeItem_of_base64,omake_children_info};
 
+#[wasm_bindgen]
+extern "C" {
+    // Use `js_namespace` here to bind `console.log(..)` instead of just
+    // `log(..)`
+    // #[wasm_bindgen]
+    fn my_edit(id: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
+    fn my_set_data(id: &str, data: &str, mode: &str, nblines: usize) -> JsValue;
+    fn my_set_mode(id: &str, mode: &str) -> JsValue;
+    fn my_get_data(id: &str) -> String;
+    fn my_commit_message() -> String;
+}
+
+
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
