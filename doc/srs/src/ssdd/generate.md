@@ -53,10 +53,27 @@ unchanged.
 omake has the vmount feature : any file used as a dependency in an OMakefile is copied from the source directory 
 to the build directory, and this is done each time you run the build. So it looks as if the srcdir is mounted in the builddir.
 
-For that to work, source files have to be declared, and this is done in master json file. Other mounted files added
+For that to work, source files have to be declared in the OMakefile, and this is done because they are declared in the master json file. Other mounted files added
 automatically are :
 1. body.tex ( we have to have it, so it does not need to be declared in the master json file )
 2. the tex lyrics ( one per section ) : this list is generated
+
+
+## the code generator will generate :
+
+### files for running omake :
+1. [OMakeroot](#OMakeroot)
+2. [root OMakefile](#root-omakefile)
+3. [song OMakefile](#song-omakefile)
+4. [book OMakefile](#book-omakefile)
+
+### latex files
+1. [main.tex](#main.tex)
+2. [preamble.tex](#preamble.tex)
+3. [sections.tex](#sections.tex)
+4. [struct.tex](#struct.tex)
+3. [chords.tex](#chords.tex)
+
 
 ### <a id="OMakeroot"/> OMakeroot
 
@@ -78,3 +95,27 @@ the code is a handle bar template, [others/makefiles/omakefile](/legendary-memor
 
 this is the makefile you find in every book directory,
 the code is a handle bar template, [others/makefiles/omakefile_book](/legendary-memory/others/makefiles/omakefile_book.txt)
+
+
+### <a id="main.tex"/> main.tex
+
+this is the main.tex file, where the latex document is declared. This is file is the input of the ``lualatex`` command.
+the code is a handle bar template, [others/texfiles/main.tex](/legendary-memory/others/texfiles/main.tex.txt)
+
+We have here the input of other generated files, and the input of the user's code : ``body.tex``
+
+### <a id="preamble.tex"/> preamble.tex
+
+this is where we define the latex preamble, that is the require of all latex packages we need.
+[others/texfiles/preamble.tex](/legendary-memory/others/texfiles/preamble.tex.txt)
+
+### <a id="sections.tex"/> sections.tex
+
+This is where, for each section type `xxx`, we define the latex macro ``\songbooksectionxxx`` and ``\\songbookcolor``
+that can be reused in latex code
+[others/texfiles/sections.tex](/legendary-memory/others/texfiles/sections.tex.txt)
+
+
+### <a id="struct.tex"/> struct.tex
+
+### <a id="chords.tex"/> chords.tex
