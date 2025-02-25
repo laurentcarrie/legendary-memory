@@ -99,6 +99,8 @@ you can then run omake.
 
 ## code generation
 
+[see code generation section](generate.md#overview)
+
 the code generator will generate :
 
 ### files for running omake :
