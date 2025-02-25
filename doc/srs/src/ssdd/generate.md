@@ -139,7 +139,7 @@ This is where, all macros for chords are defined :
 [others/texfiles/chords.tex](/legendary-memory/others/texfiles/chords.tex.txt).
 For instance, we have for D flat 7 :
 
-    \newcommand\chordDfsept{{\lolofontflat\fontsize{18pt}{18pt}\selectfont R ~ }}
+    \newcommand\chordDfsept{{\songbookfontflat\fontsize{18pt}{18pt}\selectfont R ~ }}
 
 so using letter R in the right font we will have the wanted glyph :
 ![img](df7.png)
