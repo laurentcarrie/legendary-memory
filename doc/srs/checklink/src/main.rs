@@ -1,11 +1,11 @@
-use std::process::exit;
 use log::LevelFilter;
 use regex::Regex;
-use std::ffi::OsStr;
 use simple_logger::SimpleLogger;
 use std::env;
+use std::ffi::OsStr;
 use std::path::Path;
 use std::path::PathBuf;
+use std::process::exit;
 
 fn walk(path: &Path) -> Vec<PathBuf> {
     let mut acc: Vec<PathBuf> = vec![];
@@ -28,50 +28,84 @@ fn walk(path: &Path) -> Vec<PathBuf> {
     acc
 }
 
-fn check_reference(target_file:&PathBuf,target_link:&str) -> bool {
+fn absolute_path_of_link(root:&PathBuf,local:&PathBuf,link:&PathBuf) -> PathBuf {
+    log::info!("APL root : {:?}",&root) ;
+    log::info!("APL local : {:?}",&local) ;
+    log::info!("APL link : {:?}",&link) ;
+    // relative links need to be taken from relative to local
+    // absolute links need to be modified and taken from root
+   let p = if link.as_path().is_absolute() {
+            log::info!("absolute path : {:?}",&link) ;
+            let mut spath = link.to_str().unwrap().to_string();
+            if spath.len() > 0 {
+                spath.remove(0);
+            };
+            log::info!("spath is {:?}",&spath) ;
+            let mut p = root.clone() ;
+            p.push(spath) ;
+            log::info!("path is now : {:?}",&p) ;
+        p
+    } else {
+        log::info!("relative path : {:?}",&link) ;
+        let mut p = local.clone() ;
+        p.push(link) ;
+        p
+    } ;
+    log::info!("return : {:?}",&p) ;
+    p
+}
+
+fn check_reference(target_file: &PathBuf, target_link: &str) -> bool {
+    log::info!("check reference, target file : {:?}",target_file) ;
+    assert!(target_file.as_path().is_absolute()) ;
     let data = std::fs::read_to_string(&target_file);
     if let Ok(data) = data {
-        let re = format!(r###"<a id="{}"/>"###,target_link) ;
+        let re = format!(r###"<a id="{}"/>"###, target_link);
         // log::info!("re : {}",&re) ;
-        let re = Regex::new(&re).unwrap() ;
+        let re = Regex::new(&re).unwrap();
         match re.find(&data) {
             Some(_) => true,
-            None => false
+            None => false,
         }
     } else {
-        log::error!("error while reading {:?}",&target_file) ;
+        log::error!("error while reading {:?}", &target_file);
         false
     }
 }
 
-fn check_md_file(p:PathBuf) -> bool {
-    let mut ok = true ;
-    // log::info!("check file {:?}",&p) ;
-    let data = std::fs::read_to_string(&p).expect("read file") ;
+fn check_md_file(root:PathBuf,p: PathBuf) -> bool {
+    let mut ok = true;
+    log::info!("check file {:?}",&p) ;
+    let data = std::fs::read_to_string(&p).expect("read file");
     // (render.md#sections)
     let re = Regex::new(r"\((.*?)#(.*?)\)").unwrap();
     // let re = Regex::new(r"\\((.*?)\\)").unwrap();
     // let mut results : Vec<String> = vec![];
-    for (_, [target_file,target_link]) in re.captures_iter(&data).map(|c| c.extract()) {
+    for (_, [target_file, target_link]) in re.captures_iter(&data).map(|c| c.extract()) {
         // log::info!("{:?} {:?}",target_file,target_link) ;
         let target_path = match target_file {
             "" => p.clone(),
             s => {
-                let  x = p.as_path().parent().expect("has parent") ;
-                let mut y = PathBuf::from(x) ;
-                y.push(s) ;
-                y
+                log::info!("s is {:?}",s) ;
+                let local = p.as_path().parent().unwrap().to_path_buf() ;
+                let s = PathBuf::from(s) ;
+                let link = absolute_path_of_link(&root,&local,&s) ;
+                link
             }
-        } ;
-        let this_ok = check_reference(&target_path,&target_link) ;
-        if ! this_ok {
-           log::error!("in {:?}, unresolved link : {:?} {:?}",&p,&target_path,&target_link)
+        };
+        let this_ok = check_reference(&target_path, &target_link);
+        if !this_ok {
+            log::error!(
+                "in {:?}, unresolved link : {:?} {:?}",
+                &p,
+                &target_path,
+                &target_link
+            )
         }
-        ok = ok && this_ok ;
-    } ;
+        ok = ok && this_ok;
+    }
     ok
 }
-
 
 fn main() {
     let _ = SimpleLogger::new().init().unwrap();
@@ -80,12 +114,15 @@ fn main() {
     let mut args: std::env::Args = env::args();
     log::info!("found {} args on command line", args.len());
     let root = PathBuf::from(args.nth(1).unwrap());
-    let mdfiles = walk(root.as_path());
-    let mut ok = true ;
+    let mdfiles = walk(&root.as_path());
+    let mut ok = true;
     for p in mdfiles {
-        ok = ok && check_md_file(p);
-    }
+        // ok = ok && check_md_file(root.clone(),p);
+        let x = check_md_file(root.clone(),p);
+        ok = ok && x ;
+    } ;
     if !ok {
+        log::info!("done, exiting with code 1") ;
         exit(1)
     }
 }

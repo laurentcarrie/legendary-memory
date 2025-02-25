@@ -3,7 +3,7 @@
 | Requirement                    | Description                                |
 |--------------------------------|--------------------------------------------|
 | [pdf output](io.md#srs/output) | the tool output will be pdf files          |
-| [wav output]()                 | the tool will output wav files when needed |
+| [wav output](io.md#srs/wav)    | the tool will output wav files when needed |
 | [input](#srs/input)            | the input are text files                   |
 
 
@@ -25,7 +25,7 @@
 | Requirement                                     | Description                 |
 |-------------------------------------------------|-----------------------------|
 | [text editor](<a name="srs/text-editor-mode"/>) | text editor mode            |
-| [web mode](srs/web-modes)                     | web browser mode |
+| [web mode](local.md#local)                     | web browser mode |
 
 
 # dependencies requirements
@@ -38,24 +38,25 @@
 
 what to find in the pdf output
 
-| Requirement                                            | Description                                                                                      |
-|--------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| [sections](render.md#sections)                         | a song is structured as sections                                                                 |
-| [refs](<a name="srs/references"/>)                     | a section can be a reference to another one                                                      |
-| [musicsheet](render.md#musicsnippet)                   | insertion of music sheet snippet                                                                 |
-| [tempo](render.md#tempo)                               | show song tempo                                                                                  |
-| [time signature](render.md#time-signature)             | show time signature                                                                              |                                      
-| [color](<a name="srs/color"/>)                         | coloring of sections                                                                             |
-| [bar numbering](<a name="srs/barnumber"/>)             | show numbering of bars                                                                           |
-| [time](<a name="srs/time"/>)                           | show time on bars                                                                                |
-| [book](<a name="srs/book"/>)                           | definition of book                                                                               |
-| [last modified time](<a name="srs/lastmodifiedtime"/>) | the last modified time of a song will be rendered                                                |                         
-| [lyrics](<a name="srs/lyrics"/>)                       | lyrics will be rendered, synced with the sections                                                |
-| [coherence](render.md#coherence)                       | tempo, signature and bar numbers will be coherent in the doc                                     |
-| [table](render.md#grid)                                | the section chords will be rendered as tables                                                    |
-| [chord symbol](render.md#chord-symbol)                 | the chords in a table will be rendered in a standard way                                         |
-| [chords per bar](render.md#chords-per-bar)             | render up to 2 chords per bar                                                                    |
-| [line repeat](render.md#line-repeat)     | show line repeats to make rendering smaller |
+| Requirement                                            | Description                                                  |
+|--------------------------------------------------------|--------------------------------------------------------------|
+| [sections](render.md#sections)                         | a song is structured as sections                             |
+| [refs](<a name="srs/references"/>)                     | a section can be a reference to another one                  |
+| [musicsheet](render.md#musicsnippet)                   | insertion of music sheet snippet                             |
+| [tempo](render.md#tempo)                               | show song tempo                                              |
+| [time signature](render.md#time-signature)             | show time signature                                          |                                      
+| [color](<a name="srs/color"/>)                         | coloring of sections                                         |
+| [bar numbering](<a name="srs/barnumber"/>)             | show numbering of bars                                       |
+| [time](<a name="srs/time"/>)                           | show time on bars                                            |
+| [book](<a name="srs/book"/>)                           | definition of book                                           |
+| [last modified time](<a name="srs/lastmodifiedtime"/>) | the last modified time of a song will be rendered            |                         
+| [lyrics](<a name="srs/lyrics"/>)                       | lyrics will be rendered, synced with the sections            |
+| [coherence](render.md#coherence)                       | tempo, signature and bar numbers will be coherent in the doc |
+| [table](render.md#grid)                                | the section chords will be rendered as tables                |
+| [chord symbol](render.md#chord-symbol)                 | the chords in a table will be rendered in a standard way     |
+| [chords per bar](render.md#chords-per-bar)             | render up to 2 chords per bar                                |
+| [line repeat](render.md#line-repeat)                   | show line repeats to make rendering smaller                  |
+| [text rendering](render.md#text-rendering)  | text rendering will have a lot of features                   |
 
 
 
@@ -78,13 +79,6 @@ life of these files
 there will be two modes : the local and the web mode
 
 
-## local mode
-
-in local mode, you have access to a machine where you cloned the repo that has the songs, and you also
-cloned the repo that has the code of the tool. (currently they are in the same repo)
-
-it requires that you have some computer science knowledge, as you will have to install a few things,
-edit the data files and run the tool
 
 
 ## output export

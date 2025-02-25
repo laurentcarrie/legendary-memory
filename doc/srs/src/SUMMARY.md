@@ -22,9 +22,11 @@
 
 
 # SDD - Software Detailed Design
+- [Overview](ssdd/overview.md)
 - [input](ssdd/input.md)
-  - [master json](ssdd/master.md)
+  - [master json](ssdd/master_json.md)
   - [lilypond](ssdd/lilypond.md)
 - [omake](ssdd/omake/.md)
-- [server](ssdd/server.md)
+- [server](ssdd/web/server/overview.md)
+- [client](ssdd/web/client/overview.md)
 

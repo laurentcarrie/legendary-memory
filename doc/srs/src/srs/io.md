@@ -4,7 +4,7 @@ the tool output will be pdf files
 we want to be able to print a songbook, and also to download it on a tablet, and be available without
 internet connection
 
-### <a name="srs/wav"/> wav files
+### <a id="srs/wav"/> wav files
 
 whenever a piece of music sheet is present in the song, it will be possible to generate a wav output for 
 that piece. 

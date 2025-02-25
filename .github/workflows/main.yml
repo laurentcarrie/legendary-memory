@@ -30,6 +30,12 @@ jobs:
           # Just add a `cd` here if you need to change to another directory.
           cd doc/srs
           mdbook build
+      - name: Build cargo doc
+        run: |
+          cd software
+          cargo doc
+          cp -R target/doc/songbook ../doc/srs/book/.
+          cp -R target/doc/static.files ../doc/srs/book/.
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
