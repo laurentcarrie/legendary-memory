@@ -32,10 +32,9 @@ jobs:
           mdbook build
       - name: Build cargo doc
         run: |
-          cd software
-          cargo doc
-          src=target/doc
-          target=../doc/srs/book/legendary-memory
+          ( cd software && cargo doc )
+          src=software/target/doc
+          target=doc/srs/book/legendary-memory
           mkdir -p $target
           cp -R $src/static.files $target/. 
           cp -R $src/songbook $target/. 
