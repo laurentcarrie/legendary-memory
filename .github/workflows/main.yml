@@ -34,7 +34,7 @@ jobs:
         run: |
           ( cd software && cargo doc )
           src=software/target/doc
-          target=doc/srs/book/legendary-memory
+          target=doc/srs/book
           mkdir -p $target
           cp -R $src/static.files $target/. 
           cp -R $src/songbook $target/. 
