@@ -46,6 +46,7 @@ the chords will be shown with the A...G symbols ( not Do Ré Mi...).
 - sus chords
 - 5 chords
 - 7M will be show as a triangle
+- diminished chords as small circle
 
 the size of a cell for a chord will not change, this means that a ``C`` chord rendering will take as
 much width as a ``C#m7``, so all cells have same size

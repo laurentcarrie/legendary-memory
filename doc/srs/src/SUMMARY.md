@@ -27,7 +27,7 @@
   - [master json](ssdd/master_json.md)
   - [lilypond](ssdd/lilypond.md)
 - [code generation](ssdd/generate.md)
-- [omake](ssdd/omake/.md)
+- [web](ssdd/web.md)
 - [server](ssdd/web/server/overview.md)
 - [client](ssdd/web/client/overview.md)
 
