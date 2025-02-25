@@ -116,6 +116,31 @@ that can be reused in latex code
 [others/texfiles/sections.tex](/legendary-memory/others/texfiles/sections.tex.txt)
 
 
-### <a id="struct.tex"/> struct.tex
+### <a id="struct.tex"/> data.tex
+
+This is where, using the data from master file ``song.json``, latex macros are defined :
+[others/texfiles/data.tex](/legendary-memory/others/texfiles/data.tex.txt)
+
+1. ```\songtitle```
+2. ```\songauthor```
+3. ```\songtempo```
+4. ```\makesongtitle``` : will format the string
+5. ```\songlastupdate```
+6. ```\songbooksongstruct``` : this one has the sections of the song, it is the one you want to put in your `body.tex` file
+
 
 ### <a id="chords.tex"/> chords.tex
+
+see the [fonts section](fonts.md#overview)
+
+Our design is to define our fonts to display chords, so there will be one glyph per chord, for instance
+
+This is where, all macros for chords are defined :
+[others/texfiles/chords.tex](/legendary-memory/others/texfiles/chords.tex.txt).
+For instance, we have for D flat 7 :
+
+    \newcommand\chordDfsept{{\lolofontflat\fontsize{18pt}{18pt}\selectfont R ~ }}
+
+so using letter R in the right font we will have the wanted glyph :
+![img](df7.png)
+
