@@ -2,11 +2,16 @@
 \usepackage{import}
 \usepackage{enumitem}
 
+% we need to define these commands as empty... because :
+% the file data.tex redefines them with a \renewcommand, so they need to exist first
+% the reason is that for books, these macros are reset for each song in the book
 \newcommand{\makesongtitle}{}
 \newcommand{\songlastupdate}{}
 \newcommand{\songtoday}{}
 
+% generic preamble
 \input{preamble}
+% generated from user data
 \input{data}
 \input{chords}
 \input{sections}
@@ -14,5 +19,6 @@
 
 \begin{document}
 \makesongtitle
+% body.tex is the user input
 \input{body}
 \end{document}
