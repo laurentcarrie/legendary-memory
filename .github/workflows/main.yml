@@ -39,7 +39,7 @@ jobs:
           mkdir -p $target
           cp -R $src/static.files $target/. 
           cp -R $src/songbook $target/. 
-          cp -R $src/others $target/.
+          cp -R software/others $target/.
           ls -R $target
 
       - name: Setup Pages
