@@ -34,10 +34,13 @@ jobs:
         run: |
           cd software
           cargo doc
-          mkdir -p ../doc/srs/book/legendary-memory
-          cp -R target/doc/static.files ../doc/srs/book/legendary-memory/. 
-          cp -R target/doc/songbook ../doc/srs/book/legendary-memory/. 
-          cp -R others ../doc/srs/book/legendary-memory/.
+          src=target/doc
+          target=../doc/srs/book/legendary-memory
+          mkdir -p $target
+          cp -R $src/static.files $target/. 
+          cp -R $src/songbook $target/. 
+          cp -R $src/others $target/.
+          ls -R $target
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
