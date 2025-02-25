@@ -34,9 +34,11 @@ jobs:
         run: |
           cd software
           cargo doc
-          cp -R target/doc/songbook ../doc/srs/book/.
-          cp -R target/doc/static.files ../doc/srs/book/.
-          ls -R ../doc/srs/book/songbook
+          mkdir -p ../doc/srs/book/legendary-memory
+          cp -R target/doc/static.files ../doc/srs/book/legendary-memory/. 
+          cp -R target/doc/songbook ../doc/srs/book/legendary-memory/. 
+          cp -R others ../doc/srs/book/legendary-memory/.
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

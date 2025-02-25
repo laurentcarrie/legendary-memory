@@ -95,3 +95,23 @@ the songbook tool will
 4. genere some ressource files at the root of the ``builddir`` tree
 
 you can then run omake.
+
+
+## code generation
+
+the code generator will generate :
+
+### files for running omake :
+1. [OMakeroot](generate.md#OMakeroot)
+2. [root OMakefile](generate.md#root-omakefile)
+3. [song OMakefile](generate.md#song-omakefile)
+4. [book OMakefile](generate.md#book-omakefile)
+
+### latex files
+1. main.tex
+2. preamble.tex
+3. sections.tex
+4. struct.tex
+3. chords.tex
+
+### lilypond files
