@@ -163,6 +163,8 @@ pub fn App() -> impl IntoView {
             <Script src="/my-ace.js"> </Script>
         </main>
         <Title text="songbook" />
+        <div> <span> {what_to_show} </span></div>
+
         <div id="container">
         <div class="split right">
                 <pre id="editor" style:display=move || if see_editor.get() { "block" } else { "none" }>r#"
