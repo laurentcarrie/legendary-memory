@@ -75,7 +75,7 @@ pub fn format_string(input: &String) -> String {
         (r"[0;107m", "On_IWhite"), // White
     ] ;
 
-    let lines = data.split("\n") ;
+    let lines = input.split("\n") ;
 
     let mut ret = input.clone() ;
     for pair in pairs {
