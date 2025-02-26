@@ -139,17 +139,10 @@ This is where, using the data from master file ``song.json``, latex macros are d
 see the [fonts section](fonts.md#top)
 
 Our design is to define our fonts to display chords, so there will be one glyph per chord, for instance D flat 7 will be one glyph.
-
+    
 In this file we define marcros that map chords to glyphs : 
 [others/texfiles/chords.tex](/legendary-memory/others/texfiles/chords.tex.txt).
 For instance, we have for D flat 7 :
 
     \newcommand\chordDfsept{{\songbookfontflat\fontsize{18pt}{18pt}\selectfont R ~ }}
-
-This is the ``songbook_flat`` font, so using letter `R` in our example we will have the wanted glyph :
-![img](df7.png)
-
-@todo : finish writing the fonts
-
-We use the same mechanism for the `pause` and `repeat` glyphs.
 
