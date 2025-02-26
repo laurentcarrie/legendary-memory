@@ -67,8 +67,9 @@ pub fn App() -> impl IntoView {
         match what_to_show.get() {
             WhatToShow::Nothing => get_file("".to_string()) ,
             WhatToShow::SourceFile(f) => get_file(f),
-            WhatToShow::OmakeStdout => get_omake_stdout()
-        }
+            // WhatToShow::OmakeStdout => get_omake_stdout()
+            WhatToShow::OmakeStdout => get_file("".to_string()) ,
+        // }
 
                                              // get_file("xxx".to_string())
     );
