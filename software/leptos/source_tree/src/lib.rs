@@ -222,8 +222,8 @@ edit me...
                                         set_song_value.set(ev.target().value().parse().expect("set_value"));
                                         log!("song value is {}",song_value.get()) ;
                                         let c  = SourceTreeItem_of_base64(song_value.get()) ;
-                                        set_what_to_show.set(WhatToShow::SourceFile(c.masterjsonfile)) ;
-                                        set_file_value.set(c.masterjsonfile) ;
+                                        set_what_to_show.set(WhatToShow::SourceFile(c.masterjsonfile.clone())) ;
+                                        set_file_value.set(c.masterjsonfile.clone()) ;
                                         set_see_editor.set(true) ;
                                         set_see_html.set(false) ;
                                         log!("after change, pointing to master json")
