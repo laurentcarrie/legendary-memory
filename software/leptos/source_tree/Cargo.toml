@@ -30,6 +30,7 @@ index-map = "0.1.0"
 serde-wasm-bindgen = "0.6.5"
 chrono = "0.4.39"
 regex = "1.11.1"
+string-replace-all = "0.2.0"
 
 
 [[workspace.metadata.leptos]]

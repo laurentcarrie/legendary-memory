@@ -1,3 +1,4 @@
+use string_replace_all::StringReplaceAll;
 use regex::Regex ;
 pub fn format_string(input: &String) -> String {
     let  pairs = [
@@ -82,8 +83,7 @@ pub fn format_string(input: &String) -> String {
     let re = Regex::new(r"^ -.*$").unwrap();
     ret = re.replace(&ret,"").to_string() ;
 
-    let re = Regex::new(r"\n").unwrap();
-    ret = re.replace(&ret,"<br/>").to_string() ;
+    let ret = ret.replace_all("\b","<br/>") ;
 
 
     ret
