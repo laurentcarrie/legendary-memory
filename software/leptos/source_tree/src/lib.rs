@@ -52,6 +52,9 @@ pub fn App() -> impl IntoView {
         }
     };
 
+
+    let (what_to_show,set_what_to_show) = signal::<WhatToShow>(WhatToShow::Nothing) ;
+
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
     let (file_value, set_file_value) = signal::<String>("???".to_string());
