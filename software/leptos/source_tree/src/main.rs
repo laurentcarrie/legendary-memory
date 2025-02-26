@@ -2,6 +2,7 @@
 use leptos::prelude::*;
 use source_tree::App;
 pub mod protocol;
+pub mod format_omake;
 pub fn main() {
     use tracing_subscriber::fmt;
     use tracing_subscriber_wasm::MakeConsoleWriter;
