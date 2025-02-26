@@ -90,30 +90,38 @@ pub fn App() -> impl IntoView {
                             "html" => "html",
                             _ => "ace/mode/text"
                         } ;
-                        match mode {
-                            "html" => {
-                                let e = document().get_element_by_id("showhtml").unwrap();
-                                e.set_inner_html(t.clone().as_str());
-                                set_see_editor.set(false) ;
-                                set_see_html.set(true) ;
-                            }
-                            _ => {
-                                // let editor = my_edit("editor", "sss", format, nblines);
-                                log!("before unwrap") ;
-                                // my_edit("editor","xxx","yyy",10) ;
-                                // let example = serde_wasm_bindgen::from_value(editor);
-                                // log!("example : {:?}",&example) ;
-                                // let x = s.from_value(editor).unwrap();
-                                // let editor = serde_wasm_bindgen::to_value(& xeditor.get()).unwrap() ;
-                                // let array = Uint8Array::new(&editor);
-                                // let bytes: Vec<u8> = array.to_vec();
-                                // set_xeditor.set(Some(bytes)) ;
-                                // let s = serde_wasm_bindgen::into_serde(editor) ;
-                                my_set_data("editor", t.clone().as_str(),mode, 80);
+                        match what_to_show.get() {
+                            WhatToShow::Nothing => {
                                 set_see_editor.set(true) ;
                                 set_see_html.set(false) ;
+                            },
+                            WhatToShow::SourceFile(_) => {
+                                set_see_editor.set(true) ;
+                                set_see_html.set(false) ;
+                                my_set_data("editor", t.clone().as_str(),mode, 80);
                             }
-                        } ;
+                            WhatToShow::OmakeStdout => {
+                                set_see_editor.set(true) ;
+                                set_see_html.set(false) ;
+                                my_set_data("editor", t.clone().as_str(),mode, 80);
+
+                            }
+                        }
+                        // match mode {
+                        //     "html" => {
+                        //         let e = document().get_element_by_id("showhtml").unwrap();
+                        //         e.set_inner_html(t.clone().as_str());
+                        //         set_see_editor.set(false) ;
+                        //         set_see_html.set(true) ;
+                        //     }
+                        //     _ => {
+                        //         // let editor = my_edit("editor", "sss", format, nblines);
+                        //         log!("before unwrap") ;
+                        //         my_set_data("editor", t.clone().as_str(),mode, 80);
+                        //         set_see_editor.set(true) ;
+                        //         set_see_html.set(false) ;
+                        //     }
+                        // } ;
                         "".to_string()
                     }
                     Err(e) => format!("Erreur {:?}", e),
