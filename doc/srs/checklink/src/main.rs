@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use log::LevelFilter;
 use regex::Regex;
 use simple_logger::SimpleLogger;
@@ -6,6 +7,40 @@ use std::ffi::OsStr;
 use std::path::Path;
 use std::path::PathBuf;
 use std::process::exit;
+
+fn check_summary(root:&PathBuf,mdfiles:&Vec<PathBuf>) -> bool {
+    let mut path = root.clone() ;
+    path.push("SUMMARY.md") ;
+    let data = std::fs::read_to_string(&path) ;
+    match data {
+        Err(e) => {
+            log::error!("could not read SUMMARY.md, {:?}",e) ;
+            false
+        },
+        Ok(data) => {
+            let re = Regex::new(r"\((.*?)\)").unwrap();
+            let mut files_declared_in_summary: HashSet<PathBuf> = HashSet::new() ;
+            for (_, [target_file]) in re.captures_iter(&data).map(|c| c.extract()) {
+                let mut p = root.clone() ;
+                p.push(target_file) ;
+                files_declared_in_summary.insert(p);
+            };
+            let mut files_on_disk:HashSet<PathBuf>=HashSet::new() ;
+            for p in mdfiles {
+                if p.as_path().file_name().unwrap().to_str() != Some("SUMMARY.md") {
+                    files_on_disk.insert(p.clone());
+                }
+            } ;
+            let mut ok=true ;
+            for  p in files_on_disk.difference(&files_declared_in_summary) {
+                ok=false ;
+                log::error!("[SUMMARY.md] {:?} on disk but not in SUMMARY.md",p) ;
+            };
+            ok
+        } }
+
+
+}
 
 fn walk(path: &Path) -> Vec<PathBuf> {
     let mut acc: Vec<PathBuf> = vec![];
@@ -73,7 +108,7 @@ fn check_reference(target_file: &PathBuf, target_link: &str) -> bool {
     }
 }
 
-fn check_md_file(root:PathBuf,p: PathBuf) -> bool {
+fn check_md_file(root:&PathBuf,p: &PathBuf) -> bool {
     let mut ok = true;
     log::info!("check file {:?}",&p) ;
     let data = std::fs::read_to_string(&p).expect("read file");
@@ -116,11 +151,12 @@ fn main() {
     let root = PathBuf::from(args.nth(1).unwrap());
     let mdfiles = walk(&root.as_path());
     let mut ok = true;
-    for p in mdfiles {
+    for p in &mdfiles {
         // ok = ok && check_md_file(root.clone(),p);
-        let x = check_md_file(root.clone(),p);
+        let x = check_md_file(&root,&p);
         ok = ok && x ;
     } ;
+    let ok = check_summary(&root,&mdfiles) ;
     if !ok {
         log::info!("done, exiting with code 1") ;
         exit(1)

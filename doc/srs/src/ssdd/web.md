@@ -57,7 +57,7 @@ The only thing `www-data` can do is run the `request.sh` script in the `/var/www
 
 # [ZeroMQ](https://zeromq.org/)
 
-this is free, easy to use and performant messaging library. We don't need to use anything complicated here.
+this is free, easy to use and performant messaging library. 
 There is a rust crate for that, and no server to configure.
 
 

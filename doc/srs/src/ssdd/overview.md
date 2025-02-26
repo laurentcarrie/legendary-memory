@@ -29,6 +29,9 @@ A master tex file will contain the latex information. This file is named ``body.
 This is not the ``main.tex`` file, that contains the
 document class, this file is generated.
 
+## book
+A book is only a list of songs, with a book title. It is defined in a [json file](book.md#top)
+
 ## file organization
 Each song is contained in one directory. It will have :
 1. `song.json` : the master file
@@ -49,17 +52,27 @@ we will use :
                       +--- ... lilypond files if any ....
                       +--- lyrics
                              +--- lyrics tex fils
-               +--- song 2
+               +--- song i
+               +--- song N
                       .... subtree of song 2
-       +--- artist 2
+       +--- artist i
+       +--- artist N
                +--- a song
                       ... files
                +--- another song
                       ... files
 
 
+
+    bookdir root
+        +--- book1.json
+        +--- ...
+        +--- bookN.json
+
 ## file tree
 all songs will be under a root directory : the ``songdir`` directory.
+
+all books will be under a root directory : the ``bookdir`` directory. Each json file in this directory defines a book.
 
 
 ## omake
@@ -77,8 +90,8 @@ especially with the lilypond files.
 ## the tools
 we have three tools, written in rust, in this project :
 1. ``songbook`` : this is a code generator
-2. for web only : ``songbook-server`` [see server](web/server/overview.md#overview)
-2. for web only : ``songbook-client`` [see client](web/client/overview.md#overview)
+2. for web only : ``songbook-server`` [see server](web/server.md#top)
+2. for web only : ``songbook-client`` [see client](web/client.md#top)
 
 
 ## workflow

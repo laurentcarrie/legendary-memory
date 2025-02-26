@@ -26,8 +26,11 @@
 - [input](ssdd/input.md)
   - [master json](ssdd/master_json.md)
   - [lilypond](ssdd/lilypond.md)
+  - [book](ssdd/book.md)
 - [code generation](ssdd/generate.md)
+- [fonts](ssdd/fonts.md)
 - [web](ssdd/web.md)
-- [server](ssdd/web/server/overview.md)
-- [client](ssdd/web/client/overview.md)
+- [server](ssdd/web/server.md)
+- [client](ssdd/web/client.md)
+- [setup](ssdd/setup.md)
 

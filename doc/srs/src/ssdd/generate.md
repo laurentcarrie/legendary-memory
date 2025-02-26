@@ -136,7 +136,7 @@ This is where, using the data from master file ``song.json``, latex macros are d
 
 ### <a id="chords.tex"/> chords.tex
 
-see the [fonts section](fonts.md#overview)
+see the [fonts section](fonts.md#top)
 
 Our design is to define our fonts to display chords, so there will be one glyph per chord, for instance D flat 7 will be one glyph.
 
