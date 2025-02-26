@@ -83,7 +83,7 @@ pub fn format_string(input: &String) -> String {
     let re = Regex::new(r"^ -.*$").unwrap();
     ret = re.replace(&ret,"").to_string() ;
 
-    let ret = ret.replace_all("\b","<br/>") ;
+    let ret = ret.replace_all("\n","<br/>") ;
 
 
     ret
