@@ -160,7 +160,7 @@ pub async fn get_omake_stdout() -> Result<(String, String)> {
                 _ => Ok(("omake.stdout".to_string(), "bad type"))
             }
             },
-        Err(e) => { log!("ERROR : {:?}",e) ; Err(e)}
+        Err(e) => { log!("ERROR : {:?}",e) ; Err(e.into())}
     }
 }
 
