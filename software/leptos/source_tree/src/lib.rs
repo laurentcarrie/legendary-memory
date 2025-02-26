@@ -257,7 +257,7 @@ edit me...
                                         <select name="file" id="file-select"
                                     on:change:target=move |ev| {
                                         log!("on change") ;
-                                        set_what_to_show.set(ev.target().value().parse().expect("set_value")) ;
+                                        set_what_to_show.set(WhatToShow::SourceFile(ev.target().value().parse().expect("set_value"))) ;
                                         set_file_value.set(ev.target().value().parse().expect("set_value"));
                                         log!("value is {}",file_value.get()) ;
                                     } // on:change
