@@ -174,7 +174,7 @@ pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> 
     }
 }
 
-pub async fn build(idString) -> Result<()> {
+pub async fn build(id:String) -> Result<()> {
     log!("build in util.ml, id = {:?}", id);
             let choice = request::Choice {
                 choice: request::EChoice::ItemBuild(id),
