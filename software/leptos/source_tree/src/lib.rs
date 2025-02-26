@@ -356,10 +356,10 @@ edit me...
             on:click=move |_|
                 {
                     log!("show build progress") ;
-                    set_see_editor.set(false) ;
-                    set_see_html.set(true) ;
-                    let filename=format!("/output.{}.progress",build_value.get()) ;
-                    set_file_value.set(filename)
+                    // set_see_editor.set(false) ;
+                    // set_see_html.set(true) ;
+                    // let filename=format!("/output.{}.progress",build_value.get()) ;
+                    // set_file_value.set(filename)
             }>"progress (html)"</button>
 
 
