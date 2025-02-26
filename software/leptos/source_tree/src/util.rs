@@ -161,7 +161,7 @@ pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> 
         // WhatToShow::Nothing => get_file("xxx".to_string()),
         WhatToShow::SourceFile(path) => get_file(path).await,
         // WhatToShow::OmakeStdout => get_omake_stdout(),
-        _ => get_file("xxx".to_string()),
+        _ => get_file("xxx".to_string()).await,
     }
 }
 
