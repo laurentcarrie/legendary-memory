@@ -78,8 +78,13 @@ pub fn format_string(input: &String) -> String {
     for pair in pairs {
         ret = ret.replace(pair.0,pair.1) ;
     }
+
     let re = Regex::new(r"^ -.*$").unwrap();
     ret = re.replace(&ret,"").to_string() ;
+
+    let re = Regex::new(r"\n").unwrap();
+    ret = re.replace(&ret,"<br/>").to_string() ;
+
 
     ret
 
