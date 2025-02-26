@@ -157,7 +157,7 @@ pub async fn get_omake_stdout() -> Result<(String, String)> {
         Ok(choice) => {
             match choice {
                 ItemFileData (data) => Ok(("omake.stdout".to_string(), data)),
-                _ => Ok(("omake.stdout".to_string(), "bad type"))
+                _ => Ok(("omake.stdout".to_string(), "bad type".to_string()))
             }
             },
         Err(e) => { log!("ERROR : {:?}",e) ; Err(e.into())}
