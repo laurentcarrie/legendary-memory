@@ -75,7 +75,15 @@ pub fn format_string(input: &String) -> String {
         (r"[0;107m", "On_IWhite"), // White
     ] ;
 
+    let re1 = Regex::new(r"^+.*").unwrap();
+
     let lines = input.split("\n") ;
+    let lines = lines.iter().filter_map(|line| {
+        if re1.is_match(line) {
+            None
+        }
+        Some(line)
+    }) ;
 
     let mut ret = input.clone() ;
     for pair in pairs {
