@@ -155,13 +155,13 @@ pub async fn get_omake_stdout() -> Result<(String, String)> {
     Ok(("omake.stdout".to_string(), data))
 }
 
-// pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> {
-//     match what {
-//         WhatToShow::Nothing => Ok(("".to_string(), "".to_string())),
-//         WhatToShow::SourceFile(path) => get_file(path),
-//         WhatToShow::OmakeStdout => get_omake_stdout(),
-//     }
-// }
+pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> {
+    match what {
+        WhatToShow::Nothing => Ok(("".to_string(), "".to_string())),
+        WhatToShow::SourceFile(path) => get_file(path),
+        WhatToShow::OmakeStdout => get_omake_stdout(),
+    }
+}
 
 pub async fn build(id: Option<String>) -> Result<()> {
     log!("build in util.ml, id = {:?}", id);
