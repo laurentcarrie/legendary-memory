@@ -174,8 +174,10 @@ pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> 
     }
 }
 
-pub async fn build(id:String) -> Result<()> {
+pub async fn build(id: Option<String>) -> Result<()> {
     log!("build in util.ml, id = {:?}", id);
+    match id {
+        Some(id) => {
             let choice = request::Choice {
                 choice: request::EChoice::ItemBuild(id),
             };
@@ -191,6 +193,9 @@ pub async fn build(id:String) -> Result<()> {
                 .text()
                 .await?;
             Ok(())
+        }
+        None => Ok(()),
+    }
 }
 
 pub async fn omake_children_info() -> Result<String> {
