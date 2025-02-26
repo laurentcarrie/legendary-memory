@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::protocol::model::answer::{Choice, EChoice, SourceTree, SourceTreeItem};
 use crate::protocol::model::request;
+use crate::format_omake::format_string ;
 
 pub fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
@@ -156,7 +157,7 @@ pub async fn get_omake_stdout() -> Result<(String, String)> {
     match data {
         Ok(x) => {
             match x.choice {
-                EChoice::ItemFileData (data) => Ok(("omake.stdout".to_string(), data)),
+                EChoice::ItemFileData (data) => Ok(("omake.stdout".to_string(), format_string(data))),
                 _ => Ok(("omake.stdout".to_string(), "bad type".to_string()))
             }
             },

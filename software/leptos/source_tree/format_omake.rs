@@ -1,6 +1,6 @@
 pub fn format_string(input: &String) -> String {
     let  pairs = [
-        (r"[0m", "Color_Off"), // Text Reset
+        (r"[0m", "</span>"), // Text Reset
 
         // Regular Colors
         (r"[0;30m", "Black"), // Black
@@ -17,7 +17,7 @@ pub fn format_string(input: &String) -> String {
         (r"[1;31m", "BRed"), // Red
         (r"[1;32m", "BGreen"), // Green
         (r"[1;33m", "BYellow"), // Yellow
-        (r"[1;34m", "blue"), // Blue
+        (r"[1;34m", r#"<span style="color:blue""#), // Blue
         (r"[1;35m", "BPurple"), // Purple
         (r"[1;36m", "BCyan"), // Cyan
         (r"[1;37m", "BWhite"), // White
@@ -73,7 +73,7 @@ pub fn format_string(input: &String) -> String {
         (r"[0;107m", "On_IWhite"), // White
     ]
  ;
-let mut ret = input.clone() ;
+    let mut ret = input.clone() ;
     for pair in pairs {
         ret = ret.replace(pair.0,pair.1) ;
     }
