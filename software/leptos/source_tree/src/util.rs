@@ -152,6 +152,7 @@ pub async fn get_omake_stdout() -> Result<(String, String)> {
         .await?
         .text()
         .await?;
+    let data =  serde_json::from_str::<answer::Choice>(data) ;
     Ok(("omake.stdout".to_string(), data))
 }
 
