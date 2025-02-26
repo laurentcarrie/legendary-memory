@@ -69,7 +69,7 @@ pub fn App() -> impl IntoView {
             WhatToShow::SourceFile(f) => get_file(f),
             // WhatToShow::OmakeStdout => get_omake_stdout()
             WhatToShow::OmakeStdout => get_file("".to_string()) ,
-        // }
+         }
 
                                              // get_file("xxx".to_string())
     );
