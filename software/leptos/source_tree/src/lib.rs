@@ -14,7 +14,7 @@ use wasm_bindgen::prelude::*;
 pub mod protocol;
 
 pub mod util;
-use util::{default_world, get_file,save_file, fetch_world, build,SourceTreeItem_of_base64 ,WhatToShow,get_omake_stdout};
+use util::{default_world, get_file,save_file, fetch_world, build,SourceTreeItem_of_base64 ,WhatToShow,get_omake_stdout,get_something_to_see};
 
 #[wasm_bindgen]
 extern "C" {
@@ -64,14 +64,7 @@ pub fn App() -> impl IntoView {
     let (see_editor,set_see_editor) = signal::<bool>(false) ;
     let (see_html,set_see_html) = signal::<bool>(false) ;
     let async_file_data = LocalResource::new(move ||
-        match what_to_show.get() {
-            WhatToShow::Nothing => get_file("".to_string()) ,
-            WhatToShow::SourceFile(f) => get_file(f),
-            // WhatToShow::OmakeStdout => get_omake_stdout()
-            WhatToShow::OmakeStdout => get_file("".to_string()) ,
-         }
-
-                                             // get_file("xxx".to_string())
+        get_something_to_see(what_to_show.get())
     );
     let async_file_save_data = LocalResource::new(move || save_file(file_save_value.get().0,file_save_value.get().1));
     let async_build_data = LocalResource::new(move || { log!("xxx build") ;
