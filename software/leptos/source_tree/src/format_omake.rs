@@ -81,19 +81,16 @@ pub fn format_string(input: &String) -> String {
     let lines = lines.iter().filter_map(|line| {
         if re1.is_match(line) {
             None
+        } else {
+            Some(line)
         }
-        Some(line)
-    }) ;
+    })
+        .collect::<Vec<_>>()
+        .join("")
+        .as_str()
+    )?;
 
-    let mut ret = input.clone() ;
-    for pair in pairs {
-        ret = ret.replace(pair.0,pair.1) ;
-    }
 
-    let re = Regex::new(r"^ -.*$").unwrap();
-    ret = re.replace(&ret,"").to_string() ;
-
-    let ret = ret.replace_all("\n","<br/>") ;
 
 
     ret
