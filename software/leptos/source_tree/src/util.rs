@@ -153,7 +153,15 @@ pub async fn get_omake_stdout() -> Result<(String, String)> {
         .text()
         .await?;
     let data =  serde_json::from_str::<Choice>(&data) ;
-    Ok(("omake.stdout".to_string(), data))
+    match data {
+        Ok(choice) => {
+            match choice {
+                ItemFileData (data) => Ok(("omake.stdout".to_string(), data)),
+                _ => Ok(("omake.stdout".to_string(), "bad type"))
+            }
+            },
+        Err(e) => { log!("ERROR : {:?}",e) ; Err(e)}
+    }
 }
 
 pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> {
