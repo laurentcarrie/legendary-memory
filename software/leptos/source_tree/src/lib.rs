@@ -67,7 +67,7 @@ pub fn App() -> impl IntoView {
         match what_to_show.get() {
             WhatToShow::Nothing => get_file("".to_string()) ,
             WhatToShow::SourceFile(f) => get_file(f),
-            WhatToShow::OmakeStdout => get_file("cxxx".to_string())
+            WhatToShow::OmakeStdout => get_omake_stdout()
         }
     });
     let async_file_save_data = LocalResource::new(move || save_file(file_save_value.get().0,file_save_value.get().1));
@@ -345,6 +345,7 @@ edit me...
                 {
                     log!("show build progress") ;
                     set_file_value.set("/output/omake.stdout".to_string())
+                    set_what_to_show.set(WhatToShow::OmakeStdout) ;
             }>"progress (stdout)"</button>
 
         <button
