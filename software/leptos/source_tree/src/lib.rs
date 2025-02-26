@@ -65,7 +65,7 @@ pub fn App() -> impl IntoView {
     let (see_html,set_see_html) = signal::<bool>(false) ;
     let async_file_data = LocalResource::new(move || {
         match what_to_show.get() {
-            WhatToShow::None => get_file("".to_string()) ,
+            WhatToShow::Nothing => get_file("".to_string()) ,
             WhatToShow::SourceFile(f) => get_file(f),
             WhatToShow::OmakeStdout => get_file("cxxx".to_string())
         }
