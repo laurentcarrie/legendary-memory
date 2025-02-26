@@ -73,8 +73,10 @@ pub fn format_string(input: &String) -> String {
         (r"[0;105m", "On_IPurple"), // Purple
         (r"[0;106m", "On_ICyan"), // Cyan
         (r"[0;107m", "On_IWhite"), // White
-    ]
- ;
+    ] ;
+
+    let lines = data.split("\n") ;
+
     let mut ret = input.clone() ;
     for pair in pairs {
         ret = ret.replace(pair.0,pair.1) ;
