@@ -78,7 +78,7 @@ pub fn format_string(input: &String) -> String {
     let re1 = Regex::new(r"^+.*").unwrap();
 
     let lines = input.split("\n") ;
-    let lines = lines.iter().filter_map(|line| {
+    let ret = lines.iter().filter_map(|line| {
         if re1.is_match(line) {
             None
         } else {
@@ -88,7 +88,7 @@ pub fn format_string(input: &String) -> String {
         .collect::<Vec<_>>()
         .join("")
         .as_str()
-    )?;
+    ;
 
 
 
