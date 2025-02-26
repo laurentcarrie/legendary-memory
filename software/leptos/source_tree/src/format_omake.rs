@@ -75,7 +75,7 @@ pub fn format_string(input: &String) -> String {
         (r"[0;107m", "On_IWhite"), // White
     ] ;
 
-    let re1 = Regex::new(r"^\+.*").unwrap();
+    let re1 = Regex::new(r"^[\+|\-].*").unwrap();
 
     let lines = input.split("\n") ;
     let ret = lines.filter_map(|line| {
