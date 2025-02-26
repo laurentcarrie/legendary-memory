@@ -86,7 +86,7 @@ pub fn format_string(input: &String) -> String {
         }
     })
         .collect::<Vec<_>>()
-        .join("")
+        .join("<br/>")
     ;
 
 
