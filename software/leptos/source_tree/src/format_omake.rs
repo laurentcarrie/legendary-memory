@@ -93,6 +93,7 @@ pub fn format_string(input: &String) -> String {
 
 
 
-    ret
+    ret.to_string()
+
 
 }
