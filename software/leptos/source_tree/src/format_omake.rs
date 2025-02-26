@@ -87,13 +87,12 @@ pub fn format_string(input: &String) -> String {
     })
         .collect::<Vec<_>>()
         .join("")
-        .as_str()
     ;
 
 
 
 
-    ret.to_string()
+    ret
 
 
 }
