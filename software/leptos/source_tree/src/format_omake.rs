@@ -78,7 +78,7 @@ pub fn format_string(input: &String) -> String {
     let re1 = Regex::new(r"^+.*").unwrap();
 
     let lines = input.split("\n") ;
-    let ret = lines.iter().filter_map(|line| {
+    let ret = lines.filter_map(|line| {
         if re1.is_match(line) {
             None
         } else {
