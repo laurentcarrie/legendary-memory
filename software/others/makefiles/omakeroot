@@ -1,5 +1,5 @@
 # here
-root = $(absname .)
+buildroot = $(absname .)
 
 # the root of your songs definitions
 songs_dir = {{ srcdir }}
