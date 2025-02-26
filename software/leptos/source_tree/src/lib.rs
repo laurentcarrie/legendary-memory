@@ -63,7 +63,13 @@ pub fn App() -> impl IntoView {
     // let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
     let (see_editor,set_see_editor) = signal::<bool>(false) ;
     let (see_html,set_see_html) = signal::<bool>(false) ;
-    let async_file_data = LocalResource::new(move || get_file(file_value.get()));
+    let async_file_data = LocalResource::new(move || {
+        match what_to_show.get() {
+            WhatToShow::None => get_file("") ,
+            WhatToShow::SourceFile(f) => get_file(f),
+            WhatToShow::OmakeStdout => get_file("cxxx")
+        }
+    });
     let async_file_save_data = LocalResource::new(move || save_file(file_save_value.get().0,file_save_value.get().1));
     let async_build_data = LocalResource::new(move || { log!("xxx build") ;
         let now = build_value.get() ; build(Some(now))
@@ -251,6 +257,7 @@ edit me...
                                         <select name="file" id="file-select"
                                     on:change:target=move |ev| {
                                         log!("on change") ;
+                                        set_what_to_show.set(ev.target().value().parse().expect("set_value")) ;
                                         set_file_value.set(ev.target().value().parse().expect("set_value"));
                                         log!("value is {}",file_value.get()) ;
                                     } // on:change
