@@ -119,7 +119,7 @@ esac
 message_fmt="${White}${On_Cyan}$message${Color_Off}"
 message_nocolor="$message"
 
-if [ "x$omake_output_format" = "xtext" ]  ; then
+if test "x$omake_output_format" = "xtext"   ; then
   printf "${status_fmt}${topic_fmt}${message_nocolor}\n"
 else
   printf "${status_fmt}${topic_fmt}${message_fmt}\n"
