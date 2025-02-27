@@ -200,10 +200,10 @@ pub async fn get_something_to_see(what: WhatToShow) -> Result<WhatToShowResult> 
     match what {
         // WhatToShow::Nothing => get_omake_stdout(),
         // WhatToShow::Nothing => get_file("xxx".to_string()),
-        WhatToShow::SourceFile(path) => WhatToShowResult::SourceFile(get_file(path).await),
-        WhatToShow::OmakeStdout => WhatToShowResult::OmakeStdout(get_omake_stdout().await),
-        WhatToShow::OmakeProgress => WhatToShowResult::OmakeProgress(get_omake_progress().await),
-        WhatToShow::Nothing => WhatToShowResult::SourceFile(get_file("xxx".to_string()).await),
+        WhatToShow::SourceFile(path) => WhatToShowResult::SourceFile(get_file(path)).await,
+        WhatToShow::OmakeStdout => WhatToShowResult::OmakeStdout(get_omake_stdout()).await,
+        WhatToShow::OmakeProgress => WhatToShowResult::OmakeProgress(get_omake_progress()).await,
+        WhatToShow::Nothing => WhatToShowResult::SourceFile(get_file("xxx".to_string())).await,
     }
 }
 
