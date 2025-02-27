@@ -109,7 +109,7 @@ pub fn App() -> impl IntoView {
 
     let (what_to_show, set_what_to_show) = signal::<WhatToShow>(WhatToShow::Nothing);
     let (file_data, set_file_data) = signal::<String>("".to_string()) ;
-    let (omake_progress, set_omake_progress) = signal::<Progress>(Progress {progress:Vec::new::<ProgressItem>()}) ;
+    let (omake_progress, set_omake_progress) = signal::<Progress>(Progress {progress:Vec::new()}) ;
 
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
