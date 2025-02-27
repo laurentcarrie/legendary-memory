@@ -199,7 +199,7 @@ pub async fn get_something_to_see(what: WhatToShow) -> Result<WhatToShowResult> 
     match what {
         // WhatToShow::Nothing => get_omake_stdout(),
         // WhatToShow::Nothing => get_file("xxx".to_string()),
-        WhatToShow::SourceFile(path) => WhatToShowResult::SourceFile(get_file(path).await),
+        WhatToShow::SourceFile(path) => Ok(WhatToShowResult::SourceFile(get_file(path).await)),
         _ => panic!("{}:{} not implemented",file!(),line!())
         // WhatToShow::OmakeStdout => get_omake_stdout().await,
         // WhatToShow::OmakeProgress => get_omake_progress().await,
