@@ -40,6 +40,19 @@ pub fn Progress(progress:ReadSignal<WhatToShow>) -> impl IntoView {
     }
 }
 
+
+#[component]
+pub fn Edit(progress:ReadSignal<WhatToShow>) -> impl IntoView {
+    view! {
+    <pre id="editor" style:display=move ||
+        match progress {
+            WhatToSee::SourceFile(_) => "block",
+            _ => "none"
+        }>
+    </pre>
+    }
+}
+
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
@@ -122,11 +135,8 @@ pub fn App() -> impl IntoView {
                             }
                             WhatToShow::OmakeProgress => {
                                 set_see_editor.set(false);
-                                set_see_html.set(true);
-                                let e = document().get_element_by_id("showhtml").unwrap();
-                                e.set_inner_html(t.clone().as_str());
-                                //my_set_data("editor", ,mode, 80);
-                            }
+                                set_see_html.set(false);
+                           }
                         }
                         // match mode {
                         //     "html" => {
@@ -188,7 +198,7 @@ pub fn App() -> impl IntoView {
 
         <div id="container">
         <div class="split right">
-                <pre id="editor" style:display=move || if see_editor.get() { "block" } else { "none" }>r#"
+                <pre id="editor" style:display=move || if see.get() { "block" } else { "none" }>r#"
 edit me...
                 "#</pre>
                 <pre><p id="showhtml" style:display=move || if see_html.get() { "block" } else { "none" }>r#"
