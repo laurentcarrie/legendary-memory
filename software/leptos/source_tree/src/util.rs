@@ -157,7 +157,7 @@ pub async fn get_omake_stdout() -> Result<(String, String)> {
     match data {
         Ok(x) => {
             match x.choice {
-                EChoice::ItemFileData (data) => Ok(("omake.stdout".to_string(), format_string(&data))),
+                EChoice::ItemFileData (data) => Ok(("omake.stdout".to_string(), &data)),
                 _ => Ok(("omake.stdout".to_string(), "bad type".to_string()))
             }
             },

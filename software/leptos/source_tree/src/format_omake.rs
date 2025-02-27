@@ -77,6 +77,8 @@ pub fn format_string(input: &String) -> String {
 
     let re1 = Regex::new(r"^[\+|\-].*").unwrap();
 
+    let re2 = Regex::new(r"1;34m[47m(.*)[0m").unwrap() ;
+
     let lines = input.split("\n") ;
     let ret = lines.filter_map(|line| {
         if re1.is_match(line) {
