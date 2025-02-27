@@ -119,7 +119,7 @@ esac
 message_fmt="${White}${On_Cyan}$message${Color_Off}"
 message_nocolor="$message"
 printf "${status_fmt}${topic_fmt}${message_fmt}\n"
-printf "${status_fmt}${topic_fmt}${message_fmt}\n" >> $nocolor_output
+printf "${status_fmt}${topic_fmt}${message_nocolor}\n" >> $nocolor_output
 
 message_html="<span style=\"color:black;background-color:hsla(0,50%%,50%%,0.5)\">$message</span>"
 printf "${status_html}${topic_html}    ${message_html}<br/>\n" >> $html_output
