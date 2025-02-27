@@ -125,7 +125,7 @@ pub fn App() -> impl IntoView {
                     Ok(t) => {
                         log!("{}:{} async file result",file!(),line!()) ;
                         let (url, t) = t;
-                        set_file_data.set(t) ;
+                        set_file_data.set(t.to_string()) ;
                         let _nblines = t.chars().filter(|c| *c == '\n').count();
                         let p = PathBuf::from(&url);
                         let extension: &str =
