@@ -86,7 +86,7 @@ pub fn App() -> impl IntoView {
     let (build_value, set_build_value) = signal::<Option<String>>(None);
     // let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
     let (see_editor, set_see_editor) = signal::<bool>(false);
-    let (see_html, set_see_html) = signal::<bool>(false);
+    // let (see_html, set_see_html) = signal::<bool>(false);
     let async_file_data = LocalResource::new(move || get_something_to_see(what_to_show.get()));
     let _async_file_save_data =
         LocalResource::new(move || save_file(file_save_value.get().0, file_save_value.get().1));
