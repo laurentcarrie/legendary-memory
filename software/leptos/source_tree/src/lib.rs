@@ -45,7 +45,7 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<Progress>) -> impl In
         omake progress
         <table>
         {
-            data.get().progress.iter().map(|row|
+            data.get().progress.iter().map(|row| {
 
                 log!("row {}",row.status.clone()) ;
                 view! {
@@ -54,6 +54,7 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<Progress>) -> impl In
                     </tr>
                 }
             ).collect::<Vec<_>>()
+            }
         }
         </table>
     </div>
