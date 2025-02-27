@@ -45,7 +45,7 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<Progress>) -> impl In
         omake progress
         <table>
         {
-            for row in data.progress {
+            for row in data {
             view! {
                 <tr><td>{row.status}</td><td>{row.topic}</td><td>{row.message}</td></tr>
             }
