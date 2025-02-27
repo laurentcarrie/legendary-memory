@@ -31,25 +31,30 @@ extern "C" {
 }
 
 #[component]
-pub fn Progress(wts:ReadSignal<WhatToShow>) -> impl IntoView {
+pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<String>) -> impl IntoView {
     view! {
     <div id="progress" style:display=move ||
         match wts.get() {
-            WhatToShow::OmakeProgress => "block",
+            WhatToShow::OmakeProgress => {
+
+                "block"
+            },
             _ => "none"
         }>
+        {data}
     </div>
     }
 }
 
 #[component]
-pub fn OmakeStdout(wts:ReadSignal<WhatToShow>) -> impl IntoView {
+pub fn OmakeStdout(wts:ReadSignal<WhatToShow>,data:ReadSignal<String>) -> impl IntoView {
     view! {
     <div id="progress" style:display=move ||
         match wts.get() {
             WhatToShow::OmakeStdout => "block",
             _ => "none"
         }>
+        {data}
     </div>
     }
 }
@@ -98,9 +103,6 @@ pub fn App() -> impl IntoView {
     let (file_save_value, set_file_save_value) =
         signal::<(String, String)>(("???".to_string(), "???".to_string()));
     let (build_value, set_build_value) = signal::<Option<String>>(None);
-    // let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
-    // let (see_editor, set_see_editor) = signal::<bool>(false);
-    // let (see_html, set_see_html) = signal::<bool>(false);
     let async_file_data = LocalResource::new(move || get_something_to_see(what_to_show.get()));
     let _async_file_save_data =
         LocalResource::new(move || save_file(file_save_value.get().0, file_save_value.get().1));
@@ -213,8 +215,8 @@ pub fn App() -> impl IntoView {
         <div id="container">
         <div class="split right">
                 <Editor wts=what_to_show/>
-                <Progress wts=what_to_show/>
-                <OmakeStdout wts=what_to_show/>
+                <Progress wts=what_to_show data=file_data/>
+                <OmakeStdout wts=what_to_show data=file_data/>
 
         </div>
 
@@ -268,8 +270,6 @@ pub fn App() -> impl IntoView {
                                         let c  = SourceTreeItem_of_base64(song_value.get()) ;
                                         set_what_to_show.set(WhatToShow::SourceFile(c.masterjsonfile.clone())) ;
                                         set_file_value.set(c.masterjsonfile.clone()) ;
-                                        // set_see_editor.set(true) ;
-                                        // set_see_html.set(false) ;
                                         log!("after change, pointing to master json")
                                     }
                                     prop:value=move || song_value.get()>
