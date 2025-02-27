@@ -279,7 +279,7 @@ edit me...
                                         let x = what_to_show.get().clone() ;
                                         match x {
                                         WhatToShow::Nothing => "",
-                                        WhatToShow::SourceFile(s) => &s.clone(),
+                                        WhatToShow::SourceFile(s) =>"blah blah",
                                         WhatToShow::OmakeStdout => "omake stdout",
                                         WhatToShow::OmakeProgress => "omake progress"
                                         }}
