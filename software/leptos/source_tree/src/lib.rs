@@ -14,7 +14,7 @@ use wasm_bindgen::prelude::*;
 pub mod protocol;
 
 pub mod util;
-use util::{default_world, get_file,save_file, fetch_world, build,SourceTreeItem_of_base64 ,WhatToShow,get_omake_stdout,get_something_to_see};
+use util::{default_world, get_file,save_file, fetch_world, build,SourceTreeItem_of_base64 ,WhatToShow,get_something_to_see};
 
 #[wasm_bindgen]
 extern "C" {
