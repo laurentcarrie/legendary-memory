@@ -48,7 +48,7 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<Progress>) -> impl In
             data.get().progress.iter().map(|row|
                 view! {
                     <tr>
-                        <td>{row.status}</td><td>{row.topic}</td><td>{row.message}</td>
+                        <td>{row.status.clone()}</td><td>{row.topic.clone()}</td><td>{row.message.clone()}</td>
                     </tr>
                 }
             ).collect::<Vec<_>>()
