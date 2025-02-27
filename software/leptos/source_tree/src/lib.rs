@@ -47,7 +47,7 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<Progress>) -> impl In
         {
             for row in data.progress {
             view! {
-                <tr><td>{row.status}<td><td>{row.topic}</td><td>{row.message}</td></tr>
+                <tr><td>{row.status}</td><td>{row.topic}</td><td>{row.message}</td></tr>
             }
         }
         }
