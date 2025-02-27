@@ -19,14 +19,6 @@ pub enum WhatToShow {
     OmakeProgress,
 }
 
-pub enum WhatToShowResult {
-    Nothing,
-    SourceFile(String),
-    OmakeStdout(String),
-    OmakeProgress(Progress),
-}
-
-
 pub fn string_of_what_to_show(s: WhatToShow) -> String {
     match serde_json::to_string(&s) {
         Ok(s) => s,
@@ -196,14 +188,14 @@ async fn get_omake_progress() -> Result<(String, String)> {
     }
 }
 
-pub async fn get_something_to_see(what: WhatToShow) -> Result<WhatToShowResult> {
+pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> {
     match what {
         // WhatToShow::Nothing => get_omake_stdout(),
         // WhatToShow::Nothing => get_file("xxx".to_string()),
-        WhatToShow::SourceFile(path) => WhatToShowResult::SourceFile(get_file(path)).await,
-        WhatToShow::OmakeStdout => WhatToShowResult::OmakeStdout(get_omake_stdout()).await,
-        WhatToShow::OmakeProgress => WhatToShowResult::OmakeProgress(get_omake_progress()).await,
-        WhatToShow::Nothing => WhatToShowResult::SourceFile(get_file("xxx".to_string())).await,
+        WhatToShow::SourceFile(path) => get_file(path).await,
+        WhatToShow::OmakeStdout => get_omake_stdout().await,
+        WhatToShow::OmakeProgress => get_omake_progress().await,
+        WhatToShow::Nothing => get_file("xxx".to_string()).await,
     }
 }
 
