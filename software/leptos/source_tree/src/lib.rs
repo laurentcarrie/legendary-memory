@@ -46,7 +46,7 @@ pub fn Editor(progress:ReadSignal<WhatToShow>) -> impl IntoView {
     view! {
     <pre id="editor" style:display=move ||
         match progress {
-            WhatToShow::SourceFile(_) => "block",
+            WhatToSee::SourceFile(_) => "block",
             _ => "none"
         }>
     </pre>
