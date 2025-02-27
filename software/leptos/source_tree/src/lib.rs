@@ -42,7 +42,7 @@ pub fn Progress(progress:ReadSignal<WhatToShow>) -> impl IntoView {
 
 
 #[component]
-pub fn Edit(progress:ReadSignal<WhatToShow>) -> impl IntoView {
+pub fn Editor(progress:ReadSignal<WhatToShow>) -> impl IntoView {
     view! {
     <pre id="editor" style:display=move ||
         match progress {
