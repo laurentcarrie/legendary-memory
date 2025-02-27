@@ -25,7 +25,6 @@ pub mod config;
 pub mod errors;
 pub mod generate;
 pub mod helpers;
-pub mod progress_of_string ;
 pub mod makefiles;
 pub mod protocol;
 // use crate::protocol::model ;
