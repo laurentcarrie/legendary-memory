@@ -53,8 +53,8 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<Progress>) -> impl In
                         <td>{row.status.clone()}</td><td>{row.topic.clone()}</td><td>{row.message.clone()}</td>
                     </tr>
                 }
-            ).collect::<Vec<_>>()
             }
+            ).collect::<Vec<_>>()
         }
         </table>
     </div>
