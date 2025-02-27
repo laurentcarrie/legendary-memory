@@ -372,7 +372,7 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
     Ok(answer::EChoice::ItemFileData(data))
 }
 
-fn get_latest_omake_stdout(songdir:PathBuf,spath:String) -> String {
+fn get_latest_omake_stdout(songdir: PathBuf, spath: String) -> String {
     let mut path = songdir.clone();
     let spath = PathBuf::from(spath);
     let spath = if spath.is_absolute() {
@@ -390,6 +390,7 @@ fn get_latest_omake_stdout(songdir:PathBuf,spath:String) -> String {
         Ok(data) => data,
         Err(e) => format!("{:?}", e),
     };
+    data
 }
 
 pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer::EChoice, MyError> {
