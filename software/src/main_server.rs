@@ -26,7 +26,7 @@ pub mod errors;
 pub mod generate;
 pub mod helpers;
 pub mod makefiles;
-pub mod progress ;
+pub mod progress;
 pub mod protocol;
 // use crate::protocol::model ;
 use crate::generate::all::generate_all;
