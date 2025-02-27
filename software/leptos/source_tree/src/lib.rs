@@ -259,8 +259,8 @@ edit me...
                                         let c  = SourceTreeItem_of_base64(song_value.get()) ;
                                         set_what_to_show.set(WhatToShow::SourceFile(c.masterjsonfile.clone())) ;
                                         set_file_value.set(c.masterjsonfile.clone()) ;
-                                        set_see_editor.set(true) ;
-                                        set_see_html.set(false) ;
+                                        // set_see_editor.set(true) ;
+                                        // set_see_html.set(false) ;
                                         log!("after change, pointing to master json")
                                     }
                                     prop:value=move || song_value.get()>
