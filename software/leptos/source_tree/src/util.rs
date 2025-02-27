@@ -158,6 +158,7 @@ pub async fn get_request(choice: request::Choice) -> Result<(String, String)> {
     match data {
         Ok(x) => match x.choice {
             EChoice::ItemFileData(data) => Ok(("omake.stdout".to_string(), data)),
+            EChoice::OmakeProgress(data) => Ok(("omake progress".to_string(), data)),
             _ => Ok(("omake.stdout".to_string(), format!("{}:{}, bad type",file!(),line!()))),
         },
         Err(e) => {
