@@ -278,7 +278,6 @@ edit me...
                                     prop:value=move || match what_to_show.get() {
                                         WhatToShow::Nothing => ""
                                         }
-                                    }.get()
                                     >
                                     {
                                         view! {
