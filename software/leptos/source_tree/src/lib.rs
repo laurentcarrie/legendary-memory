@@ -98,6 +98,7 @@ pub fn App() -> impl IntoView {
     };
 
     let (what_to_show, set_what_to_show) = signal::<WhatToShow>(WhatToShow::Nothing);
+    let (file_data, set_file_data) = signal::<String>("".to_string()) ;
 
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
@@ -123,6 +124,7 @@ pub fn App() -> impl IntoView {
                 match value {
                     Ok(t) => {
                         log!("{}:{} async file result",file!(),line!()) ;
+                        set_file_data.set(t) ;
                         let (url, t) = t;
                         let _nblines = t.chars().filter(|c| *c == '\n').count();
                         let p = PathBuf::from(&url);
@@ -206,8 +208,8 @@ pub fn App() -> impl IntoView {
         <div id="container">
         <div class="split right">
                 <Editor wts=what_to_show/>
-                <Progress wts=what_to_show data=file_value/>
-                <OmakeStdout wts=what_to_show data=file_value/>
+                <Progress wts=what_to_show data=file_data/>
+                <OmakeStdout wts=what_to_show data=file_data/>
 
         </div>
 
