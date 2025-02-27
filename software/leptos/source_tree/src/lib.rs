@@ -356,16 +356,15 @@ edit me...
         <button
             on:click=move |_|
                 {
-                    log!("show build progress") ;
-                    // set_file_value.set("/output/omake.stdout".to_string()) ;
-                    set_what_to_show.set(WhatToShow::OmakeProgress) ;
+                    log!("show omake stdout") ;
+                    set_what_to_show.set(WhatToShow::OmakeStdout) ;
             }>"omake stdout"</button>
 
         <button
             on:click=move |_|
                 {
                     log!("show build progress") ;
-                    // set_see_editor.set(false) ;
+                    set_what_to_show.set(WhatToShow::OmakeProgress) ;
                     // set_see_html.set(true) ;
                     // let filename=format!("/output.{}.progress",build_value.get()) ;
                     // set_file_value.set(filename)
