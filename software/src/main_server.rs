@@ -459,7 +459,7 @@ async fn main() -> () {
             request::EChoice::ItemGetSourceFile(path) => {
                 handle_get_source_file(songdir.clone(), path)
             }
-            request::EChoice::ItemGetOmakeProgress(path) => {
+            request::EChoice::ItemGetOMakeProgress(path) => {
                 handle_get_source_file(songdir.clone(), path)
             }
         };
