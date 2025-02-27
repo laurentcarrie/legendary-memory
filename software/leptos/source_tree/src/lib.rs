@@ -35,7 +35,7 @@ pub fn Progress(progress:ReadSignal<WhatToShow>) -> impl IntoView {
     view! {
         <div id="progress">
             <h2>table</h2>
-            <pre>{ serde_json::to_string(&progress.get()) }
+            <pre>{ serde_json::to_string(&progress.get()) }</pre>
         </div>
     }
 }
