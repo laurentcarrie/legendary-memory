@@ -7,7 +7,7 @@ pub fn format_string(input: &String) -> String {
     let lines = input.split("\n") ;
     let ret = lines.filter_map(|line| {
         if let Ok(ss) = re.captures(&line) {
-            let (status,topic,message) = ss in
+            let (status,topic,message) = ss ;
             log::info!("[{}] [{}] [{}]",&status,&topic,&message) ;
             Some("xx")
         } else {

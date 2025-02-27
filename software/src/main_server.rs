@@ -114,8 +114,7 @@ pub async fn omake(id: String, builddir: PathBuf) -> Result<u32, MyError> {
             "nocolor_output",
             format!("{}/omake.{}.txt", &builddir.to_str().unwrap(), &id),
         )
-        .env(
-            "omake_output_format","text")
+        .env("omake_output_format", "text")
         .current_dir(&builddir)
         // .stdout(Stdio::piped())
         .reap_on_drop(true)
