@@ -138,7 +138,7 @@ pub async fn get_file(path: String) -> Result<(String, String)> {
     }
 }
 
-pub async fn get_request(choice: request::Choice) -> Result<(String, String)> {
+pub async fn get_request(choice: request::Choice) -> Result<Choice> {
     log!("get_omake_stdout");
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
