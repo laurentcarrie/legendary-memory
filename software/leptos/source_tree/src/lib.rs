@@ -46,6 +46,8 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<Progress>) -> impl In
         <table>
         {
             data.get().progress.iter().map(|row|
+
+                log!("row {}",row.status.clone()) ;
                 view! {
                     <tr>
                         <td>{row.status.clone()}</td><td>{row.topic.clone()}</td><td>{row.message.clone()}</td>
