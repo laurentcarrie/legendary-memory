@@ -340,7 +340,7 @@ pub fn handle_save_file(songdir: PathBuf, info: InfoSaveFile) -> Result<answer::
     Ok(answer::EChoice::ItemOkMessage)
 }
 
-fn get_omake_stdout_data(builddir: PathBuf) -> String> {
+fn get_omake_stdout_data(builddir: PathBuf) -> String {
     let mut candidates: Vec<PathBuf> = vec![];
     for p in builddir.read_dir().expect("read dir failed") {
         if let Ok(p) = p {
