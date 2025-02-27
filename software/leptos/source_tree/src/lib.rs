@@ -109,6 +109,14 @@ pub fn App() -> impl IntoView {
                                 //my_set_data("editor", ,mode, 80);
 
                             }
+                            WhatToShow::OmakeProgress => {
+                                set_see_editor.set(false) ;
+                                set_see_html.set(true) ;
+                                let e = document().get_element_by_id("showhtml").unwrap();
+                                e.set_inner_html(t.clone().as_str());
+                                //my_set_data("editor", ,mode, 80);
+
+                            }
                         }
                         // match mode {
                         //     "html" => {
