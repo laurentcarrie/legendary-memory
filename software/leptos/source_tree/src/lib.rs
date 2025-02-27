@@ -276,7 +276,7 @@ edit me...
                                         log!("value is {}",file_value.get()) ;
                                     } // on:change
                                     prop:value=move || {
-                                        let x = what_to_show.get() ;
+                                        let x = what_to_show.get().clone() ;
                                         match x {
                                         WhatToShow::Nothing => "",
                                         WhatToShow::SourceFile(s) => &s.clone(),
