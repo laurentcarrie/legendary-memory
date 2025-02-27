@@ -100,7 +100,7 @@ pub fn App() -> impl IntoView {
     let (what_to_show, set_what_to_show) = signal::<WhatToShow>(WhatToShow::Nothing);
 
     let spreadable = style(("foreground-color", "red"));
-    let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
+    let (current_song_name, set_current_song_name) = signal::<String>(BASE64_STANDARD.encode("???"));
     let (file_value, set_file_value) = signal::<String>("???".to_string());
     let (file_save_value, set_file_save_value) =
         signal::<(String, String)>(("???".to_string(), "???".to_string()));
@@ -255,7 +255,7 @@ pub fn App() -> impl IntoView {
                                         None => (),
                                         Some(item) => {
                                             let data : String = BASE64_STANDARD.encode(serde_json::to_string(& item).expect("serde-json") ) ;
-                                            set_song_value.set(data) ;
+                                            set_current_song_name.set(data) ;
                                             set_file_value.set(item.masterjsonfile.clone()) ;
                                             ()
                                         }
@@ -267,14 +267,14 @@ pub fn App() -> impl IntoView {
                                         <select name="song" id="song-select"
                                     on:change:target=move |ev| {
                                         log!("on change song") ;
-                                        set_song_value.set(ev.target().value().parse().expect("set_value"));
-                                        log!("song value is {}",song_value.get()) ;
-                                        let c  = SourceTreeItem_of_base64(song_value.get()) ;
+                                        set_current_song_name.set(ev.target().value().parse().expect("set_value"));
+                                        log!("song value is {}",current_song_name.get()) ;
+                                        let c  = SourceTreeItem_of_base64(current_song_name.get()) ;
                                         set_what_to_show.set(WhatToShow::SourceFile(c.masterjsonfile.clone())) ;
                                         set_file_value.set(c.masterjsonfile.clone()) ;
                                         log!("after change, pointing to master json")
                                     }
-                                    prop:value=move || song_value.get()>
+                                    prop:value=move || current_song_name.get()>
                                     view! {
                                         items.clone().into_iter().map(|c|{
                                             view! { <option value={
@@ -290,7 +290,7 @@ pub fn App() -> impl IntoView {
                             })}
 
                             {move || {
-                                let c = SourceTreeItem_of_base64(song_value.get()) ;
+                                let c = SourceTreeItem_of_base64(current_song_name.get()) ;
                                 view! {
                                     <div id="filepick-id">
                                         <label for="songs">Choose a file:</label>
