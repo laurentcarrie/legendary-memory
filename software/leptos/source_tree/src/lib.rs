@@ -277,7 +277,7 @@ edit me...
                                     } // on:change
                                     prop:value=move || match what_to_show.get() {
                                         WhatToShow::Nothing => "",
-                                        WhatToShow::SourceFile(s) => s,
+                                        WhatToShow::SourceFile(s) => s.clone(),
                                         WhatToShow::OmakeStdout => "omake stdout",
                                         WhatToShow::OmakeProgress => "omake progress"
                                         }
