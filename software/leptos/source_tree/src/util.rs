@@ -138,7 +138,7 @@ pub async fn get_file(path: String) -> Result<(String, String)> {
     }
 }
 
-pub async fn get_request(choice: request::Choice) -> Result<Choice> {
+pub async fn get_request(choice: request::Choice) -> Result<String> {
     log!("get_omake_stdout");
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
@@ -153,7 +153,7 @@ pub async fn get_request(choice: request::Choice) -> Result<Choice> {
         .await?
         .text()
         .await?;
-    let data = serde_json::from_str::<Choice>(&data);
+    // let data = serde_json::from_str::<Choice>(&data);
     log!("{:?}",&data) ;
     data
 }
