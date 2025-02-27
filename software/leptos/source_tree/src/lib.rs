@@ -124,8 +124,8 @@ pub fn App() -> impl IntoView {
                 match value {
                     Ok(t) => {
                         log!("{}:{} async file result",file!(),line!()) ;
-                        set_file_data.set(t) ;
                         let (url, t) = t;
+                        set_file_data.set(t) ;
                         let _nblines = t.chars().filter(|c| *c == '\n').count();
                         let p = PathBuf::from(&url);
                         let extension: &str =
