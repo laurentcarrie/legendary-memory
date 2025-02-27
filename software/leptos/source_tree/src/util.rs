@@ -175,7 +175,7 @@ async fn get_omake_stdout() -> Result<(String, String)> {
 
 async fn get_omake_progress() -> Result<(String, String)> {
     let data = get_request(request::Choice {
-        choice: request::EChoice::ItemGetOMakeStdout,
+        choice: request::EChoice::ItemGetOMakeProgress,
     })
     .await?;
 
