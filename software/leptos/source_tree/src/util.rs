@@ -154,28 +154,37 @@ pub async fn get_request(choice: request::Choice) -> Result<Choice> {
         .text()
         .await?;
     let data = serde_json::from_str::<Choice>(&data)?;
-    log!("{:?}",&data) ;
+    log!("{:?}", &data);
     Ok(data)
 }
 
-async fn get_omake_stdout(choice:Choice) -> Result<(String, String)> {
-    let data:Choice=get_request(request::Choice {
-        choice: request::EChoice::ItemGetOMakeStdout}).await? ;
+async fn get_omake_stdout(choice: Choice) -> Result<(String, String)> {
+    let data: Choice = get_request(request::Choice {
+        choice: request::EChoice::ItemGetOMakeStdout,
+    })
+    .await?;
 
     match data.choice {
-            EChoice::ItemFileData(data) => Ok(("omake.stdout".to_string(), data)),
-            _ => Ok(("omake.stdout".to_string(), format!("{}:{}, bad type",file!(),line!()))),
+        EChoice::ItemFileData(data) => Ok(("omake.stdout".to_string(), data)),
+        _ => Ok((
+            "omake.stdout".to_string(),
+            format!("{}:{}, bad type", file!(), line!()),
+        )),
     }
+}
 
-
-async fn get_omake_progress(choice:Choice) -> Result<(String, String)> {
-    let data=get_request(request::Choice {
-        choice: request::EChoice::ItemGetOMakeStdout}) ;
+async fn get_omake_progress(choice: Choice) -> Result<(String, String)> {
+    let data = get_request(request::Choice {
+        choice: request::EChoice::ItemGetOMakeStdout,
+    });
 
     match data {
         Ok(x) => match x.choice {
             EChoice::ItemSeeProgress(data) => Ok(("omake.stdout".to_string(), data)),
-            _ => Ok(("omake.stdout".to_string(), format!("{}:{}, bad type",file!(),line!()))),
+            _ => Ok((
+                "omake.stdout".to_string(),
+                format!("{}:{}, bad type", file!(), line!()),
+            )),
         },
         Err(e) => {
             log!("ERROR : {:?}", e);
@@ -184,14 +193,13 @@ async fn get_omake_progress(choice:Choice) -> Result<(String, String)> {
     }
 }
 
-
 pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> {
     match what {
         // WhatToShow::Nothing => get_omake_stdout(),
         // WhatToShow::Nothing => get_file("xxx".to_string()),
         WhatToShow::SourceFile(path) => get_file(path).await,
-        WhatToShow::OmakeStdout =>  get_omake_stdout().await,
-        WhatToShow::OmakeProgress => get_omake_progress.await ,
+        WhatToShow::OmakeStdout => get_omake_stdout().await,
+        WhatToShow::OmakeProgress => get_omake_progress.await,
         WhatToShow::Nothing => get_file("xxx".to_string()).await,
     }
 }
