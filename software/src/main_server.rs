@@ -372,17 +372,16 @@ fn get_omake_stdout_data(builddir: PathBuf) -> String {
 }
 
 pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
-     let data = get_omake_stdout_data(builddir)? ;
+    let data = get_omake_stdout_data(builddir);
 
     Ok(answer::EChoice::ItemFileData(data))
 }
 
 pub fn handle_get_omake_progress(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
-    let data = get_omake_stdout_data(builddir)? ;
+    let data = get_omake_stdout_data(builddir);
 
     Ok(answer::EChoice::ItemFileData(data))
 }
-
 
 pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer::EChoice, MyError> {
     log::info!("{:?}", songdir);
@@ -471,9 +470,7 @@ async fn main() -> () {
             request::EChoice::ItemGetSourceFile(path) => {
                 handle_get_source_file(songdir.clone(), path)
             }
-            request::EChoice::ItemGetOMakeProgress => {
-                handle_get_omake_progress(builddir.clone())
-            }
+            request::EChoice::ItemGetOMakeProgress => handle_get_omake_progress(builddir.clone()),
         };
         let answer = match answer_choice {
             Ok(x) => {
