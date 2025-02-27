@@ -359,7 +359,7 @@ edit me...
                 {
                     log!("show build progress") ;
                     set_file_value.set("/output/omake.stdout".to_string()) ;
-                    set_what_to_show.set(WhatToShow::OmakeStdout) ;
+                    set_what_to_show.set(WhatToShow::OmakeProgress) ;
             }>"omake stdout"</button>
 
         <button
