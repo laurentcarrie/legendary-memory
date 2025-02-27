@@ -1,5 +1,4 @@
 use chrono::Utc ;
-use serde_wasm_bindgen ;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
 use human_sort::compare;
@@ -14,7 +13,7 @@ use wasm_bindgen::prelude::*;
 pub mod protocol;
 
 pub mod util;
-use util::{default_world, get_file,save_file, fetch_world, build,SourceTreeItem_of_base64 ,WhatToShow,get_something_to_see};
+use util::{default_world, save_file, fetch_world, build,SourceTreeItem_of_base64 ,WhatToShow,get_something_to_see};
 
 #[wasm_bindgen]
 extern "C" {
@@ -66,7 +65,7 @@ pub fn App() -> impl IntoView {
     let async_file_data = LocalResource::new(move ||
         get_something_to_see(what_to_show.get())
     );
-    let async_file_save_data = LocalResource::new(move || save_file(file_save_value.get().0,file_save_value.get().1));
+    let _async_file_save_data = LocalResource::new(move || save_file(file_save_value.get().0,file_save_value.get().1));
     let async_build_data = LocalResource::new(move || { log!("xxx build") ;
         let now = build_value.get() ;
         build(now)
@@ -338,7 +337,7 @@ edit me...
         <button
             on:click=move |_|
                 {
-                    let message = my_commit_message() ;
+                    let _message = my_commit_message() ;
             }>"commit"</button>
 
 

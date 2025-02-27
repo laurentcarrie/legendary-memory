@@ -33,7 +33,7 @@ pub fn what_to_show_of_string(s: String) -> WhatToShow {
     match serde_json::from_str::<WhatToShow>(&s) {
         Ok(o) => o,
         Err(e) => {
-            log!("error in what_to_show_of_string {}", s);
+            log!("error in what_to_show_of_string {} {:?}", s,e);
             WhatToShow::Nothing
         }
     }
