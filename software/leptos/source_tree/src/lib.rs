@@ -219,7 +219,7 @@ pub fn App() -> impl IntoView {
         <div id="container">
         <div class="split right">
                 <Editor wts=what_to_show/>
-                <Progress wts=what_to_show data=file_data/>
+                <Progress wts=what_to_show data=omake_progress/>
                 <OmakeStdout wts=what_to_show data=file_data/>
 
         </div>
