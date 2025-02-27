@@ -153,9 +153,9 @@ pub async fn get_request(choice: request::Choice) -> Result<String> {
         .await?
         .text()
         .await?;
-    // let data = serde_json::from_str::<Choice>(&data);
+    let data = serde_json::from_str::<Choice>(&data);
     log!("{:?}",&data) ;
-    data
+    Ok(data)
 }
 
 async fn get_omake_stdout(choice:Choice) -> Result<(String, String)> {
