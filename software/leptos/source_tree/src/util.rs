@@ -162,17 +162,11 @@ async fn get_omake_stdout(choice:Choice) -> Result<(String, String)> {
     let data:Choice=get_request(request::Choice {
         choice: request::EChoice::ItemGetOMakeStdout}).await? ;
 
-    match data {
-        Ok(x) => match x.choice {
+    match data.choice {
             EChoice::ItemFileData(data) => Ok(("omake.stdout".to_string(), data)),
             _ => Ok(("omake.stdout".to_string(), format!("{}:{}, bad type",file!(),line!()))),
-        },
-        Err(e) => {
-            log!("ERROR : {:?}", e);
-            Err(e.into())
-        }
     }
-}
+
 
 async fn get_omake_progress(choice:Choice) -> Result<(String, String)> {
     let data=get_request(request::Choice {
