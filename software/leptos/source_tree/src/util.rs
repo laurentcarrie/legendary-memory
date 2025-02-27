@@ -83,7 +83,7 @@ pub async fn fetch_world() -> Result<SourceTree> {
             // log!("size of tree : {}", tree.items.len());
             Ok(tree)
         }
-        _ => panic!(format!("{}:{}, panic bad type", file!(), line!())),
+        _ => panic!("{}:{}, panic bad type", file!(), line!()),
     }
 }
 
