@@ -71,7 +71,7 @@ On_IPurple='\033[0;105m'  # Purple
 On_ICyan='\033[0;106m'    # Cyan
 On_IWhite='\033[0;107m'   # White
 
-test "x$html_output" != "x" || ( echo "html_output not defined" ; exit 1 )
+#test "x$html_output" != "x" || ( echo "html_output not defined" ; exit 1 )
 
 printfc () {
   status=$1
@@ -82,8 +82,8 @@ printfc () {
 
   case $topic in
   lilypond)
-  topic_html="<span style=\"color:blue;background-color:yellow\">[${topic}]</span>"
-  ;;
+    topic_html="<span style=\"color:blue;background-color:yellow\">[${topic}]</span>"
+    ;;
   pdf)
       topic_html="<span style=\"color:blue;background-color:green\">[${topic}]</span>"
       ;;
@@ -101,13 +101,13 @@ esac
     status_html="<span style=\"color:white;background-color:green\">[DONE  ]</span>"
   ;;
   RUN)
-    status_fmt="${BBlue}${On_White}[START]${Color_Off}"
-    status_nocolor="[START]"
+    status_fmt="${BBlue}${On_White}[START ]${Color_Off}"
+    status_nocolor="[START ]"
     status_html="<span style=\"color:white;background-color:rgba(0,0,200,0.5);\">[START ]</span>"
   ;;
   FAILED)
     status_fmt="${BRed}${On_Cyan}[FAILED ]${Color_Off}"
-    status_nocolor="[FAILED ]"
+    status_nocolor="[FAILED]"
     status_html="<span style=\"color:blue;background-color:red\">[FAILED]</span>"
   ;;
   *)
@@ -122,7 +122,7 @@ message_nocolor="$message"
 printf("omake_output_format is $omake_output_format\n")
 
 if test "x$omake_output_format" = "xtext"   ; then
-  printf "${status_fmt}${topic_fmt}${message_nocolor}\n"
+  printf "${status_nocolor}[${topic}]${message_nocolor}\n"
 else
   printf "${status_fmt}${topic_fmt}${message_fmt}\n"
 fi
