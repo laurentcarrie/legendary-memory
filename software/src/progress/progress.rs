@@ -1,3 +1,4 @@
-def get_progress(builddir:String) -> () {
-
+use crate::protocol::model::answer::Progress ;
+pub fn progress_of_string(data: String) -> Progress {
+    Progress { progress: vec![] }
 }
