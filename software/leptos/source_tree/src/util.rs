@@ -154,6 +154,7 @@ pub async fn get_request(choice: request::Choice) -> Result<(String, String)> {
         .text()
         .await?;
     let data = serde_json::from_str::<Choice>(&data);
+    log!("{}",&data) ;
     match data {
         Ok(x) => match x.choice {
             EChoice::ItemFileData(data) => Ok(("omake.stdout".to_string(), data)),
