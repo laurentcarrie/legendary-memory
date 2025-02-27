@@ -153,45 +153,30 @@ pub fn App() -> impl IntoView {
                             "html" => "html",
                             _ => "ace/mode/text",
                         };
-                        match what_to_show.get() {
-                            WhatToShow::Nothing => {
-                                // set_see_editor.set(true);
-                                // set_see_html.set(false);
-                            }
-                            WhatToShow::SourceFile(_) => {
-                                // set_see_editor.set(true);
-                                // set_see_html.set(false);
-                                my_set_data("editor", t.clone().as_str(), mode, 80);
-                            }
-                            WhatToShow::OmakeStdout => {
-                                // set_see_editor.set(false);
-                                // set_see_html.set(true);
-                                // let e = document().get_element_by_id("showhtml").unwrap();
-                                // e.set_inner_html(t.clone().as_str());
-                                //my_set_data("editor", ,mode, 80);
-                                set_file_data.set(t.clone()) ;
-
-                            }
-                            WhatToShow::OmakeProgress => {
-                                // set_see_editor.set(false);
-                                // set_see_html.set(false);
-                           }
-                        }
-                        // match mode {
-                        //     "html" => {
-                        //         let e = document().get_element_by_id("showhtml").unwrap();
-                        //         e.set_inner_html(t.clone().as_str());
-                        //         set_see_editor.set(false) ;
-                        //         set_see_html.set(true) ;
+                        // match what_to_show.get() {
+                        //     WhatToShow::Nothing => {
+                        //         // set_see_editor.set(true);
+                        //         // set_see_html.set(false);
                         //     }
-                        //     _ => {
-                        //         // let editor = my_edit("editor", "sss", format, nblines);
-                        //         log!("before unwrap") ;
-                        //         my_set_data("editor", t.clone().as_str(),mode, 80);
-                        //         set_see_editor.set(true) ;
-                        //         set_see_html.set(false) ;
+                        //     WhatToShow::SourceFile(_) => {
+                        //         // set_see_editor.set(true);
+                        //         // set_see_html.set(false);
+                        //         my_set_data("editor", t.clone().as_str(), mode, 80);
                         //     }
-                        // } ;
+                        //     WhatToShow::OmakeStdout => {
+                        //         // set_see_editor.set(false);
+                        //         // set_see_html.set(true);
+                        //         // let e = document().get_element_by_id("showhtml").unwrap();
+                        //         // e.set_inner_html(t.clone().as_str());
+                        //         //my_set_data("editor", ,mode, 80);
+                        //         set_file_data.set(t.clone()) ;
+                        //
+                        //     }
+                        //     WhatToShow::OmakeProgress => {
+                        //         // set_see_editor.set(false);
+                        //         // set_see_html.set(false);
+                        //    }
+                        // }
                         "".to_string()
                     }
                     Err(e) => format!("Erreur {:?}", e),
