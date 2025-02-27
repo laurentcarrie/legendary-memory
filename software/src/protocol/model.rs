@@ -70,8 +70,9 @@ pub mod answer {
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
     pub struct ProgressItem {
-        pub path: String,
-        pub status: bool,
+        pub status : String,
+        pub topic : String,
+        pub message :String
     }
 
     #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
