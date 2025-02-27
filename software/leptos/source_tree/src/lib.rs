@@ -41,6 +41,7 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<String>) -> impl Into
             },
             _ => "none"
         }>
+        omake progress
         {data}
     </div>
     }
@@ -49,11 +50,12 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<String>) -> impl Into
 #[component]
 pub fn OmakeStdout(wts:ReadSignal<WhatToShow>,data:ReadSignal<String>) -> impl IntoView {
     view! {
-    <div id="progress" style:display=move ||
+    <div id="omake-stdout" style:display=move ||
         match wts.get() {
             WhatToShow::OmakeStdout => "block",
             _ => "none"
         }>
+        <h2>omake stdout</h2>
         {data}
     </div>
     }
