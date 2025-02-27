@@ -37,6 +37,7 @@ pub mod request {
         ItemSourceTree,
         ItemSaveFile(InfoSaveFile),
         ItemGetOMakeStdout,
+        ItemGetOMakeProgress,
         ItemGetSourceFile(String),
     }
 
