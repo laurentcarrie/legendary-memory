@@ -25,7 +25,7 @@ fi
 
 workdir=$(dirname $(realpath $lyfile))
 pprintworkdir=$(echo $workdir | sed "s#$here##")
-pprintworkdir="$pprintworkdir $lyfile"
+pprintworkdir="$pprintworkdir xx $lyfile xx"
 
 
 rm -f $lytexfile
