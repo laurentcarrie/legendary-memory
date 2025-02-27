@@ -379,7 +379,7 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
 
 pub fn handle_get_omake_progress(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
     let data = get_omake_stdout_data(builddir);
-    let progress = crate::helpers::progress_of_string::progress_of_string(data) ;
+    let progress = crate::helpers::progress_of_string::progress_of_string(data);
 
     Ok(answer::EChoice::ItemSeeProgress(rpogress))
 }
