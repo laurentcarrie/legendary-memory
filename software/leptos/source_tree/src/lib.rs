@@ -1,6 +1,6 @@
-use chrono::Utc ;
 use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
+use chrono::Utc;
 use human_sort::compare;
 use leptos::logging::log;
 use leptos::prelude::*;
@@ -13,7 +13,10 @@ use wasm_bindgen::prelude::*;
 pub mod protocol;
 
 pub mod util;
-use util::{default_world, save_file, fetch_world, build,SourceTreeItem_of_base64 ,WhatToShow,get_something_to_see};
+use util::{
+    build, default_world, fetch_world, get_something_to_see, save_file, SourceTreeItem_of_base64,
+    WhatToShow,
+};
 
 #[wasm_bindgen]
 extern "C" {
@@ -26,7 +29,6 @@ extern "C" {
     fn my_get_data(id: &str) -> String;
     fn my_commit_message() -> String;
 }
-
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -51,23 +53,23 @@ pub fn App() -> impl IntoView {
         }
     };
 
-
-    let (what_to_show,set_what_to_show) = signal::<WhatToShow>(WhatToShow::Nothing) ;
+    let (what_to_show, set_what_to_show) = signal::<WhatToShow>(WhatToShow::Nothing);
 
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
     let (file_value, set_file_value) = signal::<String>("???".to_string());
-    let (file_save_value, set_file_save_value) = signal::<(String,String)>(("???".to_string(),"???".to_string()));
+    let (file_save_value, set_file_save_value) =
+        signal::<(String, String)>(("???".to_string(), "???".to_string()));
     let (build_value, set_build_value) = signal::<Option<String>>(None);
     // let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
-    let (see_editor,set_see_editor) = signal::<bool>(false) ;
-    let (see_html,set_see_html) = signal::<bool>(false) ;
-    let async_file_data = LocalResource::new(move ||
-        get_something_to_see(what_to_show.get())
-    );
-    let _async_file_save_data = LocalResource::new(move || save_file(file_save_value.get().0,file_save_value.get().1));
-    let async_build_data = LocalResource::new(move || { log!("xxx build") ;
-        let now = build_value.get() ;
+    let (see_editor, set_see_editor) = signal::<bool>(false);
+    let (see_html, set_see_html) = signal::<bool>(false);
+    let async_file_data = LocalResource::new(move || get_something_to_see(what_to_show.get()));
+    let _async_file_save_data =
+        LocalResource::new(move || save_file(file_save_value.get().0, file_save_value.get().1));
+    let async_build_data = LocalResource::new(move || {
+        log!("xxx build");
+        let now = build_value.get();
         build(now)
     });
     // let async_omake_children_data = LocalResource::new(move || { let _ = omake_children_value.get() ; omake_children_info() });
@@ -81,40 +83,39 @@ pub fn App() -> impl IntoView {
                     Ok(t) => {
                         let (url, t) = t;
                         let _nblines = t.chars().filter(|c| *c == '\n').count();
-                        let p = PathBuf::from(&url) ;
-                        let extension : &str = p.extension().map(|x| x.to_str()).flatten().unwrap_or("") ;
+                        let p = PathBuf::from(&url);
+                        let extension: &str =
+                            p.extension().map(|x| x.to_str()).flatten().unwrap_or("");
                         // log!("extension : {:?}", &extension);
                         let mode = match extension {
                             "json" => "ace/mode/json",
                             "tex" => "ace/mode/latex",
                             "html" => "html",
-                            _ => "ace/mode/text"
-                        } ;
+                            _ => "ace/mode/text",
+                        };
                         match what_to_show.get() {
                             WhatToShow::Nothing => {
-                                set_see_editor.set(true) ;
-                                set_see_html.set(false) ;
-                            },
+                                set_see_editor.set(true);
+                                set_see_html.set(false);
+                            }
                             WhatToShow::SourceFile(_) => {
-                                set_see_editor.set(true) ;
-                                set_see_html.set(false) ;
-                                my_set_data("editor", t.clone().as_str(),mode, 80);
+                                set_see_editor.set(true);
+                                set_see_html.set(false);
+                                my_set_data("editor", t.clone().as_str(), mode, 80);
                             }
                             WhatToShow::OmakeStdout => {
-                                set_see_editor.set(false) ;
-                                set_see_html.set(true) ;
+                                set_see_editor.set(false);
+                                set_see_html.set(true);
                                 let e = document().get_element_by_id("showhtml").unwrap();
                                 e.set_inner_html(t.clone().as_str());
                                 //my_set_data("editor", ,mode, 80);
-
                             }
                             WhatToShow::OmakeProgress => {
-                                set_see_editor.set(false) ;
-                                set_see_html.set(true) ;
+                                set_see_editor.set(false);
+                                set_see_html.set(true);
                                 let e = document().get_element_by_id("showhtml").unwrap();
                                 e.set_inner_html(t.clone().as_str());
                                 //my_set_data("editor", ,mode, 80);
-
                             }
                         }
                         // match mode {
@@ -145,35 +146,25 @@ pub fn App() -> impl IntoView {
         async_file_data
             .get()
             .as_deref()
-            .map(|value| {
-                match value {
-                    Ok(_) => {
-                        "file saved".to_string()
-                    }
-                    Err(e) => format!("Erreur {:?}", e),
-                }
+            .map(|value| match value {
+                Ok(_) => "file saved".to_string(),
+                Err(e) => format!("Erreur {:?}", e),
             })
             // This loading state will only show before the first load
             .unwrap_or_else(|| "Saving file ...".into())
     };
 
-
     let async_build_result = move || {
         async_build_data
             .get()
             .as_deref()
-            .map(|value| {
-                match value {
-                    Ok(_) => {
-                        "".to_string()
-                    }
-                    Err(e) => format!("Erreur {:?}", e),
-                }
+            .map(|value| match value {
+                Ok(_) => "".to_string(),
+                Err(e) => format!("Erreur {:?}", e),
             })
             // This loading state will only show before the first load
             .unwrap_or_else(|| "Building ...".into())
     };
-
 
     view! {
         <main>
