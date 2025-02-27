@@ -174,7 +174,7 @@ pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> 
                                                         choice: request::EChoice::ItemGetOMakeStdout,
                                                     }
         ) .await,
-        WhatToShow::OMakeProgress => get_request( request::Choice {
+        WhatToShow::OmakeProgress => get_request( request::Choice {
             choice: request::EChoice::ItemGetOMakeProgress,
         }
         ) .await,
