@@ -272,10 +272,14 @@ edit me...
                                     on:change:target=move |ev| {
                                         log!("on change") ;
                                         set_what_to_show.set(WhatToShow::SourceFile(ev.target().value().parse().expect("set_value"))) ;
-                                        set_file_value.set(ev.target().value().parse().expect("set_value"));
+                                        // set_file_value.set(ev.target().value().parse().expect("set_value"));
                                         log!("value is {}",file_value.get()) ;
                                     } // on:change
-                                    prop:value=move || file_value.get()>
+                                    prop:value=move || match what_to_show.get() {
+                                        WhatToShow::Nothing => ""
+                                        }
+                                    }.get()
+                                    >
                                     {
                                         view! {
                                             <optgroup label="master file">
@@ -358,7 +362,7 @@ edit me...
             on:click=move |_|
                 {
                     log!("show build progress") ;
-                    set_file_value.set("/output/omake.stdout".to_string()) ;
+                    // set_file_value.set("/output/omake.stdout".to_string()) ;
                     set_what_to_show.set(WhatToShow::OmakeProgress) ;
             }>"omake stdout"</button>
 
