@@ -55,8 +55,9 @@ pub fn OmakeStdout(wts:ReadSignal<WhatToShow>,data:ReadSignal<String>) -> impl I
             WhatToShow::OmakeStdout => "block",
             _ => "none"
         }>
-        <h2>omake stdout</h2>
+        <pre>
         {data}
+        </pre>
     </div>
     }
 }
