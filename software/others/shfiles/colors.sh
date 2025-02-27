@@ -97,23 +97,29 @@ esac
   case $status in
   OK)
     status_fmt="${BGreen}${On_White}[DONE  ]${Color_Off}"
+    status_nocolor="[DONE  ]"
     status_html="<span style=\"color:white;background-color:green\">[DONE  ]</span>"
   ;;
   RUN)
     status_fmt="${BBlue}${On_White}[START]${Color_Off}"
+    status_nocolor="[START]"
     status_html="<span style=\"color:white;background-color:rgba(0,0,200,0.5);\">[START ]</span>"
   ;;
   FAILED)
     status_fmt="${BRed}${On_Cyan}[FAILED ]${Color_Off}"
+    status_nocolor="[FAILED ]"
     status_html="<span style=\"color:blue;background-color:red\">[FAILED]</span>"
   ;;
   *)
+    status_nocolor="[unknown status $status]"
     status_fmt="${BRed}${On_Black}[unknown status $status]${Color_Off}"
     status_html="<span style=\"color:red;background-color:cyan\">[unknown status]</span>"
 esac
 
 message_fmt="${White}${On_Cyan}$message${Color_Off}"
+message_nocolor="$message"
 printf "${status_fmt}${topic_fmt}${message_fmt}\n"
+printf "${status_fmt}${topic_fmt}${message_fmt}\n" >> $nocolor_output
 
 message_html="<span style=\"color:black;background-color:hsla(0,50%%,50%%,0.5)\">$message</span>"
 printf "${status_html}${topic_html}    ${message_html}<br/>\n" >> $html_output

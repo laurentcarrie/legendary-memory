@@ -110,6 +110,10 @@ pub async fn omake(id: String, builddir: PathBuf) -> Result<u32, MyError> {
             "html_output",
             format!("{}/progress.{}.html", &builddir.to_str().unwrap(), &id),
         )
+        .env(
+            "nocolor_output",
+            format!("{}/progress.{}.txt", &builddir.to_str().unwrap(), &id),
+        )
         .current_dir(&builddir)
         // .stdout(Stdio::piped())
         .reap_on_drop(true)
