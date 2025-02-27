@@ -11,6 +11,7 @@ use std::path::PathBuf;
 use wasm_bindgen::prelude::*;
 
 pub mod protocol;
+use protocol::model::answer::Progress ;
 
 pub mod util;
 use util::{
@@ -31,7 +32,7 @@ extern "C" {
 }
 
 #[component]
-pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<String>) -> impl IntoView {
+pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<Progress>) -> impl IntoView {
     view! {
     <div id="progress" style:display=move ||
         match wts.get() {
@@ -42,7 +43,15 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<String>) -> impl Into
             _ => "none"
         }>
         omake progress
-        {data}
+        <table>
+        {
+            for row in data.progress {
+            view! {
+                <tr><td>{row.status}<td><td>{row.topic}</td><td>{row.message}</td></tr>
+            }
+        }
+        }
+        </table
     </div>
     }
 }
@@ -100,6 +109,7 @@ pub fn App() -> impl IntoView {
 
     let (what_to_show, set_what_to_show) = signal::<WhatToShow>(WhatToShow::Nothing);
     let (file_data, set_file_data) = signal::<String>("".to_string()) ;
+    let (omake_progress, set_omake_progress) = signal::<Progress>(Progress{}) ;
 
     let spreadable = style(("foreground-color", "red"));
     let (song_value, set_song_value) = signal::<String>(BASE64_STANDARD.encode("???"));
