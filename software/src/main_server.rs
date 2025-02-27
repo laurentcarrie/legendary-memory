@@ -340,7 +340,7 @@ pub fn handle_save_file(songdir: PathBuf, info: InfoSaveFile) -> Result<answer::
     Ok(answer::EChoice::ItemOkMessage)
 }
 
-pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
+fn get_omake_stdout_data(builddir: PathBuf) -> String> {
     let mut candidates: Vec<PathBuf> = vec![];
     for p in builddir.read_dir().expect("read dir failed") {
         if let Ok(p) = p {
@@ -368,30 +368,21 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
             data.expect("could read data")
         }
     };
+    data
+}
+
+pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
+     let data = get_omake_stdout_data(builddir)? ;
 
     Ok(answer::EChoice::ItemFileData(data))
 }
 
-fn get_latest_omake_stdout(songdir: PathBuf, spath: String) -> String {
-    let mut path = songdir.clone();
-    let spath = PathBuf::from(spath);
-    let spath = if spath.is_absolute() {
-        let mut spath = spath.to_str().unwrap().to_string();
-        if spath.len() > 0 {
-            spath.remove(0);
-        };
-        PathBuf::from(spath)
-    } else {
-        spath
-    };
-    path.push(&spath);
-    log::info!("get source file '{:?}'", &path);
-    let data = match fs::read_to_string(path) {
-        Ok(data) => data,
-        Err(e) => format!("{:?}", e),
-    };
-    data
+pub fn handle_get_omake_progress(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
+    let data = get_omake_stdout_data(builddir)? ;
+
+    Ok(answer::EChoice::ItemFileData(data))
 }
+
 
 pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer::EChoice, MyError> {
     log::info!("{:?}", songdir);
@@ -480,8 +471,8 @@ async fn main() -> () {
             request::EChoice::ItemGetSourceFile(path) => {
                 handle_get_source_file(songdir.clone(), path)
             }
-            request::EChoice::ItemGetOMakeProgress(path) => {
-                handle_get_source_file(songdir.clone(), path)
+            request::EChoice::ItemGetOMakeProgress => {
+                handle_get_omake_progress(builddir.clone())
             }
         };
         let answer = match answer_choice {
