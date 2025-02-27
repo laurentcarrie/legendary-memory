@@ -155,10 +155,16 @@ pub async fn get_request(choice: request::Choice) -> Result<(String, String)> {
         .await?;
     let data = serde_json::from_str::<Choice>(&data);
     log!("{:?}",&data) ;
+    data
+}
+
+async fn get_omake_stdout(choice:Request::Choice) -> Result<(String, String)> {
+    let data=get_request(request::Choice {
+        choice: request::EChoice::ItemGetOMakeStdout}) ;
+
     match data {
         Ok(x) => match x.choice {
             EChoice::ItemFileData(data) => Ok(("omake.stdout".to_string(), data)),
-            EChoice::OmakeProgress(data) => Ok(("omake progress".to_string(), data)),
             _ => Ok(("omake.stdout".to_string(), format!("{}:{}, bad type",file!(),line!()))),
         },
         Err(e) => {
@@ -168,23 +174,30 @@ pub async fn get_request(choice: request::Choice) -> Result<(String, String)> {
     }
 }
 
+async fn get_omake_progress(choice:Request::Choice) -> Result<(String, String)> {
+    let data=get_request(request::Choice {
+        choice: request::EChoice::ItemGetOMakeStdout}) ;
+
+    match data {
+        Ok(x) => match x.choice {
+            EChoice::ItemSeeProgress(data) => Ok(("omake.stdout".to_string(), data)),
+            _ => Ok(("omake.stdout".to_string(), format!("{}:{}, bad type",file!(),line!()))),
+        },
+        Err(e) => {
+            log!("ERROR : {:?}", e);
+            Err(e.into())
+        }
+    }
+}
+
+
 pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> {
     match what {
         // WhatToShow::Nothing => get_omake_stdout(),
         // WhatToShow::Nothing => get_file("xxx".to_string()),
         WhatToShow::SourceFile(path) => get_file(path).await,
-        WhatToShow::OmakeStdout => {
-            get_request(request::Choice {
-                choice: request::EChoice::ItemGetOMakeStdout,
-            })
-            .await
-        }
-        WhatToShow::OmakeProgress => {
-            get_request(request::Choice {
-                choice: request::EChoice::ItemGetOMakeProgress,
-            })
-            .await
-        }
+        WhatToShow::OmakeStdout =>  get_omake_stdout().await,
+        WhatToShow::OmakeProgress => get_omake_progress.await ,
         WhatToShow::Nothing => get_file("xxx".to_string()).await,
     }
 }
