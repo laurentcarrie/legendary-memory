@@ -158,7 +158,7 @@ pub async fn get_request(choice: request::Choice) -> Result<(String, String)> {
     data
 }
 
-async fn get_omake_stdout(choice:answer::Choice) -> Result<(String, String)> {
+async fn get_omake_stdout(choice:Choice) -> Result<(String, String)> {
     let data=get_request(request::Choice {
         choice: request::EChoice::ItemGetOMakeStdout}) ;
 
@@ -174,7 +174,7 @@ async fn get_omake_stdout(choice:answer::Choice) -> Result<(String, String)> {
     }
 }
 
-async fn get_omake_progress(choice:answer::Choice) -> Result<(String, String)> {
+async fn get_omake_progress(choice:Choice) -> Result<(String, String)> {
     let data=get_request(request::Choice {
         choice: request::EChoice::ItemGetOMakeStdout}) ;
 
