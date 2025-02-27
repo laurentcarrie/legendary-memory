@@ -345,7 +345,7 @@ pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyE
         if let Ok(p) = p {
             if let Ok(file_type) = p.file_type() {
                 if file_type.is_file() {
-                    let re = Regex::new(r"omake\..*\.stdout").unwrap();
+                    let re = Regex::new(r"omake\..*\.txt").unwrap();
                     if re.is_match(p.file_name().as_os_str().to_str().unwrap()) {
                         candidates.push(p.path());
                     }

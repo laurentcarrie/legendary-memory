@@ -183,9 +183,9 @@ pub fn App() -> impl IntoView {
                 <pre id="editor" style:display=move || if see_editor.get() { "block" } else { "none" }>r#"
 edit me...
                 "#</pre>
-                <p id="showhtml" style:display=move || if see_html.get() { "block" } else { "none" }>r#"
+                <pre><p id="showhtml" style:display=move || if see_html.get() { "block" } else { "none" }>r#"
 edit me...
-                "#</p>
+                "#</p></pre>
         </div>
 
     <p><pre>{async_file_result}</pre></p>
