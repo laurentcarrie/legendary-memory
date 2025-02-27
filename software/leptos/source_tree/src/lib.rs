@@ -194,6 +194,8 @@ edit me...
 edit me...
                 "#</p></pre>
 
+                <Progress progress=what_to_show/>
+
         </div>
 
     <p><pre>{async_file_result}</pre></p>
