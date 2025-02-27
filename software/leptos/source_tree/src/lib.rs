@@ -40,6 +40,17 @@ pub fn Progress(progress:ReadSignal<WhatToShow>) -> impl IntoView {
     }
 }
 
+#[component]
+pub fn Progress(progress:ReadSignal<WhatToShow>) -> impl IntoView {
+    view! {
+    <pre id="progress" style:display=move ||
+        match progress.get() {
+            WhatToShow::OmakeStdout => "block",
+            _ => "none"
+        }>
+    </pre>
+    }
+}
 
 #[component]
 pub fn Editor(progress:ReadSignal<WhatToShow>) -> impl IntoView {
@@ -85,7 +96,7 @@ pub fn App() -> impl IntoView {
         signal::<(String, String)>(("???".to_string(), "???".to_string()));
     let (build_value, set_build_value) = signal::<Option<String>>(None);
     // let (omake_children_value, set_omake_children_value) = signal::<String>("???".to_string());
-    let (see_editor, set_see_editor) = signal::<bool>(false);
+    // let (see_editor, set_see_editor) = signal::<bool>(false);
     // let (see_html, set_see_html) = signal::<bool>(false);
     let async_file_data = LocalResource::new(move || get_something_to_see(what_to_show.get()));
     let _async_file_save_data =
@@ -128,9 +139,9 @@ pub fn App() -> impl IntoView {
                             }
                             WhatToShow::OmakeStdout => {
                                 // set_see_editor.set(false);
-                                set_see_html.set(true);
-                                let e = document().get_element_by_id("showhtml").unwrap();
-                                e.set_inner_html(t.clone().as_str());
+                                // set_see_html.set(true);
+                                // let e = document().get_element_by_id("showhtml").unwrap();
+                                // e.set_inner_html(t.clone().as_str());
                                 //my_set_data("editor", ,mode, 80);
                             }
                             WhatToShow::OmakeProgress => {
@@ -204,6 +215,7 @@ edit me...
                 "#</p></pre>
 
                 <Progress progress=what_to_show/>
+                <OmakeStdout progress=what_to_show/>
 
         </div>
 
