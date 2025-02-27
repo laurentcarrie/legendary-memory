@@ -459,6 +459,9 @@ async fn main() -> () {
             request::EChoice::ItemGetSourceFile(path) => {
                 handle_get_source_file(songdir.clone(), path)
             }
+            request::EChoice::ItemGetOmakeProgress(path) => {
+                handle_get_source_file(songdir.clone(), path)
+            }
         };
         let answer = match answer_choice {
             Ok(x) => {
