@@ -217,8 +217,8 @@ pub fn App() -> impl IntoView {
         <div id="container">
         <div class="split right">
                 <Editor wts=what_to_show/>
-                <Progress wts=what_to_show data=file_value/>
-                <OmakeStdout wts=what_to_show data=file_value/>
+                <Progress wts=what_to_show data=async_file_data/>
+                <OmakeStdout wts=what_to_show data=async_file_data/>
 
         </div>
 
