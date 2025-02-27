@@ -31,10 +31,10 @@ extern "C" {
 }
 
 #[component]
-pub fn Progress(progress:ReadSignal<WhatToShow>) -> impl IntoView {
+pub fn Progress(wts:ReadSignal<WhatToShow>) -> impl IntoView {
     view! {
     <div id="progress" style:display=move ||
-        match progress.get() {
+        match wts.get() {
             WhatToShow::OmakeProgress => "block",
             _ => "none"
         }>
@@ -43,10 +43,10 @@ pub fn Progress(progress:ReadSignal<WhatToShow>) -> impl IntoView {
 }
 
 #[component]
-pub fn OmakeStdout(progress:ReadSignal<WhatToShow>) -> impl IntoView {
+pub fn OmakeStdout(wts:ReadSignal<WhatToShow>) -> impl IntoView {
     view! {
     <div id="progress" style:display=move ||
-        match progress.get() {
+        match wts.get() {
             WhatToShow::OmakeStdout => "block",
             _ => "none"
         }>
@@ -56,10 +56,10 @@ pub fn OmakeStdout(progress:ReadSignal<WhatToShow>) -> impl IntoView {
 
 
 #[component]
-pub fn Editor(progress:ReadSignal<WhatToShow>) -> impl IntoView {
+pub fn Editor(wts:ReadSignal<WhatToShow>) -> impl IntoView {
     view! {
     <pre id="editor" style:display=move ||
-        match progress.get() {
+        match wts.get() {
             WhatToShow::SourceFile(_) => "block",
             _ => "none"
         }>
@@ -212,9 +212,9 @@ pub fn App() -> impl IntoView {
 
         <div id="container">
         <div class="split right">
-                <Editor progress=what_to_show/>
-                <Progress progress=what_to_show/>
-                <OmakeStdout progress=what_to_show/>
+                <Editor wts=what_to_show/>
+                <Progress wts=what_to_show/>
+                <OmakeStdout wts=what_to_show/>
 
         </div>
 
