@@ -276,7 +276,10 @@ edit me...
                                         log!("value is {}",file_value.get()) ;
                                     } // on:change
                                     prop:value=move || match what_to_show.get() {
-                                        WhatToShow::Nothing => ""
+                                        WhatToShow::Nothing => "",
+                                        WhatToShow::SourceFile(s) => s,
+                                        WhatToShow::OmakeStdout => "omake stdout",
+                                        WhatToShow::OmakeProgress => "omake progress"
                                         }
                                     >
                                     {
