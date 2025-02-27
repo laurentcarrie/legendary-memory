@@ -122,6 +122,7 @@ pub fn App() -> impl IntoView {
             .map(|value| {
                 match value {
                     Ok(t) => {
+                        log!("{}:{} async file result",file!(),line!()) ;
                         let (url, t) = t;
                         let _nblines = t.chars().filter(|c| *c == '\n').count();
                         let p = PathBuf::from(&url);
