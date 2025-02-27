@@ -275,12 +275,14 @@ edit me...
                                         // set_file_value.set(ev.target().value().parse().expect("set_value"));
                                         log!("value is {}",file_value.get()) ;
                                     } // on:change
-                                    prop:value=move || match what_to_show.get() {
+                                    prop:value=move || {
+                                        let x = what_to_show.get() ;
+                                        match x {
                                         WhatToShow::Nothing => "",
                                         WhatToShow::SourceFile(s) => &s.clone(),
                                         WhatToShow::OmakeStdout => "omake stdout",
                                         WhatToShow::OmakeProgress => "omake progress"
-                                        }
+                                        }}
                                     >
                                     {
                                         view! {
