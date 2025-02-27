@@ -122,7 +122,7 @@ message_nocolor="$message"
 printf "omake_output_format is $omake_output_format\n"
 
 if test "x$omake_output_format" = "xtext"   ; then
-  printf "${status_nocolor}[${topic}]${message_nocolor}\n"
+  printf "${status_nocolor}[${topic}][${message_nocolor}]\n"
 else
   printf "${status_fmt}${topic_fmt}${message_fmt}\n"
 fi
