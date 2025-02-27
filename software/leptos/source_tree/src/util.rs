@@ -180,7 +180,7 @@ async fn get_omake_progress() -> Result<(String, String)> {
     .await?;
 
     match data.choice {
-        EChoice::ItemSeeProgress(data) => Ok(("omake.stdout".to_string(), serde_json::to_string(data).unwrap())),
+        EChoice::ItemSeeProgress(data) => Ok(("omake.stdout".to_string(), serde_json::to_string(&data).unwrap())),
         _ => Ok((
             "omake.stdout".to_string(),
             format!("{}:{}, bad type", file!(), line!()),
