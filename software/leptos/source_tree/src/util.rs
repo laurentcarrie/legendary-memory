@@ -17,6 +17,7 @@ pub enum WhatToShow {
     Nothing,
     SourceFile(String),
     OmakeStdout,
+    OmakeProgress,
 }
 
 pub fn string_of_what_to_show(s: WhatToShow) -> String {
