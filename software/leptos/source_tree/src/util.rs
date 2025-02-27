@@ -6,7 +6,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::protocol::model::answer::{Choice, EChoice, SourceTree, SourceTreeItem};
 use crate::protocol::model::request;
-use crate::format_omake::format_string ;
 
 pub fn default_world() -> SourceTree {
     SourceTree { items: vec![] }
