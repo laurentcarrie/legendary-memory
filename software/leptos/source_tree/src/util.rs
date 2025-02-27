@@ -160,7 +160,7 @@ pub async fn get_request(choice: request::Choice) -> Result<Choice> {
 
 async fn get_omake_stdout(choice:Choice) -> Result<(String, String)> {
     let data=get_request(request::Choice {
-        choice: request::EChoice::ItemGetOMakeStdout}) ;
+        choice: request::EChoice::ItemGetOMakeStdout}).await? ;
 
     match data {
         Ok(x) => match x.choice {
