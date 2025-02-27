@@ -22,10 +22,9 @@ if ! test -f $lyfile ; then
   exit 1
 fi
 
-
 workdir=$(dirname $(realpath $lyfile))
 pprintworkdir=$(echo $workdir | sed "s#$here##")
-pprintworkdir="$pprintworkdir xx $lyfile xx"
+pprintworkdir="${pprintworkdir}#${lyfile}"
 
 
 rm -f $lytexfile
