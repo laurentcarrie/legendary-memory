@@ -138,13 +138,13 @@ pub async fn get_file(path: String) -> Result<(String, String)> {
     }
 }
 
-pub async fn get_omake_stdout() -> Result<(String, String)> {
+pub async fn get_request(choice : request::Choice) -> Result<(String, String)> {
     log!("get_omake_stdout");
     gloo_timers::future::TimeoutFuture::new(1000).await;
     // make the request
-    let choice = request::Choice {
-        choice: request::EChoice::ItemGetOMakeStdout,
-    };
+    // let choice = request::Choice {
+    //     choice: request::EChoice::ItemGetOMakeStdout,
+    // };
     let json_string = serde_json::to_string(&choice).unwrap();
     let b64 = BASE64_STANDARD.encode(&json_string);
     let path = format!("/scripts/request.sh?request={}", &b64);
@@ -170,7 +170,14 @@ pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> 
         // WhatToShow::Nothing => get_omake_stdout(),
         // WhatToShow::Nothing => get_file("xxx".to_string()),
         WhatToShow::SourceFile(path) => get_file(path).await,
-        WhatToShow::OmakeStdout => get_omake_stdout() .await,
+        WhatToShow::OmakeStdout => get_request( request::Choice {
+                                                        choice: request::EChoice::ItemGetOMakeStdout,
+                                                    }
+        ) .await,
+        WhatToShow::OMakeProgress => get_request( request::Choice {
+            choice: request::EChoice::ItemGetOMakeProgress,
+        }
+        ) .await,
         WhatToShow::Nothing  => get_file("xxx".to_string()).await,
     }
 }
