@@ -1,5 +1,5 @@
-use regex::Regex;
 use crate::protocol::model::answer::{Progress, ProgressItem};
+use regex::Regex;
 
 pub fn progress_of_string(data: String) -> Progress {
     let re = Regex::new(r"\[(.*)\]\[(.*)\]\[(.*)\]").unwrap();
@@ -10,6 +10,6 @@ pub fn progress_of_string(data: String) -> Progress {
             topic: topic.to_string(),
             message: message.to_string(),
         });
-    };
+    }
     Progress { progress: items }
 }
