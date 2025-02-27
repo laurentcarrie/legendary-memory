@@ -158,7 +158,7 @@ pub async fn get_request(choice: request::Choice) -> Result<Choice> {
     Ok(data)
 }
 
-async fn get_omake_stdout(choice: Choice) -> Result<(String, String)> {
+async fn get_omake_stdout() -> Result<(String, String)> {
     let data: Choice = get_request(request::Choice {
         choice: request::EChoice::ItemGetOMakeStdout,
     })
@@ -173,7 +173,7 @@ async fn get_omake_stdout(choice: Choice) -> Result<(String, String)> {
     }
 }
 
-async fn get_omake_progress(choice: Choice) -> Result<(String, String)> {
+async fn get_omake_progress() -> Result<(String, String)> {
     let data = get_request(request::Choice {
         choice: request::EChoice::ItemGetOMakeStdout,
     })
@@ -194,7 +194,7 @@ pub async fn get_something_to_see(what: WhatToShow) -> Result<(String, String)> 
         // WhatToShow::Nothing => get_file("xxx".to_string()),
         WhatToShow::SourceFile(path) => get_file(path).await,
         WhatToShow::OmakeStdout => get_omake_stdout().await,
-        WhatToShow::OmakeProgress => get_omake_progress.await,
+        WhatToShow::OmakeProgress => get_omake_progress().await,
         WhatToShow::Nothing => get_file("xxx".to_string()).await,
     }
 }
