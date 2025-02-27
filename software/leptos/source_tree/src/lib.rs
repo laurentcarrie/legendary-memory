@@ -45,16 +45,15 @@ pub fn Progress(wts:ReadSignal<WhatToShow>,data:ReadSignal<Progress>) -> impl In
         omake progress
         <table>
         {
-                    //             .map(|(_, e)| view! { <li>{e.to_string()}</li> })
-                    // .collect::<Vec<_>>()
-
             data.get().progress.iter().map(|row|
                 view! {
-                    <tr><td>{row.status}</td><td>{row.topic}</td><td>{row.message}</td></tr>
+                    <tr>
+                        <td>{row.status}</td><td>{row.topic}</td><td>{row.message}</td>
+                    </tr>
                 }
             ).collect::<Vec<_>>()
         }
-        </table
+        </table>
     </div>
     }
 }
