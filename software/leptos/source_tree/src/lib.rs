@@ -31,6 +31,15 @@ extern "C" {
 }
 
 #[component]
+pub fn Progress() -> impl IntoView {
+    view! {
+        <div id="progress">
+            <h2>table</h2>
+        </div>
+    }
+}
+
+#[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
     let world = AsyncDerived::new_unsync(move || fetch_world());
@@ -175,6 +184,7 @@ pub fn App() -> impl IntoView {
         </main>
         <Title text="songbook" />
 
+
         <div id="container">
         <div class="split right">
                 <pre id="editor" style:display=move || if see_editor.get() { "block" } else { "none" }>r#"
@@ -183,6 +193,8 @@ edit me...
                 <pre><p id="showhtml" style:display=move || if see_html.get() { "block" } else { "none" }>r#"
 edit me...
                 "#</p></pre>
+
+                <Progress/>
         </div>
 
     <p><pre>{async_file_result}</pre></p>
