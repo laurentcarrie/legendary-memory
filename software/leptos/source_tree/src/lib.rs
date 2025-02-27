@@ -198,9 +198,7 @@ pub fn App() -> impl IntoView {
 
         <div id="container">
         <div class="split right">
-                <pre id="editor" style:display=move || if see.get() { "block" } else { "none" }>r#"
-edit me...
-                "#</pre>
+                <Editor progress=what_to_see/>
                 <pre><p id="showhtml" style:display=move || if see_html.get() { "block" } else { "none" }>r#"
 edit me...
                 "#</p></pre>
