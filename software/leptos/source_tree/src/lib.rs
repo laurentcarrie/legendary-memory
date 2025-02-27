@@ -35,12 +35,25 @@ pub fn Progress(progress:ReadSignal<WhatToShow>) -> impl IntoView {
     view! {
     <div id="progress" style:display=move ||
         match progress.get() {
+            WhatToShow::OmakeProgress => "block",
+            _ => "none"
+        }>
+    </div>
+    }
+}
+
+#[component]
+pub fn OMakeStdout(progress:ReadSignal<WhatToShow>) -> impl IntoView {
+    view! {
+    <div id="progress" style:display=move ||
+        match progress.get() {
             WhatToShow::OmakeStdout => "block",
             _ => "none"
         }>
     </div>
     }
 }
+
 
 #[component]
 pub fn Editor(progress:ReadSignal<WhatToShow>) -> impl IntoView {
