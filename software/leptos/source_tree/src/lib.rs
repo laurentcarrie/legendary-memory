@@ -31,7 +31,7 @@ extern "C" {
 }
 
 #[component]
-pub fn Progress() -> impl IntoView {
+pub fn Progress(progress:ReadSignal<WhatToShow>) -> impl IntoView {
     view! {
         <div id="progress">
             <h2>table</h2>
