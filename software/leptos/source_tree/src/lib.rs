@@ -192,18 +192,6 @@ pub fn App() -> impl IntoView {
             .unwrap_or_else(|| "Saving file ...".into())
     };
 
-    let async_build_result = move || {
-        async_build_data
-            .get()
-            .as_deref()
-            .map(|value| match value {
-                Ok(_) => "".to_string(),
-                Err(e) => format!("Erreur {:?}", e),
-            })
-            // This loading state will only show before the first load
-            .unwrap_or_else(|| "Building ...".into())
-    };
-
     view! {
         <main>
             <Stylesheet id="leptos" href="/style-source-tree.css"/>
@@ -224,7 +212,6 @@ pub fn App() -> impl IntoView {
 
     <p><pre>{async_file_result}</pre></p>
     <p><pre>{async_file_save_result}</pre></p>
-    <p><pre>{async_build_result}</pre></p>
 
         <div class="splitx leftx">
             <div class="centered">
