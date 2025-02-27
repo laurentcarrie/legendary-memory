@@ -43,7 +43,7 @@ pub fn Progress(progress:ReadSignal<WhatToShow>) -> impl IntoView {
 }
 
 #[component]
-pub fn OMakeStdout(progress:ReadSignal<WhatToShow>) -> impl IntoView {
+pub fn OmakeStdout(progress:ReadSignal<WhatToShow>) -> impl IntoView {
     view! {
     <div id="progress" style:display=move ||
         match progress.get() {
@@ -213,10 +213,6 @@ pub fn App() -> impl IntoView {
         <div id="container">
         <div class="split right">
                 <Editor progress=what_to_show/>
-                <pre><p id="showhtml" style:display=move || if see_html.get() { "block" } else { "none" }>r#"
-edit me...
-                "#</p></pre>
-
                 <Progress progress=what_to_show/>
                 <OmakeStdout progress=what_to_show/>
 
