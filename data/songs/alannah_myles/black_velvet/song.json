@@ -15,8 +15,7 @@
           "section_title": "intro",
           "section_type": "intro",
           "rows": [
-            "Dm | Dm | Dm | Dm",
-            "Dm | Dm | Dm | Dm"
+            "Dm | Dm | Dm | Dm | x2"
           ]
         }
       }
@@ -26,8 +25,7 @@
       "item": {
         "Chords": {
           "rows": [
-            "Dm | Dm | Dm | Dm",
-            " Dm | Dm | Dm | Dm "
+            "Dm | Dm | Dm | Dm | x2"
           ],
           "section_type": "couplet",
           "section_title": "couplet 1"

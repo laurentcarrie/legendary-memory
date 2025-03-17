@@ -1,22 +1,17 @@
 \documentclass[11pt,table,x11names]{article}
 \usepackage{import}
 \usepackage{enumitem}
-%\usepackage{pdfpages}
-%
-%%\usepackage[margin=0.5in]{geometry}
-%\usepackage{graphicx}
-%\usepackage{unicode-math}
-%\setmainfont{XITS}
-%\setmathfont{XITS Math}
-%\usepackage{luamplib}
-%\usepackage{todonotes}
-%\usepackage{import}
 
+% we need to define these commands as empty... because :
+% the file data.tex redefines them with a \renewcommand, so they need to exist first
+% the reason is that for books, these macros are reset for each song in the book
 \newcommand{\makesongtitle}{}
 \newcommand{\songlastupdate}{}
 \newcommand{\songtoday}{}
 
+% generic preamble
 \input{preamble}
+% generated from user data
 \input{data}
 \input{chords}
 \input{sections}
@@ -24,5 +19,6 @@
 
 \begin{document}
 \makesongtitle
+% body.tex is the user input
 \input{body}
 \end{document}

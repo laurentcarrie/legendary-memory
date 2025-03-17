@@ -1,10 +1,12 @@
-.PHONY: all pdf wav midi clean
+.PHONY: all pdf wav midi clean delivery
 
 clean:
     bash  $(buildroot)/make_clean.sh
     rm -rf  {{#each lilypondfiles}} {{this}} {{/each}}
 
-pdf : {{pdfname}}.pdf
+pdf_file=$(delivery_dir)/{{pdfname}}.pdf
+
+delivery pdf : $(pdf_file)
 
 all : pdf wav midi
 
@@ -24,21 +26,33 @@ sections.tex : $(buildroot)/songs/sections.tex
 #data.tex : data-utf8.tex
 #    iconv -f UTF-8 -t ISO-8859-15 data-utf8.tex > data.tex
 
-main.pdf : main.tex preamble.tex sections.tex chords.tex body.tex data.tex \
+# we want main.pdf to have an easy to make dependendance for books
+# we want the other pdf with a specific name,
+# the two are in the same rule so they are available at the same time (if not, progress is weird, you have main.pdf but not the other one )
+main.pdf $(pdf_file) : main.tex preamble.tex sections.tex chords.tex body.tex data.tex \
     {{#each structure }}{{#if this.item.ItemChords}}{{#with this.item.ItemChords}}lyrics/{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
     {{#each structure }}{{#if this.item.ItemRef}}{{#with this.item.ItemRef}}lyrics/{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
     {{#each lilypondfiles}}{{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex {{/each}}
-    bash $(buildroot)/make_pdf.sh main $(html_output)
-
-{{pdfname}}.pdf : main.pdf
-    cp main.pdf $@
-
+    echo "make pdf"
+    bash $(buildroot)/make_pdf.sh main
+    cp main.pdf $(pdf_file)
 
 {{#each lilypondfiles}}
 {{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex : {{this}}
     echo "make lytex"
-    bash $(buildroot)/make_lytex.sh {{remove-file-extension-helper this ".ly"}} $(html_output)
+    bash $(buildroot)/make_lytex.sh {{remove-file-extension-helper this ".ly"}}
+{{/each}}
 
+{{#each lilytexwavfiles}}
+{{remove-file-extension-helper this ".ly"}}.midi {{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex : {{this}}
+    echo "make lytex"
+    bash $(buildroot)/make_lytex.sh {{remove-file-extension-helper this ".ly"}}
+{{/each}}
+
+{{#each lilywavfiles}}
+{{remove-file-extension-helper this ".ly"}}.midi : {{this}}
+    echo "make lytex"
+    bash $(buildroot)/make_lytex.sh {{remove-file-extension-helper this ".ly"}}
 {{/each}}
 
 
@@ -48,6 +62,6 @@ wav : {{this}}
 midi : {{remove-file-extension-helper this ".wav"}}.midi
 
 {{this}} {{remove-file-extension-helper this ".wav"}}.midi : {{remove-file-extension-helper this ".wav"}}.ly
-    bash $(buildroot)/make_wav.sh {{remove-file-extension-helper this ".wav"}} $(html_output)
+    bash $(buildroot)/make_wav.sh {{remove-file-extension-helper this ".wav"}}
 
 {{/each}}

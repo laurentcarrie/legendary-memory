@@ -12,3 +12,5 @@ indent.log
 *~
 /software/target/
 /build/
+/software/leptos/source_tree/target/
+/software/leptos/source_tree/dist/

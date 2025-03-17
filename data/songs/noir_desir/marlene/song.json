@@ -1,0 +1,149 @@
+{
+  "tempo": 134,
+  "title": "Marlene",
+  "author": "Noir Desir",
+  "texfiles": [],
+  "lilypondfiles": [],
+  "structure": [
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_title": "intro",
+          "section_type": "intro",
+          "rows": [
+            "Am | E | F G | Am | x3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 1",
+          "section_type": "couplet",
+          "rows": [
+            "Am | E | F G | Am | x2"
+          ],
+          "section_body": "\\lolocomment{en fait F G Am Am}"
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_title": "refrain 1",
+          "section_type": "refrain",
+          "rows": [
+            "C | G | Am| E ",
+            "Am | E | F G| Am "
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 2",
+          "section_type": "couplet"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "link": "refrain1",
+          "section_title": "refrain 2",
+          "section_type": "refrain"
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 3",
+          "section_type": "pont",
+          "section_body": "\\lolocomment{instrumental}"
+        }
+      }
+    },
+    {
+      "id": "couplet4",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 4",
+          "section_type": "couplet",
+          "section_body": "\\lolocomment{cool}"
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "link": "refrain1",
+          "section_title": "refrain 3",
+          "section_type": "refrain"
+        }
+      }
+    },
+    {
+      "id": "couplet5",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 5",
+          "section_type": "pont",
+          "section_body": "\\lolocomment{énervé}"
+        }
+      }
+    },
+    {
+      "id": "couplet6",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 6",
+          "section_type": "pont",
+          "section_body": "\\lolocomment{énervé}"
+        }
+      }
+    },
+    {
+      "id": "couplet7",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 7 ",
+          "section_type": "couplet",
+          "section_body": "\\lolocomment{allemand}"
+        }
+      }
+    },
+    {
+      "id": "outtro",
+      "item": {
+        "Chords": {
+          "section_title": "intro",
+          "section_type": "intro",
+          "rows": [
+            "Am | Am | Am | Am "
+          ],
+          "section_body": "\\lolocomment{ triolets ?}"
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "digest": "be39302f0af4a914dec70d0a614c7924",
+  "date": "2025-02-19",
+  "hash": "0"
+}

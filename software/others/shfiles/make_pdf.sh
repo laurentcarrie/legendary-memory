@@ -5,7 +5,6 @@ here=$(dirname $(realpath $0))
 source $here/colors.sh
 
 buildroot=$2
-html_output=$2
 
 #set -e
 #set -x
@@ -23,8 +22,10 @@ workdir=$(dirname $(realpath $1.tex))
 pprintworkdir=$(echo $workdir | sed "s#$here##")
 
 
+rm -f main.pdf
+
 #stats
-printfc RUN pdf $pprintworkdir $html_output
+printfc RUN pdf $pprintworkdir
 
 i="0"
 while [ $i -lt 4 ]
@@ -38,6 +39,10 @@ fi
 i=$[$i+1]
 done
 
-printfc OK pdf $pprintworkdir $html_output
+if test -f main.pdf ; then
+  printfc OK pdf $pprintworkdir
+else
+  printfc FAILED pdf $pprintworkdir
+fi
 
 #stats

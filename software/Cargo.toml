@@ -35,6 +35,8 @@ stderrlog = "0.6.0"
 file-rotate = "0.7.6"
 directory = "0.0.0"
 backtrace = "0.3.74"
+human-sort = "0.2.2"
+itertools = "0.14.0"
 
 
 [[bin]]

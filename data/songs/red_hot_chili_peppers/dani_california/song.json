@@ -38,8 +38,7 @@
           "section_title": "refrain 1",
           "section_type": "refrain",
           "rows": [
-            "F G | Dm G | F G | Dm G",
-            "F G | Dm G | F G | Dm G",
+            "F C | Dm G | F G | Dm G | x2",
             "Dm"
           ]
         }
@@ -47,7 +46,7 @@
     }
   ],
   "wavfiles": [],
-  "digest": "61ff209a520a1b92f2c5ecabd1a8e0be",
-  "date": "2025-01-11",
+  "digest": "fb450e62701a8c1857201f0300cd9d0e",
+  "date": "2025-03-16",
   "hash": "0"
 }

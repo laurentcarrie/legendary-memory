@@ -1,26 +1,30 @@
+use human_sort::compare;
+use regex::Regex;
+// use async_process::Stdio;
 // use async_process::Stdio;
 // use file_rotate::{compression::Compression, suffix::AppendCount, ContentLimit, FileRotate};
 // use log::LevelFilter;
 use crate::errors::MyError;
+use log::LevelFilter;
 use simple_logger::SimpleLogger;
 use sysinfo;
 // use std::process::{Command, Stdio};
-use crate::config::model::StructureItemContent::{ItemChords, ItemHRule, ItemRef};
-use crate::config::model::World;
-use crate::config::world::make;
+use crate::model::model::StructureItemContent::{ItemChords, ItemHRule, ItemRef};
+use crate::model::model::World;
+use crate::model::world::make;
 use async_process::Command;
 use backtrace::Backtrace;
-use handlebars::template::Parameter::Path;
 use std::fs::File;
 use std::io::Write;
 use std::path::PathBuf;
 use std::{env, fs, thread, time};
 use sysinfo::Pid;
-pub mod config;
 pub mod errors;
 pub mod generate;
 pub mod helpers;
 pub mod makefiles;
+pub mod model;
+pub mod progress;
 pub mod protocol;
 // use crate::protocol::model ;
 use crate::generate::all::generate_all;
@@ -85,22 +89,42 @@ pub async fn generate(
     // }
 }
 
-pub async fn omake(builddir: PathBuf) -> Result<u32, MyError> {
-    log::info!("omake in {:?}", &builddir);
+pub async fn omake(
+    id: String,
+    songdir: PathBuf,
+    bookdir: PathBuf,
+    builddir: PathBuf,
+) -> Result<u32, MyError> {
+    log::info!("omake id={}, builddir={:?}", &id, &builddir);
     let mut sh = builddir
         .clone()
         .parent()
         .ok_or(MyError::MessageError("what, no parent ?".to_string()))?
         .to_path_buf();
-    sh.push("scripts");
+    // sh.push("scripts");
+    sh.push(&builddir.to_str().unwrap());
     sh.push("omake.sh");
-    dbg!(&sh);
-    let child = Command::new(sh)
-        // .arg("-j")
+    let sh = sh
+        .to_str()
+        .ok_or(MyError::MessageError("cannot get omake string".to_string()))?;
+    let child = Command::new("bash")
+        .arg(sh)
+        .arg(id.as_str())
         // .arg("8")
         // .arg("-k")
         // .env("PATH", "/bin")
         // .env("PATH", "/bin")
+        .env(
+            "html_output",
+            format!("{}/progress.{}.html", &builddir.to_str().unwrap(), &id),
+        )
+        .env(
+            "nocolor_output",
+            format!("{}/omake.{}.txt", &builddir.to_str().unwrap(), &id),
+        )
+        .env("omake_output_format", "text")
+        .env("songdir", &songdir.to_str().unwrap())
+        .env("bookdir", &bookdir.to_str().unwrap())
         .current_dir(&builddir)
         // .stdout(Stdio::piped())
         .reap_on_drop(true)
@@ -115,6 +139,7 @@ pub async fn omake(builddir: PathBuf) -> Result<u32, MyError> {
 }
 
 pub async fn handle_build_request(
+    id: String,
     songdir: PathBuf,
     bookdir: PathBuf,
     builddir: PathBuf,
@@ -129,7 +154,7 @@ pub async fn handle_build_request(
     // logpath.push("build.log");
     generate(songdir.clone(), bookdir.clone(), builddir.clone()).await?;
     log::info!("generate done");
-    let pid = omake(builddir).await?;
+    let pid = omake(id, songdir.clone(), bookdir.clone(), builddir.clone()).await?;
     Ok(answer::EChoice::ItemOmakeBuild(pid))
 }
 
@@ -263,7 +288,7 @@ pub fn handle_source_tree(
     bookdir: PathBuf,
     builddir: PathBuf,
 ) -> Result<answer::EChoice, MyError> {
-    let world: World = make(&songdir, &bookdir, &builddir);
+    let world: World = make(&songdir, &bookdir, &builddir)?;
 
     let mut ret: Vec<SourceTreeItem> = vec![];
     for song in world.songs {
@@ -271,14 +296,16 @@ pub fn handle_source_tree(
         // let root = song.srcdir.to_string();
         let root = {
             let root = song.srcdir.replace(songdir.to_str().unwrap(), "");
-            let root = format!("/input-songs{}", root);
+            // let root = format!("/input-songs{}", root);
             root
         };
+        log::info!("ROOT is {}", &root);
         let root = root.replace(songdir.to_str().unwrap(), "");
         let mut texfiles: Vec<String> = vec![];
         let mut lyricstexfiles: Vec<String> = vec![];
         let mut lyfiles: Vec<String> = vec![];
         let masterjsonfile = format!("{}/song.json", root);
+        let mastertexfile = format!("{}/body.tex", root);
         for f in &song.texfiles {
             texfiles.push(format!("{}/{}", root, f));
         }
@@ -296,20 +323,11 @@ pub fn handle_source_tree(
         for lyfile in &song.lilypondfiles {
             lyfiles.push(format!("{}/{}", root, lyfile));
         }
-        // for texfile in &s.texfiles {
-        //     let path = PathBuf::from(song.path.as_str());
-        //     let path = path
-        //         .parent()
-        //         .ok_or(MyError::MessageError("internal error".to_string()))?;
-        //     let mut path = path.to_path_buf();
-        //     path.push(texfile);
-        //     ret.push(path.as_path().to_str().unwrap().to_string());
-        // }
-        //
         ret.push(SourceTreeItem {
             title: song.title.clone(),
             author: song.author.clone(),
             masterjsonfile: masterjsonfile,
+            mastertexfile: mastertexfile,
             lyricstexfiles: lyricstexfiles,
             lyfiles: lyfiles,
             texfiles: texfiles,
@@ -321,15 +339,100 @@ pub fn handle_source_tree(
 }
 
 pub fn handle_save_file(songdir: PathBuf, info: InfoSaveFile) -> Result<answer::EChoice, MyError> {
-    log::info!("write file {:?}", info.path);
-    let path = info.path.replace("/input-songs", songdir.to_str().unwrap());
-    log::info!("write file {:?}", &path);
-
-    let mut p: PathBuf = PathBuf::from(&path);
-    // let _ = fs::create_dir_all(&p)?;
-    let mut output = File::create(p)?;
+    log::info!("{}:{} {:?}", file!(), line!(), &info);
+    let re = Regex::new(r"/(.*)").unwrap();
+    let relpath = re.replace(info.path.as_str(), "${1}").to_string();
+    log::info!("{}:{} {:?}", file!(), line!(), &relpath);
+    let mut path = songdir;
+    path.push(relpath);
+    log::info!("{}:{} {:?}", file!(), line!(), &path);
+    let mut output = File::create(path)?;
     let _ = output.write(info.content.as_bytes()).unwrap();
     Ok(answer::EChoice::ItemOkMessage)
+}
+
+/// returns stdout and stderr for the most recent omake runs
+/// each run is redirected to omake.<date>.stdout and omake.<date>.stderr
+/// note that we use text compare for sorting dates... so don't change the format
+fn get_omake_stdout_data(builddir: PathBuf) -> (String, String) {
+    let mut candidates: Vec<PathBuf> = vec![];
+    for p in builddir.read_dir().expect("read dir failed") {
+        if let Ok(p) = p {
+            if let Ok(file_type) = p.file_type() {
+                if file_type.is_file() {
+                    let re = Regex::new(r"omake\..*\.stdout").unwrap();
+                    if re.is_match(p.file_name().as_os_str().to_str().unwrap()) {
+                        candidates.push(p.path());
+                    }
+                }
+            }
+        }
+    }
+    candidates.sort_by(|a, b| {
+        // let x = a.file_name().unwrap().to_str().unwrap();
+        compare(
+            b.file_name().unwrap().to_str().unwrap(),
+            a.file_name().unwrap().to_str().unwrap(),
+        )
+    });
+    let (data_stdout, data_stderr) = match candidates.first() {
+        None => ("no build yet".to_string(), "".to_string()),
+        Some(p) => {
+            let data_stdout = fs::read_to_string(p).unwrap();
+
+            let stderrpath = {
+                let re = Regex::new(r"(.*)stdout(.*)").unwrap();
+                let strpath = p.to_str().unwrap();
+                let s = re.replace(strpath, "${1}stderr${2}").to_string();
+                PathBuf::from(s)
+            };
+            let data_stderr = fs::read_to_string(stderrpath).unwrap();
+            (data_stdout, data_stderr)
+        }
+    };
+    (data_stdout, data_stderr)
+}
+
+pub fn handle_get_omake_stdout(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
+    let (data_stdout, data_stderr) = get_omake_stdout_data(builddir);
+
+    Ok(answer::EChoice::ItemFileData(
+        "omake.stdout".to_string(),
+        format!("{}\n{}", data_stderr, data_stdout),
+    ))
+}
+
+pub fn handle_get_omake_progress(builddir: PathBuf) -> Result<answer::EChoice, MyError> {
+    let (data, _) = get_omake_stdout_data(builddir);
+    let progress = crate::progress::progress::progress_of_string(data);
+
+    Ok(answer::EChoice::ItemSeeProgress(progress?))
+}
+
+pub fn handle_get_source_file(songdir: PathBuf, spath: String) -> Result<answer::EChoice, MyError> {
+    log::info!("{:?}", songdir);
+    log::info!("{:?}", spath);
+    let mut path = songdir.clone();
+    let spath = PathBuf::from(spath);
+    let spath = if spath.is_absolute() {
+        let mut spath = spath.to_str().unwrap().to_string();
+        if spath.len() > 0 {
+            spath.remove(0);
+        };
+        PathBuf::from(spath)
+    } else {
+        spath
+    };
+    path.push(&spath);
+    log::info!("get source file '{:?}'", &path);
+    let data = match fs::read_to_string(path) {
+        Ok(data) => data,
+        Err(e) => format!("{:?}", e),
+    };
+    Ok(answer::EChoice::ItemFileData(
+        spath.as_path().to_str().unwrap().to_string(),
+        data,
+    ))
 }
 
 #[tokio::main]
@@ -348,7 +451,7 @@ async fn main() -> () {
     //     None,
     // );
 
-    // log::set_max_level(LevelFilter::Debug);
+    log::set_max_level(LevelFilter::Info);
     let mut args: std::env::Args = env::args();
     log::info!("found {} args on command line", args.len());
     let songdir = PathBuf::from(args.nth(1).unwrap());
@@ -370,13 +473,12 @@ async fn main() -> () {
         log::info!("wait for command...");
         let len = responder.recv_into(buffer, 0).unwrap();
         let command = String::from_utf8(buffer.to_vec().into_iter().take(len).collect()).unwrap();
-        // dbg!(& command) ;
         let what: request::Choice = serde_json::from_str(&command).unwrap();
-        dbg!(&what);
+        log::info!("{:?}", &what);
         log::info!("received command");
         let answer_choice = match what.choice {
-            request::EChoice::ItemBuild => {
-                handle_build_request(songdir.clone(), bookdir.clone(), builddir.clone()).await
+            request::EChoice::ItemBuild(id) => {
+                handle_build_request(id, songdir.clone(), bookdir.clone(), builddir.clone()).await
             }
             request::EChoice::ItemOMakeChildrenInfo => {
                 log::info!("request check pid");
@@ -392,6 +494,11 @@ async fn main() -> () {
                 handle_source_tree(songdir.clone(), bookdir.clone(), builddir.clone())
             }
             request::EChoice::ItemSaveFile(info) => handle_save_file(songdir.clone(), info.clone()),
+            request::EChoice::ItemGetOMakeStdout => handle_get_omake_stdout(builddir.clone()),
+            request::EChoice::ItemGetSourceFile(path) => {
+                handle_get_source_file(songdir.clone(), path)
+            }
+            request::EChoice::ItemGetOMakeProgress => handle_get_omake_progress(builddir.clone()),
         };
         let answer = match answer_choice {
             Ok(x) => {

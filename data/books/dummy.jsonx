@@ -1,0 +1,21 @@
+{
+  "title": "dummy",
+  "songs": [
+    {
+      "author": "Amy Winehouse",
+      "title": "you know I'm no good"
+    },
+    {
+      "author": "Alannah Myles",
+      "title": "Black Velvet"
+    },
+    {
+      "author": "Maroon 5",
+      "title": "This Love"
+    },
+    {
+      "author": "Natalie Imbroglia",
+      "title": "Torn"
+    }
+  ]
+}

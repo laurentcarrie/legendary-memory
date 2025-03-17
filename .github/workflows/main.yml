@@ -1,83 +1,52 @@
-name: Generate ebook
-
+name: Deploy
 on:
   push:
-    tags:
-      - "*"
+    branches:
+      - work
 
 jobs:
-  ebook:
-    name: Build and upload
+  deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # To push a branch
+      pages: write  # To push to a GitHub Pages site
+      id-token: write # To update the deployment status
+    environment:
+      name: github-pages
     steps:
-      # Install Rust & its package manager Cargo
-      - name: Install cargo
-        uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v4
         with:
-          toolchain: stable
-          profile: minimal
+          fetch-depth: 0
+      - name: Install latest mdbook
+        run: |
+          tag=$(curl 'https://api.github.com/repos/rust-lang/mdbook/releases/latest' | jq -r '.tag_name')
+          url="https://github.com/rust-lang/mdbook/releases/download/${tag}/mdbook-${tag}-x86_64-unknown-linux-gnu.tar.gz"
+          mkdir mdbook
+          curl -sSL $url | tar -xz --directory=./mdbook
+          echo `pwd`/mdbook >> $GITHUB_PATH
+      - name: Build Book
+        run: |
+          cd doc/srs
+          mdbook build
+      - name: Build cargo doc
+        run: |
+          ( cd software && cargo doc )
+          src=software/target/doc
+          target=doc/srs/book
+          mkdir -p $target
+          cp -R $src/static.files $target/.
+          cp -R $src/songbook $target/.
+          cp -R software/others $target/.
+          find  $target/others -type f  | while read f ; do echo $f ; cp $f $f.txt ; done
+          ls -R $target
 
-      # Cache installation assets
-      - name: Cache cargo registry
-        uses: actions/cache@v1
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: ~/.cargo/registry
-          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache cargo index
-        uses: actions/cache@v1
-        with:
-          path: ~/.cargo/git
-          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache cargo build
-        uses: actions/cache@v1
-        with:
-          path: target
-          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
-
-      # Install mdbook and requirements
-      - name: Install mdbook and epub plugin
-        uses: actions-rs/cargo@v1
-        with:
-          command: install
-          args: mdbook mdbook-epub
-
-      # Ebook generation
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Generate summary
-        run: ./generate_summary.sh
-
-      - name: Generate ebook from markdown
-        run: mdbook build
-
-      # ePub upload as a Github release asset
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@v1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-
-      - name: Upload epub to release
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./book/epub/Songbook.epub
-          asset_name: songbook.epub
-          asset_content_type: application/epub+zip
-
-      # HTML publication as Github Page
-      - name: Publish HTML
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./book/html
-          publich_branch: ${{ github.ref }}
+          # Upload entire repository
+          path: 'doc/srs/book'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

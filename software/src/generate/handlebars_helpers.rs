@@ -14,7 +14,7 @@ fn i64_of_value(value: &Value) -> i64 {
         value.as_i64().unwrap()
     } else {
         dbg!(&value);
-        panic!("bad type")
+        panic!("{}:{} bad type", file!(), line!());
     }
 }
 

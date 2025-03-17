@@ -1,11 +1,11 @@
-use crate::config::model::World;
-use crate::config::world::make;
 use crate::errors::MyError;
 use crate::generate::generate::generate;
 use crate::makefiles::omakefile_book::{generate_book_omakefile, generate_main_book};
 use crate::makefiles::omakefile_song::{
     generate_omakeroot, generate_root_omakefile, generate_song_omakefile,
 };
+use crate::model::model::World;
+use crate::model::world::make;
 use std::fs;
 use std::path::PathBuf;
 
@@ -16,7 +16,7 @@ pub fn generate_all(songdir: PathBuf, bookdir: PathBuf, builddir: PathBuf) -> Re
     // let src_book_dir: PathBuf = Path::new(source_book_root).canonicalize().expect("root");
     // let builddir: PathBuf = Path::new(buildroot).canonicalize().expect("buildroot");
 
-    let world: World = make(&songdir, &bookdir, &builddir);
+    let world: World = make(&songdir, &bookdir, &builddir)?;
     generate_omakeroot(&world)?;
     generate_root_omakefile(&world)?;
     for song in &world.songs {

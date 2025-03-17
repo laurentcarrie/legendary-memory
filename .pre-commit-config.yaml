@@ -44,7 +44,7 @@ repos:
     hooks:
       - id: compute-date
         name: compute date
-        entry: bash ./compute-date.sh data/songs
+        entry: bash ./software/others/shfiles/compute-date.sh data/songs
         language: system
         #        pass_filenames: true
         files: .*
