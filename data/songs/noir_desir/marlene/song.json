@@ -3,7 +3,12 @@
   "title": "Marlene",
   "author": "Noir Desir",
   "texfiles": [],
-  "lilypondfiles": [],
+  "lilypondfiles": [
+    "couplet1.ly",
+    "couplet2.ly",
+    "couplet3.ly",
+    "couplet4.ly"
+  ],
   "structure": [
     {
       "id": "intro",
@@ -26,7 +31,7 @@
           "rows": [
             "Am | E | F G | Am | x2"
           ],
-          "section_body": "\\lolocomment{en fait F G Am Am}"
+          "section_body": "\\songbookcomment{en fait F G Am Am}"
         }
       }
     },
@@ -70,7 +75,7 @@
           "link": "couplet1",
           "section_title": "couplet 3",
           "section_type": "pont",
-          "section_body": "\\lolocomment{instrumental}"
+          "section_body": "\\songbookcomment{instrumental}"
         }
       }
     },
@@ -81,7 +86,7 @@
           "link": "couplet1",
           "section_title": "couplet 4",
           "section_type": "couplet",
-          "section_body": "\\lolocomment{cool}"
+          "section_body": "\\songbookcomment{cool}"
         }
       }
     },
@@ -102,7 +107,7 @@
           "link": "couplet1",
           "section_title": "couplet 5",
           "section_type": "pont",
-          "section_body": "\\lolocomment{énervé}"
+          "section_body": "\\songbookcomment{énervé}"
         }
       }
     },
@@ -113,7 +118,7 @@
           "link": "couplet1",
           "section_title": "couplet 6",
           "section_type": "pont",
-          "section_body": "\\lolocomment{énervé}"
+          "section_body": "\\songbookcomment{énervé}"
         }
       }
     },
@@ -124,7 +129,7 @@
           "link": "couplet1",
           "section_title": "couplet 7 ",
           "section_type": "couplet",
-          "section_body": "\\lolocomment{allemand}"
+          "section_body": "\\songbookcomment{allemand}"
         }
       }
     },
@@ -137,13 +142,18 @@
           "rows": [
             "Am | Am | Am | Am "
           ],
-          "section_body": "\\lolocomment{ triolets ?}"
+          "section_body": "\\songbookcomment{ triolets ?}"
         }
       }
     }
   ],
-  "wavfiles": [],
-  "digest": "be39302f0af4a914dec70d0a614c7924",
-  "date": "2025-02-19",
+  "wavfiles": [
+    "couplet1.wav",
+    "couplet2.wav",
+    "couplet3.wav",
+    "couplet4.wav"
+  ],
+  "digest": "4ea0a181dbbabaa084be80066d55b00b",
+  "date": "2025-03-24",
   "hash": "0"
 }

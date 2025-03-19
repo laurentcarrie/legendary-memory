@@ -1,6 +1,6 @@
 \version "2.20.0"
-\include "../../../macros.ly"
-song_tempo = 100
+\include "macros.ly"
+ 100
 
 ma = {
   \absolute  {
@@ -65,7 +65,7 @@ cuatroTuning = #'(11 18 14 9)
     \new TabStaff {
       %\set TabStaff.stringTunings =  \stringTuning <e, a, d g b e'>
 
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       \tabFullNotation
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \repeat percent 8 {\lead}
@@ -81,7 +81,7 @@ cuatroTuning = #'(11 18 14 9)
   \unfoldRepeats {
     <<
       \new DrumStaff
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       <<
         \new DrumVoice {  \drumbarshh }
         \new DrumVoice {  \drumbars }
@@ -96,6 +96,6 @@ cuatroTuning = #'(11 18 14 9)
     >>
   }
   \midi {
-    \tempo 4 = \song_tempo
+    \tempo 4 = \songtempo
   }
 }

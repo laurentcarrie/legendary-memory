@@ -1,8 +1,9 @@
-name: Deploy
+name: mdbook
 on:
   push:
     branches:
       - work
+      - main
 
 jobs:
   deploy:

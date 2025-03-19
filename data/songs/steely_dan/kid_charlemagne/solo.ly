@@ -1,6 +1,13 @@
 \version "2.23.1"
-\include "../../../macros.ly"
-song_tempo = 114
+\include "macros.ly"
+ 114
+
+song_chords = \chordmode {
+  a1|a1|a1|a1|a1|a1|
+  d1|d1|d1|d1|d1|d1|
+
+}
+
 
 % Bb
 ma = {
@@ -62,9 +69,12 @@ rhythm = {
 
 
 song_chords = \chordmode {
-  d1:m | d1:m |
-  g1:m | a1:m | d1:m | d1:m |
-  g1:m | ees1 | bes1 |
+  a1:| d1:m7 | f1 | bes2:dim e2:7 |
+  a1:m | g1:6 | f1:maj7 | c1:6 | d2:m7 b2:7 |
+  e1:m7 | d1:6 | c1:maj7 | e2:m7 b2:m7 |
+  a1:m | g1:6 | f1:6-9 | bes1:13 |
+  f1 | g1 | a1:m | g1:6 | d1:m7 | g1:6 | f1:6 |
+  e1:m7 | f1:maj7 | e1:m7 | d1:m7
 }
 
 
@@ -77,26 +87,28 @@ lead = {
     % les numeros de mesure ici commencent
 
     % mesure
-    \set Score.currentBarNumber = #53
-    \staffHighlight "lightsteelblue"
+    %\set Score.currentBarNumber = #53
+    %\staffHighlight "lightsteelblue"
 
-    <>^"default"
-    r4
-    \override Beam.color = #red
-    \override NoteHead.color = #red
-    \override Stem.color = #red
+    \repeat unfold 20 {
+      r1 |
+    }
 
-    g'16\^\2 ais'16\^\2 g'16\2 \glissando
-    f'16\2
+  }
+}
 
-    d'4\3~
 
-    \tuplet 3/2
-    {
-      d'8\3 d'8\3 c'8\3
+basse = {
+  \absolute  {
+    \override Score.SpacingSpanner.shortest-duration-space = #4.0
+    \set Score.currentBarNumber = 1
+
+    \repeat unfold 6 {
+      a,,8\3 a,,8\3 a,,8\3 a,,8\3 a,,8\3 a,,8\3 a,,8\3 a,,8\3 |
     }
   }
 }
+
 
 drumbar =  \drummode {  bd4 sn4  bd4 sn4 }
 
@@ -135,7 +147,6 @@ drumbarshh = {
 
   #(add-text-replacements!
     '(
-       ("100" . "hundred")
        ("dpi" . "dots per inch")
        ))
 
@@ -149,54 +160,62 @@ drumbarshh = {
     }
 
     \new TabStaff {
-      \tempo 4 = \song_tempo
-      \override TextScript.font-size = -2
-      \clef "G_8"
+      \tempo 4 = \songtempo
       \tabFullNotation
-      \set Score.currentBarNumber = #53
-
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \lead
     }
+
+    %    \new TabStaff {
+    %      \tempo 4 = \songtempo
+    %      \set Staff.stringTunings = #bass-tuning
+    %      \tabFullNotation
+    %      \override Score.BarNumber.break-visibility = ##(#t #t #t)
+    %      %\clef bass
+    %      \basse
+    %    }
+    %
 
   >>
 
   \layout {}
 }
 
+
 \score {
-  \unfoldRepeats {
-    <<
-      \new DrumStaff
-      \tempo 4 = \song_tempo
+  <<
+    %    \new ChordNames {
+    %      \song_chords
+    %    }
+
+    \new TabStaff {
+      \tempo 4 = \songtempo
+      \tabFullNotation
+      \override Score.BarNumber.break-visibility = ##(#t #t #t)
+      \lead
+    }
+
+    \new TabStaff {
+      \tempo 4 = \songtempo
+      \set Staff.stringTunings = #bass-tuning
+      \tabFullNotation
+      \override Score.BarNumber.break-visibility = ##(#t #t #t)
+      %\clef bass
+      \basse
+    }
+
+    \new DrumStaff {
+      \tempo 4 = \songtempo
       <<
         \new DrumVoice {  \drumbarshh }
         \new DrumVoice {  \drumbars }
       >>
+    }
 
-      \new Staff {
-        \rhythm
-        \set Staff.midiMinimumVolume = #0.2
-        \set Staff.midiMaximumVolume = #0.2
-        %\set Staff.midiInstrument = "electric guitar (clean)"
-        %\set Staff.midiInstrument = "bass"
-        %\set Staff.midiInstrument = "clarinet"
-      }
-      \new Staff {
-        \lead
-        \set Staff.midiMinimumVolume = #0.9
-        \set Staff.midiMaximumVolume = #0.9
-        \set Staff.midiInstrument = "electric guitar (clean)"
-      }
-      %\new Staff {
-      %      \song_voice
-      %      \set Staff.midiMinimumVolume = #0.9
-      %      \set Staff.midiMaximumVolume = #0.9
-      %      \set Staff.midiInstrument = "electric guitar (clean)"
-      %}
-    >>
-  }
+
+  >>
+
   \midi {
-    \tempo 4 = \song_tempo
+    \tempo 4 = \songtempo
   }
 }

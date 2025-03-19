@@ -29,7 +29,7 @@
             "Cs | Cs | Cs | Cs ",
             "Gs | Gs | HRest | HRest "
           ],
-          "section_body": "\\lolocomment{basse entre mesure 9}"
+          "section_body": "\\songbookcomment{basse entre mesure 9}"
         }
       }
     },
@@ -40,9 +40,7 @@
           "section_title": "pré refrain 1",
           "section_type": "prerefrain",
           "rows": [
-            "Cs | Asm | Fm | Gs ",
-            "Cs | Asm | Fm | Gs ",
-            "Cs | Asm | Fm | Gs ",
+            "Cs | Asm | Fm | Gs | x3",
             "Cs | Asm | Fm | Fm ",
             "Gs | Gs "
           ]

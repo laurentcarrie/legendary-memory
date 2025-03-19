@@ -34,13 +34,11 @@ fn send_request(requester: Socket, choice: request::Choice) {
         serde_json::from_str(answer_str.as_str());
     match answer {
         Ok(_answer) => {
-            // dbg!(&answer);
             println!("{}", answer_str);
         }
         Err(e) => {
             log::error!("answer is : '{}' {:?}", &answer_str, &e);
             log::error!("could not parse json value returned by server");
-            // dbg!(&e);
         }
     };
     // println!("Received World {:?}", request_nbr);

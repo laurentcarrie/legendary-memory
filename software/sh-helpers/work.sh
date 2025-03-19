@@ -5,10 +5,10 @@ set -e
 
 here=$(dirname $(realpath $0))
 root=$(dirname $(dirname $here))
-songsdir=$root/data/songs
+export songsdir=$root/data/songs
 #booksdir=$root/data/empty
-booksdir=$root/data/books
-builddir=$root/build
+export booksdir=$root/data/books
+export builddir=$root/build
 
 #bash $here/check-json.sh $songsdir || true
 #bash $here/add-missing-lyrics.sh $songsdir
@@ -23,8 +23,9 @@ $root/software/target/debug/songbook $songsdir $booksdir $builddir
 
 
 f() {
-    ( cd $builddir && build_id=42 omake all -j 8 && echo DONE )
-    tar cvzf delivery.tar.gz $builddir/delivery
+    bash $builddir/omake.sh
+    #( cd $builddir && build_id=42 omake all -j 8 && echo DONE )
+    #tar cvzf delivery.tar.gz $builddir/delivery
     #dedix-put delivery.tar.gz
     #aws s3 cp delivery.tar.gz s3://dsaa-cph-ai-s3-dev/laurent_carrie/delivery.tar.gz --profile dev
 }
@@ -32,7 +33,7 @@ f() {
 g() {
     author=depeche_mode
     song=enjoy_the_silence
-    ( cd $builddir/songs/$author/$song && omake pdf && echo DONE )
+    bash $builddir/omake.sh
 #    aws s3 cp $builddir/songs/$author/$song/main.pdf s3://dsaa-cph-ai-s3-dev/laurent_carrie/xxx --profile dev
 }
 

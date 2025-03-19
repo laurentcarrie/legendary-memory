@@ -1,6 +1,5 @@
 \version "2.20.0"
-\include "../../../macros.ly"
-song_tempo = 100
+\include "macros.ly"
 
 lead = {
   \absolute  {
@@ -41,7 +40,7 @@ drumbarshh = {
 \score {
   <<
     \new TabStaff {
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       \tabFullNotation
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \repeat percent 8 {\lead}
@@ -57,7 +56,7 @@ drumbarshh = {
   \unfoldRepeats {
     <<
       \new DrumStaff
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       <<
         \new DrumVoice {  \drumbarshh }
         \new DrumVoice {  \drumbars }
@@ -72,6 +71,6 @@ drumbarshh = {
     >>
   }
   %     \midi {
-  %         \tempo 4 = \song_tempo
+  %         \tempo 4 = \songtempo
   % }
 }

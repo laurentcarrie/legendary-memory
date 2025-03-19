@@ -91,7 +91,7 @@
             "F G| F G| F G| G F7",
             "C7|C7"
           ],
-          "section_body": "\\songly{chordsrefrain}"
+          "section_body": "\\newline\\songly{chordsrefrain}"
         }
       }
     },
@@ -150,15 +150,20 @@
           "section_title": "solo",
           "section_type": "solo",
           "rows": [
-            "Dm | Dm | Dm | Dm",
-            "Dm | Dm | Dm | Dm"
+            "A | Dm7 | Bm7 | Am7 G|",
+            "F7M Em7 | Dm7 Adim | Em7 |D|",
+            "C7M|Em7|D|Am",
+            "G|A|Bf|F G",
+            "Am G|Dm7 G|"
           ]
         }
       }
     }
   ],
-  "wavfiles": [],
-  "digest": "46a2feeedae32948e40a0cb02533d87b",
-  "date": "2025-03-16",
+  "wavfiles": [
+    "solo.wav"
+  ],
+  "digest": "2472030b49708aa925f625f2f1296395",
+  "date": "2025-03-26",
   "hash": "0"
 }

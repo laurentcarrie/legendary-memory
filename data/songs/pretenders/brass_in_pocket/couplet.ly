@@ -1,6 +1,5 @@
 \version "2.23.1"
-\include "../../../macros.ly"
-song_tempo = 100
+\include "macros.ly"
 
 
 lead = {
@@ -57,7 +56,7 @@ lead = {
     % mesure 7
     cis'8\3
     a16\4
-    e'16\1
+    e'16\1~
 
     e'16\1
     b16\2
@@ -110,7 +109,7 @@ lead = {
   <<
 
     \new TabStaff {
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       \tabFullNotation
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \lead
@@ -121,4 +120,5 @@ lead = {
   \layout {
     #(layout-set-staff-size 20)
   }
+  \midi{}
 }

@@ -7,6 +7,7 @@ here=$(dirname $(realpath $0))
 
 cargo install --path $here/software
 
-songs $here/data/songs $here/data/books $here/build
+songbook $songdir $bookdir $builddir
 
-( cd $here/build && omake delivery && echo DONE )
+#( cd $builddir && omake -j 8 delivery/the_police--@--every_breath_you_take.pdf) || bash $builddir/omake.sh
+( cd $builddir && omake -j 8 ) || bash $builddir/omake.sh

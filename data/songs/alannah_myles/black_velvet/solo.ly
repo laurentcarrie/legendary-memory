@@ -1,6 +1,5 @@
 \version "2.23.1"
-\include "../../../macros.ly"
-song_tempo = 114
+\include "macros.ly"
 
 % Bb
 ma = {
@@ -149,7 +148,7 @@ drumbarshh = {
     }
 
     \new TabStaff {
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       \override TextScript.font-size = -2
       \clef "G_8"
       \tabFullNotation
@@ -168,7 +167,7 @@ drumbarshh = {
   \unfoldRepeats {
     <<
       \new DrumStaff
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       <<
         \new DrumVoice {  \drumbarshh }
         \new DrumVoice {  \drumbars }
@@ -197,6 +196,6 @@ drumbarshh = {
     >>
   }
   \midi {
-    \tempo 4 = \song_tempo
+    \tempo 4 = \songtempo
   }
 }

@@ -104,7 +104,6 @@ mod tests {
         let pid = sysinfo::Pid::from_u32(1);
         let children = get_descendents(pid.as_u32())?;
         // let children: Vec<u32> = vec![];
-        dbg!(&children);
         // let thispid = sysinfo::get_current_pid()?.as_u32();
         for pid in test_data() {
             println!("test descendent {}", &pid);

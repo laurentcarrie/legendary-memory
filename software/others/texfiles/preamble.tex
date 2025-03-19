@@ -59,6 +59,8 @@
 	urlcolor=black
 }
 
+\usepackage{units}
+
 %\setlength{\headheight}{10pt}
 \usepackage[normalem]{ulem}
 \renewcommand{\headrulewidth}{0pt}
@@ -81,13 +83,13 @@
 % pour les lignes pointillées dans les tableaux
 \usepackage{arydshln}
 
-\newcommand{\lolocomment}[1]{{
+\newcommand{\songbookcomment}[1]{{
 			\fontsize{8pt}{8pt}\selectfont
 			\textcolor{red}{#1}}
 }
 
 \newcommand{\basecouplet}[3]{
-	\colorbox{#1}{
+	\fcolorbox{gray}{#1}{
 		\fontsize{18pt}{18pt}\selectfont
 		#2
 	}
@@ -186,6 +188,13 @@
 	BoldItalicFont = songbook_sharp]
 {songbook_sharp}
 
+\newfontfamily\songbookfontsus[%%basic weight: 50, "bold" weight: 70
+	Extension      = .ttf,
+	ItalicFont     = songbook_sus,
+	BoldFont       = songbook_sus,
+	BoldItalicFont = songbook_sus]
+{songbook_sus}
+
 
 % pour les livres
 \newcommand{\fakesection}[1]{%
@@ -261,6 +270,16 @@
 
 }
 
+\tcbuselibrary{skins}
+
+\newtcolorbox{mybox}
+{
+	enhanced jigsaw,
+	drop shadow=black!50!white,
+	colback=white
+}
+
+
 \newcommand{\makefooter}[2]{
 	\lfoot{#1/#2}
 	%/\loloprintbpm{#3}{#4}{#5}}
@@ -312,6 +331,11 @@
 
 
 \newcommand\lolotwocolumns[2]{
+	#2
+	#1
+}
+
+\newcommand\lolotwocolumnsb[2]{
 	\begin{minipage}{0.50\linewidth}
 		\vspace{0pt}
 		#1
@@ -321,6 +345,7 @@
 		#2
 	\end{minipage}
 }
+
 
 \newcommand\lolothreecolumns[3]{
 	\begin{minipage}{0.40\linewidth}
@@ -337,9 +362,9 @@
 	\end{minipage}
 }
 
-\newcommand\lolohr{
+\newcommand\songbookhr{
 	\begin{center}
-		\line(1,0){450}
+		\line(1,0){250}
 	\end{center}
 }
 
@@ -359,6 +384,8 @@
 \declare{}
 
 \newcommand{\songbooksongstruct}{}
+\newcommand{\songbooksongstructb}{}
+\newcommand{\songbooksongstructc}{}
 \newcommand{\xxxlyrics}{}
 
 \newcommand{\songly}[1]{ %

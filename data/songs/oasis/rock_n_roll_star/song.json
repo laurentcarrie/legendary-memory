@@ -160,13 +160,37 @@
           ]
         }
       }
+    },
+    {
+      "id": "interlude",
+      "item": {
+        "Chords": {
+          "section_title": "pont",
+          "section_type": "refrain",
+          "rows": [
+            "A|A|A|A|x2",
+            "Fsm|E|Fsm|E|x4",
+            "Fsm E |Fsm E| Fsm E | Fsm E| x4"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain4",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 4",
+          "section_type": "refrain",
+          "link": "refrain1"
+        }
+      }
     }
   ],
   "wavfiles": [
     "coupletbasse.wav",
     "pontbasse.wav"
   ],
-  "digest": "dab7f8f50efab892a6692dc62e15cac4",
-  "date": "2025-03-17",
+  "digest": "4bf55419ad2d09350518e3d1d11cdf55",
+  "date": "2025-03-19",
   "hash": "0"
 }

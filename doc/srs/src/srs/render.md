@@ -17,8 +17,8 @@ what we call a section is what you naturally see in a song : verse, chorus, pre-
 
 ## <a id="time-signature"/> time signature
 
-time signature will be shown in the output. There will be one time signature for the whole song, if a song
-needs to have different time signatures this will not be managed...
+time signature will be shown in the output. There will be one time signature for the whole song,
+except if a bar is marked with another time signature
 
 ## <a id="musicsnippet"/> music sheet snippet
 

@@ -152,13 +152,20 @@ pub fn generate(world: &World) -> Result<(), MyError> {
         }
     }
     {
-        let bytes_chords_tex = include_bytes!("../../others/lyfiles/macros.ly");
-        let mut p: PathBuf = world.builddir.clone();
-        let _ = create_dir_all(&p)?;
-        p.push("songs");
-        p.push("macros.ly");
-        log::debug!("write {}", p.display());
-        let _ = write(&p, bytes_chords_tex)?;
+        let template =
+            String::from_utf8(include_bytes!("../../others/lyfiles/macros.ly").to_vec())?;
+        for song in &world.songs {
+            let mut p: PathBuf = song.builddir.clone();
+            let _ = create_dir_all(&p)?;
+            p.push("macros.ly");
+            let mut h = get_handlebar()?;
+            h.register_template_string("t1", &template)?;
+            // let sections: Vec<Section> = world.sections.iter().map(|x| x.1.clone()).collect();
+            // let j = handlebars::to_json(&sections);
+            let output_data = h.render("t1", song)?;
+            let mut output = File::create(p)?;
+            let _ = output.write(output_data.as_bytes())?;
+        }
     }
 
     {

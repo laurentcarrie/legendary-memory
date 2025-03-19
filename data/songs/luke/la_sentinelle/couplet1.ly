@@ -1,5 +1,4 @@
 \version "2.20.0"
-song_tempo = 180
 nb_mesures = 32
 
 song_chords = \chordmode {
@@ -134,7 +133,7 @@ drumbarshh = {
 \score {
   <<
     \new TabStaff {
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       \tabFullNotation
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \lead
