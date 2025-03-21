@@ -3,7 +3,9 @@
   "title": "Marlene",
   "author": "Noir Desir",
   "texfiles": [],
-  "lilypondfiles": [],
+  "lilypondfiles": [
+    "couplet3.ly"
+  ],
   "structure": [
     {
       "id": "intro",
@@ -142,8 +144,10 @@
       }
     }
   ],
-  "wavfiles": [],
-  "digest": "be39302f0af4a914dec70d0a614c7924",
-  "date": "2025-02-19",
+  "wavfiles": [
+    "couplet3.wav"
+  ],
+  "digest": "99dbc238ea610e8ed1b6e5e727e76371",
+  "date": "2025-03-21",
   "hash": "0"
 }
