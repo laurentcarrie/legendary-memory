@@ -87,6 +87,7 @@ pub struct UserSong {
     pub structure: Vec<UserStructureItem>,
     /// the tempo of the song, in BPM (beats per minute)
     pub tempo: u32,
+    pub time_signature: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]

@@ -10,6 +10,11 @@
     "label": "couplet"
   },
   {
+    "id": "coupletb",
+    "color": "darkgreen!50",
+    "label": "coupletb"
+  },
+  {
     "id": "prerefrain",
     "color": "bubbles",
     "label": "prerefrain"

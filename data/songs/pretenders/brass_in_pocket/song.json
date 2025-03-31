@@ -1,11 +1,12 @@
 {
-  "tempo": 80,
+  "tempo": 107,
   "title": "Brass In Pocket",
   "author": "Pretenders",
   "texfiles": [],
   "lilypondfiles": [
     "intro.ly",
-    "couplet.ly"
+    "couplet.ly",
+    "prerefrain.ly"
   ],
   "structure": [
     {
@@ -15,7 +16,7 @@
           "section_title": "intro",
           "section_type": "intro",
           "rows": [
-            "F | F | F | F "
+            "A"
           ]
         }
       }
@@ -27,28 +28,104 @@
           "section_title": "couplet 1",
           "section_type": "couplet",
           "rows": [
-            "F | F | Am | Am",
-            "Bf7 | Bf7"
+            "A E | D A | A E | D A",
+            "A E | D A | A | A "
           ]
         }
       }
     },
     {
-      "id": "prerefrain",
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 2",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "prerefrain1",
       "item": {
         "Chords": {
           "section_title": "pré refrain 1",
           "section_type": "prerefrain",
           "rows": [
-            "Dm | C | Am | C",
-            "Dm | C | Am | C"
+            "A E | A E | A E | A E | x2"
           ]
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_title": "refrain 1",
+          "section_type": "refrain",
+          "rows": [
+            "A|A|Bm|Bm",
+            "D|D|E7|E7"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 3",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "prerefrain2",
+      "item": {
+        "Ref": {
+          "section_type": "prerefrain",
+          "section_title": "pré refrain 2",
+          "link": "prerefrain1"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "section_type": "refrain",
+          "section_title": "refrain 2",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "section_type": "refrain",
+          "section_title": "refrain 3",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "outtro",
+      "item": {
+        "Ref": {
+          "section_title": "outtro",
+          "link": "couplet1",
+          "section_body": "\\songbookcomment{outro mesure 8}"
         }
       }
     }
   ],
-  "wavfiles": [],
-  "date": "2025-01-11",
-  "digest": "cd6f9ba852a06ca2c0d5e4d2fa4df1df",
+  "wavfiles": [
+    "intro.wav",
+    "couplet.wav",
+    "prerefrain.wav"
+  ],
+  "date": "2025-03-31",
+  "digest": "6b371be0588ef7d30215c65df82f3351",
   "hash": "0"
 }

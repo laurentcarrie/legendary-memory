@@ -1,3 +1,5 @@
+songtempo = {{ tempo }}
+
 comma = #(define-event-function (parser location xy)
            (pair?)
            #{

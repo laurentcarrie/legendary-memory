@@ -7,6 +7,7 @@ here=$(dirname $realpath $0)
 
 work() {
   file=$1
+#  echo "latexindent $file"
 	latexindent -s -w $file --check
 	if ! test "x$?" = "x0" ; then
 	  echo "reformat :$file"

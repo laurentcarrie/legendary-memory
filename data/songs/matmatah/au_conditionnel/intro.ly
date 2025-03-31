@@ -1,7 +1,5 @@
 \version "2.20.0"
 
-song_tempo = 114
-
 % Bb
 ma = {
 
@@ -83,7 +81,6 @@ drumbarshh = {
     <<
       \new Staff {
         \clef "treble_8"
-        \tempo 90
         \lead
         \set Staff.midiMinimumVolume = #0.9
         \set Staff.midiMaximumVolume = #0.9
@@ -93,6 +90,6 @@ drumbarshh = {
   }
   \layout{}
   %     \midi {
-  %         \tempo 4 = \song_tempo
+  %         \tempo 4 = \songtempo
   % }
 }

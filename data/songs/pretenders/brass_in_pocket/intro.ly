@@ -1,6 +1,5 @@
 \version "2.23.1"
-\include "../../../macros.ly"
-song_tempo = 100
+\include "macros.ly"
 
 
 
@@ -9,18 +8,11 @@ lead = {
     \override Score.SpacingSpanner.shortest-duration-space = #4.0
     \set Score.currentBarNumber = 1
 
-    <a\4 cis'~\3 b\2>16
-    <d'\3>16
-    <a\4 d'\3 b\2 >16
-    <a\4 d'~\3 b~\2 e'~\1>16
-
-    <d'\3 b\2 e'\1>16
-    <d'\3 b\2 e'\1>16
-    <a~\4 cis'~\3 b~\2 e'~\1>8
-
-    <a\4 cis'\3 b\2 e'\1>2
-
-
+    <a\4 c'\3 d'\2>16
+    r16
+    r8
+    r4
+    r2
   }
 }
 
@@ -46,7 +38,7 @@ lead = {
 \score {
   <<
     \new TabStaff {
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       \tabFullNotation
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \lead
@@ -57,4 +49,6 @@ lead = {
   \layout {
     #(layout-set-staff-size 20)
   }
+
+  \midi{}
 }

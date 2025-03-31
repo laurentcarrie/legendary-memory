@@ -17,7 +17,7 @@ bash $here/add-missing-lyrics.sh $songdir 1>>omake.$build_id.stdout 2>>omake.$bu
 printf "${Green}check existence of files${Color_Off}\n"
 bash $here/check-existence-of-files.sh $songdir 1>>omake.$build_id.stdout 2>>omake.$build_id.stderr
 
-printf "${Green}run omake${Color_Off}\n"
-omake -j 8 -k 1>>omake.$build_id.stdout 2>>omake.$build_id.stderr
+printf "${Green}run omake in $here ${Color_Off}\n"
+( cd $here && omake -j 8 -k 1>>omake.$build_id.stdout 2>>omake.$build_id.stderr )
 
 printf "$Color_Off"

@@ -1,6 +1,5 @@
 \version "2.20.0"
 
-song_tempo = 114
 
 % Bb
 ma = {
@@ -104,7 +103,7 @@ drumbarshh = {
 \score {
   <<
     \new TabStaff {
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       \tabFullNotation
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \lead

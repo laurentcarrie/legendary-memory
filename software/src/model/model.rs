@@ -3,6 +3,12 @@ use std::collections::BTreeMap;
 use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct TimeSignature {
+    pub top: u8,
+    pub low: u8,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct Section {
     pub id: String,
     pub color: String,
@@ -17,6 +23,7 @@ pub struct HRule {
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct Bar {
     pub chords: Vec<String>,
+    pub time_signature: Option<TimeSignature>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
@@ -66,6 +73,7 @@ pub struct Song {
     pub title: String,
     pub author: String,
     pub tempo: u32,
+    pub time_signature: TimeSignature,
     pub pdfname: String,
     pub texfiles: Vec<String>,
     pub builddir: PathBuf,

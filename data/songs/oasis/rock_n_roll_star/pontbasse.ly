@@ -1,6 +1,6 @@
 \version "2.24.4"
-\include "../../../macros.ly"
-song_tempo = 144
+\include "macros.ly"
+ 144
 
 myChords = \chordmode {
   \repeat percent 3 { gis1:m   e1   b1   b1 }
@@ -60,7 +60,7 @@ drumbarshh = {
 
       \clef bass
 
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       \tabFullNotation
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \lead
@@ -78,7 +78,7 @@ drumbarshh = {
   \unfoldRepeats {
     <<
       \new DrumStaff
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       <<
         %\new DrumVoice {  \drumbarshh }
         \new DrumVoice {  \drumbars }
@@ -93,6 +93,6 @@ drumbarshh = {
     >>
   }
   \midi {
-    \tempo 4 = \song_tempo
+    \tempo 4 = \songtempo
   }
 }

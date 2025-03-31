@@ -1,7 +1,7 @@
 use crate::errors::MyError;
 use crate::helpers::helpers::normalize_pdf_name;
 use crate::model::model;
-use crate::model::model::Section;
+use crate::model::model::{Section, TimeSignature};
 // use handlebars::template::Parameter::Path;
 use human_sort::compare;
 use regex::Regex;
@@ -18,6 +18,27 @@ use crate::model::input_model::{
     UserBook, UserBookWithPath, UserChordSection, UserSong, UserSongWithPath, UserStructureItem,
     UserStructureItemContent,
 };
+
+fn time_signature_of_string(input: Option<String>) -> Result<TimeSignature, MyError> {
+    match input {
+        None => Ok(TimeSignature { top: 4, low: 4 }),
+        Some(s) => {
+            let re = Regex::new("(.*)/(.*)").unwrap();
+            let ss = re.captures(&s);
+            match ss {
+                None => Err(MyError::MessageError(format!(
+                    "'{} is not a valid time signature",
+                    s
+                ))),
+                Some(caps) => {
+                    let top = (&caps[0]).to_string().parse::<u8>()?;
+                    let low = (&caps[1]).to_string().parse::<u8>()?;
+                    Ok(TimeSignature { top: top, low: low })
+                }
+            }
+        }
+    }
+}
 
 fn check_section_types(sections: &BTreeMap<String, Section>, song: &Song) -> Result<(), MyError> {
     // let f = |x: i32| 2 * x;
@@ -52,45 +73,79 @@ fn check_section_types(sections: &BTreeMap<String, Section>, song: &Song) -> Res
 }
 
 fn chord_of_string(s: String) -> String {
-    s.replace("7", "sept").replace(" ", "")
+    s.replace("7", "sept")
+        .replace(" ", "")
+        .replace("2", "deux")
+        .replace("3", "trois")
+        .replace("4", "quatre")
 }
 
-fn bar_of_string(s: String) -> Bar {
+fn bar_of_string(s: String) -> Result<Bar, MyError> {
+    // time signature
+    let re_ts = Regex::new("time_signature\\((.*)/(.*)\\)(.*)").unwrap();
+    let (s, time_signature) = match re_ts.captures(&s) {
+        Some(caps) => {
+            (
+                (&caps[3]).to_string(),
+                Some(TimeSignature {
+                    top: (&caps[1]).to_string().parse::<u8>()?,
+                    low: (&caps[2]).to_string().parse::<u8>()?,
+                }),
+            )
+        }
+        None => (s, None),
+    };
+
     let re = Regex::new("\\{latex (.*)\\}").unwrap();
     let ss = re.captures(&s);
-    // dbg!(&ss);
     match ss {
-        Some(caps) => Bar {
+        Some(caps) => Ok(Bar {
             chords: vec![(&caps[1]).to_string()],
-        },
-        None => Bar {
+            time_signature: time_signature,
+        }),
+        None => Ok(Bar {
             chords: s
                 .split(" ")
                 .map(|c| chord_of_string(c.to_string()))
                 .filter(|c| c.ne(""))
                 .collect(),
-        },
+            time_signature: time_signature,
+        }),
     }
 }
 
+/// takes a string, eg " |A|B|C|D|x2"
+/// and returns the number of bars, and a row
+/// the number of bars takes the repeat into account, in this example 8
 fn row_of_string(barcount: u32, s: String) -> (u32, Row) {
-    let mut bars: Vec<Bar> = s.split("|").map(|b| bar_of_string(b.to_string())).collect();
+    let bars: Result<Vec<Bar>, MyError> = s
+        .split("|")
+        .map(|b| bar_of_string(b.to_string()))
+        .into_iter()
+        .collect();
+    // the string looks like "| A | B |C | x2"
+    // the repeat if any is in the last cell
+    let mut bars = bars.unwrap();
     let repeat = match bars.pop() {
         None => 1,
-        Some(mut b) => match b.chords.pop() {
-            None => 1,
-            Some(s) => match s.as_str() {
-                "x2" => 2,
-                "x3" => 3,
-                "x4" => 4,
-                _ => {
-                    b.chords.push(s);
-                    bars.push(b);
-                    1
-                }
-            },
-        },
+        Some(mut b) => {
+            // todo : we assume that we have | x3 |, what happens if | blahblah x3 |
+            match b.chords.pop() {
+                None => 1,
+                Some(s) => match s.as_str() {
+                    "xdeux" => 2,
+                    "xtrois" => 3,
+                    "xquatre" => 4,
+                    _ => {
+                        b.chords.push(s);
+                        bars.push(b);
+                        1
+                    }
+                },
+            }
+        }
     };
+
     (
         barcount + repeat * bars.len() as u32,
         Row {
@@ -351,6 +406,7 @@ fn song_of_usersong(
         texfiles: uconf.texfiles.clone(),
         author: uconf.author.clone(),
         tempo: uconf.tempo,
+        time_signature: time_signature_of_string(uconf.time_signature)?,
         pdfname: normalize_pdf_name(&uconf.author, &uconf.title),
         title: uconf.title.clone(),
         builddir: song_builddir,
@@ -430,16 +486,20 @@ mod tests {
                     row_start_bar_number: 1,
                     bars: vec![
                         Bar {
-                            chords: vec!["A".to_string()]
+                            chords: vec!["A".to_string()],
+                            time_signature: None
                         },
                         Bar {
-                            chords: vec!["B".to_string()]
+                            chords: vec!["B".to_string()],
+                            time_signature: None
                         },
                         Bar {
-                            chords: vec!["C".to_string()]
+                            chords: vec!["C".to_string()],
+                            time_signature: None
                         },
                         Bar {
-                            chords: vec!["D".to_string()]
+                            chords: vec!["D".to_string()],
+                            time_signature: None
                         },
                     ]
                 }
@@ -472,16 +532,20 @@ mod tests {
                         row_start_bar_number: 5,
                         bars: vec![
                             Bar {
-                                chords: vec!["A".to_string()]
+                                chords: vec!["A".to_string()],
+                                time_signature: None
                             },
                             Bar {
-                                chords: vec!["B".to_string()]
+                                chords: vec!["B".to_string()],
+                                time_signature: None
                             },
                             Bar {
-                                chords: vec!["C".to_string()]
+                                chords: vec!["C".to_string()],
+                                time_signature: None
                             },
                             Bar {
-                                chords: vec!["D".to_string()]
+                                chords: vec!["D".to_string()],
+                                time_signature: None
                             }
                         ]
                     },
@@ -489,7 +553,8 @@ mod tests {
                         repeat: 1,
                         row_start_bar_number: 9,
                         bars: vec![Bar {
-                            chords: vec!["Gf".to_string()]
+                            chords: vec!["Gf".to_string()],
+                            time_signature: None
                         }]
                     },
                     Row {
@@ -497,16 +562,20 @@ mod tests {
                         row_start_bar_number: 10,
                         bars: vec![
                             Bar {
-                                chords: vec!["C".to_string()]
+                                chords: vec!["C".to_string()],
+                                time_signature: None
                             },
                             Bar {
-                                chords: vec!["D".to_string()]
+                                chords: vec!["D".to_string()],
+                                time_signature: None
                             },
                             Bar {
-                                chords: vec!["C".to_string()]
+                                chords: vec!["C".to_string()],
+                                time_signature: None
                             },
                             Bar {
-                                chords: vec!["D".to_string()]
+                                chords: vec!["D".to_string()],
+                                time_signature: None
                             }
                         ]
                     }
@@ -547,9 +616,11 @@ mod tests {
                         bars: vec![
                             Bar {
                                 chords: vec!["Af".to_string(), "Bfmsept".to_string()],
+                                time_signature: None,
                             },
                             Bar {
                                 chords: vec!["E".to_string(), "E".to_string()],
+                                time_signature: None,
                             },
                         ],
                     },
@@ -558,6 +629,7 @@ mod tests {
                         row_start_bar_number: 12,
                         bars: vec![Bar {
                             chords: vec!["B".to_string()],
+                            time_signature: None,
                         }],
                     },
                     Row {
@@ -566,9 +638,11 @@ mod tests {
                         bars: vec![
                             Bar {
                                 chords: vec!["C".to_string()],
+                                time_signature: None,
                             },
                             Bar {
                                 chords: vec!["D".to_string()],
+                                time_signature: None,
                             },
                         ],
                     },
@@ -582,6 +656,7 @@ mod tests {
     fn test_4() {
         let input = UserSong {
             tempo: 80,
+            time_signature: None,
             title: "".to_string(),
             author: "".to_string(),
             texfiles: vec![],
@@ -594,7 +669,10 @@ mod tests {
                         section_title: "".to_string(),
                         section_type: "".to_string(),
                         section_body: None,
-                        rows: vec!["A|B|C|D|x3".to_string(), "E|F|G|A".to_string()],
+                        rows: vec![
+                            "A|B|C|time_signature(2/4)D|x3".to_string(),
+                            "E|F|G|A".to_string(),
+                        ],
                     }),
                     id: "blahblah".to_string(),
                 },
@@ -625,6 +703,7 @@ mod tests {
             title: "".to_string(),
             author: "".to_string(),
             tempo: 80 as u32,
+            time_signature: TimeSignature { top: 4, low: 4 },
             pdfname: "--@--".to_string(),
             texfiles: vec![],
             builddir: Default::default(),
@@ -649,15 +728,19 @@ mod tests {
                                 bars: vec![
                                     Bar {
                                         chords: vec!["A".to_string()],
+                                        time_signature: None,
                                     },
                                     Bar {
                                         chords: vec!["B".to_string()],
+                                        time_signature: None,
                                     },
                                     Bar {
                                         chords: vec!["C".to_string()],
+                                        time_signature: None,
                                     },
                                     Bar {
                                         chords: vec!["D".to_string()],
+                                        time_signature: Some(TimeSignature { top: 2, low: 4 }),
                                     },
                                 ],
                             },
@@ -667,15 +750,19 @@ mod tests {
                                 bars: vec![
                                     Bar {
                                         chords: vec!["E".to_string()],
+                                        time_signature: None,
                                     },
                                     Bar {
                                         chords: vec!["F".to_string()],
+                                        time_signature: None,
                                     },
                                     Bar {
                                         chords: vec!["G".to_string()],
+                                        time_signature: None,
                                     },
                                     Bar {
                                         chords: vec!["A".to_string()],
+                                        time_signature: None,
                                     },
                                 ],
                             },
@@ -716,15 +803,36 @@ mod tests {
         let x = "E".to_string();
         let expected = Bar {
             chords: vec!["E".to_string()],
+            time_signature: None,
         };
-        let result = bar_of_string(x);
+        let result = bar_of_string(x).unwrap();
         assert_eq!(expected, result);
 
         let x = "{latex \\tiny{uu}}".to_string();
         let expected = Bar {
             chords: vec!["\\tiny{uu}".to_string()],
+            time_signature: None,
         };
-        let result = bar_of_string(x);
+        let result = bar_of_string(x).unwrap();
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn test_6() {
+        let x = "time_signature(2/4)E".to_string();
+        let expected = Bar {
+            chords: vec!["E".to_string()],
+            time_signature: Some(TimeSignature { top: 2, low: 4 }),
+        };
+        let result = bar_of_string(x).unwrap();
+        assert_eq!(expected, result);
+
+        let x = "time_signature(3/4) {latex \\tiny{uu}}".to_string();
+        let expected = Bar {
+            chords: vec!["\\tiny{uu}".to_string()],
+            time_signature: Some(TimeSignature { top: 3, low: 4 }),
+        };
+        let result = bar_of_string(x).unwrap();
         assert_eq!(expected, result);
     }
 }

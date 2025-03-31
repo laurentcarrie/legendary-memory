@@ -88,7 +88,6 @@ drumbar =  \drummode {  bassdrum4 hihat4  bassdrum hihat }
 
 
     \new Staff {
-      \tempo 4 = 90
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       %\set TabStaff.stringTunings = #custom-tuning
       \rhythm
@@ -96,13 +95,11 @@ drumbar =  \drummode {  bassdrum4 hihat4  bassdrum hihat }
 
     \new Staff	 {
       \clef "treble_8"
-      \tempo 4 = 90
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \lead
     }
 
     \new TabStaff {
-      \tempo 4 = 90
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \lead
     }

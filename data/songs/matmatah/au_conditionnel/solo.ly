@@ -1,8 +1,5 @@
 \version "2.20.0"
 
-song_tempo = 80
-
-
 
 bar_ema= {
   \repeat     unfold 6 { < g\4 d'\3 g'\2 bes'\1>8 }
@@ -110,6 +107,6 @@ drumbarshh = {
   }
   \layout{}
   %     \midi {
-  %         \tempo 4 = \song_tempo
+  %         \tempo 4 = \songtempo
   % }
 }

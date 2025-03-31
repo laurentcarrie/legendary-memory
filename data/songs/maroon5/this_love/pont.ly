@@ -1,6 +1,5 @@
 \version "2.23.1"
-\include "../../../macros.ly"
-song_tempo = 100
+\include "macros.ly"
 
 
 song_chords = \chordmode {
@@ -74,7 +73,7 @@ lead = {
     }
 
     \new TabStaff {
-      \tempo 4 = \song_tempo
+      \tempo 4 = \songtempo
       \tabFullNotation
       \override Score.BarNumber.break-visibility = ##(#t #t #t)
       \lead
