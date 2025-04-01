@@ -10,5 +10,5 @@ cargo install --path $here/software
 songbook $songdir $bookdir $builddir
 
 #( cd $builddir && omake -j 8 delivery/the_police--@--every_breath_you_take.pdf) || bash $builddir/omake.sh
-( cd $builddir && omake -j 8 delivery/bashung--@--la_nuit_je_mens.pdf) || bash $builddir/omake.sh
-#( cd $builddir && omake -j 8 ) || bash $builddir/omake.sh
+#( cd $builddir && omake -j 8 delivery/bashung--@--la_nuit_je_mens.pdf) || bash $builddir/omake.sh
+( cd $builddir && omake -j 8 ) || bash $builddir/omake.sh

@@ -5,8 +5,7 @@
   "texfiles": [
     "body.tex"
   ],
-  "lilypondfiles": [
-  ],
+  "lilypondfiles": [],
   "structure": [
     {
       "id": "couplet1",
@@ -15,7 +14,7 @@
           "section_type": "couplet",
           "section_title": "couplet 1",
           "rows": [
-            "G Em | Bm | G Em | Bm  |",
+            "G Em | Bm | G Em | Bm |",
             "A|Asus4|G|G|",
             "A|Asus4|G|Bm|",
             "A|Em|Em"
@@ -88,7 +87,7 @@
           "section_title": "couplet 3",
           "section_type": "coupletc",
           "rows": [
-            "G Em | Bm | G A | Bm  |",
+            "G Em | Bm | G A | Bm |",
             "A|Asus4|G|G|"
           ]
         }
@@ -125,6 +124,6 @@
     }
   ],
   "wavfiles": [],
-  "digest": "4d3a54250e25b577d6e5ab941d6eb565",
+  "digest": "46031f833dae8cedbe0c45dd99217fe8",
   "date": "2025-04-01"
 }
