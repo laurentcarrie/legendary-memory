@@ -39,7 +39,7 @@
         "Chords": {
           "section_title": "couplet 2",
           "section_type": "coupletb",
-          "section_body": "",
+          "section_body": "\\songbookcomment{idem couplet1 sauf 2 dernières mesures}",
           "rows": [
             "Bf|Bf|Gm|Gm",
             "Ef|F|Bf|Bf"
@@ -76,6 +76,7 @@
         "Chords": {
           "section_title": "pont",
           "section_type": "pont",
+          "section_body": "\\songbookcomment{en accords plaqués}",
           "rows": [
             "Gf|Gf|Af|Af",
             "Gf|Gf|Af|Af",
