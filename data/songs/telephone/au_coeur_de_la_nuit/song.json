@@ -30,7 +30,36 @@
         "Chords": {
           "section_title": "refrain 1",
           "section_type": "refrain",
-          "rows": ["G|A|C|C|x3"]
+          "rows": ["G|A|C|C|x3","C A|G|C A|G|","C G|A|D|C"]
+        }
+      }
+    },
+    {
+      "id": "interlude",
+      "item": {
+        "Chords": {
+          "section_title": "interlude",
+          "section_type": "pont",
+          "rows": [
+            "Em | Em | C | C",
+            "D | D | A | C"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {"section_title": "couplet 2",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {"section_title": "refrain 2",
+          "link": "refrain1"
         }
       }
     }
