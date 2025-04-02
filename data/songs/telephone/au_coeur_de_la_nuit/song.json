@@ -1,5 +1,5 @@
 {
-  "tempo": 107,
+  "tempo": 162,
   "title": "Au Coeur De La Nuit",
   "author": "Telephone",
   "texfiles": [],
@@ -59,6 +59,14 @@
       "id": "refrain2",
       "item": {
         "Ref": {"section_title": "refrain 2",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {"section_title": "refrain 3",
           "link": "refrain1"
         }
       }

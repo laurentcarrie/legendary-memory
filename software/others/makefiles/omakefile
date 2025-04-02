@@ -1,9 +1,9 @@
 .PHONY: all pdf wav midi clean delivery
 .DEFAULT: all
 
-clean:
-    bash  $(buildroot)/make_clean.sh
-    rm -rf  {{#each lilypondfiles}} {{this}} {{/each}}
+#clean:
+#    bash  $(buildroot)/make_clean.sh
+#    rm -rf  {{#each lilypondfiles}} {{this}} {{/each}}
 
 pdf_file=$(delivery_dir)/{{pdfname}}.pdf
 

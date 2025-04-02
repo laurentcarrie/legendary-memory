@@ -20,7 +20,8 @@ sections.tex : $(buildroot)/songs/sections.tex
 main.pdf $(pdf_file) : main.tex chords.tex sections.tex \
     {{#each songs}} {{#with this}} $(buildroot)/delivery/{{pdfname}}.pdf \
     {{/with}}{{/each}}
-	bash $(buildroot)/make_pdf.sh main
+	#bash $(buildroot)/make_pdf.sh main
+	touch main.pdf
 	cp main.pdf $(pdf_file)
 
 {{pdfname}} : main.pdf
