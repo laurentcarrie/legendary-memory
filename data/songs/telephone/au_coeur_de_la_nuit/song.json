@@ -1,0 +1,41 @@
+{
+  "tempo": 107,
+  "title": "Au Coeur De La Nuit",
+  "author": "Telephone",
+  "texfiles": [],
+  "lilypondfiles": [
+  ],
+  "structure": [
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 1",
+          "section_type": "couplet",
+          "rows": [
+            "Em | Em | C | C |",
+            "D | D | A | C ",
+            "Em | Em | C | C |",
+            "D | D | A | C ",
+            "Em | Em | C | C |",
+            "D | D | A | C "
+          ]
+        }
+      }
+    },{
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_title": "refrain1",
+          "section_type": "refrain",
+          "rows": ["G|A|C|C|x3"]
+        }
+      }
+    }
+  ],
+  "wavfiles": [
+  ],
+  "date": "2025-04-01",
+  "digest": "c181ab3cbf7d0cd8a566f5c24f36a111",
+  "hash": "0"
+}

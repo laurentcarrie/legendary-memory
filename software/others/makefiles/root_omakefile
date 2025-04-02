@@ -1,21 +1,6 @@
 # root is {{ builddir }}
 
 .PHONY: all install clean pdf delivery delivery_songs delivery_books clean gdrive
-
-.BUILD_BEGIN:
-    echo "BUILD BEGIN "
-    date
-
-.BUILD_SUCCESS:
-    echo "BUILD END at"
-    date
-    echo "SUCCESS"
-
-.BUILD_FAILURE:
-    echo "BUILD END at"
-    date
-    echo "FAILURE"
-
 .DEFAULT: all
 
 all: delivery

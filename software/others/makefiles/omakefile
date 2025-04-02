@@ -1,4 +1,5 @@
 .PHONY: all pdf wav midi clean delivery
+.DEFAULT: all
 
 clean:
     bash  $(buildroot)/make_clean.sh
@@ -26,16 +27,13 @@ sections.tex : $(buildroot)/songs/sections.tex
 #data.tex : data-utf8.tex
 #    iconv -f UTF-8 -t ISO-8859-15 data-utf8.tex > data.tex
 
-# we want main.pdf to have an easy to make dependendance for books
-# we want the other pdf with a specific name,
-# the two are in the same rule so they are available at the same time (if not, progress is weird, you have main.pdf but not the other one )
-main.pdf $(pdf_file) : main.tex preamble.tex sections.tex chords.tex body.tex data.tex \
+$(pdf_file) : main.tex preamble.tex sections.tex chords.tex body.tex data.tex \
     {{#each structure }}{{#if this.item.ItemChords}}{{#with this.item.ItemChords}}lyrics/{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
     {{#each structure }}{{#if this.item.ItemRef}}{{#with this.item.ItemRef}}lyrics/{{section_id}}.tex {{/with}}{{/if}}{{/each}} \
     {{#each lilypondfiles}}{{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex {{/each}}
     echo "make pdf"
     bash $(buildroot)/make_pdf.sh main
-    cp main.pdf $(pdf_file)
+    mv main.pdf $(pdf_file)
 
 {{#each lilypondfiles}}
 {{remove-file-extension-helper this ".ly"}}.output/{{remove-file-extension-helper this ".ly"}}.tex : {{this}}
