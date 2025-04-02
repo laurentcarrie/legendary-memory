@@ -22,11 +22,13 @@
           ]
         }
       }
-    },{
+    }
+  ,
+    {
       "id": "refrain1",
       "item": {
         "Chords": {
-          "section_title": "refrain1",
+          "section_title": "refrain 1",
           "section_type": "refrain",
           "rows": ["G|A|C|C|x3"]
         }
