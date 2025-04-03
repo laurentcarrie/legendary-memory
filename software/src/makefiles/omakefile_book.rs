@@ -7,6 +7,16 @@ use crate::generate::handlebars_helpers::get_handlebar;
 use crate::model::model::Book;
 // use crate::helpers::helpers::pdfname_of_book;
 
+pub fn generate_json_book(book: &Book) -> Result<(), Error> {
+    log::debug!("generate book.json in {}", book.builddir.display());
+    let mut p: PathBuf = book.builddir.clone();
+    let _ = fs::create_dir_all(&p)?;
+    p.push("book.json");
+    let _ = fs::write(p.to_str().unwrap(),serde_json::to_string(&book).unwrap().as_bytes()) ;
+
+    Ok(())
+}
+
 pub fn generate_main_book(book: &Book) -> Result<(), Error> {
     log::debug!("generate main.tex in {}", book.builddir.display());
     let mut p: PathBuf = book.builddir.clone();

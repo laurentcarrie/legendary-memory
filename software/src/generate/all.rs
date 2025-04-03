@@ -1,9 +1,7 @@
 use crate::errors::MyError;
 use crate::generate::generate::generate;
-use crate::makefiles::omakefile_book::{generate_book_omakefile, generate_main_book};
-use crate::makefiles::omakefile_song::{
-    generate_omakeroot, generate_root_omakefile, generate_song_omakefile,
-};
+use crate::makefiles::omakefile_book::{generate_book_omakefile, generate_json_book, generate_main_book};
+use crate::makefiles::omakefile_song::{generate_json_song, generate_omakeroot, generate_root_omakefile, generate_song_omakefile};
 use crate::model::model::World;
 use crate::model::world::make;
 use std::fs;
@@ -21,11 +19,13 @@ pub fn generate_all(songdir: PathBuf, bookdir: PathBuf, builddir: PathBuf) -> Re
     generate_root_omakefile(&world)?;
     for song in &world.songs {
         generate_song_omakefile(&song)?;
+        generate_json_song(&song)? ;
     }
 
     for book in &world.books {
         generate_book_omakefile(&book)?;
         generate_main_book(&book)?;
+        generate_json_book(&book)? ;
     }
 
     // generate_song_omakefile(&world.songs[0])?;

@@ -5,8 +5,9 @@
 builddir=$1
 here=$(dirname $(realpath $0))
 
-author=$(cat $builddir/song.json | jq -r ".author")
-title=$(cat $builddir/song.json | jq -r ".title")
+author=$(cat $builddir/song-internal.json | jq -r ".author")
+title=$(cat $builddir/song-internal.json | jq -r ".title")
+pdfname=$(cat $builddir/song-internal.json | jq -r ".pdfname")
 
 source $here/colors.sh
 
@@ -31,7 +32,7 @@ fi
 #printf "old digest : $old_digest\n"
 
 if test "x$new_digest" = "x$old_digest_ok" ; then
-  printf "[${On_Green}NoNeed${Color_Off}]$Green[$author]$Color_Off$Blue[$title]$Color_Off\n"
+  printf "[${White}${On_Green}NoNeed${Color_Off}]$Green[$author]$Color_Off$Blue[$title]$Color_Off\n"
   exit 0
 fi
 
@@ -47,7 +48,7 @@ cd $builddir
 cat $builddir/song.json | jq -r ".lilypondfiles[]" | while read lyfile ; do
 #  printf "[$Green$author$Color_Off][${Blue}$title$Color_Off] $lyfile \n"
   ( bash $here/lytex_script.sh $lyfile &&
-    printf "[${On_Green}  OK  ${Color_Off}][$Green$author$Color_Off][${Blue}$title$Color_Off] $lyfile \n"
+    printf "[${Green}${On_Yellow}  OK  ${Color_Off}][$Green$author$Color_Off][${Blue}$title$Color_Off] $lyfile \n"
   ) || (
     printf "[${Red}${On_Yellow}FAILED${Color_Off}][$Green$author$Color_Off][${Blue}$title$Color_Off] $lyfile \n"
   )
@@ -71,7 +72,9 @@ do
   i=$[$i+1]
 done
 
-if test -f main.pdf ; then
+mv main.pdf ${pdfname}.pdf
+
+if test -f ${pdfname}.pdf ; then
   echo $new_digest > $checksumfile_ok
   rm -f $checksumfile_failed
   printf "[${On_Green}  OK  ${Color_Off}]$Green[$author]$Color_Off$Blue[$title]$Color_Off build pdf Ok\n"

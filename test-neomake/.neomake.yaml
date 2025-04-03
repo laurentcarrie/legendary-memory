@@ -3,9 +3,11 @@ version: "0.5"
 env:
   capture: "songdir|bookdir|builddir|softwaredir"
 
-.mount_script: &mount_script |
+.mount_song_script: &mount_song_script |
   cp -R $songdir/$song/* $builddir/songs/$song/.
   cp $builddir/songs/*.tex $builddir/songs/$song/.
+
+.mount_book_script: &mount_book_script |
 
 
 nodes:
@@ -42,8 +44,6 @@ nodes:
             - env:
                 song: axel_bauer/eteins_la_lumiere
             - env:
-                song: alannah_myles/black_velvet
-            - env:
                 song: depeche_mode/enjoy_the_silence
             - env:
                 song: maroon5/this_love
@@ -60,13 +60,9 @@ nodes:
             - env:
                 song: noir_desir/marlene
             - env:
-                song: depeche_mode/enjoy_the_silence
-            - env:
                 song: police/every_breath_you_take
             - env:
                 song: estelle/american_boy
-            - env:
-                song: axel_bauer/eteins_la_lumiere
             - env:
                 song: steely_dan/kid_charlemagne
             - env:
@@ -78,13 +74,11 @@ nodes:
             - env:
                 song: amy_winehouse/you_know_i_m_no_good
             - env:
-                song: bashung/la_nuit_je_mens
-            - env:
                 song: natalie_imbroglia/torn
 
 
     tasks:
-      - script: *mount_script
+      - script: *mount_song_script
       - script: |
           bash pdf_song_script.sh $builddir/songs/$song
 
@@ -97,8 +91,9 @@ nodes:
       dense:
         dimensions:
           - - env:
-                book: concert_du_13_fevrier
+                book: dummy
     tasks:
+      - script: *mount_book_script
       - script: |
           bash pdf_book_script.sh $builddir/books/$book
 

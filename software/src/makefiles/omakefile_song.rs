@@ -6,8 +6,20 @@ use std::path::PathBuf;
 
 use crate::errors::MyError;
 use crate::generate::handlebars_helpers::get_handlebar;
-use crate::model::model::Song;
+use crate::model::model::{ Song};
 use crate::model::model::World;
+
+
+pub fn generate_json_song(song: &Song) -> Result<(), Error> {
+    log::debug!("generate song.json in {}", song.builddir.display());
+    let mut p: PathBuf = song.builddir.clone();
+    let _ = fs::create_dir_all(&p)?;
+    p.push("song-internal.json");
+    let _ = fs::write(p.to_str().unwrap(),serde_json::to_string(&song).unwrap().as_bytes()) ;
+
+    Ok(())
+}
+
 
 pub fn generate_song_omakefile(song: &Song) -> Result<(), Error> {
     log::debug!("generate Omakefile in {}", song.builddir.display());
