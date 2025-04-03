@@ -92,6 +92,8 @@ nodes:
         dimensions:
           - - env:
                 book: dummy
+            - env:
+                book: concert_du_13_fevrier
     tasks:
       - script: *mount_book_script
       - script: |
