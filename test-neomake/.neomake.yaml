@@ -1,0 +1,104 @@
+version: "0.5"
+
+env:
+  capture: "songdir|bookdir|builddir|softwaredir"
+
+.mount_script: &mount_script |
+  cp -R $songdir/$song/* $builddir/songs/$song/.
+  cp $builddir/songs/*.tex $builddir/songs/$song/.
+
+
+nodes:
+  all:
+    pre:
+      - pdf-songs
+      - pdf-books
+    tasks:
+      - script: |
+          echo "DONE"
+
+  # call the songbook utility
+  generate:
+    tasks:
+        - script: |
+            mkdir -p empty          
+            songbook $songdir $bookdir $builddir
+
+
+  kill:
+    tasks:
+      - script:
+          mykill lualatex
+
+  pdf-songs:
+    pre:
+      - generate
+      - kill
+    matrix:
+      dense:
+        dimensions:
+          - - env:
+                song: bashung/la_nuit_je_mens
+            - env:
+                song: axel_bauer/eteins_la_lumiere
+            - env:
+                song: alannah_myles/black_velvet
+            - env:
+                song: depeche_mode/enjoy_the_silence
+            - env:
+                song: maroon5/this_love
+            - env:
+                song: maroon5/misery
+            - env:
+                song: the_strokes/the_end_has_no_end
+            - env:
+                song: red_hot_chili_peppers/dani_california
+            - env:
+                song: red_hot_chili_peppers/can_t_stop
+            - env:
+                song: pretenders/brass_in_pocket
+            - env:
+                song: noir_desir/marlene
+            - env:
+                song: depeche_mode/enjoy_the_silence
+            - env:
+                song: police/every_breath_you_take
+            - env:
+                song: estelle/american_boy
+            - env:
+                song: axel_bauer/eteins_la_lumiere
+            - env:
+                song: steely_dan/kid_charlemagne
+            - env:
+                song: oasis/rock_n_roll_star
+            - env:
+                song: telephone/au_coeur_de_la_nuit
+            - env:
+                song: alannah_myles/black_velvet
+            - env:
+                song: amy_winehouse/you_know_i_m_no_good
+            - env:
+                song: bashung/la_nuit_je_mens
+            - env:
+                song: natalie_imbroglia/torn
+
+
+    tasks:
+      - script: *mount_script
+      - script: |
+          bash pdf_song_script.sh $builddir/songs/$song
+
+
+
+  pdf-books:
+    pre:
+      - pdf-songs
+    matrix:
+      dense:
+        dimensions:
+          - - env:
+                book: concert_du_13_fevrier
+    tasks:
+      - script: |
+          bash pdf_book_script.sh $builddir/books/$book
+
