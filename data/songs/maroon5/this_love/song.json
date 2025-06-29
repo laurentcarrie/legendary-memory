@@ -6,7 +6,8 @@
   "lilypondfiles": [
     "couplet.ly",
     "refrain.ly",
-    "pont.ly"
+    "pont.ly",
+    "chordspont.ly"
   ],
   "structure": [
     {
@@ -93,6 +94,10 @@
       }
     },
     {
+      "id": "nc",
+      "item": "NewColumn"
+    },
+    {
       "id": "couplet_4",
       "item": {
         "Chords": {
@@ -111,8 +116,8 @@
           "section_title": "pont",
           "section_type": "pont",
           "rows": [
-            "Fm7 | Ef7M | Cm7 | Fdim",
-            "Fm7 | Ef7M | Adim | Adim"
+            "Fm7 | Ef7M | Fdim | Cm7 ",
+            "Fm7 | Ef7M | Afdim | Afdim"
           ]
         }
       }
@@ -139,7 +144,7 @@
     }
   ],
   "wavfiles": [],
-  "date": "2025-03-31",
-  "digest": "754a2e6966be99a083c656e0b3764a97",
+  "date": "2025-06-29",
+  "digest": "9878b2c6333fb7c3a01ae265ba87130c",
   "hash": "0"
 }

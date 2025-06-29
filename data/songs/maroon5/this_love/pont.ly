@@ -3,8 +3,8 @@
 
 
 song_chords = \chordmode {
-  f1:m7 | ees1:maj7 | a1:dim | c1:m7 |
-  f1:m7 | ees1:maj7 | a1:dim | a1:dim |
+  f1:m7 | ees1:maj7 | aes1:dim | c1:m7 |
+  f1:m7 | ees1:maj7 | aes1:dim | a1:dim |
 }
 
 

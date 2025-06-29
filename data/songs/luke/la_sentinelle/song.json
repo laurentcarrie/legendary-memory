@@ -1,0 +1,200 @@
+{
+  "tempo": 94,
+  "author": "Luke",
+  "title": "La Sentinelle",
+  "texfiles": [],
+  "lilypondfiles": [
+    "couplet1.ly"
+  ],
+  "structure": [
+    {
+      "id": "introg",
+      "item": {
+        "Chords": {
+          "section_type": "intro",
+          "section_title": "intro g",
+          "rows": [
+            "Em Bm|Em Bm|Em Bm |Em Bm|"
+          ]
+        }
+      }
+    },
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_type": "intro",
+          "section_title": "intro",
+          "rows": [
+            "Em Bm|Em Bm|Em Bm |Em Bm|"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet1",
+          "rows": [
+            "Em Bm|Em HRest|Em Bm |Em Bm",
+            "Em Bm|Em Bm|",
+            "Em Bm|Em HRest|Em Bm |Em Bm"
+          ]
+        }
+      }
+    },
+    {
+      "id": "prerefrain1",
+      "item": {
+        "Chords": {
+          "section_type": "prerefrain",
+          "section_title": "pré refrain 1",
+          "rows": [
+            "G|G HRest"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_type": "refrain",
+          "section_title": "refrain 1",
+          "rows": [
+            "Em Am|G Bm|Em Am|G Bm",
+            "Em Am|G Bm|C|Am "
+          ]
+        }
+      }
+    },
+    {
+      "id": "fill1",
+      "item": {
+        "Chords": {
+          "section_type": "pont",
+          "section_title": "fill 1",
+          "rows": [
+            "Em Bm|Em Bm|"
+          ]
+        }
+      }
+    },
+    {
+      "id": "nc",
+      "item": "NewColumn"
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 2",
+          "rows": [
+            "Em Bm|Em HRest|Em Bm |Em Bm",
+            "Em Bm|",
+            "Em Bm|Em HRest|Em Bm |Em Bm"
+          ]
+        }
+      }
+    },
+    {
+      "id": "prerefrain2",
+      "item": {
+        "Ref": {
+          "section_type": "prerefrain",
+          "section_title": "pré refrain 2",
+          "link": "prerefrain1"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 2",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "solo",
+      "item": {
+        "Ref": {
+          "section_title": "solo",
+          "section_type": "solo",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "fill2",
+      "item": {
+        "Ref": {
+          "section_title": "fill2",
+          "link": "fill1"
+        }
+      }
+    },
+    {
+      "id": "interlude",
+      "item": {
+        "Chords": {
+          "section_type": "pont",
+          "section_title": "interlude",
+          "rows": [
+            "D Em|D Em|D Em|C"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 3",
+          "rows": [
+            "Em Bm|Em HRest|Em Bm |Em Bm"
+          ]
+        }
+      }
+    },
+    {
+      "id": "prerefrain3",
+      "item": {
+        "Ref": {
+          "section_type": "prerefrain",
+          "section_title": "pré refrain 3",
+          "link": "prerefrain1"
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 3",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "outtro",
+      "item": {
+        "Chords": {
+          "section_type": "intro",
+          "section_title": "outtro",
+          "rows": [
+            "Em Bm|Em Bm|Em Bm |Em Bm"
+          ]
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "digest": "b1261028f4f9b7a1f86639f3e18cc55c",
+  "date": "2025-06-29"
+}

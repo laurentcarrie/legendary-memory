@@ -1,0 +1,88 @@
+{
+  "tempo": 164,
+  "title": "Au Coeur De La Nuit",
+  "author": "Telephone",
+  "texfiles": [],
+  "lilypondfiles": [],
+  "structure": [
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 1",
+          "section_type": "couplet",
+          "rows": [
+            "Em | Em | C | C |",
+            "D | D | A | C ",
+            "Em | Em | C | C |",
+            "D | D | A | C ",
+            "Em | Em | C | C |",
+            "D | D | A | C "
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_title": "refrain 1",
+          "section_type": "refrain",
+          "rows": [
+            "G|A|C|C|x3",
+            "C A|G|C A|G|",
+            "C G|A|D|C"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interlude",
+      "item": {
+        "Chords": {
+          "section_title": "interlude",
+          "section_type": "pont",
+          "rows": [
+            "Em | Em | C | C",
+            "D | D | A | C"
+          ]
+        }
+      }
+    },
+    {
+      "id": "nc",
+      "item": "NewColumn"
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "section_title": "couplet 2",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 2",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 3",
+          "link": "refrain1"
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "date": "2025-05-08",
+  "digest": "2da070ce00eea9a05aa5d156f6de2e4d",
+  "hash": "0"
+}

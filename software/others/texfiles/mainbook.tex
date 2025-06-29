@@ -4,25 +4,50 @@
 \usepackage{import}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\usepackage[default]{frcursive}
 \pagestyle{fancy}
 \fancyhf{}
 \newcommand{\makesongtitle}{}
 \newcommand{\songlastupdate}{}
 \newcommand{\songtoday}{}
-\import{../}{chords}
-\import{../}{preamble}
-\import{../}{sections}
+\newcommand{\xxcfoot}[2]{}
+\input{preamble}
+\input{sections}
+\input{chords}
 \begin{document}
+
+\label{top}
+
+
+\input{book-setlist.tikz}
+
+\newpage
 
 \tableofcontents
 \newpage
 
+\newcounter{xxxrowcount}
+\newcounter{xxxsectioncount}
+\newcounter{xxxsectionrefcount}
+\newcounter{xxxcolumncount}
+
+
 {{#each songs}}
 {{#with this}}
+\setcounter{xxxrowcount}{0}
+\setcounter{xxxsectioncount}{0}
+\setcounter{xxxsectionrefcount}{0}
+\setcounter{xxxcolumncount}{0}
+
 \import{ {{~path~}} }{data.tex}
 \section{ \songauthor / \songtitle }
-\lfoot{ \songauthor / \songtitle }
-\makesongtitle
+
+\hyperref[top]{
+	\color{blue}(haut)
+}
+\label{sec:song{{@../index}}}
+%\lfoot{ \songauthor / \songtitle }
+%\makesongtitle
 \import{ {{~path~}} }{body.tex}
 \newpage
 {{/with}}

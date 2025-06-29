@@ -10,86 +10,11 @@
 \renewcommand{\makesongtitle}{\xxmakesongtitle{\songtitle}{\songauthor}{\songtempo} }
 \renewcommand{\songlastupdate}{ {{date}} }
 
+\xxcfoot{\songauthor}{\songtitle}
 
 
-\renewcommand{\songbooksongstructc}{
-{\setstretch{1.5}
 
-{{#each structure}}
-
-{{#if this.item.ItemChords}}
-{{#with this.item.ItemChords}}
-\songbooksection{{{section_type}}} { {{{section_title}}} } { {{{section_body}}} }
-\newline
-%\lolotwocolumns{
-{{#if (greater-than-helper (len-helper this.rows)  0)  }}
-\begin{NiceTabular}{>{\raggedright}m{0.5cm}{{join-helper "W{c}{2cm}" "|" nbcols  }} W{c}{2cm}}
-	\CodeBefore
-	%	\rowcolor{\songbookcolor{{section_type}}!100}{1-{{len-helper this.rows}}}
-	{{#each rows}}
-	% row {{ @index }}
-	\cellcolor{white}{ {{add-helper @index 1}}-1 }
-	{{#each this.bars}}
-	\cellcolor{\songbookcolor{{../../section_type}}}{ {{add-helper @../index 1}}-{{add-helper @index 2}} }
-	{{/each}}
-	{{/each}} % each rows
-	\Body
-	{{#each rows}}
-	\rule{0pt}{25pt}
-	\tiny{ {{this.row_start_bar_number}} {{row_start_bar_time this.row_start_bar_number ../../../tempo }}  }
-	{{#each this.bars}}
-	&
-	{{#if this.time_signature}}
-	\tiny{\nicefrac{ {{this.time_signature.top}} } { {{this.time_signature.low}} } }
-	{{/if}}
-
-	{{#each this.chords}}
-	%low : {{this.time_signature.low}}
-	%\tiny{\nicefrac{1}{2}}
-	\chord{{this}}
-	{{/each}}
-	{{/each}}
-	{{ multicols_helper this.bars ../nbcols  }}
-	&
-	% REPEAT : {{this.repeat}}
-	{{#if (eq this.repeat 2)}} \chordRepeatDeux {{/if}}
-	{{#if (eq this.repeat 3)}} \chordRepeatTrois {{/if}}
-	{{#if (eq this.repeat 4)}} \chordRepeatQuatre {{/if}}
-	\\
-	{{/each}} % each rows
-\end{NiceTabular}
-{{/if}}
-%}{
-%}
-{{/with}}
-{{/if}}
-{{#if this.item.ItemRef}}
-% >>>>> Ref {{{this.item.ItemRef}}}
-{{#with this.item.ItemRef}}
-\songbooksection{{{section_type}}} { {{{section_title}}} } { {{{section_body}}} }
-\begin{NiceTabular}{>{\raggedright}p{0.5cm}W{c}{2cm}}
-	\CodeBefore
-	\cellcolor{\songbookcolor{{section_type}}}{ 1-2 }
-	\Body
-	\tiny{ {{row_start_bar_number}} {{row_start_bar_time this.row_start_bar_number ../../tempo }}  }&
-	%\colorbox{\songbookcolor{{section_type}}}{ {{{nb_bars}}} mesures}
-	{{nb_bars}} mesures
-\end{NiceTabular}
-\\
-%\lolohspace
-
-{{/with}}
-{{/if}}
-{{#if this.item.ItemHRule}}
-% HRule
-\songbookhr
-{{/if}}
-{{/each}}
-
-} %setstretch
-}
-
-\renewcommand{\xxxlyrics}{
+\renewcommand{\songlyrics}{
 
 {\setstretch{1.2}
 
@@ -100,7 +25,7 @@
 {{#with this.item.ItemChords}}
 \songbooksection{{{section_type}}} { {{{section_title}}} }
 {
-\songbookcomment{ {{ nb_bars }} ( {{{row_start_bar_number}}}~\rightarrow~{{ add-helper row_start_bar_number nb_bars -1 }} )
+\songbookcomment{ {{ nb_bars }} ( {{{row_start_bar_number}}}~$\rightarrow$~{{ add-helper row_start_bar_number nb_bars -1 }} )
 {{row_start_bar_time this.row_start_bar_number ../../tempo }}
 }    {{{text}}}
 }
@@ -126,11 +51,4 @@
 {{/each}}
 
 } % setstretch
-} % xxxlyrics command
-
-
-\renewcommand{\songbooksongstruct}{
-	\begin{multicols}{2}
-		\songbooksongstructc
-	\end{multicols}
-}
+} % xsonglyrics command

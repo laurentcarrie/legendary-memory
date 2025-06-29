@@ -1,4 +1,3 @@
-use crate::errors::MyError;
 use crate::model::config::{decode_book, decode_song};
 use crate::model::get_config_files::{get_book_json_paths, get_song_json_paths};
 use crate::model::input_model::UserWorld;
@@ -20,7 +19,11 @@ fn get_sections() -> BTreeMap<String, Section> {
     map
 }
 
-pub fn make(srcdir: &PathBuf, srcbookdir: &PathBuf, builddir: &PathBuf) -> Result<World, MyError> {
+pub fn make(
+    srcdir: &PathBuf,
+    srcbookdir: &PathBuf,
+    builddir: &PathBuf,
+) -> Result<World, Box<dyn std::error::Error>> {
     // the available song sections, for rendering
     let sections = get_sections();
 
@@ -55,7 +58,8 @@ pub fn make(srcdir: &PathBuf, srcbookdir: &PathBuf, builddir: &PathBuf) -> Resul
 
     let world = World {
         builddir: builddir.to_path_buf(),
-        srcdir: srcdir.to_path_buf(),
+        songdir: srcdir.to_path_buf(),
+        bookdir: srcbookdir.to_path_buf(),
         songs: songs,
         books: books,
         sections: sections,
@@ -74,6 +78,12 @@ pub fn make(srcdir: &PathBuf, srcbookdir: &PathBuf, builddir: &PathBuf) -> Resul
         path.push("world.json");
         let mut file = File::create(&path).unwrap();
         file.write_all(data.as_bytes()).unwrap();
+    }
+    {
+        let data = serde_json::to_string(&world)?;
+        let mut path = builddir.clone();
+        path.push("world-internal.json");
+        let _ = std::fs::write(path.as_path(), data)?;
     }
 
     log::info!("found {} song errors", world.broken_books.len());

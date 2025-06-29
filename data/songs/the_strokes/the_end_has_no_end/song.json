@@ -73,6 +73,10 @@
       }
     },
     {
+      "id": "nc",
+      "item": "NewColumn"
+    },
+    {
       "id": "solo",
       "item": {
         "Chords": {
@@ -94,7 +98,7 @@
           "rows": [
             "Cs | Cs | Cs | Cs ",
             "Gs | Gs | Gs | Gs ",
-            "HRest | HRest | | "
+            "HRest | HRest | "
           ]
         }
       }
@@ -153,7 +157,7 @@
     }
   ],
   "wavfiles": [],
-  "digest": "a005242a76b67fba975ec93662acc351",
-  "date": "2025-01-11",
+  "digest": "35d385b289d70fced2d32dd053c2293a",
+  "date": "2025-05-08",
   "hash": "0"
 }

@@ -1,5 +1,7 @@
 \version "2.20.0"
 nb_mesures = 32
+songtempo=94
+
 
 song_chords = \chordmode {
 

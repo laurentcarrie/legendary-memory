@@ -1,21 +1,24 @@
 use log::LevelFilter;
 use simple_logger::SimpleLogger;
+use std::fs;
 // use std::backtrace::Backtrace;
 use std::env;
 use std::path::PathBuf;
 
-pub mod errors;
+pub mod actions;
 pub mod generate;
 pub mod helpers;
-pub mod makefiles;
 pub mod model;
+
+use crate::actions::main_loop::main_loop;
 
 // pub mod protocol ;
 fn usage(prog: &str) -> String {
     return format!("usage : {prog} <srcdir> <bookdir> <builddir>", prog = prog);
 }
 
-fn main() -> () {
+#[tokio::main]
+async fn main() -> () {
     SimpleLogger::new().init().unwrap();
     // log::set_max_level(LevelFilter::Debug);
     log::set_max_level(LevelFilter::Info);
@@ -40,6 +43,13 @@ fn main() -> () {
             std::process::exit(1)
         }
     };
+    let world = {
+        let mut path = PathBuf::from(builddir);
+        path.push("world-internal.json");
+        let data = fs::read_to_string(path.to_str().unwrap()).unwrap();
+        serde_json::from_str(data.as_str()).unwrap()
+    };
     log::info!("normal exit");
+    let _x = main_loop(&world).await;
     ()
 }

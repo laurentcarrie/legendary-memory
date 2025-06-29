@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-set -e
-set -x
+here=$(dirname $(realpath $0))
+export songdir=
+export bookdir=/home/laurent/work/legendary-memory/data/books
+export builddir=/home/laurent/work/legendary-memory/build
 
-# meant to work inside the docker container
-songs /songs /books /build
-( cd /build &&  omake delivery -j 8 )
+neomake plan -n all -a "args.blah=x" | neomake execute -w4

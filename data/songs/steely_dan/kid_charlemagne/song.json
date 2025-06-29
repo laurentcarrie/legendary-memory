@@ -96,6 +96,10 @@
       }
     },
     {
+      "id": "nc",
+      "item": "NewColumn"
+    },
+    {
       "id": "couplet3",
       "item": {
         "Ref": {
@@ -163,7 +167,7 @@
   "wavfiles": [
     "solo.wav"
   ],
-  "digest": "2472030b49708aa925f625f2f1296395",
-  "date": "2025-03-26",
+  "digest": "23289608b7c8fd68483a7d154e319e18",
+  "date": "2025-06-29",
   "hash": "0"
 }

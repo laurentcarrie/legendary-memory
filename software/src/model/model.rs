@@ -41,8 +41,6 @@ pub struct Chords {
     pub section_body: String,
     pub row_start_bar_number: u32,
     pub nb_bars: u32,
-    pub nbcols: u32,
-    pub nbrows: u32,
     pub rows: Vec<Row>,
 }
 
@@ -61,6 +59,7 @@ pub enum StructureItemContent {
     ItemChords(Chords),
     ItemRef(Ref),
     ItemHRule(HRule),
+    ItemNewColumn,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
@@ -103,10 +102,41 @@ pub struct Book {
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct World {
     pub builddir: PathBuf,
-    pub srcdir: PathBuf,
+    pub songdir: PathBuf,
+    pub bookdir: PathBuf,
     pub songs: Vec<Song>,
     pub books: Vec<Book>,
     pub sections: BTreeMap<String, Section>,
     pub broken_songs: Vec<(PathBuf, String)>,
     pub broken_books: Vec<(PathBuf, String)>,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub enum ELogType {
+    Started,
+    Lilypond(String),
+    Lualatex(u32),
+    Ps2pdf,
+    Success,
+    Failed,
+    NoNeedSuccess,
+    NoNeedFailed,
+}
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct LogItemSong {
+    pub author: String,
+    pub title: String,
+    pub status: ELogType,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct LogItemBook {
+    pub title: String,
+    pub status: ELogType,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub enum LogItem {
+    Song(LogItemSong),
+    Book(LogItemBook),
 }

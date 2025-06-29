@@ -50,6 +50,13 @@ pub enum UserStructureItemContent {
     Ref(UserRef),
     /// an horizontal rule, with the width in page %, @todo implement that
     HRule(Option<u32>),
+    NewColumn,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct UserBarComment {
+    pub bar_number: u32,
+    pub comment: String,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]

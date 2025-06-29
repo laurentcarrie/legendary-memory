@@ -97,6 +97,10 @@
       }
     },
     {
+      "id": "nc",
+      "item": "NewColumn"
+    },
+    {
       "id": "soloseul",
       "item": {
         "Chords": {
@@ -149,7 +153,7 @@
     "intro.wav",
     "riff_a.wav"
   ],
-  "digest": "5b8fab215407275c2e8c620322179149",
-  "date": "2025-01-13",
+  "digest": "101c1d79d47720ced601b0a5c6b647f9",
+  "date": "2025-06-29",
   "hash": "0"
 }

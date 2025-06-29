@@ -1,0 +1,181 @@
+{
+  "tempo": 132,
+  "author": "Dandy Warhols",
+  "title": "Bohemian Like You",
+  "texfiles": [],
+  "lilypondfiles": [],
+  "structure": [
+    {
+      "id": "introb",
+      "item": {
+        "Chords": {
+          "section_type": "intro",
+          "section_title": "intro b",
+          "rows": [
+            " HRest | HRest | HRest | HRest | x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "introg",
+      "item": {
+        "Chords": {
+          "section_type": "intro",
+          "section_title": "intro",
+          "rows": [
+            " B | D | A | E | x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fill",
+      "item": {
+        "Chords": {
+          "section_type": "fill",
+          "section_title": "fill",
+          "rows": [
+            "B|B|B|B"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 1",
+          "rows": [
+            " B | D | A | E | x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fill2",
+      "item": {
+        "Ref": {
+          "section_type": "fill",
+          "section_title": "fill",
+          "link": "fill"
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 2",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "prerefrain1",
+      "item": {
+        "Chords": {
+          "section_type": "prerefrain",
+          "section_title": "pré refrain 1",
+          "rows": [
+            " B | D | A | E | x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_type": "refrain",
+          "section_title": "refrain 1",
+          "rows": [
+            " B | D | A | E | x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fill2",
+      "item": {
+        "Chords": {
+          "section_type": "fill",
+          "section_title": "fill",
+          "rows": [
+            "B|B|B|HRest"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 3",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "prerefrain2",
+      "item": {
+        "Ref": {
+          "section_type": "prerefrain",
+          "section_title": "pré refrain 2",
+          "link": "prerefrain1"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "section_type": "refrain",
+          "section_title": "refrain 2",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "pont",
+      "item": {
+        "Chords": {
+          "section_type": "pont",
+          "section_title": "pont",
+          "rows": [
+            "B|D|A|E|x4"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "section_type": "refrain",
+          "section_title": "refrain 3",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "outtro",
+      "item": {
+        "Chords": {
+          "section_type": "fill",
+          "section_title": "outtro",
+          "rows": [
+            "B|B|B|B",
+            "B HRest|B HRest"
+          ]
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "digest": "ef06614545954ab6c65c01ffd1d00b94",
+  "date": "2025-06-29"
+}

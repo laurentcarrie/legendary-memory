@@ -8,15 +8,15 @@
     "couplet.ly"
   ],
   "wavfiles": [],
-  "date": "2025-03-31",
-  "digest": "2bae9f5e5674317f02620ba303dddd1a",
+  "date": "2025-06-29",
+  "digest": "2cca4395250dd8c1759e81bc59606e60",
   "hash": "0",
   "structure": [
     {
       "id": "intro_batteriex",
       "item": {
         "Chords": {
-          "section_title": "intro batterie",
+          "section_title": "intro",
           "section_type": "intro",
           "rows": [
             "HRest | HRest "
@@ -29,7 +29,7 @@
       "id": "intro",
       "item": {
         "Chords": {
-          "section_title": "intro batterie/basse ",
+          "section_title": "intro",
           "section_type": "intro",
           "rows": [
             "Dm | Dm | Dm | Dm"
@@ -67,6 +67,10 @@
       "text": "x x x "
     },
     {
+      "id": "nc",
+      "item": "NewColumn"
+    },
+    {
       "id": "hr",
       "item": {
         "HRule": 67
@@ -76,7 +80,7 @@
       "id": "pont",
       "item": {
         "Chords": {
-          "section_title": "pont batterie",
+          "section_title": "pont",
           "section_type": "pont",
           "rows": [
             "HRest | HRest"

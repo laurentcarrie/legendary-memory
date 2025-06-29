@@ -1,0 +1,255 @@
+%\let\Im\relax
+%\DeclareMathOperator{\Im}{Im}
+%\let\Re\relax
+%\DeclareMathOperator{\Re}{Re}
+
+
+
+\usetikzlibrary{calc}
+\usetikzlibrary{math} %needed tikz library
+\usetikzlibrary{spline}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
+%\usetikzlibrary{shadings}
+%\usetikzlibrary{shapes.geometric}
+%\usetikzlibrary{arrows}
+
+
+%\tikzset{declare
+%function={Gauss(\x,mu,\sig)=1/(\sig*sqrt(2*pi))*exp(-0.5*((\x-\mu)/\sig)^2);}}
+
+
+\begin{tikzpicture}[]
+    \usetikzlibrary{arrows.meta}
+
+
+
+    % arrows.meta
+%    \draw [-{Arc Barb[arc=90]}] (0,0)--(1,0);
+%    \draw [-{Arc Barb[arc=120]}] (0,-0.5)--(1,-0.5);
+%    \draw [-{Arc Barb[arc=280]}] (0,-1)--(1,-1);
+%    \draw [-{Stealth[length=3mm, width=2mm]}] (0,0) -- (1,0);
+
+    %\newcounter{xxxrowcount}
+    %\newcounter{xxxsectioncount}
+    %\newcounter{xxxsectionrefcount}
+    %\newcounter{xxxcolumncount}
+
+    % size of a cell
+    \tikzmath{\xr=1.7;}
+    \tikzmath{\yr=1.5;}
+    \tikzmath{\topline=0;}
+    \tikzmath{\titleheight=.6;}
+    \tikzmath{\sectionsep=.1;}
+    \tikzmath{\xxxcolumnwidth=10;}
+    \tikzmath{\barcountoffset=.1;}
+    \tikzmath{\commentheight=1;}
+    \tikzmath{\titlewidth=.7;}
+    \tikzmath{\titlexoffset=1;}
+
+
+
+
+
+    \coordinate (A) at (\xr*2+\xxxcolumnwidth/2,.5) ;
+    \path (A) ++(0,+1.5) coordinate(B) ;
+%    \node[draw,ellipse,fill=red](b) at (A) {} ;
+    \node[anchor=center ,rotate=0](b) at (A) {
+
+            {
+            \Fontskrivan\bfseries\slshape
+            \fontsize{60pt}{50pt}\selectfont
+            \color{blue}
+            \songtitle
+        }
+    } ;
+
+%    \node[draw,ellipse,fill=red](b) at (B) {} ;
+    \node[anchor=center ,rotate=0](b) at (B) {
+            {%
+            \textcursive{
+            \bfseries%
+            \fontsize{20pt}{10pt}\selectfont%
+            \color{orange}%
+            \songauthor%
+            }
+        }
+    } ;
+
+
+    \coordinate (BPM) at (-\titlexoffset-.7,-\yr*.1) ;
+    \draw (BPM) [draw,dotted,rotate=0,fill=red!20,opacity=100] rectangle ++(\xr,\yr/2) node[midway,color=black]{
+            {{{song.tempo}}} BPM
+    } ;
+%    \node[draw,circle,fill=green](b) at (BPM) {} ;
+
+
+
+
+%    \tikzmath{\xxxrowcount=0;}
+%    \tikzmath{\xxxsectioncount=0;}
+
+    {{#each song.structure}}
+
+
+    {{#if this.item.ItemChords}}
+    {{#with this.item.ItemChords}}
+        \tikzmath{\gridbaseline=-\thexxxsectionrefcount*\titleheight -\thexxxrowcount * \yr - \thexxxsectioncount * \sectionsep;}
+        \coordinate (A) at (\thexxxcolumncount * \xxxcolumnwidth,\gridbaseline) ;
+        \path (A) ++(-\titlexoffset,-\titleheight-{{len-helper this.rows}}/2*\yr) coordinate (A2) ;
+        \ifthenelse{\equal{\thexxxcolumncount}{0}}{
+            \path (A) ++(4*\xr,-\titleheight/2) coordinate (SECTION2_{{section_id}}) ;
+        }{
+            \path (A) ++(4*\xr,-\titleheight/2) coordinate (SECTION2_{{section_id}}) ;
+        };
+
+        \path (A) ++(0,-\titleheight) coordinate (B);
+        \path (B) ++(0,0)coordinate(SECTION_{{section_id}}) ;
+%        \node[circle,draw=black, fill=green, inner sep=0pt,minimum size=5pt] (b) at (SECTION2_{{section_id}}) {};
+%        \node[circle,draw=black, fill=green, inner sep=0pt,minimum size=5pt] (b) at (A) {};
+        {{#each this.rows}}
+            % new row
+%            \node[circle,draw=black, fill=songbookcolor{{../section_type}}, inner sep=0pt,minimum size=5pt] (b) at (B) {};
+            \path (B) +(0,0) coordinate (C);
+            \path (B) +(-\barcountoffset ,-\yr/2) coordinate(D) ;
+            \node[anchor=east](b) at (D) { \tiny{ {{this.row_start_bar_number}} } } ;
+            {{#each this.bars}}
+                % new bar
+                \path (C) ++(\xr/2,-\yr/2) coordinate(CC) ;
+                \path (CC) ++(0,0) coordinate (CELL{{add-helper ../row_start_bar_number @index}}) ;
+                \draw (CELL{{add-helper ../row_start_bar_number @index}})
+                    [fill=\songbookcolor{{../../section_type}}](C) rectangle ++ (\xr,-\yr) node[midway,black] {
+                    } ;
+                {{#if (eq (len-helper this.chords) "2") }}
+                    % XXXXXXXXXXXXXXXX 2 chords in bar
+                    \path (CC) ++(-.3*\xr,-.3*\yr) coordinate (CC1) ;
+                    \path (CC) ++(+.3*\xr,+.3*\yr) coordinate (CC2) ;
+                    \draw[] (CC1) --  (CC2) ;
+
+                    \path (CC) ++(-.1*\xr,+.2*\yr) coordinate (CC3) ;
+                    \node[anchor=center](b) at(CC3) { \chord{{this.chords.0}} } ;
+
+                    \path (CC) ++(+.3*\xr,-.2*\yr) coordinate (CC4) ;
+                    \node[anchor=center](b) at(CC4) { \chord{{this.chords.1}} } ;
+                {{else}}
+                    \node[](b) at(CC) { \chord{{this.chords.0}} } ;
+                %    \node[anchor=east](b) at (D) { \tiny{ {{this.row_start_bar_number}} } } ;
+                {{/if}}
+                % move to next cell
+                \path (C) ++(\xr,0) coordinate (C);
+            {{/each}}
+            \path (C) ++(+.3*\xr,-.5*\yr) coordinate (R) ;
+            {{#if (eq this.repeat 2) }}
+                \node[anchor=center](b) at(R) { \chordRepeatDeux } ;
+            {{/if}}
+            {{#if (eq this.repeat 3) }}
+                \node[anchor=center](b) at(R) { \chordRepeatTrois } ;
+            {{/if}}
+            {{#if (eq this.repeat 4) }}
+                \node[anchor=center](b) at(R) { \chordRepeatQuatre } ;
+            {{/if}}
+            \path (B) +(0,-\yr) coordinate (B);
+        {{/each}}
+
+
+    \node (b) at (A2)   [draw,
+    rotate=70,
+%    ball color=\songbookcolor{{{section_type}}},
+    color=\songbookcolor{{{section_type}}},
+    fill=\songbookcolor{{{section_type}}},
+    text=black,
+    opacity=10,
+    shape=ellipse] {
+        \fontsize{12pt}{12pt}\selectfont
+            {{{section_title}}}
+    };
+
+
+%    \node[
+%%        label = above:Graphics,
+%%        label = left:Design,
+%%        label = below:Typography,
+%%        label = right:Coding,
+%        %ball color=blue!10,
+%%        ball color= \songbookcolor{{section_type}},
+%        draw,
+%        inner sep=20,
+%%        ellipse,
+%        ] at (A2)
+%        { }  ;
+
+%        \node[
+%        text=black] at (A2)
+%        {
+%            {
+%        %\Fontskrivan\bfseries\slshape
+%        \fontsize{15pt}{15pt}\selectfont {{{section_title}}}
+%        }
+%    }  ;
+
+
+%    \node[rotate=90,
+%        text=black] at (A2)
+%        {
+%            {
+%        %\Fontskrivan\bfseries\slshape
+%        \fontsize{15pt}{15pt}\selectfont {{{section_title}}}
+%        }
+%    }  ;
+
+
+%    \tikz \shadedraw [shading=ball]  (3,3) circle (.5cm);
+
+        \addtocounter{xxxrowcount}{ {{ len-helper this.rows }} }
+        \stepcounter{xxxsectioncount}
+
+
+    {{/with}}
+    {{/if}}
+
+    {{#if this.item.ItemRef}}
+    {{#with this.item.ItemRef}}
+%    \tikzmath{\gridbaseline=-\thexxxsectioncount*\titleheight - \thexxxrowcount * \yr - \thexxxsectioncount * \sectionsep;}
+    \tikzmath{\gridbaseline=-\thexxxsectionrefcount*\titleheight -\thexxxrowcount * \yr - \thexxxsectioncount * \sectionsep - \titleheight;}
+    \coordinate (A) at (\thexxxcolumncount * \xxxcolumnwidth,\gridbaseline) ;
+%    \node[circle,draw=black, fill=red, inner sep=0pt,minimum size=5pt] (b) at (A) {};
+    \draw[fill=\songbookcolor{{section_type}}](A) rectangle ++ (2*\xr,-\titleheight) node[midway,black] { {{{ this.section_title }}} } ;
+    \path (A) ++(0,0) coordinate(SECTION_{{section_id}}) ;
+
+%    \node[circle,draw=black, fill=red, inner sep=0pt,minimum size=5pt] (b) at (A) {};
+%    \draw[fill=\songbookcolor{{section_type}}](A) rectangle ++ (4*\xr,-\titleheight) node[midway,black] { {{ this.section_title }} } ;
+
+    \path  (A) +(-\barcountoffset,-\titleheight/2) coordinate (D) ;
+    \node[anchor=east](b) at (D) { \tiny{ {{this.row_start_bar_number}} } } ;
+
+    \stepcounter{xxxsectioncount}
+    \stepcounter{xxxsectionrefcount}
+
+
+    {{/with}}
+    {{/if}}
+
+    {{#if (eq this.item "ItemNewColumn") }}
+        % >>>>>>>>>>>>>>>>>>>>> NewColumn
+        \stepcounter{xxxcolumncount}
+        \setcounter{xxxsectioncount}{0}
+        \setcounter{xxxsectionrefcount}{0}
+        \setcounter{xxxrowcount}{0}
+    {{/if}}
+
+    {{/each}}
+
+        {{!--
+%    {{#each comments}}
+%    \path (CELL{{this.bar_number}}) coordinate (center) ;
+%    \path (CELL{{this.bar_number}}) +(0,-\yr/2) coordinate (south) ;
+%    \path (CELL{{this.bar_number}}) +(0,+\yr/2) coordinate (north) ;
+%%    \node[circle,draw=black, fill=blue, inner sep=0pt,minimum size=5pt] (b) at (C) {};
+%        {{{this.comment}}}
+%    {{/each}}
+        --}}
+
+
+        {{{ songtikzuserinput }}}
+
+\end{tikzpicture}

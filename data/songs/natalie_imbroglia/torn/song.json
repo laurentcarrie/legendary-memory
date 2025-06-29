@@ -70,12 +70,6 @@
       }
     },
     {
-      "id": "hr",
-      "item": {
-        "HRule": 1
-      }
-    },
-    {
       "id": "couplet3",
       "item": {
         "Ref": {
@@ -104,6 +98,10 @@
           "section_title": "refrain 2"
         }
       }
+    },
+    {
+      "id": "nc",
+      "item": "NewColumn"
     },
     {
       "id": "pont",
@@ -163,7 +161,7 @@
     }
   ],
   "wavfiles": [],
-  "date": "2025-03-31",
-  "digest": "9d7829552777bc9960507b5ee8df6d49",
+  "date": "2025-05-08",
+  "digest": "a12b2c947fa725cde808edbff74f0a76",
   "hash": "0"
 }
