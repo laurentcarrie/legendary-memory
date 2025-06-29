@@ -31,7 +31,7 @@ fi
 
 
 set -e
-( cd $here/software && cargo fmt && cargo +nightly build --bin songbook-demo )
+( cd $here/software && cargo fmt && cargo +nightly build --bin songbook-ui )
 
 tmux kill-session -t build || true
 tmux new -d -s build
@@ -45,8 +45,8 @@ tmux send-keys -t build:0.0 "cd $here/software" C-m
 tmux send-keys -t build:0.1 "cd $here/software" C-m
 tmux send-keys -t build:0.2 "cd $here/software" C-m
 
-#tmux send-keys -t build:0.0 "cargo +nightly build --bin songbook-demo" C-m
-tmux send-keys -t build:0.0 "./target/debug/songbook-demo --nb-workers $nb_workers $songdir $bookdir $builddir" C-m
+#tmux send-keys -t build:0.0 "cargo +nightly build --bin songbook-ui" C-m
+tmux send-keys -t build:0.0 "./target/debug/songbook-ui --nb-workers $nb_workers $songdir $bookdir $builddir" C-m
 
 tmux send-keys -t build:0.1 "while true ; do tail -f songbook.log ; sleep 3 ; done" C-m
 tmux send-keys -t build:0.2 "while true ; do tail -f lualatex.log ; sleep 3 ; done" C-m

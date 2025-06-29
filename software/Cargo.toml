@@ -71,8 +71,8 @@ name = "songbook-server"
 path = "src/main_server.rs"
 
 [[bin]]
-name = "songbook-demo"
-path = "src/main_demo.rs"
+name = "songbook-ui"
+path = "src/main_ui.rs"
 required-features = ["crossterm"]
 
 #[[bin]]
