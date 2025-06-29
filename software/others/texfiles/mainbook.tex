@@ -5,6 +5,7 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage[default]{frcursive}
+\usepackage{graphicx}
 \pagestyle{fancy}
 \fancyhf{}
 \newcommand{\makesongtitle}{}
@@ -16,12 +17,37 @@
 \input{chords}
 \begin{document}
 
+
+\begin{titlepage}
+	\vspace*{\fill}
+	\begin{center}
+		{%
+			%\Fontskrivan\bfseries\slshape%
+			\cursive\bfseries%
+			\fontsize{25pt}{25pt}\selectfont%
+			\color{orange}%
+			( My Song Book ) %
+		}%
+
+		%   {Huge [[Book]]}\\[0.5cm]
+		%   {Large [[author}\\[0.4cm]
+		%   [[date]]
+		\includegraphics[width=15cm]{../myguitar.jpg}
+	\end{center}
+
+
+	\vspace*{\fill}
+\end{titlepage}
+
 \label{top}
 
-
-\input{book-setlist.tikz}
-
+{{#each offsets}}
+{{#with this}}
+\input{ {{this}} }
 \newpage
+{{/with}}
+{{/each}}
+
 
 \tableofcontents
 \newpage
@@ -31,15 +57,17 @@
 \newcounter{xxxsectionrefcount}
 \newcounter{xxxcolumncount}
 
+{{!-- Each song --}}
 
 {{#each songs}}
+
 {{#with this}}
 \setcounter{xxxrowcount}{0}
 \setcounter{xxxsectioncount}{0}
 \setcounter{xxxsectionrefcount}{0}
 \setcounter{xxxcolumncount}{0}
 
-\import{ {{~path~}} }{data.tex}
+\import{ {{~this.path~}} }{data.tex}
 \section{ \songauthor / \songtitle }
 
 \hyperref[top]{

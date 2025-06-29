@@ -1,0 +1,87 @@
+{
+  "tempo": 127,
+  "author": "Muse",
+  "title": "Can't Take My Eyes Off You",
+  "texfiles": [],
+  "lilypondfiles": [],
+  "structure": [
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_title": "intro",
+          "section_type": "intro",
+          "rows": [
+            "F| F7M "
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 1",
+          "section_type": "couplet",
+          "rows": [
+            "F| F7M |F7|Bf",
+            "Bfm| F | Bf Bfm|F"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "section_title": "couplet 2",
+          "section_type": "couplet",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "pont",
+      "item": {
+        "Chords": {
+          "section_title": "pont",
+          "section_type": "pont",
+          "rows": [
+            "HRest | HRest | ",
+            "Gm | C | F | F",
+            "Gm | C | F | D7",
+            "HRest | HRest | "
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain",
+      "item": {
+        "Chords": {
+          "section_title": "refrain",
+          "section_type": "refrain",
+          "rows": [
+            "Gm | C | Gm | Dm",
+            "Gm | C | F | D7",
+            "Gm | C | Gm | Dm",
+            "Gm | Gm | C | C"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "section_title": "couplet 3",
+          "section_type": "couplet",
+          "link": "couplet1"
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "digest": "fe9866d67673f164f5e8b373d40b5a8e",
+  "date": "2025-10-03"
+}

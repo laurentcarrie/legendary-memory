@@ -1,5 +1,5 @@
-use crate::model::model::{Song, StructureItemContent};
-use chrono::TimeDelta;
+use crate::model::use_model::{Song, StructureItemContent};
+use chrono;
 
 pub fn duration_of_song(song: &Song) -> chrono::TimeDelta {
     let mut seconds: i64 = 0;
@@ -16,15 +16,10 @@ pub fn duration_of_song(song: &Song) -> chrono::TimeDelta {
             StructureItemContent::ItemHRule(_) => {}
         }
     }
-    let d = chrono::Duration::new(seconds, 0).expect("huh, duration too big");
-    d
+    chrono::Duration::new(seconds, 0).expect("huh, duration too big")
 }
 
 mod tests {
-    use crate::helpers::duration::duration_of_song;
-    use crate::model::model::{
-        Chords, Row, Song, StructureItem, StructureItemContent, TimeSignature,
-    };
     #[test]
     fn test_duration() -> Result<(), Box<dyn std::error::Error>> {
         let song = Song {

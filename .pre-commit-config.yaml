@@ -14,9 +14,9 @@ repos:
       - id: check-json
       - id: check-yaml
       - id: detect-private-key
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
-      - id: mixed-line-ending
+      #- id: end-of-file-fixer
+      #- id: trailing-whitespace
+      #- id: mixed-line-ending
 
 
   - repo: local
@@ -45,6 +45,18 @@ repos:
       - id: compute-date
         name: compute date
         entry: bash ./software/others/shfiles/compute-date.sh data/songs
+        language: system
+        #        pass_filenames: true
+        files: .*
+        require_serial: true
+        always_run: true
+        verbose: false
+
+  - repo: local
+    hooks:
+      - id: the-book
+        name: create the book
+        entry: bash ./data/make_the_book.sh
         language: system
         #        pass_filenames: true
         files: .*

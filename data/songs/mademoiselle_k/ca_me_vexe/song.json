@@ -1,0 +1,168 @@
+{
+  "tempo": 140,
+  "title": "Ca me vexe",
+  "author": "Mademoiselle K",
+  "texfiles": [
+    "body.tex"
+  ],
+  "lilypondfiles": [
+    "intro.ly",
+    "refrain1.ly",
+    "refrain2.ly",
+    "interlude.ly"
+  ],
+  "structure": [
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_title": "intro",
+          "section_type": "intro",
+          "rows": [
+            "Em|Em|Em|G",
+            "Em|G|C7|G"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 1",
+          "rows": [
+            "Em|G|Am|C7|x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_type": "refrain",
+          "section_title": "refrain 1",
+          "rows": [
+            "Em|G|Am|C7|x3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2a",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 2a",
+          "section_type": "couplet",
+          "rows": [
+            "Em|G|Am|C7|x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2b",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 2b",
+          "section_type": "coupletb",
+          "rows": [
+            "Em|G|Am|C7|"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2c",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 2c",
+          "section_type": "couplet",
+          "rows": [
+            "Em|G|Am|C7|x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Chords": {
+          "section_title": "refrain 2",
+          "section_type": "refrain",
+          "rows": [
+            "Em|G|Am|C|x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet3a",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 3a",
+          "rows": [
+            "Em|G|Am|C7|x3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet3b",
+      "item": {
+        "Chords": {
+          "section_type": "coupletb",
+          "section_title": "couplet 3b",
+          "rows": [
+            "Em|G|Am|C7|x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 3",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "lh",
+      "item": {
+        "HRule": 100
+      }
+    },
+    {
+      "id": "interlude",
+      "item": {
+        "Chords": {
+          "section_title": "interlude",
+          "section_type": "pont",
+          "rows": [
+            "Em|G|Am|C7|x3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "final",
+      "item": {
+        "Chords": {
+          "section_title": "final",
+          "section_type": "couplet",
+          "rows": [
+            "Em|G|Am|C7|",
+            "Em|G|A|C7|"
+          ]
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "digest": "751f68379066f01ce0ce61151abad705",
+  "date": "2025-10-03"
+}

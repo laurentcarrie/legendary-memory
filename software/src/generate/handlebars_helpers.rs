@@ -100,8 +100,8 @@ impl HelperDef for AddHelper {
             .iter()
             .map(|p| p.value().render().parse::<i32>().unwrap())
             .collect();
-        let result = values.iter().fold(0, |acc, v| acc + v);
-        out.write(format!("{}", result).as_str())?;
+        let result = values.iter().sum::<i32>();
+        out.write(format!("{result}").as_str())?;
         Ok(())
     }
 }
@@ -120,7 +120,7 @@ impl HelperDef for RemoveFileExtension {
         let filename = h.param(0).unwrap().value().render();
         let extension = h.param(1).unwrap().value().render();
         let result = filename.as_str().replace(extension.as_str(), "");
-        out.write(format!("{}", result).as_str())?;
+        out.write(result.as_str())?;
         Ok(())
     }
 }
@@ -139,7 +139,7 @@ impl HelperDef for PadHelper {
         let p = h.param(0).unwrap().value().as_array().unwrap().len();
         let n = h.param(1).unwrap().value().as_i64().unwrap() as usize;
         let pad = h.param(2).unwrap().value().as_str().unwrap();
-        out.write(format!("% padhelper : {} ; {} ; {}", p, n, pad).as_str())?;
+        out.write(format!("% padhelper : {p} ; {n} ; {pad}").as_str())?;
         out.write(
             (0..(std::cmp::max(0, n - p)))
                 .map(|_| pad)
@@ -164,9 +164,9 @@ impl HelperDef for MulticolsHelper {
     ) -> HelperResult {
         let p = h.param(0).unwrap().value().as_array().unwrap().len();
         let n = h.param(1).unwrap().value().as_i64().unwrap() as usize;
-        let _ = out.write(format!("% multicol helper : {} ; {} \n", p, n).as_str())?;
+        out.write(format!("% multicol helper : {p} ; {n} \n").as_str())?;
         if n - p > 0 {
-            let _ = out.write(format!("& \\multicolumn{{{}}}{{c}}{{}}\n", n - p).as_str())?;
+            out.write(format!("& \\multicolumn{{{}}}{{c}}{{}}\n", n - p).as_str())?;
         }
         Ok(())
     }
@@ -186,12 +186,12 @@ impl HelperDef for GreaterThanHelper {
         let a = i64_of_value(h.param(0).unwrap().value());
         let b = i64_of_value(h.param(1).unwrap().value());
         let j = {
-            let b = if a > b { true } else { false };
+            let b = a > b;
             JsonValue::from(b)
         };
         let x = ScopedJson::Constant(&j);
         // dbg!(&x);
-        let _ = write!(out, "{}", x.render()).unwrap();
+        write!(out, "{}", x.render()).unwrap();
 
         Ok(())
     }
@@ -209,7 +209,7 @@ impl HelperDef for LenHelper {
         out: &mut dyn Output,
     ) -> HelperResult {
         let p = h.param(0).unwrap().value().as_array().unwrap().len();
-        out.write(format!("{}", p).as_str())?;
+        out.write(format!("{p}").as_str())?;
         // let j = JsonValue::from(999 as i64);
         // let x = ScopedJson::Constant(&j);
         // dbg!(&x);
@@ -232,10 +232,10 @@ impl HelperDef for RowStartBarTimeHelper {
         let nbar = i64_of_value(h.param(0).unwrap().value());
         let tempo = i64_of_value(h.param(1).unwrap().value());
         //@ todo : we assume that a bar is always 4 times
-        let total_seconds = (nbar - 1) as f64 * 4 as f64 * 60 as f64 / tempo as f64;
-        let minutes = (total_seconds / 60 as f64).floor() as u64;
+        let total_seconds = (nbar - 1) as f64 * 4_f64 * 60_f64 / tempo as f64;
+        let minutes = (total_seconds / 60_f64).floor() as u64;
         let seconds = total_seconds as u64 - minutes * 60;
-        let _ = write!(out, "{}'{:0>2}\"", minutes, seconds);
+        let _ = write!(out, "{minutes}'{seconds:0>2}\"");
 
         Ok(())
     }
@@ -255,7 +255,7 @@ impl HelperDef for TexSanitizeHelper {
         let s = h.param(0).unwrap().value().as_str().unwrap();
         // let s = s.replace("_", "\\_");
         let s = s.replace("_", " ");
-        out.write(format!("{}", s).as_str())?;
+        out.write(&s)?;
         Ok(())
     }
 }

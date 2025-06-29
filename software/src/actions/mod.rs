@@ -1,3 +1,17 @@
 mod build_lytex;
 pub mod build_pdf;
+pub mod build_wav;
+pub mod graph;
 pub mod main_loop;
+pub mod mount;
+pub mod run_bootstrap_book;
+pub mod run_bootstrap_song;
+pub mod run_deliver_book;
+pub mod run_deliver_song;
+pub mod run_fluidsynth;
+pub mod run_lilypond_midi;
+pub mod run_lilypond_snippet;
+pub mod run_lualatex_book;
+pub mod run_lualatex_song;
+pub mod run_mountfile;
+pub mod xxx;
