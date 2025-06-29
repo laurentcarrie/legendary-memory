@@ -1,0 +1,45 @@
+
+% import preamble first
+\def\songtitle{ {{{title}}} }
+\def\songauthor{ {{{author}}} }
+\def\songtempo{ {{{tempo}}} }
+
+\setlength{\columnsep}{1.5cm}
+\setlength{\columnseprule}{0.2pt}
+
+\renewcommand{\makesongtitle}{\xxmakesongtitle{\songtitle}{\songauthor}{\songtempo} }
+\renewcommand{\songlastupdate}{ {{date}} }
+
+\xxcfoot{\songauthor}{\songtitle}
+
+
+
+\renewcommand{\songlyrics}{
+
+{{#if settings.lyrics_font}}
+{\fontfamily{ {{~settings.lyrics_font~}} }\selectfont
+{{/if}}
+{\setstretch{1.2}
+
+
+{{#each song.structure}}
+{{#if this.item.Chords}}
+\basecouplet{ {{~this.item.Chords.color~}} }{ {{this.item.Chords.title}} }{
+\input{lyrics/{{this.id}}}
+}
+
+{{/if}}
+
+{{#if this.item.Ref}}
+\basecouplet{ {{~this.item.Ref.color~}} }{ {{this.item.Ref.title}} }{
+\input{lyrics/{{this.id}}}
+}
+{{/if}}
+
+{{/each}}
+
+} % setstretch
+{{#if settings.lyrics_font}}
+} % lyrics_font
+{{/if}}
+} % songlyrics command

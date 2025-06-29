@@ -1,26 +1,23 @@
-\songbooksongstruct
 
-%{
-%	\color{red}
-%	\large
-%	à finir !
-%}
+\iftoggle{lyricsonly}{
+
+}{
+	\input{song.tikz}
+
+
+	\newpage
+	\begin{multicols}{2}
+		\songlyrics
+	\end{multicols}
+}
+
 
 \newpage
-\begin{multicols}{2}
-	\songlyrics
-\end{multicols}
+% \subimport{chordsrefrain.output/}{chordsrefrain}
+\songly{chordsrefrain}
 
-\newpage
-\subsection{accords}
-\subsubsection{refrain}
-\subimport{chordsrefrain.output/}{chordsrefrain}
-
-
-
-\section*{intro}
-\subimport{intro.output/}{intro}
-
+% \subimport{intro.output/}{intro}
+\songly{intro}
 
 \section*{riff couplet}
 \subimport{riff_a.output/}{riff_a}
@@ -30,17 +27,3 @@ la derni\`ere fois :
 \subimport{riff_b.output/}{riff_b}
 
 
-
-%    \includegraphics{intro}
-
-
-%    \section{couplet}
-%    \includegraphics{couplet}
-
-%    \includepdf[pages={-}]{solo}
-
-
-%    \newpage{
-%%    \pagecolor{olive}
-%    \includepdf[pages={-}]{solo}
-%    }

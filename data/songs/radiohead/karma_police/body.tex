@@ -1,6 +1,11 @@
-\songbooksongstruct
+\iftoggle{lyricsonly}
+{}
+{
+	\input{song.tikz}
 
-\newpage
+	\newpage
+
+}
 
 \begin{multicols}{2}
 	\songlyrics

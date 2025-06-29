@@ -2,14 +2,14 @@ use std::fs;
 use std::path::PathBuf;
 
 pub fn create_dir_all(p: &PathBuf) -> Result<(), Box<dyn std::error::Error>> {
-    match fs::create_dir_all(&p) {
+    match fs::create_dir_all(p) {
         Ok(()) => Ok(()),
         Err(e) => Err(format!("{:?}, {:?}", &e, &p).into()),
     }
 }
 
 pub fn write(p: &PathBuf, bytes: &[u8]) -> Result<(), Box<dyn std::error::Error>> {
-    match fs::write(&p, bytes) {
+    match fs::write(p, bytes) {
         Ok(()) => Ok(()),
         Err(e) => Err(format!("{:?}, {:?}", &e, &p).into()),
     }
@@ -17,7 +17,7 @@ pub fn write(p: &PathBuf, bytes: &[u8]) -> Result<(), Box<dyn std::error::Error>
 
 pub fn write_string(p: &PathBuf, data: &String) -> Result<(), Box<dyn std::error::Error>> {
     log::debug!("{}:{} write string to {:?}", file!(), line!(), p);
-    match fs::write(&p, data) {
+    match fs::write(p, data) {
         Ok(()) => Ok(()),
         Err(e) => Err(format!("{:?}, {:?}", &e, &p).into()),
     }
@@ -38,7 +38,7 @@ pub fn read_to_string(p: &PathBuf) -> Result<String, Box<dyn std::error::Error>>
 }
 
 pub fn read_to_vec_u8(p: &PathBuf) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
-    match fs::read(&p.as_path()) {
+    match fs::read(p.as_path()) {
         Ok(s) => Ok(s),
         Err(e) => Err(format!("{:?},reading {:?}", &e, &p).into()),
     }

@@ -1,0 +1,61 @@
+\documentclass[a4]{article}
+\usepackage{import}
+\usepackage{enumitem}
+\usepackage[x11names]{xcolor}
+\usepackage{tikz}
+\usepackage{fontspec}
+\usepackage{etoolbox}
+
+\usepackage{expl3}
+
+
+
+% we need to define these commands as empty... because :
+% the file data.tex redefines them with a \renewcommand, so they need to exist first
+% the reason is that for books, these macros are reset for each song in the book
+\newcommand{\makesongtitle}{}
+\newcommand{\songlastupdate}{}
+\newcommand{\songtoday}{}
+\newcommand{\xxcfoot}[2]{}
+%\newcommand{\songlyrics}{}
+
+\newtoggle{lyricsonly}
+\settoggle{lyricsonly}{false} % true = lyrics only, false = full song
+
+\usepackage{multicol}
+
+
+
+
+%\definecolor{columbiablue}{rgb}{0.61, 0.87, 1.0}
+%\definecolor{songbookcolorintro}{HTML}{F0DC82}
+%\definecolor{songbookcolorcouplet}{HTML}{e7feff}
+%\definecolor{songbookcolorcoupletb}{HTML}{54FF9F}
+%\definecolor{songbookcolorrefrain}{HTML}{63B8FF}
+%\definecolor{songbookcolorrefrainb}{HTML}{36648B}
+%\definecolor{songbookcolorpont}{HTML}{D8BFD8}
+%\definecolor{songbookcolorfill}{HTML}{dbd7d2}
+
+% generic preamble
+\input{preamble}
+% generated from user data
+\input{sections}
+\input{data}
+\input{chords}
+
+
+
+
+\begin{document}
+%\makesongtitle
+% body.tex is the user input
+
+\newcounter{xxxrowcount}
+\newcounter{xxxsectioncount}
+\newcounter{xxxsectionrefcount}
+\newcounter{xxxcolumncount}
+
+
+\input{body}
+
+\end{document}

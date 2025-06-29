@@ -16,3 +16,9 @@ indent.log
 /software/leptos/source_tree/dist/
 /attic/
 /fonts/*.svg
+*.log
+.vscode
+*.lock
+
+# Local Netlify folder
+.netlify
