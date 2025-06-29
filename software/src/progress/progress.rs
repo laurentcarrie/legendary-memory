@@ -1,4 +1,3 @@
-use crate::errors::MyError;
 use crate::protocol::model::answer::{Progress, ProgressItem};
 use chrono;
 use human_sort::compare;
@@ -6,7 +5,7 @@ use regex::Regex;
 use std::cmp::Ordering;
 use std::collections::HashMap;
 
-pub fn progress_of_string(data: String) -> Result<Progress, MyError> {
+pub fn progress_of_string(data: String) -> Result<Progress, Box<dyn std::error::Error>> {
     let re = Regex::new(r"\[(.*)\]\[(.*)\]\[(.*)\]\[(.*)\]").unwrap();
     let mut most_recent_items: HashMap<(String, String), ProgressItem> = Default::default();
 
@@ -14,10 +13,7 @@ pub fn progress_of_string(data: String) -> Result<Progress, MyError> {
         let previous_item = most_recent_items.get(&(topic.to_string(), message.to_string()));
         let naive = chrono::NaiveDateTime::parse_from_str(date, "%Y-%m-%d %H:%M:%S");
         if naive.is_err() {
-            return Err(MyError::MessageError(format!(
-                "cannot parse date '{}'",
-                date
-            )));
+            return Err(format!("cannot parse date '{}'", date).into());
         };
         let naive = naive.unwrap().and_utc().timestamp();
         // let now = chrono::Utc::now().timestamp();

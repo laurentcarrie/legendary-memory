@@ -9,18 +9,13 @@ buildroot=$2
 #set -e
 #set -x
 
-stats(){
-count1=$(find $buildroot -name OMakefile | wc --lines)
-count2=$(find $buildroot -name main.pdf | wc --lines)
-
-echo "buildroot is $buildroot<br>"
-echo "$count2 / $count1 <br>"
-}
-
 
 workdir=$(dirname $(realpath $1.tex))
 pprintworkdir=$(echo $workdir | sed "s#$here##")
 
+for f in main.tex chords.tex sections.tex preamble.tex ; do
+  cp $buildroot/songs/$f $workdir/$f
+done
 
 rm -f main.pdf
 
@@ -44,5 +39,3 @@ if test -f main.pdf ; then
 else
   printfc FAILED pdf $pprintworkdir
 fi
-
-#stats

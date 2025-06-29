@@ -5,10 +5,16 @@ set -x
 
 dirname=$2
 remote=$1
-test -d $dirname
-test -f "$dirname/maroon_5--@--this_love.pdf"
+
+ls $dirname | while read f ; do
+  case "$f" in
+      *.pdf) true ;;
+      *) echo "this is not a pdf file : $f" ; exit 1;;
+  esac
+done
+
 
 (
   cd $dirname
-  rclone sync . mydrive:$remote --verbose --differ -
+  rclone sync . mydrive:$remote --verbose
 )

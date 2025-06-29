@@ -1,0 +1,82 @@
+{
+  "tempo": 126,
+  "author": "Pixies",
+  "title": "Gouge Away",
+  "texfiles": [],
+  "lilypondfiles": [
+    "basse.ly"
+  ],
+  "structure": [
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 1",
+          "rows": [
+            "Fsm | A |D |Fsm |D|x4"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_type": "refrain",
+          "section_title": "refrain 1",
+          "rows": [
+            "Fsm | A |D |Fsm |D|"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 2",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "section_type": "refrain",
+          "section_title": "refrain 2",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 3",
+          "rows": [
+            "Fsm | A |D |Fsm |D|x3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "final",
+      "item": {
+        "Chords": {
+          "section_type": "refrain",
+          "section_title": "final",
+          "rows": [
+            "Fsm | A |D |Fsm |D|x3"
+          ]
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "digest": "e5b351c818c74ba7b909b4beda9fc785",
+  "date": "2025-06-29"
+}

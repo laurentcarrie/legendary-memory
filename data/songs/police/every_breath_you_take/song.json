@@ -1,7 +1,7 @@
 {
   "tempo": 117,
   "title": "Every Breath You Take",
-  "author": "the Police",
+  "author": "Police",
   "texfiles": [],
   "lilypondfiles": [],
   "structure": [
@@ -39,7 +39,7 @@
         "Chords": {
           "section_title": "couplet 2",
           "section_type": "coupletb",
-          "section_body": "",
+          "section_body": "\\songbookcomment{idem couplet1 sauf 2 dernières mesures}",
           "rows": [
             "Bf|Bf|Gm|Gm",
             "Ef|F|Bf|Bf"
@@ -71,11 +71,18 @@
       }
     },
     {
+      "id": "nc",
+      "item": {
+        "NewColumn": null
+      }
+    },
+    {
       "id": "pont",
       "item": {
         "Chords": {
           "section_title": "pont",
           "section_type": "pont",
+          "section_body": "\\songbookcomment{en accords plaqués}",
           "rows": [
             "Gf|Gf|Af|Af",
             "Gf|Gf|Af|Af",
@@ -149,7 +156,7 @@
     }
   ],
   "wavfiles": [],
-  "digest": "1bca80ae6376f4e354d80bb64f503285",
-  "date": "2025-03-31",
+  "digest": "0700247cc65a6c584c33950036bdb64d",
+  "date": "2025-06-29",
   "hash": "0"
 }

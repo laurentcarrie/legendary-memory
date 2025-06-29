@@ -1,22 +1,112 @@
-use crate::errors::MyError;
 use crate::generate::handlebars_helpers::get_handlebar;
-use crate::model::model::World;
+use crate::model::model::{Book, Song, StructureItemContent, World};
 use std::fs::File;
-use std::io::Write;
+use std::io::{Error, Write};
 // use std::os::unix::fs::PermissionsExt;
+use crate::helpers::duration::duration_of_song;
+use crate::helpers::helpers::song_of_booksong;
+use std::fs;
 use std::path::PathBuf;
 
 use crate::helpers::io::{create_dir_all, write};
 
-pub fn generate(world: &World) -> Result<(), MyError> {
+pub fn mount_files(world: &World) -> Result<(), Box<dyn std::error::Error>> {
     {
-        let bytes = include_bytes!("../../others/shfiles/make_lytex.sh");
         let mut p: PathBuf = world.builddir.clone();
-        let () = create_dir_all(&p)?;
-        p.push("make_lytex.sh");
-        log::debug!("write {}", p.display());
-        let _ = write(&p, bytes)?;
+        p.push("delivery");
+        let _ = create_dir_all(&p)?;
     }
+
+    {
+        // mount files
+        for song in &world.songs {
+            {
+                let mut pfrom = PathBuf::from(song.srcdir.clone());
+                pfrom.push("lyrics");
+                let _ = create_dir_all(&pfrom)?;
+                let mut pto = PathBuf::from(song.builddir.clone());
+                pto.push("lyrics");
+                let _ = create_dir_all(&pto)?;
+            }
+            {
+                let mut pfrom = PathBuf::from(song.srcdir.clone());
+                pfrom.push(format!("body.tex"));
+                if !pfrom.exists() {
+                    return Err(
+                        format!("no body.tex for song {}/{}", song.author, song.title).into(),
+                    );
+                }
+                let mut pto = PathBuf::from(song.builddir.clone());
+                pto.push(format!("body.tex"));
+                fs::copy(pfrom.to_str().unwrap(), pto.to_str().unwrap())?;
+            }
+            {
+                let mut pfrom = PathBuf::from(song.srcdir.clone());
+                pfrom.push(format!("add.tikz"));
+                if !pfrom.exists() {
+                    return Err(
+                        format!("no add.tikz for song {}/{}", song.author, song.title).into(),
+                    );
+                }
+                let mut pto = PathBuf::from(song.builddir.clone());
+                pto.push(format!("add.tikz"));
+                fs::copy(pfrom.to_str().unwrap(), pto.to_str().unwrap())?;
+            }
+
+            {
+                for lyfile in &song.lilypondfiles {
+                    let mut pfrom = PathBuf::from(song.srcdir.clone());
+
+                    pfrom.push(&lyfile);
+                    if !pfrom.exists() {
+                        return Err(format!(
+                            "no {} for song {}/{}",
+                            lyfile, song.author, song.title
+                        )
+                        .into());
+                    }
+                    let mut pto = PathBuf::from(song.builddir.clone());
+                    pto.push(lyfile);
+                    fs::copy(pfrom.to_str().unwrap(), pto.to_str().unwrap())?;
+                }
+            }
+
+            let lyrics_ids = &song
+                .structure
+                .iter()
+                .filter_map(|item| match &item.item {
+                    StructureItemContent::ItemChords(s) => Some(s.section_id.clone()),
+                    StructureItemContent::ItemRef(s) => Some(s.section_id.clone()),
+                    StructureItemContent::ItemHRule(_) => None,
+                    StructureItemContent::ItemNewColumn => None,
+                })
+                .collect::<Vec<_>>();
+            for id in lyrics_ids {
+                let mut pfrom = PathBuf::from(song.srcdir.clone());
+                pfrom.push("lyrics");
+                pfrom.push(format!("{}.tex", id));
+                if !pfrom.exists() {
+                    std::fs::write(pfrom.to_str().unwrap(), "\\color{red}{put something here}")?;
+                }
+                let mut pto = PathBuf::from(song.builddir.clone());
+                pto.push("lyrics");
+                pto.push(format!("{}.tex", id));
+                fs::copy(pfrom.to_str().unwrap(), pto.to_str().unwrap())?;
+            }
+        }
+    }
+    Ok(())
+}
+
+pub fn generate_from_handlebars_templates(world: &World) -> Result<(), Box<dyn std::error::Error>> {
+    // {
+    //     let bytes = include_bytes!("../../others/shfiles/make_lytex.sh");
+    //     let mut p: PathBuf = world.builddir.clone();
+    //     let () = create_dir_all(&p)?;
+    //     p.push("make_lytex.sh");
+    //     log::debug!("write {}", p.display());
+    //     let _ = write(&p, bytes)?;
+    // }
     {
         let bytes = include_bytes!("../../others/shfiles/colors.sh");
         let mut p: PathBuf = world.builddir.clone();
@@ -40,20 +130,6 @@ pub fn generate(world: &World) -> Result<(), MyError> {
         p.push("check-existence-of-files.sh");
         log::debug!("write {}", p.display());
         let _ = write(&p, bytes)?;
-    }
-    {
-        let bytes = include_bytes!("../../others/shfiles/omake.sh");
-        let mut p: PathBuf = world.builddir.clone();
-        let _ = create_dir_all(&p)?;
-        p.push("omake.sh");
-        log::debug!("write {}", p.display());
-        let _ = write(&p, bytes)?;
-        // let str_p = p
-        //     .to_str()
-        //     .ok_or(MyError::MessageError("huh ?".to_string()))?;
-        // let mut perms = std::fs::metadata(str_p)?.permissions();
-        // perms.set_readonly(true);
-        // perms.set_mode(5u32);
     }
     {
         let bytes = include_bytes!("../../others/shfiles/make_clean.sh");
@@ -80,12 +156,65 @@ pub fn generate(world: &World) -> Result<(), MyError> {
         let _ = write(&p, bytes)?;
     }
     {
-        let bytes = include_bytes!("../../others/shfiles/make_pdf.sh");
+        let bytes = include_bytes!("../../others/shfiles/rkill.sh");
         let mut p: PathBuf = world.builddir.clone();
         let _ = create_dir_all(&p)?;
-        p.push("make_pdf.sh");
+        p.push("rkill.sh");
         log::debug!("write {}", p.display());
         let _ = write(&p, bytes)?;
+    }
+    {
+        let bytes = include_bytes!("../../others/shfiles/pdf_song_script.sh");
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = create_dir_all(&p)?;
+        p.push("pdf_song_script.sh");
+        log::debug!("write {}", p.display());
+        let _ = write(&p, bytes)?;
+    }
+    {
+        let bytes = include_bytes!("../../others/shfiles/pdf_book_script.sh");
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = create_dir_all(&p)?;
+        p.push("pdf_book_script.sh");
+        log::debug!("write {}", p.display());
+        let _ = write(&p, bytes)?;
+    }
+    {
+        let bytes = include_bytes!("../../others/shfiles/lytex_script.sh");
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = create_dir_all(&p)?;
+        p.push("lytex_script.sh");
+        log::debug!("write {}", p.display());
+        let _ = write(&p, bytes)?;
+    }
+    {
+        let bytes = include_bytes!("../../others/shfiles/md5sum.sh");
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = create_dir_all(&p)?;
+        p.push("md5sum.sh");
+        log::debug!("write {}", p.display());
+        let _ = write(&p, bytes)?;
+    }
+    {
+        let bytes = include_bytes!("../../others/shfiles/delivery_script.sh");
+        let mut p: PathBuf = world.builddir.clone();
+        let _ = create_dir_all(&p)?;
+        p.push("delivery_script.sh");
+        log::debug!("write {}", p.display());
+        let _ = write(&p, bytes)?;
+    }
+    {
+        let mut p: PathBuf = PathBuf::new();
+        let _ = create_dir_all(&p)?;
+        p.push("run.sh");
+        log::debug!("write {}", p.display());
+        let mut output = File::create(&p)?;
+        let template = String::from_utf8(include_bytes!("../../others/shfiles/run.sh").to_vec())?;
+
+        let mut h = get_handlebar()?;
+        h.register_template_string("t1", template)?;
+        let output_data = h.render("t1", world)?;
+        let _ = output.write(output_data.as_bytes())?;
     }
     {
         let bytes = include_bytes!("../../others/shfiles/make_gdrive.sh");
@@ -96,58 +225,51 @@ pub fn generate(world: &World) -> Result<(), MyError> {
         let _ = write(&p, bytes)?;
     }
     {
-        let bytes = include_bytes!("../../others/shfiles/make_wav.sh");
-        let mut p: PathBuf = world.builddir.clone();
-        let _ = create_dir_all(&p)?;
-        p.push("make_wav.sh");
-        log::debug!("write {}", p.display());
-        let _ = write(&p, bytes)?;
-    }
-    {
         let bytes_preamble_tex = include_bytes!("../../others/texfiles/preamble.tex");
-        let mut p: PathBuf = world.builddir.clone();
-        let _ = create_dir_all(&p)?;
-        p.push("songs");
-        p.push("preamble.tex");
-        log::debug!("write {}", p.display());
-        let _ = write(&p, bytes_preamble_tex)?;
-    }
-    {
-        let bytes_preamble_tex = include_bytes!("../../others/texfiles/preamble.tex");
-        let mut p: PathBuf = world.builddir.clone();
-        p.push("books");
-        let _ = create_dir_all(&p)?;
-        p.push("preamble.tex");
-        log::debug!("write {}", p.display());
-        let _ = write(&p, bytes_preamble_tex)?;
+        for song in &world.songs {
+            let mut p: PathBuf = song.builddir.clone();
+            p.push("preamble.tex");
+            let _ = write(&p, bytes_preamble_tex)?;
+        }
+        for book in &world.books {
+            let mut p: PathBuf = book.builddir.clone();
+            p.push("preamble.tex");
+            let _ = write(&p, bytes_preamble_tex)?;
+        }
     }
 
     {
         let bytes_preamble_tex = include_bytes!("../../others/texfiles/main.tex");
-        let mut p: PathBuf = world.builddir.clone();
-        p.push("songs");
-        let _ = create_dir_all(&p)?;
-        p.push("main.tex");
-        log::debug!("write {}", p.display());
-        let _ = write(&p, bytes_preamble_tex)?;
+        for song in &world.songs {
+            let mut p: PathBuf = song.builddir.clone();
+            p.push("main.tex");
+            let _ = write(&p, bytes_preamble_tex)?;
+        }
+    }
+    {
+        let bytes_preamble_tex = include_bytes!("../../others/texfiles/tikzlibraryspline.code.tex");
+        for song in &world.songs {
+            let mut p: PathBuf = song.builddir.clone();
+            p.push("tikzlibraryspline.code.tex");
+            let _ = write(&p, bytes_preamble_tex)?;
+        }
+        for books in &world.books {
+            let mut p: PathBuf = books.builddir.clone();
+            p.push("tikzlibraryspline.code.tex");
+            let _ = write(&p, bytes_preamble_tex)?;
+        }
     }
 
     {
         let bytes_chords_tex = include_bytes!("../../others/texfiles/chords.tex");
-        {
-            let mut p: PathBuf = world.builddir.clone();
-            let _ = create_dir_all(&p)?;
-            p.push("songs");
+        for song in &world.songs {
+            let mut p: PathBuf = song.builddir.clone();
             p.push("chords.tex");
-            log::debug!("write {}", p.display());
             let _ = write(&p, bytes_chords_tex)?;
         }
-        {
-            let mut p: PathBuf = world.builddir.clone();
-            let _ = create_dir_all(&p)?;
-            p.push("books");
+        for book in &world.books {
+            let mut p: PathBuf = book.builddir.clone();
             p.push("chords.tex");
-            log::debug!("write {}", p.display());
             let _ = write(&p, bytes_chords_tex)?;
         }
     }
@@ -169,27 +291,23 @@ pub fn generate(world: &World) -> Result<(), MyError> {
     }
 
     {
-        let mut p: PathBuf = world.builddir.clone();
-        let _ = create_dir_all(&p)?;
-        p.push("songs");
-        p.push("sections.tex");
-        let mut output = File::create(p)?;
         let template =
             String::from_utf8(include_bytes!("../../others/texfiles/sections.tex").to_vec())?;
-
         let mut h = get_handlebar()?;
         h.register_template_string("t1", template)?;
-        // let sections: Vec<Section> = world.sections.iter().map(|x| x.1.clone()).collect();
-        // let j = handlebars::to_json(&sections);
         let output_data = h.render("t1", world)?;
-        let _ = output.write(output_data.as_bytes())?;
-
-        let mut p: PathBuf = world.builddir.clone();
-        let _ = create_dir_all(&p)?;
-        p.push("books");
-        p.push("sections.tex");
-        let mut output = File::create(p)?;
-        let _ = output.write(output_data.as_bytes())?;
+        for song in &world.songs {
+            let mut p: PathBuf = song.builddir.clone();
+            p.push("sections.tex");
+            let mut output = File::create(p)?;
+            let _ = output.write(output_data.as_bytes())?;
+        }
+        for book in &world.books {
+            let mut p: PathBuf = book.builddir.clone();
+            p.push("sections.tex");
+            let mut output = File::create(p)?;
+            let _ = output.write(output_data.as_bytes())?;
+        }
     }
 
     {
@@ -202,13 +320,7 @@ pub fn generate(world: &World) -> Result<(), MyError> {
             let _ = create_dir_all(&p)?;
             p.push("data.tex");
             log::debug!("write {}", p.display());
-            let mut output = File::create(&p).or_else(|e| {
-                Err(MyError::MessageError(format!(
-                    "{:?} could not create {:?}",
-                    e,
-                    &p.to_str()
-                )))
-            })?;
+            let mut output = File::create(&p)?;
             write!(output, "% length of structure : {}\n", song.structure.len())?;
 
             let template =
@@ -222,20 +334,141 @@ pub fn generate(world: &World) -> Result<(), MyError> {
     }
 
     {
-        let mut p: PathBuf = world.builddir.clone();
-        p.push("delivery");
-        let _ = create_dir_all(&p)?;
+        // song.tikz
+        let mut id = 0u32;
+        for song in &world.songs {
+            id = id + 1;
+            let mut p: PathBuf = song.builddir.clone();
+            let _ = create_dir_all(&p)?;
+            p.push("song.tikz");
+            let mut output = File::create(&p)?;
+
+            let songtikzuserinput = {
+                let mut p: PathBuf = song.builddir.clone();
+                p.push("add.tikz");
+                fs::read_to_string(p)?
+            };
+
+            let template =
+                String::from_utf8(include_bytes!("../../others/texfiles/song.tikz").to_vec())?;
+
+            #[derive(serde::Serialize)]
+            struct XXX<'a> {
+                song: &'a Song,
+                songtikzuserinput: String,
+                id: u32,
+            }
+            let data = XXX {
+                song: song,
+                songtikzuserinput: songtikzuserinput,
+                id: id,
+            };
+            log::debug!("generate song.tikz");
+            let mut h = get_handlebar()?;
+            h.register_template_string("t1", template)?;
+            let output_data = h.render("t1", &data)?;
+            output.write(output_data.as_bytes())?;
+        }
     }
 
-    // {
-    //     let mut p: PathBuf = world.builddir.clone();
-    //     let _ = create_dir_all(&p)?;
-    //     p.push("macros.ly");
-    //     log::debug!("write {}", p.display());
-    //     let mut output = File::create(p)?;
-    //     let data = make_macros();
-    //     write!(output, "{}", data)?;
-    // }
+    {
+        // setlist.tikz
+        let mut id = 0u32;
+        for book in &world.books {
+            id = id + 1;
+            let mut p: PathBuf = book.builddir.clone();
+            let _ = create_dir_all(&p)?;
+            p.push("book-setlist.tikz");
+            let mut output = File::create(&p)?;
+
+            let template = String::from_utf8(
+                include_bytes!("../../others/texfiles/book-setlist.tikz").to_vec(),
+            )?;
+
+            #[derive(serde::Serialize)]
+            struct SSS {
+                author: String,
+                title: String,
+                duration: String,
+                cumul_duration: String,
+                tempo: u32,
+            }
+            #[derive(serde::Serialize)]
+            struct XXX {
+                songs: Vec<SSS>,
+            }
+            let mut cumul = chrono::Duration::new(0, 0).unwrap();
+            let songs = book
+                .songs
+                .iter()
+                .map(|bs| {
+                    let song = song_of_booksong(&world, &bs).unwrap();
+                    let d = duration_of_song(&song);
+                    let minutes = d.num_minutes();
+                    let seconds = d.num_seconds() - 60 * minutes;
+                    cumul += d;
+                    let cumul_minutes = cumul.num_minutes();
+                    let cumul_seconds = cumul.num_seconds() - 60 * cumul_minutes;
+                    SSS {
+                        author: song.author.clone(),
+                        title: song.title.to_string(),
+                        duration: format!("{:2}'{:02}\"", minutes, seconds),
+                        cumul_duration: format!("{:2}'{:02}\"", cumul_minutes, cumul_seconds),
+                        tempo: song.tempo,
+                    }
+                })
+                .collect::<Vec<_>>();
+            let data = XXX { songs: songs };
+            log::debug!("generate book-setlist.tikz");
+            let mut h = get_handlebar()?;
+            h.register_template_string("t1", template)?;
+            let output_data = h.render("t1", &data)?;
+            output.write(output_data.as_bytes())?;
+        }
+    }
+
+    Ok(())
+}
+
+pub fn generate_json_song(song: &Song) -> Result<(), Error> {
+    log::debug!("generate song.json in {}", song.builddir.display());
+    let mut p: PathBuf = song.builddir.clone();
+    let _ = fs::create_dir_all(&p)?;
+    p.push("song-internal.json");
+    let _ = fs::write(
+        p.to_str().unwrap(),
+        serde_json::to_string(&song).unwrap().as_bytes(),
+    );
+
+    Ok(())
+}
+
+pub fn generate_json_book(book: &Book) -> Result<(), Error> {
+    log::debug!("generate book.json in {}", book.builddir.display());
+    let mut p: PathBuf = book.builddir.clone();
+    let _ = fs::create_dir_all(&p)?;
+    p.push("book.json");
+    let _ = fs::write(
+        p.to_str().unwrap(),
+        serde_json::to_string(&book).unwrap().as_bytes(),
+    );
+
+    Ok(())
+}
+
+pub fn generate_main_book(book: &Book) -> Result<(), Error> {
+    log::debug!("generate main.tex in {}", book.builddir.display());
+    let mut p: PathBuf = book.builddir.clone();
+    let _ = fs::create_dir_all(&p)?;
+    p.push("main.tex");
+    let mut output = File::create(p)?;
+    let template =
+        String::from_utf8(include_bytes!("../../others/texfiles/mainbook.tex").to_vec()).unwrap();
+
+    let mut h = get_handlebar()?;
+    h.register_template_string("t1", template).unwrap();
+    let output_data = h.render("t1", book).unwrap();
+    let _ = output.write(output_data.as_bytes()).unwrap();
 
     Ok(())
 }

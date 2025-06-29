@@ -1,0 +1,120 @@
+{
+  "tempo": 91,
+  "title": "Modern Love",
+  "author": "David Bowie",
+  "texfiles": [],
+  "lilypondfiles": [
+    "chordsrefrain.ly"
+  ],
+  "structure": [
+    {
+      "id": "introdg",
+      "item": {
+        "Chords": {
+          "section_type": "intro",
+          "section_title": "intro g-d",
+          "rows": [
+            "Em | Em | Em | Em"
+          ]
+        }
+      }
+    },
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_type": "pont",
+          "section_title": "intro",
+          "rows": [
+            "Em | C | D | Em"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 1",
+          "rows": [
+            "C | C | G | Am",
+            "E7 | F | C | G",
+            "Em "
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 2",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_type": "refrain",
+          "section_title": "refrain 1",
+          "rows": [
+            "C|D|Em|F|x3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pont",
+      "item": {
+        "Ref": {
+          "section_title": "pont",
+          "link": "intro"
+        }
+      }
+    },
+    {
+      "id": "solo",
+      "item": {
+        "Ref": {
+          "section_title": "solo",
+          "section_type": "solo",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "section_title": "couplet 3",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 2",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 3",
+          "link": "refrain1"
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "digest": "9a5fd31c530fc47329f4ba196278eb57",
+  "date": "2025-06-29"
+}

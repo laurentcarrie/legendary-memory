@@ -1,0 +1,80 @@
+%\let\Im\relax
+%\DeclareMathOperator{\Im}{Im}
+%\let\Re\relax
+%\DeclareMathOperator{\Re}{Re}
+
+
+
+\usetikzlibrary{calc}
+\usetikzlibrary{math} %needed tikz library
+\usetikzlibrary{spline}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
+%\usetikzlibrary{shadings}
+%\usetikzlibrary{shapes.geometric}
+%\usetikzlibrary{arrows}
+
+
+%\tikzset{declare
+%function={Gauss(\x,mu,\sig)=1/(\sig*sqrt(2*pi))*exp(-0.5*((\x-\mu)/\sig)^2);}}
+
+
+\begin{tikzpicture}[]
+    \usetikzlibrary{arrows.meta}
+
+
+
+    \tikzmath{\yr=1.8;}
+    \tikzmath{\yoffset=.8;}
+    \tikzmath{\xtimemarkers=1;}
+    \tikzmath{\xtitle=10;}
+
+    \coordinate coordinate(Atime) at (\xtimemarkers,0) ;
+    \coordinate coordinate(Atitle) at (\xtitle,0) ;
+
+%    \draw (0,0)
+%    [fill=red!10,opacity=10](0,0) rectangle ++ (15,-15) node[midway,black] {
+%        } ;
+
+
+    {{#each songs }}
+        \node[anchor=south east] (b) at (Atime) { {\color{magenta}{\textbf{~{{{this.tempo}}} BPM}}} ;  {{{this.duration}}} } ;
+        \node[anchor=north east] (b) at (Atime) { cumul : {{{this.cumul_duration}}} } ;
+%        \node[anchor=south west] (b) at (Atime) { {{{this.tempo}}} bpm } ;
+
+%        \node[circle,draw=black, fill=red, inner sep=0pt,minimum size=5pt] (b) at (Atime) {};
+%        \node[circle,draw=black, fill=green, inner sep=0pt,minimum size=5pt] (b) at (Atitle) {};
+
+        \node[anchor=center] (b) at (Atitle) {
+%            {{{this.tempo}}} bpm     %
+            \hyperref[sec:song{{@index}}]{%
+                        \bfseries\slshape%
+                        \fontsize{30pt}{30pt}\selectfont%
+                        \color{blue}%
+                        {{{this.title}}}    %
+                }%
+            {%
+                %\Fontskrivan\bfseries\slshape%
+                \cursive\bfseries%
+                \fontsize{15pt}{15pt}\selectfont%
+                \color{orange}%
+                ( {{{this.author}}} ) %
+            }%
+            };
+%        \path (Atitle) ++(0,-\yoffset) coordinate(Atitleb) ;
+%        \node[anchor=center] (b) at (Atitleb) {%
+%            {{{this.tempo}}} bpm     %
+%            \hyperref[sec:song{{@index}}]{%
+%                        \Fontskrivan\bfseries\slshape%
+%                        \fontsize{15pt}{15pt}\selectfont%
+%                        \color{orange}%
+%                        {{{this.author}}}%
+%                }%
+%            };
+%
+
+        \path (Atime) ++(0,-\yr) coordinate(Atime) ;
+        \path (Atitle) ++(0,-\yr) coordinate(Atitle) ;
+    {{/each}}
+
+\end{tikzpicture}

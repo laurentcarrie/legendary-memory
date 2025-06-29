@@ -1,0 +1,88 @@
+\documentclass[a4]{article}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+
+\begin{document}
+
+
+\usetikzlibrary{calc}
+\usetikzlibrary{math} %needed tikz library
+%    \newcount\barcount
+%    \pgfkeys{/pgf/fpu,/pgf/fpu/output format=fixed}
+%    \pgfkeys{/pgf/number format/.cd,fixed,precision=2}
+\newcounter{barcount}
+\begin{tikzpicture}[]
+
+	\tikzmath{\xr=1;}
+	\tikzmath{\yr=1;}
+
+
+	\tikzmath{\topline=10;}
+	\tikzmath{\titleheight=1;}
+	\tikzmath{\sectionsep=.5;}
+	\tikzmath{\barcountoffset=.5;}
+
+
+	\draw[](0,\topline) --++ (4*\xr,0) node[right] { topline } ;
+
+	\tikzmath{\gridbaseline=\topline ;}
+	\draw[<->](-1,\gridbaseline) --++ (0,-\titleheight) node[anchor=east,midway,black] {titleheight} ;
+	\draw[<->](-1,\gridbaseline-\titleheight) --++ (0,-\yr) node[anchor=east,midway,black] {yr} ;
+	\draw[<->](-1,\gridbaseline-\titleheight-3*\yr) --++ (0,-\sectionsep) node[anchor=east,midway,black] {sectionsep} ;
+
+
+
+	\coordinate(A) at (-\barcountoffset,\gridbaseline-\titleheight-1.5*\yr) ;
+	\path (A) +(\barcountoffset,0) coordinate (B);
+	\coordinate (C) at ( -\barcountoffset,\topline+1);
+	\path (C) +(\barcountoffset,0) coordinate (D);
+	%        \path A\coordinate(B) at (0,\gridbaseline-\titleheight-1.5*\yr) ;
+	%        \coordinate (C) (-\barcountoffset,\topline+1);
+	%        \coordinate (D) (0,\topline+1);
+	\coordinate(A) at (-\barcountoffset,\gridbaseline-\titleheight-1.5*\yr) ;
+	\node[circle,draw=black, fill=white, inner sep=0pt,minimum size=5pt] (b) at (A) {\tiny{5}};
+	\draw[dashed,very thin,gray](A) -- (C) ;
+	\draw[dashed,very thin,gray](B) -- (D) ;
+	\draw[<->](C) -- (D) node[anchor=south,midway,black] {barcountoffset} ;
+
+	%        \node[circle,draw=black, fill=red, inner sep=0pt,minimum size=5pt] (b) at (A) {\tiny{5}};
+	%        \node[circle,draw=black, fill=green, inner sep=0pt,minimum size=5pt] (b) at (C) {\tiny{5}};
+	%        \node[circle,draw=black, fill=yellow, inner sep=0pt,minimum size=5pt] (b) at (D) {\tiny{5}};
+
+
+	\foreach \isection in {0,...,3} {
+			% in this formula, 3 stands for 3 rows (each section has 3 rows in this example
+			\tikzmath{\gridbaseline=\topline - \isection * ( 3 * \yr + \titleheight + \sectionsep);}
+			%            \draw[<->](0,\gridbaseline+.5) --++ (\xr,0) node[anchor=south,midway,black] {$\\xr$} ;
+			%            \draw[<->](-.5,\gridbaseline) --++ (0,-\yr) node[anchor=east,midway,black] {$\\yr$} ;
+			\draw[fill=red!20](0,\gridbaseline) rectangle ++ (4*\xr,-\titleheight) node[midway,black] { section title} ;
+
+			%            \draw[<->](0,\gridbaseline+.25) --++ (\xr,0) node[anchor=south,midway,black] {$\\xr$} ;
+			%            \coordinate (A) at (-0.5,\gridbaseline-\titleheight-\row*\yr0,\gridbaseline+.25));
+			%            \node[circle,draw=black, fill=white, inner sep=0pt,minimum size=5pt] (b) at (A) {\tiny{5}};
+
+			\foreach \row  in {0,...,2} {
+					\foreach \bar  in {0,...,3} {
+							%                    \tikzmath{\barcount=\isection * 4 * 3 + 4*\row+\bar;}
+							\coordinate (A) at (\bar*\xr,\gridbaseline-\titleheight-\row*\yr);
+							\draw[fill=blue!10] (A) rectangle ++ (\xr,-\yr) node[midway,black] {chord} ;
+							%                    \node[circle,draw=black, fill=white, inner sep=0pt,minimum size=5pt] (b) at (A) {\tiny{\thebarcount}};
+							\stepcounter{barcount}
+						};
+				};
+		}
+
+
+
+
+	%        \draw (0.05,-0.2) node[left, text=gray]{O};
+	%        \draw [thick, draw=gray, ->] (-1.5,0) -- (3,0) node[right, black] {$x$};
+	%        \draw [thick, draw=gray, ->] (0,-1.5) -- (0,5) node[above, black] {$f(x)$};
+	%        \draw [red, thick, domain=-1.2:2.5, samples=100] plot(\x, {((\x)+1});
+	%        \draw [blue, thick, domain=-0.7:2, samples=100] plot(\x, {(3-2*(\x)});
+	%        \draw[gray, dashed] (2/3,0)--(2/3,5/3);
+	%        \node[circle,fill=black,inner sep=0pt,minimum size=3pt,label=below:{$\frac{3}{2}$}] (a) at (2/3,0) {};
+	%        \node[circle,draw=black, fill=white, inner sep=0pt,minimum size=5pt] (b) at (2/3,5/3) {};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,150 @@
+{
+  "tempo": 98,
+  "title": "Je N'Veux Pas Rester Sage",
+  "author": "Dolly",
+  "texfiles": [],
+  "lilypondfiles": [],
+  "structure": [
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_type": "intro",
+          "section_title": "intro",
+          "rows": [
+            "Gm Bf | F | Gm Bf | F |"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 1",
+          "rows": [
+            "Gm Bf | F | Gm Bf | F | x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 2",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_type": "refrain",
+          "section_title": "refrain 1",
+          "rows": [
+            "Ef | Ef | F | F ",
+            "Ef | Ef | F | HRest "
+          ]
+        }
+      }
+    },
+    {
+      "id": "fill1",
+      "item": {
+        "Chords": {
+          "section_type": "fill",
+          "section_title": "fill1",
+          "rows": [
+            "Gm Bf | F | Gm Bf | F |"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 3",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "couplet4",
+      "item": {
+        "Ref": {
+          "section_type": "couplet",
+          "section_title": "couplet 4",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "section_type": "refrain",
+          "section_title": "refrain 2",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "interlude",
+      "item": {
+        "Chords": {
+          "section_type": "pont",
+          "section_title": "interlude",
+          "rows": [
+            "Am|C|D|F|x2",
+            "Am|Am|Am|Am"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet5",
+      "item": {
+        "Chords": {
+          "section_type": "coupletb",
+          "section_title": "couplet 5",
+          "rows": [
+            "Am C|G|Am C|G|x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Chords": {
+          "section_type": "refrainb",
+          "section_title": "refrain 3",
+          "rows": [
+            "F |F|G|G|x4"
+          ]
+        }
+      }
+    },
+    {
+      "id": "solo",
+      "item": {
+        "Chords": {
+          "section_type": "solo",
+          "section_title": "solo",
+          "rows": [
+            "F |F|G|G|x4"
+          ]
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "digest": "fd79edbd718ccd4f16c9c85e37f33f26",
+  "date": "2025-05-21"
+}

@@ -36,10 +36,12 @@ work() {
     md5sum $lyricsfile >> $tmpfile
   done
 
-cat $jsonfile | jq -r ".structure[] | select (.item.Ref != null ) | .id "  | while read -r id; do
+  cat $jsonfile | jq -r ".structure[] | select (.item.Ref != null ) | .id "  | while read -r id; do
     lyricsfile=$(dirname $jsonfile)/lyrics/$id.tex
     md5sum $lyricsfile >> $tmpfile
   done
+
+	md5sum $here/add.tikz >> $tmpfile
 
 
 	new_digest=$(md5sum $tmpfile | sed "s/ .*//")

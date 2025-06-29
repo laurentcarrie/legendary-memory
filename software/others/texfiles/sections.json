@@ -11,8 +11,13 @@
   },
   {
     "id": "coupletb",
-    "color": "darkgreen!50",
+    "color": "darkgreen!30",
     "label": "coupletb"
+  },
+  {
+    "id": "coupletc",
+    "color": "darkgreen!60",
+    "label": "coupletc"
   },
   {
     "id": "prerefrain",
@@ -23,6 +28,11 @@
     "id": "refrain",
     "color": "columbiablue",
     "label": "refrain"
+  },
+  {
+    "id": "refrainb",
+    "color": "brightturquoise",
+    "label": "refrainb"
   },
   {
     "id": "pont",
@@ -43,6 +53,11 @@
     "id": "intro",
     "color": "buff",
     "label": "intro"
+  },
+  {
+    "id": "riff",
+    "color": "timberwolf",
+    "label": "riff"
   },
   {
     "id": "fill",

@@ -31,7 +31,7 @@ jobs:
           mdbook build
       - name: Build cargo doc
         run: |
-          ( cd software && cargo doc )
+          ( cd software && cargo +nightly doc )
           src=software/target/doc
           target=doc/srs/book
           mkdir -p $target

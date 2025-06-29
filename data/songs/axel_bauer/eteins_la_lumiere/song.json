@@ -1,6 +1,6 @@
 {
   "tempo": 146,
-  "title": "Eteins la lumière",
+  "title": "Eteins La Lumière",
   "author": "Axel Bauer",
   "texfiles": [],
   "lilypondfiles": [
@@ -100,6 +100,10 @@
           "link": "refrain1"
         }
       }
+    },
+    {
+      "id": "nc",
+      "item": "NewColumn"
     },
     {
       "id": "pont2",
@@ -212,7 +216,7 @@
   "wavfiles": [
     "pont2.wav"
   ],
-  "digest": "3a9d1a94e196cc974b84b0f324ce03ac",
-  "date": "2025-03-24",
+  "digest": "8f399e1281d9cd17c7580b465226315a",
+  "date": "2025-05-08",
   "hash": "0"
 }

@@ -2,7 +2,6 @@ use base64::prelude::BASE64_STANDARD;
 use base64::prelude::*;
 // use sysinfo::get_current_pid;
 // pub mod protocol ;
-pub mod errors;
 pub mod helpers;
 pub mod model;
 pub mod protocol;

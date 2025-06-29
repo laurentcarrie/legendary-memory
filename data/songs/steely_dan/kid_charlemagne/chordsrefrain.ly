@@ -1,4 +1,4 @@
-\include "predefined-guitar-fretboards.ly"
+%\xfafadfainclude "predefined-guitar-fretboards.ly"
 
 <<
   \new ChordNames {

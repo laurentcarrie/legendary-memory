@@ -1,5 +1,5 @@
 {
-  "tempo": 80,
+  "tempo": 118,
   "cell_height": 30,
   "cell_width": 60,
   "title": "American Boy",
@@ -61,6 +61,10 @@
       }
     },
     {
+      "id": "nc",
+      "item": "NewColumn"
+    },
+    {
       "id": "pont1",
       "item": {
         "Chords": {
@@ -120,7 +124,7 @@
     }
   ],
   "wavfiles": [],
-  "digest": "9c714830f5f34fe088b56f4963edfca3",
-  "date": "2025-01-13",
+  "digest": "7a289faeb142d4ac7c4731175a065871",
+  "date": "2025-06-29",
   "hash": "0"
 }

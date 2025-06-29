@@ -1,4 +1,3 @@
-use crate::errors::MyError;
 use crate::helpers::helpers::normalize_pdf_name;
 use crate::model::model;
 use crate::model::model::{Section, TimeSignature};
@@ -19,17 +18,16 @@ use crate::model::input_model::{
     UserStructureItemContent,
 };
 
-fn time_signature_of_string(input: Option<String>) -> Result<TimeSignature, MyError> {
+fn time_signature_of_string(
+    input: Option<String>,
+) -> Result<TimeSignature, Box<dyn std::error::Error>> {
     match input {
         None => Ok(TimeSignature { top: 4, low: 4 }),
         Some(s) => {
             let re = Regex::new("(.*)/(.*)").unwrap();
             let ss = re.captures(&s);
             match ss {
-                None => Err(MyError::MessageError(format!(
-                    "'{} is not a valid time signature",
-                    s
-                ))),
+                None => Err(format!("'{} is not a valid time signature", s).into()),
                 Some(caps) => {
                     let top = (&caps[0]).to_string().parse::<u8>()?;
                     let low = (&caps[1]).to_string().parse::<u8>()?;
@@ -40,21 +38,22 @@ fn time_signature_of_string(input: Option<String>) -> Result<TimeSignature, MyEr
     }
 }
 
-fn check_section_types(sections: &BTreeMap<String, Section>, song: &Song) -> Result<(), MyError> {
+fn check_section_types(
+    sections: &BTreeMap<String, Section>,
+    song: &Song,
+) -> Result<(), Box<dyn std::error::Error>> {
     // let f = |x: i32| 2 * x;
 
-    let check = |item: &model::StructureItem| -> Result<(), MyError> {
+    let check = |item: &model::StructureItem| -> Result<(), Box<dyn std::error::Error>> {
         match &item.item {
             model::StructureItemContent::ItemRef { .. } => Ok(()),
+            model::StructureItemContent::ItemNewColumn => Ok(()),
             model::StructureItemContent::ItemChords(c) => {
                 if sections.contains_key(&c.section_type) {
                     Ok(())
                 } else {
                     log::info!("bad section type : '{}'", &c.section_type);
-                    Err(MyError::MessageError(format!(
-                        "unknown section type : {}",
-                        &c.section_type
-                    )))
+                    Err(format!("unknown section type : {}", &c.section_type).into())
                 }
             }
             model::StructureItemContent::ItemHRule { .. } => Ok(()),
@@ -80,19 +79,17 @@ fn chord_of_string(s: String) -> String {
         .replace("4", "quatre")
 }
 
-fn bar_of_string(s: String) -> Result<Bar, MyError> {
+fn bar_of_string(s: String) -> Result<Bar, Box<dyn std::error::Error>> {
     // time signature
     let re_ts = Regex::new("time_signature\\((.*)/(.*)\\)(.*)").unwrap();
     let (s, time_signature) = match re_ts.captures(&s) {
-        Some(caps) => {
-            (
-                (&caps[3]).to_string(),
-                Some(TimeSignature {
-                    top: (&caps[1]).to_string().parse::<u8>()?,
-                    low: (&caps[2]).to_string().parse::<u8>()?,
-                }),
-            )
-        }
+        Some(caps) => (
+            (&caps[3]).to_string(),
+            Some(TimeSignature {
+                top: (&caps[1]).to_string().parse::<u8>()?,
+                low: (&caps[2]).to_string().parse::<u8>()?,
+            }),
+        ),
         None => (s, None),
     };
 
@@ -118,7 +115,7 @@ fn bar_of_string(s: String) -> Result<Bar, MyError> {
 /// and returns the number of bars, and a row
 /// the number of bars takes the repeat into account, in this example 8
 fn row_of_string(barcount: u32, s: String) -> (u32, Row) {
-    let bars: Result<Vec<Bar>, MyError> = s
+    let bars: Result<Vec<Bar>, Box<dyn std::error::Error>> = s
         .split("|")
         .map(|b| bar_of_string(b.to_string()))
         .into_iter()
@@ -174,9 +171,6 @@ fn structure_of_structure(
     let (barcount, item) = match &u.item {
         UserStructureItemContent::Chords(l) => {
             let (new_barcount, rows) = rows_of_userchordsection(barcount, &l);
-            let nbcols = rows.iter().fold(0 as u32, |acc, row| {
-                std::cmp::max(acc, row.bars.len() as u32)
-            });
             (
                 new_barcount,
                 StructureItemContent::ItemChords(Chords {
@@ -194,8 +188,6 @@ fn structure_of_structure(
                         .clone()
                         .into_iter()
                         .fold(0, |acc, row| acc + row.bars.len() as u32 * row.repeat),
-                    nbcols: nbcols,
-                    nbrows: l.rows.len() as u32,
                     rows: rows,
                 }),
             )
@@ -261,6 +253,9 @@ fn structure_of_structure(
                 },
             }),
         ),
+        UserStructureItemContent::NewColumn => {
+            (barcount, model::StructureItemContent::ItemNewColumn)
+        }
     };
     let si = StructureItem { item: item };
     (barcount, si)
@@ -270,15 +265,13 @@ fn build_relative_path_of_source_absolute_path(
     songdir: &PathBuf,
     builddir: &PathBuf,
     p: PathBuf,
-) -> Result<PathBuf, MyError> {
-    let songdir = songdir
-        .to_str()
-        .ok_or(MyError::MessageError("? songdir".to_string()))?;
+) -> Result<PathBuf, Box<dyn std::error::Error>> {
+    let songdir = songdir.to_str().ok_or("? songdir".to_string())?;
     let p = p
         .parent()
-        .ok_or(MyError::MessageError("? no parent".to_string()))?
+        .ok_or("? no parent".to_string())?
         .to_str()
-        .ok_or(MyError::MessageError("? songdir".to_string()))?
+        .ok_or("? songdir".to_string())?
         .to_string();
     let p = p.replace(format!("{}/", songdir).as_str(), "songs/");
     let mut ret = builddir.clone();
@@ -328,7 +321,7 @@ pub fn decode_book(
     buildroot: &PathBuf,
     filepath: &PathBuf,
     songs: &Vec<UserSongWithPath>,
-) -> Result<(Book, UserBookWithPath), MyError> {
+) -> Result<(Book, UserBookWithPath), Box<dyn std::error::Error>> {
     log::debug!("read book {:?}", &filepath);
     let contents = fs::read_to_string(filepath)
         .expect("Should have been able to read the file")
@@ -340,8 +333,8 @@ pub fn decode_book(
     book_builddir.push("books");
     book_builddir.push(&uconf.title);
     let (songs, errors): (
-        Vec<Result<BookSong, MyError>>,
-        Vec<Result<BookSong, MyError>>,
+        Vec<Result<BookSong, Box<dyn std::error::Error>>>,
+        Vec<Result<BookSong, Box<dyn std::error::Error>>>,
     ) = uconf
         .songs
         .clone()
@@ -354,7 +347,7 @@ pub fn decode_book(
                     PathBuf::from(uswp.path),
                 )?
                 .to_str()
-                .ok_or(MyError::MessageError("huh?".to_string()))?
+                .ok_or("huh?")?
                 .to_string();
                 Ok(BookSong {
                     title: ub.title.clone(),
@@ -363,11 +356,12 @@ pub fn decode_book(
                     path: path,
                 })
             }
-            None => Err(MyError::MessageError(format!(
+            None => Err(format!(
                 "invalid or missing song : {} / {}",
                 ub.author.clone(),
                 ub.title.clone()
-            ))),
+            )
+            .into()),
         })
         .partition(Result::is_ok);
     let songs = songs.iter().map(|s| s.as_ref().unwrap().clone()).collect();
@@ -379,7 +373,7 @@ pub fn decode_book(
                 title: uconf.title.clone(),
                 songs: songs,
                 builddir: book_builddir,
-                pdfname: format!("{}.pdf", uconf.title.clone()).to_string(),
+                pdfname: uconf.title.clone(),
             };
             let ubook_with_path = UserBookWithPath {
                 book: uconf.clone(),
@@ -395,13 +389,13 @@ fn song_of_usersong(
     uconf: UserSong,
     song_srcdir: PathBuf,
     song_builddir: PathBuf,
-) -> Result<Song, MyError> {
+) -> Result<Song, Box<dyn std::error::Error>> {
     let song = Song {
         srcdir: song_srcdir
             .parent()
-            .ok_or(MyError::MessageError("bad srcdir, no parent".to_string()))?
+            .ok_or("bad srcdir, no parent".to_string())?
             .to_str()
-            .ok_or(MyError::MessageError("bad srcdir".to_string()))?
+            .ok_or("bad srcdir".to_string())?
             .to_string(),
         texfiles: uconf.texfiles.clone(),
         author: uconf.author.clone(),
@@ -434,7 +428,7 @@ pub fn decode_song(
     buildroot: &PathBuf,
     sections: &BTreeMap<String, Section>,
     filepath: &PathBuf,
-) -> Result<(Song, UserSongWithPath), MyError> {
+) -> Result<(Song, UserSongWithPath), Box<dyn std::error::Error>> {
     let contents = fs::read_to_string(filepath)
         .expect("Should have been able to read the file")
         .clone();
@@ -605,8 +599,6 @@ mod tests {
                 section_id: "".to_string(),
                 section_type: "".to_string(),
                 section_body: "".to_string(),
-                nbcols: 2,
-                nbrows: 3,
                 row_start_bar_number: 10,
                 nb_bars: 5,
                 rows: vec![
@@ -719,8 +711,6 @@ mod tests {
                         section_body: "".to_string(),
                         row_start_bar_number: 1,
                         nb_bars: 16,
-                        nbcols: 4,
-                        nbrows: 2,
                         rows: vec![
                             Row {
                                 repeat: 3,

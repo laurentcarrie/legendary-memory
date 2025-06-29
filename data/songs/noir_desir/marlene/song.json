@@ -1,7 +1,7 @@
 {
   "tempo": 134,
-  "title": "Marlene",
-  "author": "Noir Desir",
+  "title": "Marlène",
+  "author": "Noir Désir",
   "texfiles": [],
   "lilypondfiles": [
     "couplet1.ly",
@@ -137,7 +137,7 @@
       "id": "outtro",
       "item": {
         "Chords": {
-          "section_title": "intro",
+          "section_title": "outtro",
           "section_type": "intro",
           "rows": [
             "Am | Am | Am | Am "
@@ -153,7 +153,7 @@
     "couplet3.wav",
     "couplet4.wav"
   ],
-  "digest": "4ea0a181dbbabaa084be80066d55b00b",
-  "date": "2025-03-24",
+  "digest": "9b59210dead6361535955642eabe3095",
+  "date": "2025-06-29",
   "hash": "0"
 }
