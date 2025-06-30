@@ -28,16 +28,27 @@ pub enum Estate {
     Failure,
 }
 
+pub struct UISong {
+    song:Song,
+    state:Estate
+}
+
+pub struct UIBook {
+    book:Book,
+    state:Estate
+}
+
+pub trait TEstate {
+    fn state(&self) -> EState;
+}
+
+
 pub struct UiModel<'a> {
     //  set: JoinSet<()>,
     songs: Vec<(Song, Estate)>,
     books: Vec<(Book, Estate)>,
     logsdone: Vec<ListItem<'a>>,
     logsrunning: Vec<ListItem<'a>>,
-    // pending_keys: HashSet<(String, String)>,
-    // running_keys: HashSet<(String, String)>,
-    // success_keys: HashSet<(String, String)>,
-    // failure_keys: HashSet<(String, String)>,
 }
 
 impl<'a> UiModel<'a> {
@@ -208,159 +219,6 @@ impl<'a> UiModel<'a> {
             }
         }
 
-        // self.logsdone.clear();
-        // let mut ok_count = 0;
-        // let mut error_count = 0;
-        // let mut pending_count = 0;
-        // let mut started_count = 0;
-
-        // for song in &self.songs {
-        //     let content = if self
-        //         .success_keys
-        //         .contains(&(song.author.clone(), song.title.clone()))
-        //     {
-        //         // let content = vec![Spans::from(vec![
-        //         //     Span::styled(format!("{}", SPARKLE), success_style),
-        //         //     Span::raw(" "), // Span::styled(title, title_style),
-        //         //     Span::styled(song.author.clone(), author_style),
-        //         //     Span::raw(" @ "), // Span::styled(title, title_style),
-        //         //     Span::styled(song.title.clone(), title_style),
-        //         // ])];
-        //         ok_count += 1;
-        //         // Some(content)
-        //         None
-        //     } else if self
-        //         .failure_keys
-        //         .contains(&(song.author.clone(), song.title.clone()))
-        //     {
-        //         let content = vec![Spans::from(vec![
-        //             Span::styled(format!("{}", SPARKLE), failure_style),
-        //             Span::raw(" "), // Span::styled(title, title_style),
-        //             Span::styled(song.author.clone(), author_style),
-        //             Span::raw(" @ "), // Span::styled(title, title_style),
-        //             Span::styled(song.title.clone(), title_style),
-        //         ])];
-        //         error_count += 1;
-        //         Some(content)
-        //     } else if self
-        //         .pending_keys
-        //         .contains(&(song.author.clone(), song.title.clone()))
-        //     {
-        //         let content = vec![Spans::from(vec![
-        //             Span::styled(format!("{}", BEAR), running_style),
-        //             Span::raw(" "), // Span::styled(title, title_style),
-        //             Span::styled(song.author.clone(), author_style),
-        //             Span::raw(" @ "), // Span::styled(title, title_style),
-        //             Span::styled(song.title.clone(), title_style),
-        //         ])];
-        //         pending_count += 1;
-        //         Some(content)
-        //     } else if self
-        //         .running_keys
-        //         .contains(&(song.author.clone(), song.title.clone()))
-        //     {
-        //         let content = vec![Spans::from(vec![
-        //             Span::styled(format!("{}", TRUCK), running_style),
-        //             Span::raw(" "), // Span::styled(title, title_style),
-        //             Span::styled(song.author.clone(), author_style),
-        //             Span::raw(" @ "), // Span::styled(title, title_style),
-        //             Span::styled(song.title.clone(), title_style),
-        //         ])];
-        //         started_count += 1;
-        //         Some(content)
-        //     } else {
-        //         let content = vec![Spans::from(vec![
-        //             Span::styled(format!("{}", BEAR), running_style),
-        //             Span::raw(" "), // Span::styled(title, title_style),
-        //             Span::styled(song.author.clone(), author_style),
-        //             Span::raw(" @ "), // Span::styled(title, title_style),
-        //             Span::styled(song.title.clone(), title_style),
-        //         ])];
-        //         Some(content)
-        //     };
-
-        //     match content {
-        //         None => (),
-        //         Some(content) => {
-        //             let li = ListItem::new(content);
-        //             self.logsdone.push(li)
-        //         }
-        //     };
-        // }
-        // for book in &self.books {
-        //     let content = if self
-        //         .success_keys
-        //         .contains(&("BOOK".to_string(), book.title.clone()))
-        //     {
-        //         // let content = vec![Spans::from(vec![
-        //         //     Span::styled(format!("{}", SPARKLE), success_style),
-        //         //     Span::raw(" "), // Span::styled(title, title_style),
-        //         //     Span::styled(song.author.clone(), author_style),
-        //         //     Span::raw(" @ "), // Span::styled(title, title_style),
-        //         //     Span::styled(song.title.clone(), title_style),
-        //         // ])];
-        //         ok_count += 1;
-        //         // Some(content)
-        //         None
-        //     } else if self
-        //         .pending_keys
-        //         .contains(&("BOOK".to_string(), book.title.clone()))
-        //     {
-        //         let content = vec![Spans::from(vec![
-        //             Span::styled(format!("{}", BEAR), failure_style),
-        //             Span::raw(" "), // Span::styled(title, title_style),
-        //             Span::styled("BOOK".to_string(), book_style),
-        //             Span::raw(" @ "), // Span::styled(title, title_style),
-        //             Span::styled(book.title.clone(), title_style),
-        //         ])];
-        //         pending_count += 1;
-        //         Some(content)
-        //     } else if self
-        //         .running_keys
-        //         .contains(&("BOOK".to_string(), book.title.clone()))
-        //     {
-        //         let content = vec![Spans::from(vec![
-        //             Span::styled(format!("{}", BEAR), failure_style),
-        //             Span::raw(" "), // Span::styled(title, title_style),
-        //             Span::styled("BOOK".to_string(), book_style),
-        //             Span::raw(" @ "), // Span::styled(title, title_style),
-        //             Span::styled(book.title.clone(), title_style),
-        //         ])];
-        //         started_count += 1;
-        //         Some(content)
-        //     } else if self
-        //         .failure_keys
-        //         .contains(&("BOOK".to_string(), book.title.clone()))
-        //     {
-        //         let content = vec![Spans::from(vec![
-        //             Span::styled(format!("{}", SPARKLE), failure_style),
-        //             Span::raw(" "), // Span::styled(title, title_style),
-        //             Span::styled("BOOK".to_string(), book_style),
-        //             Span::raw(" @ "), // Span::styled(title, title_style),
-        //             Span::styled(book.title.clone(), title_style),
-        //         ])];
-        //         error_count += 1;
-        //         Some(content)
-        //     } else {
-        //         let content = vec![Spans::from(vec![
-        //             Span::styled(format!("{}", BEAR), running_style),
-        //             Span::raw(" "), // Span::styled(title, title_style),
-        //             Span::styled("BOOK".to_string(), book_style),
-        //             Span::raw(" @ "), // Span::styled(title, title_style),
-        //             Span::styled(book.title.clone(), title_style),
-        //         ])];
-        //         Some(content)
-        //     };
-
-        //     match content {
-        //         None => (),
-        //         Some(content) => {
-        //             let li = ListItem::new(content);
-        //             self.logsdone.push(li)
-        //         }
-        //     };
-        // }
-        // {
 
         let pending_count = self
             .songs
