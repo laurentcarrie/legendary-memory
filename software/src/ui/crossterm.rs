@@ -62,25 +62,36 @@ async fn rebuild(
     force_rebuild: bool,
 ) -> () {
     // log::info!("{}:{} rebuild; force={}", file!(), line!(), force_rebuild);
+    std::thread::sleep(Duration::from_secs(1));
 
-    let (songs_to_start, books_to_start) = uidata.run_n_songs_or_books(nb_workers);
+    let sb_to_start = uidata.run_n_songs_or_books(nb_workers);
+    // log::info!("{}:{} {:?}", file!(), line!(), &sb_to_start);
 
-    for song in songs_to_start {
-        let _ = set.spawn(wrapped_build_pdf_song(
-            tx.clone(),
-            world.clone(),
-            song.clone(),
-            force_rebuild,
-        ));
+    for sb in sb_to_start {
+        sb.build_pdf(set, tx.clone(), world, force_rebuild);
+        // let _ = set.spawn(sb.build_pdf(
+        //     tx.clone(),
+        //     world.clone(),
+        //     force_rebuild,
+        // ));
     }
 
-    for book in books_to_start {
-        let _ = set.spawn(wrapped_build_pdf_book(
-            tx.clone(),
-            world.clone(),
-            book.clone(),
-        ));
-    }
+    // for song in songs_to_start {
+    //     let _ = set.spawn(wrapped_build_pdf_song(
+    //         tx.clone(),
+    //         world.clone(),
+    //         song.clone(),
+    //         force_rebuild,
+    //     ));
+    // }
+
+    // for book in books_to_start {
+    //     let _ = set.spawn(wrapped_build_pdf_book(
+    //         tx.clone(),
+    //         world.clone(),
+    //         book.clone(),
+    //     ));
+    // }
 }
 
 //pub async fn run(world:World,tick_rate: Duration, enhanced_graphics: bool) -> Result<(), Box<dyn Error>> {
