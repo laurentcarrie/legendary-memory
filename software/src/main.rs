@@ -22,7 +22,7 @@ async fn main() -> () {
     SimpleLogger::new().init().unwrap();
     // log::set_max_level(LevelFilter::Debug);
     log::set_max_level(LevelFilter::Info);
-    log::info!("start songbook");
+    log::debug!("start songbook");
     let args: Vec<String> = env::args().collect();
     let (songdir, bookdir, builddir) = match (args.get(1), args.get(2), args.get(3)) {
         (Some(x), Some(y), Some(z)) => (x, y, z),
@@ -49,7 +49,7 @@ async fn main() -> () {
         let data = fs::read_to_string(path.to_str().unwrap()).unwrap();
         serde_json::from_str(data.as_str()).unwrap()
     };
-    log::info!("normal exit");
+    log::debug!("normal exit");
     let _x = main_loop(&world).await;
     ()
 }

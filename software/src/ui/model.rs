@@ -3,7 +3,6 @@ use console::Emoji;
 use human_sort::compare;
 use std::cmp::Ordering;
 use std::fs::File;
-use std::io::Write;
 use tokio::sync::mpsc::Sender;
 use tokio::task::JoinSet;
 
@@ -18,8 +17,7 @@ use tui::style::{Color, Style};
 use tui::text::{Span, Spans};
 use tui::widgets::ListItem;
 
-use std::cmp::max;
-use std::collections::HashSet;
+use std::cmp;
 
 use crate::model::model::{Book, ELogType, LogItem, LogItemBook, LogItemSong, Song, World};
 
@@ -62,20 +60,24 @@ impl UIBook {
 }
 
 pub trait TEstate {
+    fn id(&self) -> String;
     fn state(&self) -> Estate;
     fn build_level(&self) -> u32;
-    fn change_state(&mut self, state: Estate) -> ();
-    fn uicontent(&self) -> Option<Vec<Spans<'_>>>;
+    fn change_state(&mut self, state: Estate);
+    fn uicontent<'a>(&self) -> Option<Vec<Spans<'a>>>;
     fn build_pdf(
         &self,
         set: &mut JoinSet<()>,
         tx: Sender<LogItem>,
         world: &World,
         force_rebuild: bool,
-    ) -> ();
+    );
 }
 
 impl TEstate for UISong {
+    fn id(&self) -> String {
+        format!("{} @ {}", self.song.author.clone(), self.song.title.clone())
+    }
     /// the current building state of a book or a song pdf
     fn state(&self) -> Estate {
         self.state.clone()
@@ -83,25 +85,25 @@ impl TEstate for UISong {
     fn build_level(&self) -> u32 {
         0
     }
-    fn change_state(&mut self, state: Estate) -> () {
+    fn change_state(&mut self, state: Estate) {
         self.state = state
     }
     /// how to display
-    fn uicontent(&self) -> Option<Vec<Spans<'_>>> {
+    fn uicontent<'a>(&self) -> Option<Vec<Spans<'a>>> {
+        let style = |emoji: Emoji<'_, '_>| {
+            vec![Spans::from(vec![
+                Span::styled(format!("{}", emoji), Style::default()),
+                Span::raw(" "),
+                Span::styled(self.song.author.clone(), Style::default().fg(Color::Blue)),
+                Span::raw(" @ "),
+                Span::styled(self.song.title.clone(), Style::default().fg(Color::Green)),
+            ])]
+        };
         match self.state {
+            Estate::Pending => Some(style(BEAR)),
+            Estate::Running => Some(style(TRUCK)),
             Estate::Success => None,
-            Estate::Pending | Estate::Failure | Estate::Running => {
-                let content = vec![Spans::from(vec![
-                    Span::styled(format!("{}", BEAR), Style::default().bg(Color::White)),
-                    Span::raw(" "), // Span::styled(title, title_style),
-                    Span::styled(self.song.author.clone(), Style::default().fg(Color::Blue)),
-                    Span::raw(" @ "), // Span::styled(title, title_style),
-                    Span::styled(self.song.title.clone(), Style::default().fg(Color::Green)),
-                ])];
-                Some(content)
-                // let li = ListItem::new(content);
-                // self.logsdone.push(li);
-            }
+            Estate::Failure => Some(style(SPARKLE)),
         }
     }
 
@@ -111,7 +113,7 @@ impl TEstate for UISong {
         tx: Sender<LogItem>,
         world: &World,
         force_rebuild: bool,
-    ) -> () {
+    ) {
         let _ = set.spawn(wrapped_build_pdf_song(
             tx.clone(),
             world.clone(),
@@ -122,30 +124,35 @@ impl TEstate for UISong {
 }
 
 impl TEstate for UIBook {
+    fn id(&self) -> String {
+        format!("BOOK @ {}", self.book.title.clone())
+    }
+
     fn state(&self) -> Estate {
         self.state.clone()
     }
     fn build_level(&self) -> u32 {
         1
     }
-    fn change_state(&mut self, state: Estate) -> () {
+    fn change_state(&mut self, state: Estate) {
         self.state = state
     }
-    fn uicontent(&self) -> Option<Vec<Spans<'_>>> {
+    fn uicontent<'a>(&self) -> Option<Vec<Spans<'a>>> {
+        let style = |emoji: Emoji<'_, '_>| {
+            vec![Spans::from(vec![
+                Span::styled(format!("{}", emoji), Style::default()),
+                Span::raw(" "), // Span::styled(title, title_style),
+                Span::styled("BOOK", Style::default().fg(Color::Blue)),
+                Span::raw(" @ "), // Span::styled(title, title_style),
+                Span::styled(self.book.title.clone(), Style::default().fg(Color::Green)),
+            ])]
+        };
+
         match self.state {
             Estate::Success => None,
-            Estate::Pending | Estate::Failure | Estate::Running => {
-                let content = vec![Spans::from(vec![
-                    Span::styled(format!("{}", BEAR), Style::default().bg(Color::White)),
-                    Span::raw(" "), // Span::styled(title, title_style),
-                    Span::styled("BOOK", Style::default().fg(Color::Blue)),
-                    Span::raw(" @ "), // Span::styled(title, title_style),
-                    Span::styled(self.book.title.clone(), Style::default().fg(Color::Green)),
-                ])];
-                Some(content)
-                // let li = ListItem::new(content);
-                // self.logsdone.push(li);
-            }
+            Estate::Pending => Some(style(BEAR)),
+            Estate::Running => Some(style(TRUCK)),
+            Estate::Failure => Some(style(SPARKLE)),
         }
     }
 
@@ -155,7 +162,7 @@ impl TEstate for UIBook {
         tx: Sender<LogItem>,
         world: &World,
         _force_rebuild: bool,
-    ) -> () {
+    ) {
         let _ = set.spawn(wrapped_build_pdf_book(
             tx.clone(),
             world.clone(),
@@ -169,13 +176,15 @@ pub struct UiModel<'a> {
     //  set: JoinSet<()>,
     // songs: Vec<(Song, Estate)>,
     // books: Vec<(Book, Estate)>,
-    logsdone: Vec<ListItem<'a>>,
+    // logsdone: Vec<ListItem<'a>>,
     logsrunning: Vec<ListItem<'a>>,
     songs_and_books: Vec<Box<dyn TEstate>>,
 }
 
+// impl<'a> UiModel<'a> {
+//     pub fn new(world: &World) -> UiModel<'a> {
 impl<'a> UiModel<'a> {
-    pub fn new(world: &World) -> UiModel<'a> {
+    pub fn new(world: &World) -> UiModel {
         let mut sorted_songs = world
             .songs
             .clone()
@@ -209,13 +218,12 @@ impl<'a> UiModel<'a> {
             // songs: sorted_songs.clone(),
             // books: sorted_books.clone(),
             // set: JoinSet::new(),
-            logsdone: vec![],
-            logsrunning: vec![],
             songs_and_books: sb,
+            logsrunning: vec![],
         }
     }
 
-    pub fn init(&mut self) -> () {
+    pub fn init(&mut self) {
         for sb in &mut self.songs_and_books {
             sb.change_state(Estate::Pending);
         }
@@ -223,7 +231,7 @@ impl<'a> UiModel<'a> {
 
     /// if number of running builds < nb_workers, take n from pending and return them.
     /// as long as all songs are not built, ignore the books
-    pub fn run_n_songs_or_books(&mut self, nb_workers: u32) -> Vec<&Box<dyn TEstate>> {
+    pub fn run_n_songs_or_books(&mut self, nb_workers: u32) -> Vec<String> {
         let nb_running = self
             .songs_and_books
             .iter()
@@ -231,424 +239,205 @@ impl<'a> UiModel<'a> {
             .collect::<Vec<_>>()
             .len();
 
-        let n = max(0i32, nb_workers as i32 - nb_running as i32) as usize;
+        let n = cmp::max(0i32, nb_workers as i32 - nb_running as i32) as usize;
 
-        let mut sb_to_start: Vec<&Box<dyn TEstate>> = vec![];
+        let min_build_level: u32 = {
+            let mut min_build_level: Option<u32> = None;
+            for sb in &mut self.songs_and_books {
+                if sb.state() == Estate::Pending || sb.state() == Estate::Running {
+                    min_build_level = match min_build_level {
+                        None => Some(sb.build_level()),
+                        Some(n) => Some(cmp::min(n, sb.build_level())),
+                    }
+                }
+            }
+            match min_build_level {
+                None => return vec![],
+                Some(n) => n,
+            }
+        };
+        log::debug!(
+            "{}:{} min build level is {}",
+            file!(),
+            line!(),
+            min_build_level
+        );
+
+        let mut sb_to_start: Vec<String> = vec![];
 
         let mut count = 0;
         for sb in &mut self.songs_and_books {
-            if count < n && sb.state() == Estate::Pending {
+            if count < n && sb.state() == Estate::Pending && sb.build_level() == min_build_level {
                 sb.change_state(Estate::Running);
-                sb_to_start.push(sb.clone());
+                sb_to_start.push(sb.id());
+                log::info!("{}:{} push {}", file!(), line!(), sb.id());
                 count += 1;
             }
         }
 
-        //@ todo : gerer le build level
-
-        sb_to_start.clone()
+        sb_to_start
     }
 
-    pub fn make_logs(&mut self) -> () {
-        let _author_style = Style::default().fg(Color::Blue);
-        // let book_style = Style::default().fg(Color::Yellow).bg(Color::White);
-        let _title_style = Style::default().fg(Color::Green);
-        // let running_style = Style::default().fg(Color::White);
+    pub fn get(&self, id: String) -> Result<&Box<dyn TEstate>, Box<dyn std::error::Error>> {
+        for sb in &self.songs_and_books {
+            if sb.id() == id {
+                return Ok(sb);
+            }
+        }
+        Err(format!("no song or book for id '{}'", id).into())
+    }
 
-        let _map_format = |status: &Estate| -> Span<'_> {
-            match status {
-                Estate::Pending => {
-                    Span::styled(format!("{}", BEAR), Style::default().bg(Color::White))
+    pub fn get_mut(
+        &mut self,
+        id: String,
+    ) -> Result<&mut Box<dyn TEstate>, Box<dyn std::error::Error>> {
+        for sb in &mut self.songs_and_books {
+            if sb.id() == id {
+                return Ok(sb);
+            }
+        }
+        Err(format!("no song or book for id '{id}'").into())
+    }
+
+    pub fn logsdone(&self) -> Vec<ListItem> {
+        let mut logs = self
+            .songs_and_books
+            .iter()
+            .filter_map(|sb| {
+                match sb.uicontent() {
+                    None => None,
+                    Some(content) => {
+                        let c = content;
+                        let li = ListItem::new(c);
+                        Some(li)
+                        // self.logsdone.push(li);
+                    }
                 }
-                Estate::Running => {
-                    Span::styled(format!("{}", TRUCK), Style::default().bg(Color::Blue))
+            })
+            .collect::<Vec<_>>();
+
+        let success_count = self
+            .songs_and_books
+            .iter()
+            .filter(|sb| sb.state() == Estate::Success)
+            .collect::<Vec<_>>()
+            .len();
+        let failure_count = self
+            .songs_and_books
+            .iter()
+            .filter(|sb| sb.state() == Estate::Failure)
+            .collect::<Vec<_>>()
+            .len();
+        let running_count = self
+            .songs_and_books
+            .iter()
+            .filter(|sb| sb.state() == Estate::Running)
+            .collect::<Vec<_>>()
+            .len();
+        let pending_count = self
+            .songs_and_books
+            .iter()
+            .filter(|sb| sb.state() == Estate::Pending)
+            .collect::<Vec<_>>()
+            .len();
+
+        let content = vec![Spans::from(vec![
+            // Span::styled(format!("{}", BEAR), running_style),
+            Span::raw(format!(
+                "{} Success, {} Failures, {} Running, {} Pending ",
+                success_count, failure_count, running_count, pending_count
+            )),
+        ])];
+        let li = ListItem::new(content);
+        logs.insert(0, li);
+        logs
+    }
+
+    pub fn logsrunning(&self) -> &Vec<ListItem<'a>> {
+        &self.logsrunning
+    }
+
+    pub fn move_state(
+        &mut self,
+        id: String,
+        state: Estate,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let sb = self.get_mut(id)?;
+        sb.change_state(state);
+        Ok(())
+    }
+
+    pub fn handle_item(&mut self, s: LogItem, _f: &mut File) {
+        let style_song = |s: &LogItemSong, label: String| {
+            vec![Spans::from(vec![
+                // Span::styled(format!("{}", emoji), Style::default()),
+                Span::raw(" "), // Span::styled(title, title_style),
+                Span::styled(s.author.clone(), Style::default().fg(Color::Blue)),
+                Span::raw(" @ "), // Span::styled(title, title_style),
+                Span::styled(s.title.clone(), Style::default().fg(Color::Green)),
+                Span::raw(" @ "), // Span::styled(title, title_style),
+                Span::styled(label, Style::default().fg(Color::Magenta)),
+            ])]
+        };
+
+        let style_book = |s: &LogItemBook, label: String| {
+            vec![Spans::from(vec![
+                // Span::styled(format!("{}", emoji), Style::default()),
+                Span::raw(" "), // Span::styled(title, title_style),
+                Span::styled("BOOK", Style::default().fg(Color::Blue)),
+                Span::raw(" @ "), // Span::styled(title, title_style),
+                Span::styled(s.title.clone(), Style::default().fg(Color::Green)),
+                Span::raw(" @ "), // Span::styled(title, title_style),
+                Span::styled(label, Style::default().fg(Color::Magenta)),
+            ])]
+        };
+
+        let style = match s {
+            LogItem::Song(s) => {
+                let id = format!("{} @ {}", s.author, s.title);
+                let sb = self.get_mut(id).unwrap();
+
+                match &s.status {
+                    ELogType::Started => style_song(&s, "start".to_string()),
+                    ELogType::Lilypond(ly) => style_song(&s, format!("lilypond {ly}")),
+                    ELogType::Lualatex(n) => style_song(&s, format!("lualatex #{n}")),
+                    ELogType::Ps2pdf => {
+                        sb.change_state(Estate::Running);
+                        style_song(&s, "ps2pdf".to_string())
+                    }
+                    ELogType::Success | ELogType::NoNeedSuccess => {
+                        sb.change_state(Estate::Success);
+                        style_song(&s, "success".to_string())
+                    }
+                    ELogType::Failed | ELogType::NoNeedFailed => {
+                        sb.change_state(Estate::Failure);
+                        style_song(&s, "failed".to_string())
+                    }
                 }
-                Estate::Success => {
-                    Span::styled(format!("{}", SPARKLE), Style::default().bg(Color::Green))
-                }
-                Estate::Failure => {
-                    Span::styled(format!("{}", SPARKLE), Style::default().bg(Color::Red))
+            }
+            LogItem::Book(s) => {
+                let id = format!("BOOK @ {}", s.title);
+                let sb = self.get_mut(id).unwrap();
+                match &s.status {
+                    ELogType::Started => style_book(&s, "started".to_string()),
+                    ELogType::Lilypond(_) => style_book(&s, "lilypond".to_string()),
+                    ELogType::Lualatex(n) => style_book(&s, format!("lualatex #{n}")),
+                    ELogType::Ps2pdf => {
+                        sb.change_state(Estate::Running);
+                        style_book(&s, "ps2pdf".to_string())
+                    }
+                    ELogType::Success | ELogType::NoNeedSuccess => {
+                        sb.change_state(Estate::Success);
+                        style_book(&s, "success".to_string())
+                    }
+                    ELogType::Failed | ELogType::NoNeedFailed => {
+                        sb.change_state(Estate::Failure);
+                        style_book(&s, "failed".to_string())
+                    }
                 }
             }
         };
-        self.logsdone.clear();
 
-        for sb in self.songs_and_books.iter() {
-            match sb.uicontent() {
-                None => (),
-                Some(content) => {
-                    let c = content.clone();
-                    let _li = ListItem::new(c);
-                    // self.logsdone.push(li);
-                }
-            }
-        }
-
-        // for (book, status) in self.books.iter() {
-        //     match status {
-        //         Estate::Success => (),
-        //         Estate::Pending | Estate::Failure | Estate::Running => {
-        //             let content = vec![Spans::from(vec![
-        //                 map_format(status),
-        //                 Span::raw(" "), // Span::styled(title, title_style),
-        //                 Span::styled("BOOK", author_style),
-        //                 Span::raw(" @ "), // Span::styled(title, title_style),
-        //                 Span::styled(book.title.clone(), title_style),
-        //             ])];
-        //             let li = ListItem::new(content);
-        //             self.logsdone.push(li);
-        //         }
-        //     }
-        // }
-
-        // let pending_count = self
-        //     .songs
-        //     .iter()
-        //     .filter(|(_, status)| status == &Estate::Pending)
-        //     .collect::<Vec<_>>()
-        //     .len()
-        //     + self
-        //         .books
-        //         .iter()
-        //         .filter(|(_, status)| status == &Estate::Pending)
-        //         .collect::<Vec<_>>()
-        //         .len();
-        // let running_count = self
-        //     .songs
-        //     .iter()
-        //     .filter(|(_, status)| status == &Estate::Running)
-        //     .collect::<Vec<_>>()
-        //     .len()
-        //     + self
-        //         .books
-        //         .iter()
-        //         .filter(|(_, status)| status == &Estate::Running)
-        //         .collect::<Vec<_>>()
-        //         .len();
-        // let success_count = self
-        //     .songs
-        //     .iter()
-        //     .filter(|(_, status)| status == &Estate::Success)
-        //     .collect::<Vec<_>>()
-        //     .len()
-        //     + self
-        //         .books
-        //         .iter()
-        //         .filter(|(_, status)| status == &Estate::Success)
-        //         .collect::<Vec<_>>()
-        //         .len();
-        // let failure_count = self
-        //     .songs
-        //     .iter()
-        //     .filter(|(_, status)| status == &Estate::Failure)
-        //     .collect::<Vec<_>>()
-        //     .len()
-        //     + self
-        //         .books
-        //         .iter()
-        //         .filter(|(_, status)| status == &Estate::Failure)
-        //         .collect::<Vec<_>>()
-        //         .len();
-
-        // let content = vec![Spans::from(vec![
-        //     // Span::styled(format!("{}", BEAR), running_style),
-        //     Span::raw(format!(
-        //         "{} Success, {} Failures, {} Running, {} Pending ",
-        //         success_count, failure_count, running_count, pending_count
-        //     )),
-        // ])];
-        // let li = ListItem::new(content);
-        // self.logsdone.insert(0, li);
-        ()
-        // }
-    }
-
-    // pub fn move_song_state(&mut self, log: &LogItemSong, state: Estate) {
-    //     self.songs = self
-    //         .songs
-    //         .clone()
-    //         .iter()
-    //         .map(|(song, current_state)| {
-    //             if song.author == log.author && song.title == log.title {
-    //                 (song.clone(), state.clone())
-    //             } else {
-    //                 (song.clone(), current_state.clone())
-    //             }
-    //         })
-    //         .collect::<Vec<_>>()
-    // }
-
-    // pub fn move_book_state(&mut self, log: &LogItemBook, state: Estate) {
-    //     self.books = self
-    //         .books
-    //         .clone()
-    //         .iter()
-    //         .map(|(book, current_state)| {
-    //             if book.title == log.title {
-    //                 (book.clone(), state.clone())
-    //             } else {
-    //                 (book.clone(), current_state.clone())
-    //             }
-    //         })
-    //         .collect::<Vec<_>>()
-    // }
-
-    pub fn handle_item(&mut self, _s: LogItem, _f: &mut File) -> () {
-        // let success_style = Style::default().bg(Color::Green);
-        // let failure_style = Style::default().bg(Color::Red);
-        // let author_style = Style::default().fg(Color::Blue);
-        // let book_style = Style::default().fg(Color::Yellow).bg(Color::White);
-        // let title_style = Style::default().fg(Color::Green);
-        // let lily_style = Style::default().fg(Color::Cyan);
-        // let no_need_success_style = Style::default().fg(Color::LightGreen);
-        // let no_need_failed_style = Style::default().fg(Color::LightRed);
-        // let thread_style = Style::default().fg(Color::Cyan).bg(Color::White);
-        // match &s {
-        //     LogItem::Song(s) => {
-        //         writeln!(f, "{:?}", &s.clone()).unwrap();
-        //         match &s.status {
-        //             ELogType::Started => {
-        //                 let content = vec![Spans::from(vec![
-        //                     Span::raw(format!("[  STARTED  ] ")), // Span::styled(title, title_style),
-        //                     Span::styled(s.author.clone(), author_style),
-        //                     Span::raw(" @ "), // Span::styled(title, title_style),
-        //                     Span::styled(s.title.clone(), title_style),
-        //                 ])];
-        //                 let li = ListItem::new(content);
-        //                 self.logsrunning.insert(0, li);
-        //             }
-        //             ELogType::Lualatex(count) => {
-        //                 let ss = format!("[lualatex #{count}] ").clone();
-        //                 let content = vec![Spans::from(vec![
-        //                     Span::raw(ss), // Span::styled(title, title_style),
-        //                     Span::styled(s.author.clone(), author_style),
-        //                     Span::raw(" @ "), // Span::styled(title, title_style),
-        //                     Span::styled(s.title.clone(), title_style),
-        //                 ])];
-        //                 let li = ListItem::new(content);
-        //                 self.logsrunning.insert(0, li);
-        //             }
-        //             ELogType::Ps2pdf => {
-        //                 let ss = format!("[   ps2pdf  ] ").clone();
-        //                 let content = vec![Spans::from(vec![
-        //                     Span::raw(ss), // Span::styled(title, title_style),
-        //                     Span::styled(s.author.clone(), author_style),
-        //                     Span::raw(" @ "), // Span::styled(title, title_style),
-        //                     Span::styled(s.title.clone(), title_style),
-        //                 ])];
-        //                 let li = ListItem::new(content);
-        //                 self.logsrunning.insert(0, li);
-        //             }
-        //             ELogType::Lilypond(ref lyfile) => {
-        //                 let content = vec![Spans::from(vec![
-        //                     Span::raw(format!("[  lilypond ] ")), // Span::styled(title, title_style),
-        //                     Span::styled(s.author.clone(), author_style),
-        //                     Span::raw(" @ "), // Span::styled(title, title_style),
-        //                     Span::styled(s.title.clone(), title_style),
-        //                     Span::raw(" ; "), // Span::styled(title, title_style),
-        //                     // Span::raw(format!(" / {lyfile.clone()}").as_str()), // Span::styled(title, title_style),
-        //                     Span::styled(lyfile.clone(), lily_style),
-        //                 ])];
-        //                 let li = ListItem::new(content);
-        //                 self.logsrunning.insert(0, li);
-        //             }
-        //             ELogType::Success => {
-        //                 self.move_song_state(s, Estate::Success);
-        //                 // self.success_keys
-        //                 //     .insert((s.author.clone(), s.title.clone()));
-        //                 // self.running_keys
-        //                 //     .remove(&(s.author.clone(), s.title.clone()));
-        //                 {
-        //                     let content = vec![Spans::from(vec![
-        //                         Span::styled(format!("   {}   ", SPARKLE), success_style),
-        //                         Span::raw(" "), // Span::styled(title, title_style),
-        //                         Span::styled(s.author.clone(), author_style),
-        //                         Span::raw(" @ "), // Span::styled(title, title_style),
-        //                         Span::styled(s.title.clone(), title_style),
-        //                     ])];
-        //                     let li = ListItem::new(content);
-        //                     self.logsrunning.insert(0, li);
-        //                 }
-        //             }
-        //             ELogType::Failed => {
-        //                 self.move_song_state(s, Estate::Failure);
-
-        //                 // self.failure_keys
-        //                 //     .insert((s.author.clone(), s.title.clone()));
-        //                 // self.running_keys
-        //                 //     .remove(&(s.author.clone(), s.title.clone()));
-        //                 {
-        //                     let content = vec![Spans::from(vec![
-        //                         Span::styled(format!("{}", SPARKLE), failure_style),
-        //                         Span::raw(" "), // Span::styled(title, title_style),
-        //                         Span::styled(s.author.clone(), author_style),
-        //                         Span::raw(" @ "), // Span::styled(title, title_style),
-        //                         Span::styled(s.title.clone(), title_style),
-        //                     ])];
-        //                     let li = ListItem::new(content);
-        //                     self.logsrunning.insert(0, li);
-        //                 }
-        //             }
-        //             ELogType::NoNeedSuccess => {
-        //                 self.move_song_state(s, Estate::Success);
-        //                 // self.success_keys
-        //                 //     .insert((s.author.clone(), s.title.clone()));
-        //                 // self.running_keys
-        //                 //     .remove(&(s.author.clone(), s.title.clone()));
-        //                 {
-        //                     let content = vec![Spans::from(vec![
-        //                         Span::styled(format!("{}", ZZZ), no_need_success_style),
-        //                         Span::raw(" "), // Span::styled(title, title_style),
-        //                         Span::styled(s.author.clone(), author_style),
-        //                         Span::raw(" @ "), // Span::styled(title, title_style),
-        //                         Span::styled(s.title.clone(), title_style),
-        //                     ])];
-        //                     let li = ListItem::new(content);
-        //                     self.logsrunning.insert(0, li);
-        //                 }
-        //             }
-        //             ELogType::NoNeedFailed => {
-        //                 self.move_song_state(s, Estate::Failure);
-        //                 // self.success_keys
-        //                 //     .insert((s.author.clone(), s.title.clone()));
-        //                 // self.running_keys
-        //                 //     .remove(&(s.author.clone(), s.title.clone()));
-        //                 {
-        //                     let content = vec![Spans::from(vec![
-        //                         Span::styled(format!("{}", ZZZ), no_need_failed_style),
-        //                         Span::raw(" "), // Span::styled(title, title_style),
-        //                         Span::styled(s.author.clone(), author_style),
-        //                         Span::raw(" @ "), // Span::styled(title, title_style),
-        //                         Span::styled(s.title.clone(), title_style),
-        //                     ])];
-        //                     let li = ListItem::new(content);
-        //                     self.logsrunning.insert(0, li);
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     LogItem::Book(s) => {
-        //         writeln!(f, "{:?}", &s.clone()).unwrap();
-        //         match &s.status {
-        //             ELogType::Started => {
-        //                 let content = vec![Spans::from(vec![
-        //                     Span::raw(format!("[  STARTED  ] ")), // Span::styled(title, title_style),
-        //                     Span::styled("BOOK", book_style),
-        //                     Span::raw(" @ "), // Span::styled(title, title_style),
-        //                     Span::styled(s.title.clone(), title_style),
-        //                 ])];
-        //                 let li = ListItem::new(content);
-        //                 self.logsrunning.insert(0, li);
-        //             }
-        //             ELogType::Lualatex(count) => {
-        //                 let ss = format!("[lualatex #{count}] ").clone();
-        //                 let content = vec![Spans::from(vec![
-        //                     Span::raw(ss), // Span::styled(title, title_style),
-        //                     Span::styled("BOOK", book_style),
-        //                     Span::raw(" @ "), // Span::styled(title, title_style),
-        //                     Span::styled(s.title.clone(), title_style),
-        //                 ])];
-        //                 let li = ListItem::new(content);
-        //                 self.logsrunning.insert(0, li);
-        //             }
-        //             ELogType::Ps2pdf => {
-        //                 let ss = format!("[   ps2pdf  ] ").clone();
-        //                 let content = vec![Spans::from(vec![
-        //                     Span::raw(ss), // Span::styled(title, title_style),
-        //                     Span::styled("BOOK", book_style),
-        //                     Span::raw(" @ "), // Span::styled(title, title_style),
-        //                     Span::styled(s.title.clone(), title_style),
-        //                 ])];
-        //                 let li = ListItem::new(content);
-        //                 self.logsrunning.insert(0, li);
-        //             }
-        //             ELogType::Lilypond(ref lyfile) => {
-        //                 let content = vec![Spans::from(vec![
-        //                     Span::raw(format!("[  lilypond ] ")), // Span::styled(title, title_style),
-        //                     Span::styled("BOOK", book_style),
-        //                     Span::raw(" @ "), // Span::styled(title, title_style),
-        //                     Span::styled(s.title.clone(), title_style),
-        //                     Span::raw(" ; "), // Span::styled(title, title_style),
-        //                     // Span::raw(format!(" / {lyfile.clone()}").as_str()), // Span::styled(title, title_style),
-        //                     Span::styled(lyfile.clone(), lily_style),
-        //                 ])];
-        //                 let li = ListItem::new(content);
-        //                 self.logsrunning.insert(0, li);
-        //             }
-        //             ELogType::Success => {
-        //                 self.move_book_state(s, Estate::Success);
-        //                 // self.success_keys
-        //                 //     .insert(("BOOK".to_string(), s.title.clone()));
-        //                 {
-        //                     let content = vec![Spans::from(vec![
-        //                         Span::styled(format!("   {}   ", SPARKLE), success_style),
-        //                         Span::raw(" "), // Span::styled(title, title_style),
-        //                         Span::styled("BOOK", book_style),
-        //                         Span::raw(" @ "), // Span::styled(title, title_style),
-        //                         Span::styled(s.title.clone(), title_style),
-        //                     ])];
-        //                     let li = ListItem::new(content);
-        //                     self.logsrunning.insert(0, li);
-        //                 }
-        //             }
-        //             ELogType::Failed => {
-        //                 self.move_book_state(s, Estate::Failure);
-        //                 // self.failure_keys
-        //                 //     .insert(("BOOK".to_string(), s.title.clone()));
-        //                 {
-        //                     let content = vec![Spans::from(vec![
-        //                         Span::styled(format!("{}", SPARKLE), failure_style),
-        //                         Span::raw(" "), // Span::styled(title, title_style),
-        //                         Span::styled("BOOK", book_style),
-        //                         Span::raw(" @ "), // Span::styled(title, title_style),
-        //                         Span::styled(s.title.clone(), title_style),
-        //                     ])];
-        //                     let li = ListItem::new(content);
-        //                     self.logsrunning.insert(0, li);
-        //                 }
-        //             }
-        //             ELogType::NoNeedSuccess => {
-        //                 self.move_book_state(s, Estate::Success);
-        //                 // self.success_keys
-        //                 //     .insert(("BOOK".to_string(), s.title.clone()));
-        //                 {
-        //                     let content = vec![Spans::from(vec![
-        //                         Span::styled(format!("{}", ZZZ), no_need_success_style),
-        //                         Span::raw(" "), // Span::styled(title, title_style),
-        //                         Span::styled("BOOK", book_style),
-        //                         Span::raw(" @ "), // Span::styled(title, title_style),
-        //                         Span::styled(s.title.clone(), title_style),
-        //                     ])];
-        //                     let li = ListItem::new(content);
-        //                     self.logsrunning.insert(0, li);
-        //                 }
-        //             }
-        //             ELogType::NoNeedFailed => {
-        //                 self.move_book_state(s, Estate::Success);
-        //                 // self.success_keys
-        //                 //     .insert(("BOOK".to_string(), s.title.clone()));
-        //                 {
-        //                     let content = vec![Spans::from(vec![
-        //                         Span::styled(format!("{}", ZZZ), no_need_failed_style),
-        //                         Span::raw(" "), // Span::styled(title, title_style),
-        //                         Span::styled("BOOK", book_style),
-        //                         Span::raw(" @ "), // Span::styled(title, title_style),
-        //                         Span::styled(s.title.clone(), title_style),
-        //                     ])];
-        //                     let li = ListItem::new(content);
-        //                     self.logsrunning.insert(0, li);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // };
-    }
-
-    pub fn logsrunning(&mut self) -> Vec<ListItem<'a>> {
-        self.logsrunning.clone()
-    }
-
-    pub fn logsdone(&mut self) -> Vec<ListItem<'a>> {
-        self.logsdone.clone()
+        self.logsrunning.insert(0, ListItem::new(style));
     }
 }

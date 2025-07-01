@@ -7,7 +7,6 @@ use std::{
     time::{Duration, Instant},
 };
 
-use crate::actions::build_pdf::{wrapped_build_pdf_book, wrapped_build_pdf_song};
 use crossterm::{
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
     execute,
@@ -27,8 +26,8 @@ use crate::generate;
 use crate::model::model::{LogItem, World};
 use crate::ui::model::UiModel;
 
-async fn reset(world: &World, set: &mut JoinSet<()>, uidata: &mut UiModel<'_>) {
-    log::info!("{}:{} reset", file!(), line!());
+async fn reset<'a>(world: &World, set: &mut JoinSet<()>, uidata: &mut UiModel<'a>) {
+    log::debug!("{}:{} reset", file!(), line!());
     set.abort_all();
     loop {
         match set.join_next().await {
@@ -53,45 +52,26 @@ async fn reset(world: &World, set: &mut JoinSet<()>, uidata: &mut UiModel<'_>) {
     uidata.init();
 }
 
-async fn rebuild(
+async fn rebuild<'a>(
     world: &World,
     nb_workers: u32,
     set: &mut JoinSet<()>,
     tx: Sender<LogItem>,
-    uidata: &mut UiModel<'_>,
+    uidata: &mut UiModel<'a>,
     force_rebuild: bool,
-) -> () {
-    // log::info!("{}:{} rebuild; force={}", file!(), line!(), force_rebuild);
+) -> Result<(), Box<dyn std::error::Error>> {
+    // log::debug!("{}:{} rebuild; force={}", file!(), line!(), force_rebuild);
     std::thread::sleep(Duration::from_secs(1));
 
     let sb_to_start = uidata.run_n_songs_or_books(nb_workers);
-    // log::info!("{}:{} {:?}", file!(), line!(), &sb_to_start);
+    // log::debug!("{}:{} {:?}", file!(), line!(), &sb_to_start);
 
-    for sb in sb_to_start {
+    for id in sb_to_start {
+        let sb = uidata.get(id)?;
         sb.build_pdf(set, tx.clone(), world, force_rebuild);
-        // let _ = set.spawn(sb.build_pdf(
-        //     tx.clone(),
-        //     world.clone(),
-        //     force_rebuild,
-        // ));
     }
 
-    // for song in songs_to_start {
-    //     let _ = set.spawn(wrapped_build_pdf_song(
-    //         tx.clone(),
-    //         world.clone(),
-    //         song.clone(),
-    //         force_rebuild,
-    //     ));
-    // }
-
-    // for book in books_to_start {
-    //     let _ = set.spawn(wrapped_build_pdf_book(
-    //         tx.clone(),
-    //         world.clone(),
-    //         book.clone(),
-    //     ));
-    // }
+    Ok(())
 }
 
 //pub async fn run(world:World,tick_rate: Duration, enhanced_graphics: bool) -> Result<(), Box<dyn Error>> {
@@ -132,7 +112,7 @@ async fn run_appx<B: Backend>(
     tx: Sender<LogItem>,
     rx: &mut Receiver<LogItem>,
     tick_rate: Duration,
-) -> io::Result<()> {
+) -> Result<(), Box<dyn std::error::Error>> {
     let mut last_tick = Instant::now();
     // let mut set = JoinSet::new();
     // let mut count = 0;
@@ -171,7 +151,6 @@ async fn run_appx<B: Backend>(
                     } else {
                         break 'outer;
                     }
-                    ()
                 }
                 Poll::Ready(received) => match received {
                     None => {
@@ -181,19 +160,19 @@ async fn run_appx<B: Backend>(
                     Some(s) => {
                         log::info!("{}:{} received something {:?}", file!(), line!(), &s);
                         uidata.handle_item(s, &mut f);
-                        break 'outer;
+                        // break 'outer;
                     }
                 },
             }
         }
-        uidata.make_logs();
+        // uidata.make_logs();
         terminal.draw(|f| ui::drawx(f, &mut uidata))?;
 
         f.flush().unwrap();
 
         if needs_refresh {
             needs_refresh = false;
-            log::info!("refresh");
+            log::debug!("refresh");
         }
 
         if needs_reset {
@@ -201,9 +180,9 @@ async fn run_appx<B: Backend>(
             needs_reset = false
         }
 
-        // log::info!("{}:{} {}",file!(),line!(),force_rebuild) ;
+        // log::debug!("{}:{} {}",file!(),line!(),force_rebuild) ;
         if needs_rebuild || force_rebuild {
-            // log::info!("{}:{} {}", file!(), line!(), force_rebuild);
+            // log::debug!("{}:{} {}", file!(), line!(), force_rebuild);
             needs_rebuild = false;
             rebuild(
                 &world,
@@ -213,7 +192,7 @@ async fn run_appx<B: Backend>(
                 &mut uidata,
                 force_rebuild,
             )
-            .await;
+            .await?;
             force_rebuild = false
         }
 
@@ -261,47 +240,3 @@ async fn run_appx<B: Backend>(
         }
     }
 }
-
-// async fn run_app<B: Backend>(
-//     terminal: &mut Terminal<B>,
-//     mut app: App<'_>,
-//     tick_rate: Duration,
-// ) -> io::Result<()> {
-//     let mut last_tick = Instant::now();
-//     // let mut set = JoinSet::new();
-//
-//     loop {
-//         terminal.draw(|f| ui::draw(f, &mut app))?;
-//
-//         let timeout = tick_rate
-//             .checked_sub(last_tick.elapsed())
-//             .unwrap_or_else(|| Duration::from_secs(0));
-//         if crossterm::event::poll(timeout)? {
-//             if let Event::Key(key) = event::read()? {
-//                 match key.code {
-//                     KeyCode::Char(c) => app.on_key(c),
-//                     KeyCode::Left => app.on_left(),
-//                     KeyCode::Up => app.on_up(),
-//                     KeyCode::Right => app.on_right(),
-//                     KeyCode::Down => app.on_down(),
-//                     _ => {}
-//                 }
-//             }
-//         }
-//
-//         // for song in &world.songs {
-//         //     set.spawn(build_pdf(
-//         //         song.clone(),
-//         //     ));
-//         //     // break ;
-//         // }
-//
-//         if last_tick.elapsed() >= tick_rate {
-//             app.on_tick();
-//             last_tick = Instant::now();
-//         }
-//         if app.should_quit {
-//             return Ok(());
-//         }
-//     }
-// }

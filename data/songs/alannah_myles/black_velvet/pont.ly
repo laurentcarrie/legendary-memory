@@ -1,7 +1,7 @@
 \version "2.23.1"
 \include "macros.ly"
 
-% a new comment 
+% a new comment
 
 % Bb
 ma = {

@@ -6,7 +6,7 @@ use std::process::{ExitStatus, Stdio};
 use tokio::process::Command;
 
 pub async fn build_lytex(song: Song, lyfile: String) -> Result<(), Box<dyn std::error::Error>> {
-    log::info!(
+    log::debug!(
         "begin lilypond {} for {} {}",
         lyfile,
         song.author,
@@ -32,7 +32,7 @@ pub async fn build_lytex(song: Song, lyfile: String) -> Result<(), Box<dyn std::
             .to_str()
             .unwrap()
     ));
-    log::info!(
+    log::debug!(
         "{}:{} lytexfile : {}",
         file!(),
         line!(),
@@ -55,7 +55,7 @@ pub async fn build_lytex(song: Song, lyfile: String) -> Result<(), Box<dyn std::
         match child {
             Ok(mut child) => {
                 status = (&mut child).wait().await?;
-                log::info!(
+                log::debug!(
                     "lilypond {} for {} {}, status {:?}",
                     lyfile,
                     song.author,

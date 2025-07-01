@@ -71,7 +71,7 @@ struct Cli {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let _ = simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
+    simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
     let cli: Cli = argh::from_env();
     let tick_rate = Duration::from_millis(cli.tick_rate);
 

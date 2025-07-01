@@ -31,7 +31,7 @@ fn time_signature_of_string(
                 Some(caps) => {
                     let top = (&caps[0]).to_string().parse::<u8>()?;
                     let low = (&caps[1]).to_string().parse::<u8>()?;
-                    Ok(TimeSignature { top: top, low: low })
+                    Ok(TimeSignature { top, low })
                 }
             }
         }
@@ -52,7 +52,7 @@ fn check_section_types(
                 if sections.contains_key(&c.section_type) {
                     Ok(())
                 } else {
-                    log::info!("bad section type : '{}'", &c.section_type);
+                    log::debug!("bad section type : '{}'", &c.section_type);
                     Err(format!("unknown section type : {}", &c.section_type).into())
                 }
             }
@@ -98,7 +98,7 @@ fn bar_of_string(s: String) -> Result<Bar, Box<dyn std::error::Error>> {
     match ss {
         Some(caps) => Ok(Bar {
             chords: vec![(&caps[1]).to_string()],
-            time_signature: time_signature,
+            time_signature,
         }),
         None => Ok(Bar {
             chords: s
@@ -106,7 +106,7 @@ fn bar_of_string(s: String) -> Result<Bar, Box<dyn std::error::Error>> {
                 .map(|c| chord_of_string(c.to_string()))
                 .filter(|c| c.ne(""))
                 .collect(),
-            time_signature: time_signature,
+            time_signature,
         }),
     }
 }
@@ -146,9 +146,9 @@ fn row_of_string(barcount: u32, s: String) -> (u32, Row) {
     (
         barcount + repeat * bars.len() as u32,
         Row {
-            repeat: repeat,
+            repeat,
             row_start_bar_number: barcount,
-            bars: bars,
+            bars,
         },
     )
 }
@@ -188,7 +188,7 @@ fn structure_of_structure(
                         .clone()
                         .into_iter()
                         .fold(0, |acc, row| acc + row.bars.len() as u32 * row.repeat),
-                    rows: rows,
+                    rows,
                 }),
             )
         }
@@ -257,7 +257,7 @@ fn structure_of_structure(
             (barcount, model::StructureItemContent::ItemNewColumn)
         }
     };
-    let si = StructureItem { item: item };
+    let si = StructureItem { item };
     (barcount, si)
 }
 
@@ -285,34 +285,12 @@ fn song_exists(
     songs: &Vec<UserSongWithPath>,
 ) -> Option<UserSongWithPath> {
     for song in songs {
-        if compare(author.as_str(), song.song.author.as_str()) == Ordering::Equal {
-            if compare(title.as_str(), song.song.title.as_str()) == Ordering::Equal {
-                return Some(song.clone());
-                // let p = build_relative_path_of_source_absolute_path(
-                //     songdir,
-                //     builddir,
-                //     PathBuf::from(song.path.clone()),
-                // );
-                // match p {
-                //     Ok(p) => {
-                //         let x = p.as_path().to_str().map(|x| x.to_string());
-                //         return x;
-                //     }
-                //     _ => (),
-                // }
-            }
+        if compare(author.as_str(), song.song.author.as_str()) == Ordering::Equal
+            && compare(title.as_str(), song.song.title.as_str()) == Ordering::Equal
+        {
+            return Some(song.clone());
         }
     }
-    // log::info!("DID NOT FIND '{}' '{}'", author, title);
-    // for song in songs {
-    //     log::info!(
-    //         "{}:{} '{}' '{}'",
-    //         file!(),
-    //         line!(),
-    //         song.author.as_str(),
-    //         song.title.as_str()
-    //     );
-    // }
     None
 }
 /// read a json file and returns a Book
@@ -353,7 +331,7 @@ pub fn decode_book(
                     title: ub.title.clone(),
                     author: ub.author.clone(),
                     pdfname: normalize_pdf_name(&ub.author, &ub.title),
-                    path: path,
+                    path,
                 })
             }
             None => Err(format!(
@@ -371,7 +349,7 @@ pub fn decode_book(
         None => {
             let book = Book {
                 title: uconf.title.clone(),
-                songs: songs,
+                songs,
                 builddir: book_builddir,
                 pdfname: uconf.title.clone(),
             };

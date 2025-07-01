@@ -23,11 +23,11 @@ pub fn convert(data: &[u32; 1]) -> [u8; 4] {
 fn send_request(requester: Socket, choice: request::Choice) {
     let buffer = &mut [0; 1000000];
     let s = serde_json::to_string(&choice).unwrap();
-    log::info!("send request");
+    log::debug!("send request");
     requester.send(&s, 0).unwrap();
-    log::info!("request sent");
+    log::debug!("request sent");
     let len = requester.recv_into(buffer, 0).unwrap();
-    log::info!("answer of size {}", len);
+    log::debug!("answer of size {}", len);
     let answer_str = String::from_utf8(buffer.to_vec().into_iter().take(len).collect()).unwrap();
     let answer: Result<answer::Choice, serde_json::Error> =
         serde_json::from_str(answer_str.as_str());
@@ -42,7 +42,7 @@ fn send_request(requester: Socket, choice: request::Choice) {
     };
     // println!("Received World {:?}", request_nbr);
     // }
-    log::info!("DONE");
+    log::debug!("DONE");
     ()
 }
 
@@ -58,7 +58,7 @@ fn main() {
         .init()
         .unwrap();
     // let _ = simple_logging::log_to_file("test.log", LevelFilter::Info);
-    log::info!("start client");
+    log::debug!("start client");
 
     // match get_current_pid() {
     //     Ok(pid) => {
@@ -69,7 +69,7 @@ fn main() {
     //             .open("/var/www/songbook/songbook-client.pid")
     //             .unwrap();
     //         match writeln!(file, "{}", pid) {
-    //             Ok(_) => log::info!("append pid {}", pid),
+    //             Ok(_) => log::debug!("append pid {}", pid),
     //             Err(e) => log::error!("write pid failed"),
     //         }
     //     }

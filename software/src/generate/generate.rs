@@ -359,9 +359,9 @@ pub fn generate_from_handlebars_templates(world: &World) -> Result<(), Box<dyn s
                 id: u32,
             }
             let data = XXX {
-                song: song,
-                songtikzuserinput: songtikzuserinput,
-                id: id,
+                song,
+                songtikzuserinput,
+                id,
             };
             log::debug!("generate song.tikz");
             let mut h = get_handlebar()?;
@@ -418,7 +418,7 @@ pub fn generate_from_handlebars_templates(world: &World) -> Result<(), Box<dyn s
                     }
                 })
                 .collect::<Vec<_>>();
-            let data = XXX { songs: songs };
+            let data = XXX { songs };
             log::debug!("generate book-setlist.tikz");
             let mut h = get_handlebar()?;
             h.register_template_string("t1", template)?;

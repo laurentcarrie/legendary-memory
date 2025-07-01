@@ -135,7 +135,7 @@ fn draw_chartsx<B>(
 ) where
     B: Backend,
 {
-    // log::info!("{}:{} draw", file!(), line!());
+    // log::debug!("{}:{} draw", file!(), line!());
     let constraints = vec![Constraint::Percentage(100)];
     let chunks = Layout::default()
         .constraints(constraints)
@@ -155,9 +155,10 @@ fn draw_chartsx<B>(
             // Draw logs
             // let author_style = Style::default().fg(Color::Blue);
             // let title_style = Style::default().fg(Color::Green);
-            // log::info!("size of logsrunning : {}", logsrunning.len());
-            // log::info!("top log : {:?}", logsrunning.get(0));
-            let logsrunning = List::new(uidata.logsrunning())
+            // log::debug!("size of logsrunning : {}", logsrunning.len());
+            // log::debug!("top log : {:?}", logsrunning.get(0));
+
+            let logsrunning = List::new(uidata.logsrunning().clone())
                 .block(Block::default().borders(Borders::ALL).title("Logs"));
             let mut state = ListState::default();
             f.render_stateful_widget(logsrunning, chunks[0], &mut state);

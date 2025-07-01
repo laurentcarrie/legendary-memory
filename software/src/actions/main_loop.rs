@@ -42,7 +42,7 @@ use tokio::sync::mpsc;
 static PAPER: Emoji<'_, '_> = Emoji("📃  ", "");
 // static SPARKLE: Emoji<'_, '_> = Emoji("✨ ", ":-)");
 
-pub async fn main_loop(world: &World) -> () {
+pub async fn main_loop(world: &World) {
     // let spinner_style = ProgressStyle::with_template("{prefix:.bold.dim} {spinner} {wide_msg}")
     //     .unwrap()
     //     .tick_chars("⠁⠂⠄⡀⢀⠠⠐⠈ ");
@@ -156,9 +156,9 @@ pub async fn main_loop(world: &World) -> () {
             ));
             // break ;
         }
-        log::info!("await");
+        log::debug!("await");
         let _result = set.join_all().await;
-        log::info!("done");
+        log::debug!("done");
     }
     {
         let mut set = JoinSet::new();
@@ -170,9 +170,9 @@ pub async fn main_loop(world: &World) -> () {
             ));
             // break ;
         }
-        log::info!("await");
+        log::debug!("await");
         let _result = set.join_all().await;
-        log::info!("done");
+        log::debug!("done");
     }
     // let mut result = result
     //     .iter_mut()
@@ -198,11 +198,11 @@ pub async fn main_loop(world: &World) -> () {
     //         .collect::<Vec<_>>();
     //
     //     for r in &result2 {
-    //         log::info!("{}:{} status : {:?}", file!(), line!(), r)
+    //         log::debug!("{}:{} status : {:?}", file!(), line!(), r)
     //     }
     //
     //     let running = result2.iter().filter(|s| s.is_none()).collect::<Vec<_>>();
-    //     log::info!("{} jobs running", &running.len());
+    //     log::debug!("{} jobs running", &running.len());
     //     if running.len() == 0 {
     //         break;
     //     };
@@ -210,7 +210,7 @@ pub async fn main_loop(world: &World) -> () {
     //     thread::sleep(Duration::from_millis(10_000));
     // }
 
-    log::info!("build pdf songs done");
+    log::debug!("build pdf songs done");
     // pb.finish_and_clear();
 
     // println!("{} Done in {}", SPARKLE, HumanDuration(started.elapsed()));

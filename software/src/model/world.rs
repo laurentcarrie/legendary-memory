@@ -60,11 +60,11 @@ pub fn make(
         builddir: builddir.to_path_buf(),
         songdir: srcdir.to_path_buf(),
         bookdir: srcbookdir.to_path_buf(),
-        songs: songs,
-        books: books,
-        sections: sections,
-        broken_songs: broken_songs,
-        broken_books: broken_books,
+        songs,
+        books,
+        sections,
+        broken_songs,
+        broken_books,
     };
     {
         let data = {
@@ -86,7 +86,7 @@ pub fn make(
         let _ = std::fs::write(path.as_path(), data)?;
     }
 
-    log::info!("found {} song errors", world.broken_books.len());
+    log::debug!("found {} song errors", world.broken_books.len());
 
     for e in world.broken_songs.iter() {
         log::error!(

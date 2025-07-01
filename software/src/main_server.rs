@@ -35,7 +35,7 @@ pub async fn generate(
     bookdir: PathBuf,
     builddir: PathBuf,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    log::info!("generate");
+    log::debug!("generate");
     generate_all(songdir, bookdir, builddir)?;
     // let output = Command::new("/var/www/songbook/scripts/songbook")
     //     .arg(songdir)
@@ -45,8 +45,8 @@ pub async fn generate(
     //     .reap_on_drop(true)
     //     .output()
     //     .await?;
-    // log::info!("OUTPUT : {}", String::from_utf8(output.stdout)?);
-    // log::info!("OUTPUT : {:?}",output.stderr) ;
+    // log::debug!("OUTPUT : {}", String::from_utf8(output.stdout)?);
+    // log::debug!("OUTPUT : {:?}",output.stderr) ;
     // let mut p = PathBuf::from(&builddir);
     // p.push("stdout.generate.txt");
     // let mut fout = File::create(p)?;
@@ -93,7 +93,7 @@ pub async fn omake(
     bookdir: PathBuf,
     builddir: PathBuf,
 ) -> Result<u32, Box<dyn std::error::Error>> {
-    log::info!("omake id={}, builddir={:?}", &id, &builddir);
+    log::debug!("omake id={}, builddir={:?}", &id, &builddir);
     let mut sh = builddir
         .clone()
         .parent()
@@ -125,9 +125,9 @@ pub async fn omake(
         // .stdout(Stdio::piped())
         .reap_on_drop(true)
         .spawn()?;
-    log::info!("omake spawned {}", &child.id());
-    // log::info!("OUTPUT : {}", String::from_utf8(child.stdout)?);
-    // log::info!("OUTPUT : {:?}", child.stderr);
+    log::debug!("omake spawned {}", &child.id());
+    // log::debug!("OUTPUT : {}", String::from_utf8(child.stdout)?);
+    // log::debug!("OUTPUT : {:?}", child.stderr);
     // println!("{}",String::from_utf8_lossy(&child.output.stdout)) ;
     // thread::sleep(time::Duration::from_secs(10));
     let pid = child.id();
@@ -140,7 +140,7 @@ pub async fn handle_build_request(
     bookdir: PathBuf,
     builddir: PathBuf,
 ) -> Result<answer::EChoice, Box<dyn std::error::Error>> {
-    log::info!(
+    log::debug!(
         "generate from {:?} ; {:?} to {:?}",
         &songdir,
         &bookdir,
@@ -149,7 +149,7 @@ pub async fn handle_build_request(
     // let mut logpath = Path::new(&config.builddir).canonicalize().expect("root");
     // logpath.push("build.log");
     generate(songdir.clone(), bookdir.clone(), builddir.clone()).await?;
-    log::info!("generate done");
+    log::debug!("generate done");
     let pid = omake(id, songdir.clone(), bookdir.clone(), builddir.clone()).await?;
     Ok(answer::EChoice::ItemOmakeBuild(pid))
 }
@@ -187,11 +187,11 @@ pub async fn handle_omake_children_info() -> Result<answer::EChoice, Box<dyn std
                                     name: name,
                                     run_time: child.run_time(),
                                 })
-                                // log::info!("{:?}", child.name());
-                                // log::info!(".....{:?}", child.cwd());
-                                // log::info!(".....{:?}", child.cpu_usage());
-                                // log::info!(".....{:?}", child.start_time());
-                                // log::info!(".....{:?}", child.run_time());
+                                // log::debug!("{:?}", child.name());
+                                // log::debug!(".....{:?}", child.cwd());
+                                // log::debug!(".....{:?}", child.cpu_usage());
+                                // log::debug!(".....{:?}", child.start_time());
+                                // log::debug!(".....{:?}", child.run_time());
                             } else {
                                 None
                             }
@@ -229,13 +229,13 @@ pub fn handle_omake_kill() -> Result<answer::EChoice, Box<dyn std::error::Error>
 pub fn handle_clean_build_tree(
     builddir: PathBuf,
 ) -> Result<answer::EChoice, Box<dyn std::error::Error>> {
-    let paths = vec!["delivery", "songs", "books"];
+    let paths = ["delivery", "songs", "books"];
     let _ret: Vec<_> = paths
         .iter()
         .map(|p| {
             let mut path_to_delete: PathBuf = builddir.clone();
             path_to_delete.push(p);
-            log::info!("{:?}", &path_to_delete);
+            log::debug!("{:?}", &path_to_delete);
             std::fs::remove_dir_all(path_to_delete.as_os_str())
         })
         .collect();
@@ -295,7 +295,7 @@ pub fn handle_source_tree(
             // let root = format!("/input-songs{}", root);
             root
         };
-        log::info!("ROOT is {}", &root);
+        log::debug!("ROOT is {}", &root);
         let root = root.replace(songdir.to_str().unwrap(), "");
         let mut texfiles: Vec<String> = vec![];
         let mut lyricstexfiles: Vec<String> = vec![];
@@ -340,13 +340,13 @@ pub fn handle_save_file(
     songdir: PathBuf,
     info: InfoSaveFile,
 ) -> Result<answer::EChoice, Box<dyn std::error::Error>> {
-    log::info!("{}:{} {:?}", file!(), line!(), &info);
+    log::debug!("{}:{} {:?}", file!(), line!(), &info);
     let re = Regex::new(r"/(.*)").unwrap();
     let relpath = re.replace(info.path.as_str(), "${1}").to_string();
-    log::info!("{}:{} {:?}", file!(), line!(), &relpath);
+    log::debug!("{}:{} {:?}", file!(), line!(), &relpath);
     let mut path = songdir;
     path.push(relpath);
-    log::info!("{}:{} {:?}", file!(), line!(), &path);
+    log::debug!("{}:{} {:?}", file!(), line!(), &path);
     let mut output = File::create(path)?;
     let _ = output.write(info.content.as_bytes()).unwrap();
     Ok(answer::EChoice::ItemOkMessage)
@@ -357,11 +357,11 @@ pub fn handle_save_file(
 /// note that we use text compare for sorting dates... so don't change the format
 fn get_omake_stdout_data(builddir: PathBuf) -> (String, String) {
     let mut candidates: Vec<PathBuf> = vec![];
+    let re = Regex::new(r"omake\..*\.stdout").unwrap();
     for p in builddir.read_dir().expect("read dir failed") {
         if let Ok(p) = p {
             if let Ok(file_type) = p.file_type() {
                 if file_type.is_file() {
-                    let re = Regex::new(r"omake\..*\.stdout").unwrap();
                     if re.is_match(p.file_name().as_os_str().to_str().unwrap()) {
                         candidates.push(p.path());
                     }
@@ -418,13 +418,13 @@ pub fn handle_get_source_file(
     songdir: PathBuf,
     spath: String,
 ) -> Result<answer::EChoice, Box<dyn std::error::Error>> {
-    log::info!("{:?}", songdir);
-    log::info!("{:?}", spath);
+    log::debug!("{:?}", songdir);
+    log::debug!("{:?}", spath);
     let mut path = songdir.clone();
     let spath = PathBuf::from(spath);
     let spath = if spath.is_absolute() {
         let mut spath = spath.to_str().unwrap().to_string();
-        if spath.len() > 0 {
+        if !spath.is_empty() {
             spath.remove(0);
         };
         PathBuf::from(spath)
@@ -432,7 +432,7 @@ pub fn handle_get_source_file(
         spath
     };
     path.push(&spath);
-    log::info!("get source file '{:?}'", &path);
+    log::debug!("get source file '{:?}'", &path);
     let data = match fs::read_to_string(path) {
         Ok(data) => data,
         Err(e) => format!("{:?}", e),
@@ -461,35 +461,35 @@ async fn main() -> () {
 
     log::set_max_level(LevelFilter::Info);
     let mut args: std::env::Args = env::args();
-    log::info!("found {} args on command line", args.len());
+    log::debug!("found {} args on command line", args.len());
     let songdir = PathBuf::from(args.nth(1).unwrap());
-    log::info!("songdir : {:?}", songdir);
+    log::debug!("songdir : {:?}", songdir);
     let bookdir = PathBuf::from(args.nth(0).unwrap());
-    log::info!("bookdir : {:?}", bookdir);
+    log::debug!("bookdir : {:?}", bookdir);
     let builddir = PathBuf::from(args.nth(0).unwrap());
-    log::info!("builddir : {:?}", builddir);
+    log::debug!("builddir : {:?}", builddir);
 
     let context = zmq::Context::new();
     let responder = context.socket(zmq::REP).unwrap();
     assert!(responder.bind("tcp://*:5555").is_ok());
 
-    log::info!("start server...");
+    log::debug!("start server...");
 
     loop {
         let bt = Backtrace::new();
         let buffer = &mut [0; 1000000];
-        log::info!("wait for command...");
+        log::debug!("wait for command...");
         let len = responder.recv_into(buffer, 0).unwrap();
-        let command = String::from_utf8(buffer.to_vec().into_iter().take(len).collect()).unwrap();
+        let command = String::from_utf8(buffer.into_iter().take(len).collect()).unwrap();
         let what: request::Choice = serde_json::from_str(&command).unwrap();
-        log::info!("{:?}", &what);
-        log::info!("received command");
+        log::debug!("{:?}", &what);
+        log::debug!("received command");
         let answer_choice = match what.choice {
             request::EChoice::ItemBuild(id) => {
                 handle_build_request(id, songdir.clone(), bookdir.clone(), builddir.clone()).await
             }
             request::EChoice::ItemOMakeChildrenInfo => {
-                log::info!("request check pid");
+                log::debug!("request check pid");
                 handle_omake_children_info().await
             }
             request::EChoice::ItemOMakeKill => handle_omake_kill(),
@@ -509,10 +509,7 @@ async fn main() -> () {
             request::EChoice::ItemGetOMakeProgress => handle_get_omake_progress(builddir.clone()),
         };
         let answer = match answer_choice {
-            Ok(x) => {
-                let answer = answer::Choice { choice: x };
-                answer
-            }
+            Ok(x) => answer = answer::Choice { choice: x },
             Err(e) => answer::Choice {
                 choice: answer::EChoice::ItemErrorMessage(format!(
                     "{:?} ; {:?}",
@@ -521,8 +518,8 @@ async fn main() -> () {
                 )),
             },
         };
-        log::info!("DONE !");
-        // log::info!("send response");
+        log::debug!("DONE !");
+        // log::debug!("send response");
         // let answer = answer::Choice {
         //     choice: answer::EChoice::ItemOMakeOmakeChildren(omake_pid),
         // };
@@ -536,7 +533,7 @@ async fn main() -> () {
                 log::error!("{}", e);
             }
         }
-        log::info!("response sent");
+        log::debug!("response sent");
         thread::sleep(time::Duration::from_secs(1));
     }
 }

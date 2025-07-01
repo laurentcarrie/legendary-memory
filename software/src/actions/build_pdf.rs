@@ -67,7 +67,7 @@ fn compute_digest(song: &Song) -> Result<String, Box<dyn std::error::Error>> {
 
     let mut all_files: Vec<PathBuf> = vec![];
     all_files.append(&mut lyrics_files);
-    for f in vec!["song.json", "body.tex", "add.tikz"] {
+    for f in ["song.json", "body.tex", "add.tikz"] {
         all_files.push({
             let mut p = PathBuf::from(&song.srcdir.clone());
             p.push(f);
@@ -89,27 +89,27 @@ fn compute_digest(song: &Song) -> Result<String, Box<dyn std::error::Error>> {
 // computes the digest of the sources PLUS the output pdf file
 // Error if the pdf file does not exist
 pub fn compute_digest_ok(world: &World, song: &Song) -> Result<String, Box<dyn std::error::Error>> {
-    // log::info!("{}:{}", file!(), line!());
+    // log::debug!("{}:{}", file!(), line!());
     let digest = compute_digest(song)?;
     let mut hasher = Sha256::new();
-    // log::info!("{}:{}", file!(), line!());
+    // log::debug!("{}:{}", file!(), line!());
     hasher.update(&digest);
-    // log::info!("{}:{}", file!(), line!());
+    // log::debug!("{}:{}", file!(), line!());
     {
         let mut p = PathBuf::from(&world.builddir);
         p.push("delivery");
-        // log::info!("{}:{}", file!(), line!());
+        // log::debug!("{}:{}", file!(), line!());
         p.push(format!("{}.pdf", &song.pdfname));
-        // log::info!("{}:{} {:?}", file!(), line!(), &p);
+        // log::debug!("{}:{} {:?}", file!(), line!(), &p);
         let contents = read_to_vec_u8(&p)?;
-        // log::info!("{}:{}", file!(), line!());
+        // log::debug!("{}:{}", file!(), line!());
         hasher.update(contents);
     }
-    // log::info!("{}:{}", file!(), line!());
+    // log::debug!("{}:{}", file!(), line!());
     let result = hasher.finalize();
-    // log::info!("{}:{}", file!(), line!());
+    // log::debug!("{}:{}", file!(), line!());
     let data = hex::encode(&result[..].to_vec());
-    // log::info!("{}:{} {}", file!(), line!(),&data);
+    // log::debug!("{}:{} {}", file!(), line!(),&data);
     Ok(data)
 }
 
@@ -176,7 +176,7 @@ pub async fn wrapped_build_pdf_song(
     world: World,
     song: Song,
     force_rebuild: bool,
-) -> () {
+) {
     match build_pdf_song(tx, world.clone(), song.clone(), force_rebuild).await {
         Ok(()) => (),
         Err(e) => log::error!(
@@ -188,7 +188,7 @@ pub async fn wrapped_build_pdf_song(
     }
 }
 
-pub async fn wrapped_build_pdf_book(tx: Sender<LogItem>, world: World, book: Book) -> () {
+pub async fn wrapped_build_pdf_book(tx: Sender<LogItem>, world: World, book: Book) {
     match build_pdf_book(tx, world.clone(), book.clone()).await {
         Ok(()) => (),
         Err(e) => log::error!("wrapped build pdf, {} ; {}", &book.title, e.to_string()),
@@ -203,13 +203,11 @@ pub async fn build_pdf_song(
 ) -> Result<(), Box<dyn std::error::Error>> {
     log::info!("build pdf {} {}", &song.author, &song.title);
     let p = pathbuf_ok_checksum(&song);
-    if force_rebuild {
-        if p.exists() {
-            std::fs::remove_file(p.as_path())?;
-        }
+    if force_rebuild && p.exists() {
+        std::fs::remove_file(p.as_path())?;
     }
     if !needs_rebuild_ok(&world, &song) {
-        log::info!("does not need rebuild {} {}", &song.author, &song.title);
+        log::debug!("does not need rebuild {} {}", &song.author, &song.title);
         let li = LogItem::Song(LogItemSong {
             author: song.author.clone(),
             title: song.title.clone(),
@@ -272,7 +270,7 @@ pub async fn build_pdf_song(
             .current_dir(&song.builddir)
             .spawn()?;
 
-        log::info!(
+        log::debug!(
             "{}:{} run lualatex for {} {}",
             file!(),
             line!(),
@@ -321,14 +319,14 @@ pub async fn build_pdf_song(
             .current_dir(&song.builddir)
             .spawn()?;
 
-        log::info!(
+        log::debug!(
             "{}:{} run ps2pdf for {} {}",
             file!(),
             line!(),
             &song.author,
             &song.title
         );
-        // log::info!("{}:{} {:?}", file!(), line!(), &child);
+        // log::debug!("{}:{} {:?}", file!(), line!(), &child);
         let output = &child.wait_with_output().await?;
         if !(output.status.success()) {
             success = false;
@@ -342,7 +340,7 @@ pub async fn build_pdf_song(
             title: song.title.clone(),
             status: ELogType::Failed,
         });
-        log::info!(
+        log::debug!(
             "tx.send final error result for {} {}",
             &song.author,
             &song.title
@@ -381,12 +379,12 @@ async fn build_pdf_book(
     world: World,
     book: Book,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    log::info!("build book {}", &book.title);
+    log::info!("{}:{} build book {}", file!(), line!(), &book.title);
     loop {
         if !needs_rebuild_book_ok(&world, &book)? {
             break;
         }
-        log::info!(
+        log::debug!(
             "wait for building book {} ... some songs are not done yet",
             book.title
         );
@@ -420,7 +418,7 @@ async fn build_pdf_book(
             .current_dir(&book.builddir)
             .spawn()?;
 
-        log::info!(
+        log::debug!(
             "{}:{} run lualatex for book {}",
             file!(),
             line!(),
@@ -439,7 +437,7 @@ async fn build_pdf_book(
         count = count + 1;
     }
 
-    log::info!(
+    log::debug!(
         "{}:{} success : {} ; book {}",
         file!(),
         line!(),
@@ -452,7 +450,7 @@ async fn build_pdf_book(
             title: book.title.clone(),
             status: ELogType::Failed,
         });
-        log::info!("tx.send final error result for {} ", &book.title);
+        log::debug!("tx.send final error result for {} ", &book.title);
         tx.send(li).await?;
         return Ok(());
     }
@@ -477,8 +475,8 @@ async fn build_pdf_book(
             .current_dir(&book.builddir)
             .spawn()?;
 
-        log::info!("{}:{} run ps2pdf for {} ", file!(), line!(), &book.title);
-        log::info!("{}:{} {:?}", file!(), line!(), &child);
+        log::debug!("{}:{} run ps2pdf for {} ", file!(), line!(), &book.title);
+        log::debug!("{}:{} {:?}", file!(), line!(), &child);
         let output = &child.wait_with_output().await?;
         if !(output.status.success()) {
             success = false;
@@ -494,7 +492,7 @@ async fn build_pdf_book(
             ELogType::Failed
         },
     });
-    log::info!("tx.send final result for book {}", &book.title);
+    log::debug!("tx.send final result for book {}", &book.title);
     tx.send(li).await?;
 
     Ok(())
