@@ -247,35 +247,7 @@ pub fn handle_build_progress(
     _srcdir: PathBuf,
     _builddir: PathBuf,
 ) -> Result<answer::EChoice, Box<dyn std::error::Error>> {
-    // let world: UserWorld = {
-    //     let mut filepath = PathBuf::new();
-    //     filepath.push(builddir.as_str());
-    //     filepath.push("world.json");
-    //     serde_json::from_str(fs::read_to_string(filepath.as_path())?.as_str())?
-    // };
     let ret: Vec<ProgressItem> = vec![];
-    // for s in world.songs {
-    //     let mut path = PathBuf::from(&builddir.as_str());
-    //     let path2 = PathBuf::from(
-    //         s.path
-    //             .replace(format!("{}/", &srcdir.as_str()).as_str(), ""),
-    //     );
-    //     path.push("songs");
-    //     let path = path.join(&path2);
-    //     let mut p = PathBuf::from(path)
-    //         .parent()
-    //         .ok_or_else(|| MyError::MessageError("cannot get parent".to_string()))?
-    //         .to_path_buf();
-    //     p.push("main.pdf.stdout");
-    //     let status = p.exists();
-    //     ret.push(ProgressItem {
-    //         path: p
-    //             .to_str()
-    //             .ok_or_else(|| MyError::MessageError("filename cast error".to_string()))?
-    //             .to_string(),
-    //         status: status,
-    //     })
-    // }
     Ok(answer::EChoice::ItemSeeProgress(Progress { progress: ret }))
 }
 

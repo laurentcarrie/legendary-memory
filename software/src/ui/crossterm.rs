@@ -20,7 +20,7 @@ use tui::{
     Terminal,
 };
 
-use crate::ui::ui;
+use crate::ui::draw;
 
 use crate::generate;
 use crate::model::model::{LogItem, World};
@@ -122,8 +122,8 @@ async fn run_appx<B: Backend>(
     let local_waker = LocalWaker::noop();
     let waker = Waker::noop();
 
-    let mut cx = ContextBuilder::from_waker(&waker)
-        .local_waker(&local_waker)
+    let mut cx = ContextBuilder::from_waker(waker)
+        .local_waker(local_waker)
         .build();
 
     let mut needs_rebuild = true;
@@ -166,7 +166,7 @@ async fn run_appx<B: Backend>(
             }
         }
         // uidata.make_logs();
-        terminal.draw(|f| ui::drawx(f, &mut uidata))?;
+        terminal.draw(|f| draw::drawx(f, &mut uidata))?;
 
         f.flush().unwrap();
 
@@ -210,7 +210,7 @@ async fn run_appx<B: Backend>(
                     // KeyCode::Right => app.on_right(),
                     // KeyCode::Down => app.on_down(),
                     KeyCode::Char('q') => {
-                        let _ = writeln!(&mut f, "{}", " should quit ").unwrap();
+                        writeln!(&mut f, " should quit ").unwrap();
                         should_quit = true
                     }
                     // KeyCode::Char('c') => check_now = true,

@@ -24,5 +24,5 @@ pub fn get_book_json_paths(current_dir: &PathBuf) -> Vec<PathBuf> {
             }
         };
     }
-    return filenames;
+    filenames
 }

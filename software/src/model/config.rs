@@ -430,8 +430,8 @@ pub fn decode_song(
         .expect("has file name")
         .to_str()
         .expect("has name");
-    song_builddir.push(&parent_author);
-    song_builddir.push(&parent_title);
+    song_builddir.push(parent_author);
+    song_builddir.push(parent_title);
     let song = song_of_usersong(uconf.clone(), filepath.clone(), song_builddir)?;
     let usersongwithpath = UserSongWithPath {
         song: uconf.clone(),

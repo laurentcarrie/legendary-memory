@@ -60,7 +60,9 @@ hex = "0.4.3"
 rayon = "1.10.0"
 tokio-rayon = "2.1.0"
 futures = "0.3.31"
-
+lambda_runtime = "0.7"
+tracing = { version = "0.1", features = ["log"] }
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt"] }
 
 [[bin]]
 name = "songbook-client"
@@ -75,6 +77,11 @@ name = "songbook-ui"
 path = "src/main_ui.rs"
 required-features = ["crossterm"]
 
+[[bin]]
+name = "songbook-lambda"
+path = "src/main_lambda.rs"
+
+
 #[[bin]]
 #name = "songbook-mt"
 #path = "src/main_mt.rs"
@@ -83,3 +90,4 @@ required-features = ["crossterm"]
 [dev-dependencies]
 #rand="0.8"
 argh="0.1"
+

@@ -92,7 +92,7 @@ impl TEstate for UISong {
     fn uicontent<'a>(&self) -> Option<Vec<Spans<'a>>> {
         let style = |emoji: Emoji<'_, '_>| {
             vec![Spans::from(vec![
-                Span::styled(format!("{}", emoji), Style::default()),
+                Span::styled(format!("{emoji}"), Style::default()),
                 Span::raw(" "),
                 Span::styled(self.song.author.clone(), Style::default().fg(Color::Blue)),
                 Span::raw(" @ "),
@@ -140,7 +140,7 @@ impl TEstate for UIBook {
     fn uicontent<'a>(&self) -> Option<Vec<Spans<'a>>> {
         let style = |emoji: Emoji<'_, '_>| {
             vec![Spans::from(vec![
-                Span::styled(format!("{}", emoji), Style::default()),
+                Span::styled(format!("{emoji}"), Style::default()),
                 Span::raw(" "), // Span::styled(title, title_style),
                 Span::styled("BOOK", Style::default().fg(Color::Blue)),
                 Span::raw(" @ "), // Span::styled(title, title_style),
@@ -284,7 +284,7 @@ impl<'a> UiModel<'a> {
                 return Ok(sb);
             }
         }
-        Err(format!("no song or book for id '{}'", id).into())
+        Err(format!("no song or book for id '{id}'").into())
     }
 
     pub fn get_mut(
@@ -344,8 +344,7 @@ impl<'a> UiModel<'a> {
         let content = vec![Spans::from(vec![
             // Span::styled(format!("{}", BEAR), running_style),
             Span::raw(format!(
-                "{} Success, {} Failures, {} Running, {} Pending ",
-                success_count, failure_count, running_count, pending_count
+                "{success_count} Success, {failure_count} Failures, {running_count} Running, {pending_count} Pending "
             )),
         ])];
         let li = ListItem::new(content);

@@ -317,11 +317,11 @@ pub fn generate_from_handlebars_templates(world: &World) -> Result<(), Box<dyn s
             //     write!(output, "{}", serde_json::to_string(&song)?)?;
             // }
             let mut p: PathBuf = song.builddir.clone();
-            let _ = create_dir_all(&p)?;
+            create_dir_all(&p)?;
             p.push("data.tex");
             log::debug!("write {}", p.display());
             let mut output = File::create(&p)?;
-            write!(output, "% length of structure : {}\n", song.structure.len())?;
+            writeln!(output, "% length of structure : {}", song.structure.len())?;
 
             let template =
                 String::from_utf8(include_bytes!("../../others/texfiles/data.tex").to_vec())?;
@@ -337,7 +337,7 @@ pub fn generate_from_handlebars_templates(world: &World) -> Result<(), Box<dyn s
         // song.tikz
         let mut id = 0u32;
         for song in &world.songs {
-            id = id + 1;
+            id += 1;
             let mut p: PathBuf = song.builddir.clone();
             let _ = create_dir_all(&p)?;
             p.push("song.tikz");
@@ -367,7 +367,7 @@ pub fn generate_from_handlebars_templates(world: &World) -> Result<(), Box<dyn s
             let mut h = get_handlebar()?;
             h.register_template_string("t1", template)?;
             let output_data = h.render("t1", &data)?;
-            output.write(output_data.as_bytes())?;
+            let _ = output.write_all(output_data.as_bytes())?;
         }
     }
 
@@ -423,7 +423,7 @@ pub fn generate_from_handlebars_templates(world: &World) -> Result<(), Box<dyn s
             let mut h = get_handlebar()?;
             h.register_template_string("t1", template)?;
             let output_data = h.render("t1", &data)?;
-            output.write(output_data.as_bytes())?;
+            output.write_all(output_data.as_bytes())?;
         }
     }
 

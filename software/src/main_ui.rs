@@ -49,26 +49,6 @@ struct Cli {
     builddir: String,
 }
 
-// async fn watch(mut rx: Receiver<String>) -> () {
-//     loop {
-//         let received = rx.recv().await;
-//         match received {
-//             None => println!("huh, NONE !"),
-//             Some(s) => {
-//                 let mut f = File::options()
-//                     .append(true)
-//                     .create(true)
-//                     .open("date.log")
-//                     .unwrap();
-//                 writeln!(&mut f, "{}", s).unwrap();
-//                 f.flush().unwrap();
-//                 // logs.items.insert(0,("blah".to_string(),s)) ;
-//             }
-//         }
-//         // thread::sleep(time::Duration::from_secs(1));
-//     }
-// }
-
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;

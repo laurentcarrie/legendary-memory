@@ -83,19 +83,13 @@ pub fn make(
         let data = serde_json::to_string(&world)?;
         let mut path = builddir.clone();
         path.push("world-internal.json");
-        let _ = std::fs::write(path.as_path(), data)?;
+        std::fs::write(path.as_path(), data)?;
     }
 
     log::debug!("found {} song errors", world.broken_books.len());
 
     for e in world.broken_songs.iter() {
-        log::error!(
-            "¨{}:{} {:?} , {}",
-            file!(),
-            line!(),
-            e.0.to_str(),
-            e.1.to_string()
-        );
+        log::error!("¨{}:{} {:?} , {}", file!(), line!(), e.0.to_str(), e.1);
     }
 
     for e in world.broken_books.iter() {
