@@ -2,6 +2,9 @@ use lambda_runtime::{run, service_fn, Error, LambdaEvent};
 use log;
 use serde::{Deserialize, Serialize};
 use simple_logger;
+use tokio::sync::mpsc;
+
+
 
 // #![feature(local_waker)]
 
@@ -10,7 +13,6 @@ use std::time::Duration;
 
 use argh::FromArgs;
 use log::LevelFilter;
-use tokio::sync::mpsc;
 use tokio::task::JoinSet;
 
 /// Demo
@@ -20,6 +22,7 @@ use tokio::task::JoinSet;
 
 // use crate::generate::generate::generate;
 use crate::model::model::World;
+use crate::model::model::LogItem;
 
 // mod app;
 // #[cfg(feature = "crossterm")]
@@ -87,7 +90,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
         serde_json::from_str(data.as_str()).unwrap()
     };
 
-    // let (tx, mut rx) = mpsc::channel(1000);
+    let (tx, mut rx) = mpsc::channel ::<LogItem>(1000);
 
     // let set: JoinSet<()> = JoinSet::new();
 
