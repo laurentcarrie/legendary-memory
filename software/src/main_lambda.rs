@@ -105,7 +105,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     // simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
-    simple_logger::init_with_level(log::Level::Info).unwrap();
+    simple_logger::init_with_level(log::Level::Debug).unwrap();
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::INFO)
         // disable printing the name of the module in every log line.
