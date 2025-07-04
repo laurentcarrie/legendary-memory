@@ -204,19 +204,6 @@ pub fn generate_from_handlebars_templates(world: &World) -> Result<(), Box<dyn s
         let _ = write(&p, bytes)?;
     }
     {
-        let mut p: PathBuf = PathBuf::new();
-        let _ = create_dir_all(&p)?;
-        p.push("run.sh");
-        log::debug!("write {}", p.display());
-        let mut output = File::create(&p)?;
-        let template = String::from_utf8(include_bytes!("../../others/shfiles/run.sh").to_vec())?;
-
-        let mut h = get_handlebar()?;
-        h.register_template_string("t1", template)?;
-        let output_data = h.render("t1", world)?;
-        let _ = output.write(output_data.as_bytes())?;
-    }
-    {
         let bytes = include_bytes!("../../others/shfiles/make_gdrive.sh");
         let mut p: PathBuf = world.builddir.clone();
         let _ = create_dir_all(&p)?;
