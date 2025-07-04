@@ -11,6 +11,18 @@ use log::LevelFilter;
 use tokio::sync::mpsc;
 use tokio::task::JoinSet;
 
+/// Demo
+#[derive(Debug, FromArgs)]
+struct Cli {
+    #[argh(positional)]
+    songdir: String,
+    #[argh(positional)]
+    bookdir: String,
+    #[argh(positional)]
+    builddir: String,
+}
+
+
 // use crate::actions::build_pdf::wrapped_build_pdf;
 // #[cfg(feature = "crossterm")]
 // use crate::ui::crossterm;
@@ -60,15 +72,18 @@ struct Response {
 //     Ok(files)
 // }
 
-async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, std::error::Error> {
+async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error> {
     let cli: Cli = argh::from_env();
-    let tick_rate = Duration::from_millis(cli.tick_rate);
 
-    generate::all::generate_all(
+    match generate::all::generate_all(
         PathBuf::from(&cli.songdir),
         PathBuf::from(&cli.bookdir),
         PathBuf::from(&cli.builddir),
-    )?;
+    ) {
+        Ok(()) => (),
+        Err(e) => return Err(Error::from(anyhow::Error::msg(e.to_string()))),
+    }
+    // .unwrap_or_else(|e| {Err::<_,String>(e.to_string());});
 
     let world: World = {
         let mut path = PathBuf::from(cli.builddir);
@@ -77,7 +92,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, std::
         serde_json::from_str(data.as_str()).unwrap()
     };
 
-    let (tx, mut rx) = mpsc::channel(1000);
+    // let (tx, mut rx) = mpsc::channel(1000);
 
     // let set: JoinSet<()> = JoinSet::new();
 
@@ -93,7 +108,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, std::
 }
 
 #[tokio::main]
-async fn main() -> Result<(), std::error::Error> {
+async fn main() -> Result<(), Error> {
     // simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
 
     tracing_subscriber::fmt()
