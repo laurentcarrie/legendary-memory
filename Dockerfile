@@ -16,23 +16,9 @@ RUN	sh rustup.sh -y
 RUN	apt update
 RUN	apt install --fix-missing
 RUN	apt install lilypond -y
-# RUN	curl -L -o lilypond.tar.gz https://gitlab.com/lilypond/lilypond/-/releases/v2.24.4/downloads/lilypond-2.24.4-linux-x86_64.tar.gz
-# RUN	tar -xzf lilypond.tar.gz
-# RUN	mv lilypond-2.24.4 lilypond
-# RUN	chmod +x lilypond/usr/bin/lilypond
-# RUN	cp -r lilypond/usr/* /usr/
-# RUN	rm -rf lilypond lilypond.tar.gz 
+
+COPY software/target/lambda/songbook-lambda/bootstrap bootstrap
+COPY software/target/lambda/songbook-lambda/bootstrap.zip bootstrap.zip
 
 
-
-# # RUN	sudo apt update
-# # RUN	sudo apt install --fix-missing
-# # RUN	sudo apt install texlive-full -y
-# RUN	curl -L -o install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-# RUN	tar -xzf install-tl-unx.tar.gz
-# RUN	cd install-tl-*/ && ./install-tl    
-
-#EXEC bash
-# ENTRYPOINT bash
-
-#CMD [ "function.handler" ]
+CMD [ bootstrap ]
