@@ -66,7 +66,9 @@ struct Response {
 // }
 
 async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error> {
-    log::info!("Received event: {}", &event.payload.songdir);
+    log::info!("songdir : {}", &event.payload.songdir);
+    log::info!("bookdir : {}", &event.payload.bookdir);
+    log::info!("builddir : {}", &event.payload.builddir);
 
     match generate::all::generate_all(
         PathBuf::from(&event.payload.songdir),
