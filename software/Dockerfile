@@ -1,5 +1,6 @@
 #FROM public.ecr.aws/lambda/provided:al2.2025.07.03.10
-FROM ubuntu
+FROM public.ecr.aws/lambda/provided:al2.2025.07.03.10
+#FROM ubuntu
 
 
 RUN	apt update
