@@ -12,13 +12,10 @@ use tokio::sync::mpsc;
 use tokio::task::JoinSet;
 
 /// Demo
-#[derive(Debug, FromArgs)]
+#[derive(Debug, Deserialize)]
 struct Cli {
-    #[argh(positional)]
     songdir: String,
-    #[argh(positional)]
     bookdir: String,
-    #[argh(positional)]
     builddir: String,
 }
 
