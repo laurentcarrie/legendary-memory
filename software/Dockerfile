@@ -3,11 +3,11 @@ FROM public.ecr.aws/lambda/provided:al2.2025.07.03.10
 #FROM ubuntu
 
 
- RUN yum update && yum -y install tar
+ RUN yum -y update && yum -y install tar
 
-RUN	apt update
-RUN	apt install --fix-missing
-RUN	apt install g++ curl -y
+# RUN	apt update
+# RUN	apt install --fix-missing
+# RUN	apt install g++ curl -y
 
 
 RUN	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup.sh
