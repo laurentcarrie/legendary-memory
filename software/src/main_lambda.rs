@@ -1,6 +1,37 @@
 use lambda_runtime::{run, service_fn, Error, LambdaEvent};
 use serde::{Deserialize, Serialize};
 
+
+#![feature(local_waker)]
+
+use std::path::PathBuf;
+use std::time::Duration;
+
+use argh::FromArgs;
+use log::LevelFilter;
+use tokio::sync::mpsc;
+use tokio::task::JoinSet;
+
+// use crate::actions::build_pdf::wrapped_build_pdf;
+#[cfg(feature = "crossterm")]
+use crate::ui::crossterm ;
+
+// use crate::generate::generate::generate;
+use crate::model::model::World;
+
+// mod app;
+// #[cfg(feature = "crossterm")]
+// mod crossterm;
+// #[cfg(feature = "termion")]
+// mod termion;
+// mod ui;
+
+pub mod actions;
+pub mod generate;
+pub mod helpers;
+pub mod model;
+pub mod ui;
+
 #[derive(Deserialize)]
 struct Request {
     name: String,
@@ -32,15 +63,41 @@ async fn list_files() -> Result<String, Error> {
 }
 
 async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error> {
-    // Extract some useful info from the request
-    let name = event.payload.name;
-    let files = list_files().await?;
-    // Prepare the response
-    let resp = Response {
-        req_id: event.context.request_id,
-        msg: format!("Hello, {}!", name),
-        files,
+    let cli: Cli = argh::from_env();
+
+    match generate::all::generate_all(
+        PathBuf::from(&cli.songdir),
+        PathBuf::from(&cli.bookdir),
+        PathBuf::from(&cli.builddir),
+    ) {
+        Ok(()) => (),
+        Err(e) => {
+            log::error!("{}:{} {}", file!(), line!(), e);
+            // println!("Custom backtrace: {}", Backtrace::force_capture());
+            std::process::exit(1)
+        }
     };
+    let world: World = {
+        let mut path = PathBuf::from(cli.builddir);
+        path.push("world-internal.json");
+        let data = std::fs::read_to_string(path.to_str().unwrap()).unwrap();
+        serde_json::from_str(data.as_str()).unwrap()
+    };
+
+    let (tx, mut rx) = mpsc::channel(1000);
+
+    // let mut setwatch: JoinSet<_> = JoinSet::new();
+    // setwatch.spawn(watch(rx));
+    // setwatch.join_all().await ;
+
+    let set: JoinSet<()> = JoinSet::new();
+    // for song in &world.songs {
+    //     let _ = set.spawn(wrapped_build_pdf(tx.clone(), song.clone()));
+    // }
+
+    crossterm::run(world, cli.nb_workers, set, tx, &mut rx, cli._rate).await?;
+
+    Ok(())
 
     // Return `Response` (it will be serialized to JSON automatically by the runtime)
     Ok(resp)
@@ -48,6 +105,8 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
+    simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
+
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::INFO)
         // disable printing the name of the module in every log line.
