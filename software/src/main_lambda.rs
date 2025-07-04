@@ -4,8 +4,6 @@ use serde::{Deserialize, Serialize};
 use simple_logger;
 use tokio::sync::mpsc;
 
-
-
 // #![feature(local_waker)]
 
 use std::path::PathBuf;
@@ -19,10 +17,10 @@ use tokio::task::JoinSet;
 // use crate::actions::build_pdf::wrapped_build_pdf;
 // #[cfg(feature = "crossterm")]
 // use crate::ui::crossterm;
-
+use crate::actions::build_pdf::build_pdf_song;
 // use crate::generate::generate::generate;
-use crate::model::model::World;
 use crate::model::model::LogItem;
+use crate::model::model::World;
 
 // mod app;
 // #[cfg(feature = "crossterm")]
@@ -90,8 +88,20 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
         serde_json::from_str(data.as_str()).unwrap()
     };
 
-    let (tx, mut rx) = mpsc::channel ::<LogItem>(1000);
+    let (tx, mut rx) = mpsc::channel::<LogItem>(1000);
 
+    for song in world.songs.iter() {
+        log::info!("Building PDF for song: {}", song.title);
+        let force_rebuild = false; // TODO: make this configurable
+
+        match build_pdf_song(tx.clone(), world.clone(), song.clone(), force_rebuild).await {
+            Ok(()) => (),
+            Err(e) => {
+                log::error!("Error building PDF for song {}: {}", song.title, e);
+                return Err(Error::from(anyhow::Error::msg(e.to_string())));
+            }
+        };
+    }
     // let set: JoinSet<()> = JoinSet::new();
 
     // crossterm::run(world, cli.nb_workers, set, tx, &mut rx, cli._rate).await?;
@@ -108,7 +118,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     // simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
-    simple_logger::init_with_level(log::Level::Debug).unwrap();
+    simple_logger::init_with_level(log::Level::Info).unwrap();
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::INFO)
         // disable printing the name of the module in every log line.
