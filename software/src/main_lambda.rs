@@ -1,5 +1,7 @@
 use lambda_runtime::{run, service_fn, Error, LambdaEvent};
+use log;
 use serde::{Deserialize, Serialize};
+use simple_logger;
 
 // #![feature(local_waker)]
 
@@ -12,8 +14,6 @@ use tokio::sync::mpsc;
 use tokio::task::JoinSet;
 
 /// Demo
-
-
 // use crate::actions::build_pdf::wrapped_build_pdf;
 // #[cfg(feature = "crossterm")]
 // use crate::ui::crossterm;
@@ -66,6 +66,7 @@ struct Response {
 // }
 
 async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error> {
+    log::info!("Received event: {}", &event.payload.songdir);
 
     match generate::all::generate_all(
         PathBuf::from(&event.payload.songdir),
@@ -102,7 +103,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     // simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
-
+    simple_logger::SimpleLogger::new().env().init().unwrap();
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::INFO)
         // disable printing the name of the module in every log line.
