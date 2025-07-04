@@ -70,7 +70,8 @@ struct Response {
 // }
 
 async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error> {
-    let cli: Cli = argh::from_env();
+    let cli: Cli = serde_json::from_str(&event.payload.name)
+        .map_err(|e| Error::from(anyhow::Error::msg(e.to_string())))?;
 
     match generate::all::generate_all(
         PathBuf::from(&cli.songdir),
