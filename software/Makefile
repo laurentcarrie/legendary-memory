@@ -1,10 +1,10 @@
 
-.PHONY: all lambda
+.PHONY: all lambda deploy-lambda
 
 lambda:
 	cargo build --no-default-features --bin songbook-lambda
 
-deploy-lambda:
+deploy-lambda: lambda
 	cargo lambda deploy \
 		--release \
 		--name songbook-lambda \
