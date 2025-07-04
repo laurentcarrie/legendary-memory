@@ -16,9 +16,8 @@ RUN	sh rustup.sh -y
 
 
 
-RUN	apt update
-RUN	apt install --fix-missing
-RUN	apt install lilypond -y
+RUN	yum -y install lilypond 
+RUN yum -y install texlive
 
 COPY target/lambda/songbook-lambda/bootstrap bootstrap
 COPY target/lambda/songbook-lambda/bootstrap.zip bootstrap.zip
