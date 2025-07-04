@@ -12,12 +12,6 @@ use tokio::sync::mpsc;
 use tokio::task::JoinSet;
 
 /// Demo
-#[derive(Debug, Deserialize)]
-struct Cli {
-    songdir: String,
-    bookdir: String,
-    builddir: String,
-}
 
 
 // use crate::actions::build_pdf::wrapped_build_pdf;
@@ -42,7 +36,9 @@ pub mod ui;
 
 #[derive(Deserialize)]
 struct Request {
-    name: String,
+    songdir: String,
+    bookdir: String,
+    builddir: String,
 }
 
 #[derive(Serialize)]
@@ -70,13 +66,11 @@ struct Response {
 // }
 
 async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error> {
-    let cli: Cli = serde_json::from_str(&event.payload.name)
-        .map_err(|e| Error::from(anyhow::Error::msg(e.to_string())))?;
 
     match generate::all::generate_all(
-        PathBuf::from(&cli.songdir),
-        PathBuf::from(&cli.bookdir),
-        PathBuf::from(&cli.builddir),
+        PathBuf::from(&event.payload.songdir),
+        PathBuf::from(&event.payload.bookdir),
+        PathBuf::from(&event.payload.builddir),
     ) {
         Ok(()) => (),
         Err(e) => return Err(Error::from(anyhow::Error::msg(e.to_string()))),
@@ -84,7 +78,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
     // .unwrap_or_else(|e| {Err::<_,String>(e.to_string());});
 
     let world: World = {
-        let mut path = PathBuf::from(cli.builddir);
+        let mut path = PathBuf::from(&event.payload.builddir);
         path.push("world-internal.json");
         let data = std::fs::read_to_string(path.to_str().unwrap()).unwrap();
         serde_json::from_str(data.as_str()).unwrap()
