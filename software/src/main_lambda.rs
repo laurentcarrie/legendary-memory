@@ -1,8 +1,7 @@
 use lambda_runtime::{run, service_fn, Error, LambdaEvent};
 use serde::{Deserialize, Serialize};
 
-
-#![feature(local_waker)]
+// #![feature(local_waker)]
 
 use std::path::PathBuf;
 use std::time::Duration;
@@ -13,8 +12,8 @@ use tokio::sync::mpsc;
 use tokio::task::JoinSet;
 
 // use crate::actions::build_pdf::wrapped_build_pdf;
-#[cfg(feature = "crossterm")]
-use crate::ui::crossterm ;
+// #[cfg(feature = "crossterm")]
+// use crate::ui::crossterm;
 
 // use crate::generate::generate::generate;
 use crate::model::model::World;
@@ -41,42 +40,36 @@ struct Request {
 struct Response {
     req_id: String,
     msg: String,
-    files: String,
 }
 
-//helper function that lists the files all the files in the EFS volume
-async fn list_files() -> Result<String, Error> {
-    let mut files = String::new();
-    for entry in std::fs::read_dir("/mnt/efs")? {
-        let entry = entry?;
-        let path = entry.path();
-        if path.is_file() {
-            files.push_str(&format!(
-                "
+// //helper function that lists the files all the files in the EFS volume
+// async fn list_files() -> Result<String, Error> {
+//     let mut files = String::new();
+//     for entry in std::fs::read_dir("/mnt/efs")? {
+//         let entry = entry?;
+//         let path = entry.path();
+//         if path.is_file() {
+//             files.push_str(&format!(
+//                 "
 
-{}",
-                path.display()
-            ));
-        }
-    }
-    Ok(files)
-}
+// {}",
+//                 path.display()
+//             ));
+//         }
+//     }
+//     Ok(files)
+// }
 
-async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error> {
+async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, std::error::Error> {
     let cli: Cli = argh::from_env();
+    let tick_rate = Duration::from_millis(cli.tick_rate);
 
-    match generate::all::generate_all(
+    generate::all::generate_all(
         PathBuf::from(&cli.songdir),
         PathBuf::from(&cli.bookdir),
         PathBuf::from(&cli.builddir),
-    ) {
-        Ok(()) => (),
-        Err(e) => {
-            log::error!("{}:{} {}", file!(), line!(), e);
-            // println!("Custom backtrace: {}", Backtrace::force_capture());
-            std::process::exit(1)
-        }
-    };
+    )?;
+
     let world: World = {
         let mut path = PathBuf::from(cli.builddir);
         path.push("world-internal.json");
@@ -86,26 +79,22 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
 
     let (tx, mut rx) = mpsc::channel(1000);
 
-    // let mut setwatch: JoinSet<_> = JoinSet::new();
-    // setwatch.spawn(watch(rx));
-    // setwatch.join_all().await ;
+    // let set: JoinSet<()> = JoinSet::new();
 
-    let set: JoinSet<()> = JoinSet::new();
-    // for song in &world.songs {
-    //     let _ = set.spawn(wrapped_build_pdf(tx.clone(), song.clone()));
-    // }
+    // crossterm::run(world, cli.nb_workers, set, tx, &mut rx, cli._rate).await?;
 
-    crossterm::run(world, cli.nb_workers, set, tx, &mut rx, cli._rate).await?;
-
-    Ok(())
+    let resp = Response {
+        req_id: event.context.request_id,
+        msg: format!("Hello, !"),
+    };
 
     // Return `Response` (it will be serialized to JSON automatically by the runtime)
     Ok(resp)
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
-    simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
+async fn main() -> Result<(), std::error::Error> {
+    // simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
 
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::INFO)

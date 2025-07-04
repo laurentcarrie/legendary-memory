@@ -64,13 +64,13 @@ lambda_runtime = "0.7"
 tracing = { version = "0.1", features = ["log"] }
 tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt"] }
 
-[[bin]]
-name = "songbook-client"
-path = "src/main_client.rs"
+#[[bin]]
+#name = "songbook-client"
+#path = "src/main_client.rs"
 
-[[bin]]
-name = "songbook-server"
-path = "src/main_server.rs"
+#[[bin]]
+#name = "songbook-server"
+#path = "src/main_server.rs"
 
 [[bin]]
 name = "songbook-ui"
