@@ -51,18 +51,18 @@ ENV TEXMFOUTPUT=/mnt/efs/tmp
 
 RUN echo "TEXMFOUTPUT=/mnt/efs/tmp" >> /etc/texlive/web2c/texmf.cnf
 
-COPY main.tex main.tex
-RUN lualatex --interaction=nonstopmode main.tex
-COPY fonts fonts
+# COPY main.tex main.tex
+# RUN lualatex --interaction=nonstopmode main.tex
+# COPY fonts fonts
 
 COPY fonts /root/.fonts
 RUN mktexlsr
 RUN mktexfmt user
 # RUN update-fmtutil
-COPY xxxx xxxx
-#WORKDIR xxxx
-#RUN ls
-RUN ( cd xxxx && lualatex --interaction=nonstopmode main.tex  )
+# COPY xxxx xxxx
+# WORKDIR xxxx
+# RUN ls
+# RUN ( cd xxxx && lualatex --interaction=nonstopmode main.tex  )
 
 # RUN mktexlsr
 # RUN mktexfmt user

@@ -4,9 +4,9 @@
 FROM ghcr.io/cargo-lambda/cargo-lambda:latest AS build
 
 
-RUN apt-get update -y
-RUN apt-get install -y texlive-full
-RUN apt-get install -y lilypond
+# RUN apt-get update -y
+# RUN apt-get install -y texlive-full
+# RUN apt-get install -y lilypond
 
 
 

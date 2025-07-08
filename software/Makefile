@@ -11,15 +11,15 @@ deploy-lambda: lambda
 		
 
 docker-login:
-	aws ecr get-login-password --region eu-west-3 | sudo docker login --username AWS --password-stdin 579871531410.dkr.ecr.eu-west-3.amazonaws.com
+	aws ecr get-login-password --region eu-west-3 |  docker login --username AWS --password-stdin 579871531410.dkr.ecr.eu-west-3.amazonaws.com
 
 docker-build:  base-image
 	# Build the Docker image for the Lambda function
-	sudo docker build -t laurent/songbook -f Dockerfile-2 .
-	sudo docker tag laurent/songbook:latest 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/songbook:latest
+	 docker build -t laurent/songbook -f Dockerfile-2 .
+	 docker tag laurent/songbook:latest 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/songbook:latest
 
 docker-push: build lambda docker-build docker-login
-	sudo docker push 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/songbook:latest
+	 docker push 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/songbook:latest
 
 base-image : 
 	docker build -t mybase -f Dockerfile-3 .
