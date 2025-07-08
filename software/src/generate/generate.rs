@@ -8,7 +8,7 @@ use crate::helpers::helpers::song_of_booksong;
 use std::fs;
 use std::path::PathBuf;
 
-use crate::helpers::io::{create_dir_all, write};
+use crate::helpers::io::{create_dir_all, write,copy_file};
 
 pub fn mount_files(world: &World) -> Result<(), Box<dyn std::error::Error>> {
     {
@@ -457,5 +457,22 @@ pub fn generate_main_book(book: &Book) -> Result<(), Error> {
     let output_data = h.render("t1", book).unwrap();
     let _ = output.write(output_data.as_bytes()).unwrap();
 
+    Ok(())
+}
+
+pub fn generate_for_aws_lambdal(builddir: &PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    {
+        let pfrom = PathBuf::from("/root/.fonts");
+        let mut pto = builddir.clone();
+        pto.push(".fonts");
+        let _ = fs::create_dir_all(&pto)?;
+        for pfont in pfrom.into_iter() {
+            let pto = pto.join(pfont);
+            copy_file(&PathBuf::from(pfont), &pto)?;
+        }
+    }
+    let mut p = builddir.clone();
+    p.push(".texlive2021");
+    create_dir_all(&p)?;
     Ok(())
 }

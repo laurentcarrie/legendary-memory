@@ -10,18 +10,21 @@ deploy-lambda: lambda
 	cargo lambda deploy --binary-name songbook-lambda
 		
 
-docker:
+docker-login:
 	aws ecr get-login-password --region eu-west-3 | sudo docker login --username AWS --password-stdin 579871531410.dkr.ecr.eu-west-3.amazonaws.com
-	sudo docker build -t laurent/songbook .
+
+docker-build:  base-image
+	# Build the Docker image for the Lambda function
+	sudo docker build -t laurent/songbook -f Dockerfile-2 .
 	sudo docker tag laurent/songbook:latest 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/songbook:latest
+
+docker-push: build lambda docker-build docker-login
 	sudo docker push 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/songbook:latest
 
+base-image : 
+	docker build -t mybase -f Dockerfile-3 .
 
-run:
-	sudo docker run \
-		-e AWS_LAMBDA_FUNCTION_NAME=xxx \
-		-e AWS_LAMBDA_FUNCTION_MEMORY_SIZE=8000000 \
-		-e AWS_LAMBDA_FUNCTION_VERSION=1 \
-		-e AWS_LAMBDA_RUNTIME_API=1 \
-	       	laurent/songbook 
-
+t : 
+	docker run --rm -it mybase
+	
+	

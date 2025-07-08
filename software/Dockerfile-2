@@ -1,0 +1,40 @@
+# inspired by https://beeb.li/blog/aws-lambda-rust-docker#the-dockerfile
+
+# The build image with Cargo Lambda pre-installed
+FROM ghcr.io/cargo-lambda/cargo-lambda:latest AS build
+
+
+RUN apt-get update -y
+RUN apt-get install -y texlive-full
+RUN apt-get install -y lilypond
+
+
+
+WORKDIR /build
+# Copy the source files into the container
+COPY src src
+COPY others others
+COPY fonts fonts
+COPY Cargo.toml Cargo.toml
+COPY Cargo.lock Cargo.lock
+
+# Thanks to Cargo Lambda, compilation is super easy
+RUN	cargo lambda build --no-default-features --release --bin songbook-lambda
+
+
+# The runtime image is an OS-only image without an included runtime
+# Our binary contains the required runtime already
+#FROM public.ecr.aws/lambda/provided:al2023 AS runtime
+FROM mybase AS runtime
+
+# Retrieve the binary that we built in the stage above
+COPY --from=build /build/target/lambda/songbook-lambda/bootstrap ${LAMBDA_RUNTIME_DIR}/bootstrap
+
+WORKDIR /mnt/efs/tmp
+
+
+# ENTRYPOINT ["sh"]
+
+# Not used with custom runtime, but kept for info
+CMD ["app.handler"]
+

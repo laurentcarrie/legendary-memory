@@ -12,7 +12,7 @@ pub fn generate_all(
     bookdir: PathBuf,
     builddir: PathBuf,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    // fff();
+    log::debug!("generate all");
     let _ = fs::create_dir_all(&builddir)?;
     // let src_song_dir: PathBuf = Path::new(source_song_root).canonicalize().expect("root");
     // let src_book_dir: PathBuf = Path::new(source_book_root).canonicalize().expect("root");

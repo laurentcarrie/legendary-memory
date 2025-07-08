@@ -108,7 +108,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
 
     let resp = Response {
         req_id: event.context.request_id,
-        msg: format!("Hello, !"),
+        msg: format!("Hello 222, !"),
     };
 
     // Return `Response` (it will be serialized to JSON automatically by the runtime)
@@ -118,9 +118,14 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     // simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
-    simple_logger::init_with_level(log::Level::Debug).unwrap();
+    simple_logger::init_with_level(log::Level::Info).unwrap();
+    log::info!("Starting songbook lambda...");
+    log::info!(
+        "current dir: {}",
+        std::env::current_dir().unwrap().display()
+    );
     tracing_subscriber::fmt()
-        .with_max_level(tracing::Level::INFO)
+        .with_max_level(tracing::Level::DEBUG)
         // disable printing the name of the module in every log line.
         .with_target(false)
         // disabling time is handy because CloudWatch will add the ingestion time.
