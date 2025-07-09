@@ -5,8 +5,10 @@ use std::io::{Error, Write};
 // use std::os::unix::fs::PermissionsExt;
 use crate::helpers::duration::duration_of_song;
 use crate::helpers::helpers::song_of_booksong;
+use std::ffi::OsStr;
 use std::fs;
 use std::path::PathBuf;
+use walkdir::WalkDir;
 
 use crate::helpers::io::{copy_file, create_dir_all, write};
 
@@ -460,19 +462,38 @@ pub fn generate_main_book(book: &Book) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn generate_for_aws_lambdal(builddir: &PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+pub fn generate_for_aws_lambda(builddir: &PathBuf) -> Result<(), Box<dyn std::error::Error>> {
     {
         let pfrom = PathBuf::from("/root/.fonts");
+        if !pfrom.exists() {
+            return Err("/root/.fonts does not exist".into());
+        }
+        if !pfrom.is_dir() {
+            return Err("/root/.fonts is not a directory".into());
+        }
+        log::info!("now looking for fonts");
         let mut pto = builddir.clone();
         pto.push(".fonts");
         let _ = fs::create_dir_all(&pto)?;
-        for pfont in pfrom.into_iter() {
-            let pto = pto.join(pfont);
-            copy_file(&PathBuf::from(pfont), &pto)?;
+        for pfont in WalkDir::new(pfrom).into_iter().filter_map(|e| e.ok()) {
+            let pfont = pfont.path().to_path_buf();
+            log::info!("font : {:?}", pfont);
+
+            if pfont.is_file() && pfont.extension() == Some(OsStr::new("ttf")) {
+                let mut ptofont = pto.clone();
+                ptofont.push(pfont.file_name().ok_or("huh...")?);
+                log::info!("ptofont : {:?}", &ptofont);
+
+                copy_file(&PathBuf::from(pfont), &ptofont)?;
+            }
         }
     }
-    let mut p = builddir.clone();
-    p.push(".texlive2021");
+    // let mut p = builddir.clone();
+    // p.push(".texlive2021");
+    // create_dir_all(&p)?;
+    log::info!("create /mnt/efs/zik/build/.texlive2021/texmf-var/web2c");
+    let mut p = PathBuf::from("/mnt/efs/zik/build/.texlive2021/texmf-var/web2c");
     create_dir_all(&p)?;
+
     Ok(())
 }

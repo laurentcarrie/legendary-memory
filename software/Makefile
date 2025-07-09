@@ -1,4 +1,9 @@
-.PHONY: all lambda deploy-lambda build docker
+.PHONY: all lambda deploy-lambda build docker base-image
+
+help: 
+	echo """
+	build : build binary
+	"""
 
 build:
 	cargo build --no-default-features --release --bin songbook-lambda
@@ -15,16 +20,23 @@ docker-login:
 
 docker-build:  base-image
 	# Build the Docker image for the Lambda function
-	 docker build -t laurent/songbook -f Dockerfile-2 .
+	 docker build -t laurent/songbook  --platform=linux/amd64  --provenance=false -f Dockerfile-2 .
 	 docker tag laurent/songbook:latest 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/songbook:latest
 
 docker-push: build lambda docker-build docker-login
 	 docker push 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/songbook:latest
 
 base-image : 
-	docker build -t mybase -f Dockerfile-3 .
+	docker build -t mybase  --platform=linux/amd64 --provenance=false -f Dockerfile-3 .
 
-t : 
+t : base-image
 	docker run --rm -it mybase
+
+t2 : 
+	docker build -t mybase2   -f Dockerfile-3 .
+	docker build -t laurent/songbook2 -f Dockerfile-2 .
+	docker run --rm -it laurent/songbook2
 	
 	
+check-identity:
+	aws sts get-caller-identity

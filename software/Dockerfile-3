@@ -64,12 +64,12 @@ RUN mktexfmt user
 # RUN ls
 # RUN ( cd xxxx && lualatex --interaction=nonstopmode main.tex  )
 
-# RUN mktexlsr
+# RUN mktexlsr  
 # RUN mktexfmt user
 # RUN update-fmtutil
-
+# COPY xxxx xxxx
 # ENTRYPOINT ["sh"]
 
 # Not used with custom runtime, but kept for info
-# CMD ["app.handler"]
+CMD ["app.handler"]
 

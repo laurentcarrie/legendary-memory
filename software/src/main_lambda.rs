@@ -88,6 +88,9 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
         serde_json::from_str(data.as_str()).unwrap()
     };
 
+    log::info!("calling generate_for_aws_lambda");
+    generate::generate::generate_for_aws_lambda(&PathBuf::from(&world.builddir)).unwrap();
+
     let (tx, mut rx) = mpsc::channel::<LogItem>(1000);
 
     for song in world.songs.iter() {
