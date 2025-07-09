@@ -203,12 +203,9 @@ pub async fn build_pdf_song(
 ) -> Result<(), Box<dyn std::error::Error>> {
     log::info!("build pdf {} {}", &song.author, &song.title);
     let p = pathbuf_ok_checksum(&song);
-    log::info!("checksum path {:?}", &p);
-    log::info!("{}:{}", file!(), line!());
     if force_rebuild && p.exists() {
         std::fs::remove_file(p.as_path())?;
     }
-    log::info!("{}:{}", file!(), line!());
     if !needs_rebuild_ok(&world, &song) {
         log::debug!("does not need rebuild {} {}", &song.author, &song.title);
         let li = LogItem::Song(LogItemSong {
@@ -219,8 +216,6 @@ pub async fn build_pdf_song(
         tx.send(li).await?;
         return Ok(());
     }
-    log::info!("{}:{}", file!(), line!());
-
     // if needs_rebuild_failed(&song)? {
     //     let li = LogItem::Song(LogItemSong {
     //         author: song.author.clone(),
@@ -231,38 +226,30 @@ pub async fn build_pdf_song(
     //     return Ok(());
     // }
 
-    log::info!("{}:{}", file!(), line!());
     let li = LogItem::Song(LogItemSong {
         author: song.author.clone(),
         title: song.title.clone(),
         status: ELogType::Started,
     });
     tx.send(li).await?;
-    log::info!("{}:{}", file!(), line!());
 
     let mut success: bool = true;
-    log::info!("{}:{}", file!(), line!());
 
     for lyfile in &song.lilypondfiles {
-        log::info!("{}:{}", file!(), line!());
         let li = LogItem::Song(LogItemSong {
             author: song.author.clone(),
             title: song.title.clone(),
             status: ELogType::Lilypond(lyfile.clone()),
         });
-        log::info!("{}:{}", file!(), line!());
         tx.send(li).await?;
-        log::info!("{}:{}", file!(), line!());
         match build_lytex(song.clone(), lyfile.clone()).await {
             Ok(()) => (),
             Err(_) => success = false,
         }
     }
-    log::info!("{}:{}", file!(), line!());
 
     let mut count = 1;
     loop {
-        log::info!("{}:{}", file!(), line!());
         let mut p: PathBuf = PathBuf::from(&song.builddir);
         p.push("lualatex.log");
         let fout = File::create(p)?;

@@ -5,6 +5,12 @@ help:
 	build : build binary
 	"""
 
+run:
+	cargo build --no-default-features --release --bin songbook-normal
+	mkdir -p ../build
+	./target/release/songbook-normal $(realpath ../data/songs) $(realpath ../data/books) $(realpath ../build)
+
+
 build:
 	cargo build --no-default-features --release --bin songbook-lambda
 
@@ -37,6 +43,10 @@ t2 :
 	docker build -t laurent/songbook2 -f Dockerfile-2 .
 	docker run --rm -it laurent/songbook2
 	
+lambda-run:
+	./target/release/songbook-lambda
+
 	
+
 check-identity:
 	aws sts get-caller-identity

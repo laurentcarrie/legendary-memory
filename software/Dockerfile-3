@@ -68,6 +68,10 @@ RUN mktexfmt user
 # RUN mktexfmt user
 # RUN update-fmtutil
 # COPY xxxx xxxx
+
+COPY fonts /root/.fonts
+
+
 # ENTRYPOINT ["sh"]
 
 # Not used with custom runtime, but kept for info

@@ -464,12 +464,12 @@ pub fn generate_main_book(book: &Book) -> Result<(), Error> {
 
 pub fn generate_for_aws_lambda(builddir: &PathBuf) -> Result<(), Box<dyn std::error::Error>> {
     {
-        let pfrom = PathBuf::from("/root/.fonts");
+        let pfrom = PathBuf::from("/var/task/.fonts");
         if !pfrom.exists() {
-            return Err("/root/.fonts does not exist".into());
+            return Err(format!("{} does not exist", pfrom.display()).into());
         }
         if !pfrom.is_dir() {
-            return Err("/root/.fonts is not a directory".into());
+            return Err(format!("{} is not a directory", pfrom.display()).into());
         }
         log::info!("now looking for fonts");
         let mut pto = builddir.clone();
@@ -492,8 +492,11 @@ pub fn generate_for_aws_lambda(builddir: &PathBuf) -> Result<(), Box<dyn std::er
     // p.push(".texlive2021");
     // create_dir_all(&p)?;
     log::info!("create /mnt/efs/zik/build/.texlive2021/texmf-var/web2c");
-    let mut p = PathBuf::from("/mnt/efs/zik/build/.texlive2021/texmf-var/web2c");
+    let p = PathBuf::from("/mnt/efs/zik/build/.texlive2021/texmf-var/web2c");
     create_dir_all(&p)?;
+    let mut perms = fs::metadata(&p)?.permissions();
+    perms.set_readonly(false);
+    fs::set_permissions(p, perms)?;
 
     Ok(())
 }

@@ -30,7 +30,8 @@ FROM mybase AS runtime
 # Retrieve the binary that we built in the stage above
 COPY --from=build /build/target/lambda/songbook-lambda/bootstrap ${LAMBDA_RUNTIME_DIR}/bootstrap
 
-COPY fonts .fonts
+COPY fonts /root/.fonts
+COPY fonts /var/task/.fonts
 
 WORKDIR /mnt/efs/tmp
 

@@ -81,6 +81,9 @@ required-features = ["crossterm"]
 name = "songbook-lambda"
 path = "src/main_lambda.rs"
 
+[[bin]]
+name = "songbook-normal"
+path = "src/main_normal.rs"
 
 #[[bin]]
 #name = "songbook-mt"
