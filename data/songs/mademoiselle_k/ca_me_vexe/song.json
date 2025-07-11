@@ -47,9 +47,12 @@
     {
       "id": "couplet2",
       "item": {
-        "Ref": {
+        "Chords": {
           "section_title": "couplet 2",
-          "link": "couplet1"
+          "section_type": "couplet",
+          "rows": [
+            "Em|G|A|As7|x5"
+          ]
         }
       }
     },
@@ -59,6 +62,52 @@
         "Ref": {
           "section_title": "refrain 2",
           "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 3",
+          "rows": [
+            "Em|G|A|As7|x5"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain3",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 3",
+          "link": "refrain1"
+        }
+      }
+    },
+    {
+      "id": "interlude",
+      "item": {
+        "Chords": {
+          "section_title": "interlude",
+          "section_type": "pont",
+          "rows": [
+            "Em|G|A|As7|x3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "final",
+      "item": {
+        "Chords": {
+          "section_title": "final",
+          "section_type": "couplet",
+          "rows": [
+            "Em|G|A|As7|",
+            "Em|G|A|As7|"
+          ]
         }
       }
     }
