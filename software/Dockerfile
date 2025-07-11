@@ -20,7 +20,7 @@ RUN	sh rustup.sh -y
 
 RUN curl --proto '=https' --tlsv1.2 -sSf -L https://gitlab.com/lilypond/lilypond/-/releases/v2.24.4/downloads/lilypond-2.24.4-linux-x86_64.tar.gz  -o lilypond.tar.gz
 RUN tar xvzf lilypond.tar.gz
-RUN rm lilypond.tar.gz  
+RUN rm lilypond.tar.gz
 
 #COPY target/release/songbook-lambda ${LAMBDA_TASK_ROOT}/songbook-lambda
 
@@ -64,7 +64,7 @@ WORKDIR /mnt/efs/tmp
 
 # RUN mkdir -p /opt/bin
 # COPY entry.sh /opt/bin/entry.sh
-# RUN chmod +x /opt/bin/entry.sh   
+# RUN chmod +x /opt/bin/entry.sh
 # ENTRYPOINT [ "/opt/bin/entry.sh" ]
 # ENTRYPOINT ["sh"]
 #CMD [ "/usr/local/.cargo/bin/songbook-lambda"  ]

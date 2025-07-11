@@ -40,4 +40,3 @@ WORKDIR /mnt/efs/tmp
 
 # Not used with custom runtime, but kept for info
 CMD ["app.handler"]
-

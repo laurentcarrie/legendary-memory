@@ -1,6 +1,6 @@
-FROM public.ecr.aws/lambda/provided:al2023 
+FROM public.ecr.aws/lambda/provided:al2023
 
-RUN dnf -y install tar 
+RUN dnf -y install tar
 RUN dnf -y install texlive
 RUN dnf -y install gzip
 RUN dnf -y install texlive
@@ -24,7 +24,7 @@ RUN dnf -y install texlive texlive-frcursive
 RUN dnf -y install texlive-nicematrix
 
 
-# COPY tabularray.sty tabularray.sty    
+# COPY tabularray.sty tabularray.sty
 
 # COPY texlive.txt texlive.txt
 # RUN cat texlive.txt | while read ff; do dnf -y install "$ff"; done
@@ -34,7 +34,7 @@ RUN dnf -y install texlive-nicematrix
 
 RUN curl --proto '=https' --tlsv1.2 -sSf -L https://gitlab.com/lilypond/lilypond/-/releases/v2.24.4/downloads/lilypond-2.24.4-linux-x86_64.tar.gz  -o lilypond.tar.gz
 RUN tar xvzf lilypond.tar.gz
-RUN rm lilypond.tar.gz  
+RUN rm lilypond.tar.gz
 
 ENV PATH="/var/task/lilypond-2.24.4/bin:${PATH}"
 ENV LANG=C.UTF-8
@@ -64,7 +64,7 @@ RUN mktexfmt user
 # RUN ls
 # RUN ( cd xxxx && lualatex --interaction=nonstopmode main.tex  )
 
-# RUN mktexlsr  
+# RUN mktexlsr
 # RUN mktexfmt user
 # RUN update-fmtutil
 # COPY xxxx xxxx
@@ -76,4 +76,3 @@ COPY fonts /root/.fonts
 
 # Not used with custom runtime, but kept for info
 CMD ["app.handler"]
-

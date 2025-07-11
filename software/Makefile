@@ -1,6 +1,6 @@
 .PHONY: all lambda deploy-lambda build docker base-image
 
-help: 
+help:
 	echo """
 	build : build binary
 	"""
@@ -18,7 +18,7 @@ lambda:
 
 deploy-lambda: lambda
 	cargo lambda deploy --binary-name songbook-lambda
-		
+
 
 docker-login:
 	aws ecr get-login-password --region eu-west-3 |  docker login --username AWS --password-stdin 579871531410.dkr.ecr.eu-west-3.amazonaws.com
@@ -31,21 +31,21 @@ docker-build:  base-image
 docker-push: build lambda docker-build docker-login
 	 docker push 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/songbook:latest
 
-base-image : 
+base-image :
 	docker build -t mybase  --platform=linux/amd64 --provenance=false -f Dockerfile-3 .
 
 t : base-image
 	docker run --rm -it mybase
 
-t2 : 
+t2 :
 	docker build -t mybase2   -f Dockerfile-3 .
 	docker build -t laurent/songbook2 -f Dockerfile-2 .
 	docker run --rm -it laurent/songbook2
-	
+
 lambda-run:
 	./target/release/songbook-lambda
 
-	
+
 
 check-identity:
 	aws sts get-caller-identity --profile default
