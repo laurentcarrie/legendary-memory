@@ -1,7 +1,6 @@
 use lambda_runtime::{run, service_fn, Error, LambdaEvent};
-use log;
 use serde::{Deserialize, Serialize};
-use simple_logger;
+// use simple_logger;
 
 use std::path::PathBuf;
 
@@ -44,7 +43,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
         Ok(()) => {
             let resp = Response {
                 req_id: event.context.request_id,
-                msg: format!("Hello 222, !"),
+                msg: "Hello 222, !".to_string(),
             };
             Ok(resp)
         }

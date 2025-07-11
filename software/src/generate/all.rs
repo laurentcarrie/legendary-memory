@@ -13,21 +13,21 @@ pub fn generate_all(
     builddir: PathBuf,
 ) -> Result<(), Box<dyn std::error::Error>> {
     log::debug!("generate all");
-    let _ = fs::create_dir_all(&builddir)?;
+    fs::create_dir_all(&builddir)?;
     // let src_song_dir: PathBuf = Path::new(source_song_root).canonicalize().expect("root");
     // let src_book_dir: PathBuf = Path::new(source_book_root).canonicalize().expect("root");
     // let builddir: PathBuf = Path::new(buildroot).canonicalize().expect("buildroot");
 
     let world: World = make(&songdir, &bookdir, &builddir)?;
     for song in &world.songs {
-        generate_json_song(&song)?;
+        generate_json_song(song)?;
     }
 
     mount_files(&world)?;
 
     for book in &world.books {
-        generate_main_book(&book)?;
-        generate_json_book(&book)?;
+        generate_main_book(book)?;
+        generate_json_book(book)?;
     }
 
     // generate_song_omakefile(&world.songs[0])?;

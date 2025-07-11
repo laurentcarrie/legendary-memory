@@ -16,8 +16,7 @@ pub fn duration_of_song(song: &Song) -> chrono::TimeDelta {
             StructureItemContent::ItemHRule(_) => {}
         }
     }
-    let d = chrono::Duration::new(seconds, 0).expect("huh, duration too big");
-    d
+    chrono::Duration::new(seconds, 0).expect("huh, duration too big")
 }
 
 mod tests {

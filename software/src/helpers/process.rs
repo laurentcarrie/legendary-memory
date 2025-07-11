@@ -8,11 +8,11 @@ pub fn get_children(pid: u32) -> Result<Vec<u32>, Error> {
     let str_filepath = format!("/proc/{}/task/{}/children", &pid, &pid);
     let filepath = Path::new(&str_filepath);
 
-    let contents = fs::read_to_string(&filepath)?;
+    let contents = fs::read_to_string(filepath)?;
     let contents: Vec<_> = contents.split(" ").collect();
     let mut ret2: Vec<u32> = contents
         .iter()
-        .filter(|child_pid| child_pid.len() > 0)
+        .filter(|child_pid| !child_pid.is_empty())
         .map(|child_pid| child_pid.parse::<u32>().unwrap())
         .collect();
 
@@ -43,7 +43,7 @@ pub fn find_pids_from_name(name: String) -> Result<Vec<u32>, Error> {
     let ret = children
         .iter()
         .filter_map(|pid| {
-            let p = s.process(sysinfo::Pid::from(Pid::from_u32(*pid)));
+            let p = s.process(Pid::from_u32(*pid));
             match p {
                 None => None,
                 Some(p) => {

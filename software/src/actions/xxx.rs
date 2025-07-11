@@ -1,28 +1,22 @@
 use color_print::cformat;
 use log;
-use std::error::Error;
 
 use std::path::PathBuf;
 use tokio::sync::mpsc;
 
-use indicatif::{HumanDuration, MultiProgress, ProgressBar, ProgressStyle};
+use indicatif::{ProgressBar, ProgressStyle};
 
 use crate::actions::build_pdf::wrapped_build_pdf_book;
 use crate::actions::build_pdf::wrapped_build_pdf_song;
 use crate::generate::all::generate_all;
 use crate::model::model::ELogType;
 use crate::model::model::LogItem;
-use crate::model::model::LogItemSong;
 use crate::model::model::{Book, Song};
-use tokio::time::sleep;
-use tokio::time::Duration;
 
 use crate::model::model::World;
 use std::result::Result;
 
-use std::task::{Context, Poll};
-
-use tokio::sync::mpsc::{Receiver, Sender};
+use tokio::sync::mpsc::Receiver;
 use tokio::task::JoinSet;
 
 pub async fn watch(mut rx: Receiver<LogItem>) {
@@ -143,9 +137,9 @@ pub async fn build(
                             .filter(|book| b.title != book.title)
                             .collect::<Vec<_>>();
                         pb.println(cformat!(
-                                "<green!>DONE</green!> book <cyan>{}</cyan>",
-                                b.title
-                            ));                        // pb.set_message(format!("... > book {} ", b.title));
+                            "<green!>DONE</green!> book <cyan>{}</cyan>",
+                            b.title
+                        )); // pb.set_message(format!("... > book {} ", b.title));
 
                         pb.inc(1);
                     }
@@ -168,7 +162,7 @@ pub async fn build(
                                 .collect::<Vec<_>>();
                             let after = running_songs.len();
                             if after != before - 1 {
-                                log::error!("logic error here {:?}", s);
+                                log::error!("logic error here {s:?}");
                             }
                             // assert!(count_done + running_songs.len() == count_to_do);
                             // pb.set_message(format!("... > song {} @ {}", s.author, s.title));

@@ -54,7 +54,7 @@ pub async fn build_lytex(song: Song, lyfile: String) -> Result<(), Box<dyn std::
             .spawn();
         match child {
             Ok(mut child) => {
-                status = (&mut child).wait().await?;
+                status = child.wait().await?;
                 log::debug!(
                     "lilypond {} for {} {}, status {:?}",
                     lyfile,

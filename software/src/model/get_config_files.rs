@@ -10,18 +10,15 @@ pub fn get_song_json_paths(current_dir: &PathBuf) -> Vec<PathBuf> {
             filenames.push(x.clone());
         }
     }
-    return filenames;
+    filenames
 }
 
 pub fn get_book_json_paths(current_dir: &PathBuf) -> Vec<PathBuf> {
     let mut filenames: Vec<PathBuf> = vec![];
     for entry in WalkDir::new(current_dir).into_iter().filter_map(|e| e.ok()) {
         let x: PathBuf = entry.path().canonicalize().expect("xx").to_path_buf();
-        if entry.file_type().is_file() {
-            match entry.file_name().to_str() {
-                Some(_) => filenames.push(x.clone()),
-                _ => {}
-            }
+        if entry.file_type().is_file() && entry.file_name().to_str().is_some() {
+            filenames.push(x.clone())
         };
     }
     filenames

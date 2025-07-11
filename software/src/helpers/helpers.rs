@@ -4,12 +4,11 @@ use std::cmp::Ordering;
 
 pub fn pdfname_of_book(book: &Book) -> String {
     let pdfname = &book.title;
-    let pdfname = normalize_name(pdfname.to_owned());
-    pdfname
+    normalize_name(pdfname.to_owned())
 }
 
 pub fn normalize_pdf_name(author: &String, title: &String) -> String {
-    normalize_name(format!("{author}--@--{title}", author = author, title = title).clone())
+    normalize_name(format!("{author}--@--{title}").clone())
 }
 
 pub fn normalize_name(input: String) -> String {
@@ -33,5 +32,5 @@ pub fn song_of_booksong(world: &World, bs: &BookSong) -> Result<Song, Box<dyn st
             return Ok(song.clone());
         }
     }
-    Err(format!("could not find {:?}", bs).into())
+    Err(format!("could not find {bs:?}").into())
 }

@@ -83,7 +83,7 @@ fn compute_digest(song: &Song) -> Result<String, Box<dyn std::error::Error>> {
         hasher.update(contents);
     }
     let result = hasher.finalize();
-    let ret = hex::encode(result.to_vec());
+    let ret = hex::encode(result);
     Ok(ret)
 }
 
@@ -109,7 +109,7 @@ pub fn compute_digest_ok(world: &World, song: &Song) -> Result<String, Box<dyn s
     // log::debug!("{}:{}", file!(), line!());
     let result = hasher.finalize();
     // log::debug!("{}:{}", file!(), line!());
-    let data = hex::encode(&result[..].to_vec());
+    let data = hex::encode(&result[..]);
     // log::debug!("{}:{} {}", file!(), line!(),&data);
     Ok(data)
 }
@@ -141,7 +141,7 @@ fn __vec_are_equal<T: std::cmp::PartialEq>(v1: Vec<T>, v2: Vec<T>) -> bool {
 fn needs_rebuild_book_ok(world: &World, book: &Book) -> Result<bool, Box<dyn std::error::Error>> {
     for bs in &book.songs {
         let song = song_of_booksong(world, bs)?;
-        if needs_rebuild_ok(&world, &song) {
+        if needs_rebuild_ok(world, &song) {
             return Ok(true);
         }
     }
@@ -150,10 +150,10 @@ fn needs_rebuild_book_ok(world: &World, book: &Book) -> Result<bool, Box<dyn std
 
 /// true : song needs rebuild
 fn needs_rebuild_ok(world: &World, song: &Song) -> bool {
-    let digest = read_to_string(&pathbuf_ok_checksum(&song));
+    let digest = read_to_string(&pathbuf_ok_checksum(song));
     match digest {
         Err(_) => true,
-        Ok(v1) => match compute_digest_ok(&world, &song) {
+        Ok(v1) => match compute_digest_ok(world, song) {
             Ok(v2) => v1 != v2,
             Err(_) => true,
         },
@@ -184,7 +184,7 @@ pub async fn wrapped_build_pdf_song(
             "wrapped build pdf, {} {} ; {}",
             &song.author,
             &song.title,
-            e.to_string()
+            e
         ),
     }
 }
@@ -192,7 +192,7 @@ pub async fn wrapped_build_pdf_song(
 pub async fn wrapped_build_pdf_book(tx: Sender<LogItem>, world: World, book: Book) {
     match build_pdf_book(tx, world.clone(), book.clone()).await {
         Ok(()) => (),
-        Err(e) => log::error!("wrapped build pdf, {} ; {}", &book.title, e.to_string()),
+        Err(e) => log::error!("wrapped build pdf, {} ; {}", &book.title, e),
     }
 }
 
@@ -253,8 +253,8 @@ pub async fn build_pdf_song(
     }
 
     {
-        let child = Command::new("mktexlsr")
-            .env("HOME", &song.builddir.to_str().unwrap())
+        let _child = Command::new("mktexlsr")
+            .env("HOME", song.builddir.to_str().unwrap())
             .kill_on_drop(true)
             // .stdout(Stdio::piped())
             // .stdout(fout)
@@ -263,9 +263,9 @@ pub async fn build_pdf_song(
     }
 
     {
-        let child = Command::new("mktexfmt")
+        let _child = Command::new("mktexfmt")
             .arg("user")
-            .env("HOME", &song.builddir.to_str().unwrap())
+            .env("HOME", song.builddir.to_str().unwrap())
             .kill_on_drop(true)
             // .stdout(Stdio::piped())
             // .stdout(fout)
@@ -291,7 +291,7 @@ pub async fn build_pdf_song(
         let child = Command::new("lualatex")
             .arg("--interaction=nonstopmode")
             .arg("main.tex")
-            .env("HOME", &song.builddir.to_str().unwrap())
+            .env("HOME", song.builddir.to_str().unwrap())
             .kill_on_drop(true)
             // .stdout(Stdio::piped())
             .stdout(fout)
@@ -321,7 +321,7 @@ pub async fn build_pdf_song(
             success = true;
             break;
         }
-        count = count + 1;
+        count += 1;
     }
 
     {
@@ -346,7 +346,7 @@ pub async fn build_pdf_song(
         let child = Command::new("ps2pdf")
             .arg("main.pdf")
             .arg(pto.to_str().unwrap())
-            .env("HOME", &song.builddir.to_str().unwrap())
+            .env("HOME", song.builddir.to_str().unwrap())
             .kill_on_drop(true)
             // .stdout(Stdio::piped())
             .stdout(fout)
@@ -386,7 +386,7 @@ pub async fn build_pdf_song(
     if success {
         // write ok checksum
         let checksum = compute_digest_ok(&world, &song)?;
-        let _x = write_string(&pathbuf_ok_checksum(&song), &checksum)?;
+        write_string(&pathbuf_ok_checksum(&song), &checksum)?;
         // assert!(needs_rebuild_ok(&song) == false);
     }
 
@@ -468,7 +468,7 @@ async fn build_pdf_book(
             success = true;
             break;
         }
-        count = count + 1;
+        count += 1;
     }
 
     log::debug!(
