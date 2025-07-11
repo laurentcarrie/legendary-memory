@@ -7,8 +7,7 @@ help:
 
 run:
 	cargo build --no-default-features --release --bin songbook-normal
-	mkdir -p ../build
-	./target/release/songbook-normal $(realpath ../data/songs) $(realpath ../data/books) $(realpath ../build)
+	./target/release/songbook-normal --nb-workers 15 $(realpath ../data/songs) $(realpath ../data/books) $(realpath ../build)
 
 
 build:
@@ -49,4 +48,16 @@ lambda-run:
 	
 
 check-identity:
-	aws sts get-caller-identity
+	aws sts get-caller-identity --profile default
+	aws sts get-caller-identity --profile bayer
+
+
+batch-run:
+	docker build -t laurent/batch -f Dockerfile-batch .
+	docker run laurent/batch
+
+
+batch-push: docker-login
+	docker build -t laurent/batch  --platform=linux/amd64  --provenance=false -f Dockerfile-2 .
+	docker tag laurent/batch:latest  579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/batch:latest
+	docker push 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/batch:latest

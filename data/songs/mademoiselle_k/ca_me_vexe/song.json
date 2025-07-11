@@ -1,0 +1,69 @@
+{
+  "tempo": 147,
+  "title": "Ca me vexe",
+  "author": "Mademoiselle K",
+  "texfiles": [
+    "body.tex"
+  ],
+  "lilypondfiles": [],
+  "structure": [
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_title": "intro",
+          "section_type": "intro",
+          "rows": [
+            "Em|Em|Em|G",
+            "Em|G|As7|G"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_type": "couplet",
+          "section_title": "couplet 1",
+          "rows": [
+            "Em|G|A|As7|x2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_type": "refrain",
+          "section_title": "refrain 1",
+          "rows": [
+            "Em|G|A|As7|x3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "section_title": "couplet 2",
+          "link": "couplet1"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "section_title": "refrain 2",
+          "link": "refrain1"
+        }
+      }
+    }
+  ],
+  "wavfiles": [],
+  "digest": "e6b2c3a4cde246ee4191522c654e2314",
+  "date": "2025-06-29"
+}

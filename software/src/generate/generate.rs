@@ -491,8 +491,9 @@ pub fn generate_for_aws_lambda(builddir: &PathBuf) -> Result<(), Box<dyn std::er
     // let mut p = builddir.clone();
     // p.push(".texlive2021");
     // create_dir_all(&p)?;
-    log::info!("create /mnt/efs/zik/build/.texlive2021/texmf-var/web2c");
-    let p = PathBuf::from("/mnt/efs/zik/build/.texlive2021/texmf-var/web2c");
+    log::info!("create {}/.texlive2021/texmf-var/web2c", builddir.display());
+    let mut p = builddir.clone();
+    p.push(".texlive2021/texmf-var/web2c");
     create_dir_all(&p)?;
     let mut perms = fs::metadata(&p)?.permissions();
     perms.set_readonly(false);

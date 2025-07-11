@@ -1,0 +1,8 @@
+\path(SECTION_couplet1) ++(5*\xr,-.5*\yr) coordinate(A) ;
+\node[anchor=west](b) at (A) { \color{red} {guitare 1 seule, stop derniere mesure temps \#3} } ;
+
+\path(CELL19) ++(0,-.4*\yr) coordinate(A) ;
+\node[circle,dotted,color=blue,fill=red,inner sep=2pt,minimum size=.3cm](b) at (A) { } ;
+
+\path(SECTION_refrain1) ++(5*\xr,-.5*\yr) coordinate(A) ;
+\node[anchor=west](b) at (A) { \color{red} {sur deuxième ligne stop mesure \#3 temps \#1} } ;

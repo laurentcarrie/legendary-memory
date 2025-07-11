@@ -98,14 +98,14 @@
         \coordinate (A) at (\thexxxcolumncount * \xxxcolumnwidth,\gridbaseline) ;
         \path (A) ++(-\titlexoffset,-\titleheight-{{len-helper this.rows}}/2*\yr) coordinate (A2) ;
         \ifthenelse{\equal{\thexxxcolumncount}{0}}{
-            \path (A) ++(4*\xr,-\titleheight/2) coordinate (SECTION2_{{section_id}}) ;
+            \path (A) ++(4*\xr,-\titleheight/2) coordinate (SECTION_{{section_id}}) ;
         }{
-            \path (A) ++(4*\xr,-\titleheight/2) coordinate (SECTION2_{{section_id}}) ;
+            \path (A) ++(4*\xr,-\titleheight/2) coordinate (SECTION_{{section_id}}) ;
         };
 
         \path (A) ++(0,-\titleheight) coordinate (B);
         \path (B) ++(0,0)coordinate(SECTION_{{section_id}}) ;
-%        \node[circle,draw=black, fill=green, inner sep=0pt,minimum size=5pt] (b) at (SECTION2_{{section_id}}) {};
+%        \node[circle,draw=black, fill=green, inner sep=0pt,minimum size=5pt] (b) at (SECTION_{{section_id}}) {};
 %        \node[circle,draw=black, fill=green, inner sep=0pt,minimum size=5pt] (b) at (A) {};
         {{#each this.rows}}
             % new row

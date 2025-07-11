@@ -1,5 +1,6 @@
 use crate::actions::build_lytex::build_lytex;
 
+use crate::generate::generate::generate_for_aws_lambda;
 use crate::helpers::helpers::song_of_booksong;
 use crate::helpers::io::{copy_file, read_to_string, read_to_vec_u8, write_string};
 use crate::model::model::{
@@ -202,6 +203,9 @@ pub async fn build_pdf_song(
     force_rebuild: bool,
 ) -> Result<(), Box<dyn std::error::Error>> {
     log::info!("build pdf {} {}", &song.author, &song.title);
+
+    generate_for_aws_lambda(&song.builddir)?;
+
     let p = pathbuf_ok_checksum(&song);
     if force_rebuild && p.exists() {
         std::fs::remove_file(p.as_path())?;
@@ -248,6 +252,27 @@ pub async fn build_pdf_song(
         }
     }
 
+    {
+        let child = Command::new("mktexlsr")
+            .env("HOME", &song.builddir.to_str().unwrap())
+            .kill_on_drop(true)
+            // .stdout(Stdio::piped())
+            // .stdout(fout)
+            .current_dir(&song.builddir)
+            .spawn()?;
+    }
+
+    {
+        let child = Command::new("mktexfmt")
+            .arg("user")
+            .env("HOME", &song.builddir.to_str().unwrap())
+            .kill_on_drop(true)
+            // .stdout(Stdio::piped())
+            // .stdout(fout)
+            .current_dir(&song.builddir)
+            .spawn()?;
+    }
+
     let mut count = 1;
     loop {
         let mut p: PathBuf = PathBuf::from(&song.builddir);
@@ -266,7 +291,7 @@ pub async fn build_pdf_song(
         let child = Command::new("lualatex")
             .arg("--interaction=nonstopmode")
             .arg("main.tex")
-            .env("HOME", &world.builddir.to_str().unwrap())
+            .env("HOME", &song.builddir.to_str().unwrap())
             .kill_on_drop(true)
             // .stdout(Stdio::piped())
             .stdout(fout)
@@ -321,6 +346,7 @@ pub async fn build_pdf_song(
         let child = Command::new("ps2pdf")
             .arg("main.pdf")
             .arg(pto.to_str().unwrap())
+            .env("HOME", &song.builddir.to_str().unwrap())
             .kill_on_drop(true)
             // .stdout(Stdio::piped())
             .stdout(fout)

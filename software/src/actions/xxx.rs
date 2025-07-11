@@ -43,6 +43,7 @@ pub async fn build(
     bookdir: PathBuf,
     builddir: PathBuf,
     force_rebuild: bool,
+    nb_workers: u32,
 ) -> Result<(), Box<dyn std::error::Error>> {
     match generate_all(songdir.clone(), bookdir.clone(), builddir.clone()) {
         Ok(()) => (),
@@ -56,7 +57,7 @@ pub async fn build(
         serde_json::from_str(data.as_str()).unwrap()
     };
 
-    log::info!("calling generate_for_aws_lambda");
+    // log::info!("calling generate_for_aws_lambda");
     // generate::generate::generate_for_aws_lambda(&PathBuf::from(&world.builddir)).unwrap();
 
     let mut set: JoinSet<()> = JoinSet::new();
@@ -64,8 +65,8 @@ pub async fn build(
     let (tx, mut rx) = mpsc::channel::<LogItem>(1000);
 
     let mut songs_to_build = world.songs.clone();
-    let  count_to_do = songs_to_build.len() ;
-    let mut count_done=0 ;
+    let count_to_do = songs_to_build.len();
+    let mut count_done = 0;
     let mut running_songs: Vec<Song> = vec![];
 
     // set.spawn(watch(rx));
@@ -80,7 +81,7 @@ pub async fn build(
     // }
 
     loop {
-        if running_songs.len() < 4 {
+        if (running_songs.len() as u32) < nb_workers {
             if let Some(song) = songs_to_build.pop() {
                 log::info!("RUN {} {}", song.author, song.title);
                 running_songs.push(song.clone());
@@ -102,11 +103,17 @@ pub async fn build(
                     | ELogType::Failed
                     | ELogType::NoNeedFailed
                     | ELogType::NoNeedSuccess => {
-count_done+=1 ;
+                        count_done += 1;
+                        let before = running_songs.len();
                         running_songs = running_songs
                             .into_iter()
-                            .filter(|song| s.author == song.author && s.title == song.title)
+                            .filter(|song| s.author != song.author || s.title != song.title)
                             .collect::<Vec<_>>();
+                        let after = running_songs.len();
+                        if after != before - 1 {
+                            log::error!("logic error here {:?}", s);
+                        }
+                        // assert!(count_done + running_songs.len() == count_to_do);
                     }
                     ELogType::Lilypond(_)
                     | ELogType::Lualatex(_)
@@ -116,7 +123,7 @@ count_done+=1 ;
             }
         }
         if count_done == count_to_do {
-            break
+            break;
         }
         // if running_songs.is_empty() && songs_to_build.is_empty() {
         //     break;

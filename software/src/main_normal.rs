@@ -1,6 +1,8 @@
 use log;
 use serde::{Deserialize, Serialize};
-use simple_logger;
+// use simple_logger;
+use log::LevelFilter;
+use simple_logging;
 
 use argh::FromArgs;
 use std::path::PathBuf;
@@ -43,8 +45,9 @@ struct Cli {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
-    simple_logger::init_with_level(log::Level::Info).unwrap();
+    simple_logging::log_to_file("songbook.log", LevelFilter::Info)?;
+    //  simple_logging::log_to_stderr(LevelFilter::Info) ;
+    // simple_logger::init_with_level(log::Level::Info).unwrap();
     let cli: Cli = argh::from_env();
 
     build(
@@ -52,7 +55,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         PathBuf::from(cli.bookdir),
         PathBuf::from(cli.builddir),
         false,
+        cli.nb_workers,
     )
     .await?;
+    log::info!("SUCCESS");
     Ok(())
 }
