@@ -14,7 +14,7 @@
           "section_type": "couplet",
           "section_title": "couplet 1",
           "rows": [
-            "G Em | Bm | G Em | Bm |",
+            "G Em | Bm | G A | Bm |",
             "A|Asus4|G|G|",
             "A|Asus4|G|Bm|",
             "A|Em|Em"
@@ -130,4 +130,4 @@
   "wavfiles": [],
   "digest": "c0b78461497476d84f3d4cd4417069f5",
   "date": "2025-07-11"
-}
+

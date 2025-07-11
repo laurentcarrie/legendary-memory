@@ -77,8 +77,7 @@ fn chord_of_string(s: String) -> String {
         .replace("2", "deux")
         .replace("3", "trois")
         .replace("4", "quatre")
-                .replace("5", "cinq")
-
+        .replace("5", "cinq")
 }
 
 fn bar_of_string(s: String) -> Result<Bar, Box<dyn std::error::Error>> {
@@ -135,7 +134,7 @@ fn row_of_string(barcount: u32, s: String) -> (u32, Row) {
                     "xdeux" => 2,
                     "xtrois" => 3,
                     "xquatre" => 4,
-                                    "xcinq" => 5,
+                    "xcinq" => 5,
 
                     _ => {
                         b.chords.push(s);
