@@ -3,7 +3,7 @@
 // use simple_logging;
 
 use argh::FromArgs;
-use log::{debug, error, info, trace, warn, LevelFilter, SetLoggerError};
+use log::LevelFilter;
 use log4rs::{
     append::{
         console::{ConsoleAppender, Target},

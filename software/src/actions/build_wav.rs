@@ -24,7 +24,7 @@ pub async fn build_wav2(song: Song, wavefile: String) -> Result<(), Box<dyn std:
         return Err(format!("LilyPond file {} does not exist", plyfile.display()).into());
     }
 
-    let mut status = ExitStatus::default();
+    // let mut status = ExitStatus::default();
 
     let child = Command::new("lilypond")
         .arg(plyfile.to_str().unwrap())
@@ -33,10 +33,9 @@ pub async fn build_wav2(song: Song, wavefile: String) -> Result<(), Box<dyn std:
         .stderr(Stdio::piped())
         .current_dir(&song.builddir)
         .spawn();
-    match child {
-        Ok(mut child) => {
-            status = child.wait().await?;
-        }
+
+    let status = match child {
+        Ok(mut child) => child.wait().await?,
         Err(e) => {
             log::error!(
                 "lilypond for {} {}/{}",
@@ -46,7 +45,7 @@ pub async fn build_wav2(song: Song, wavefile: String) -> Result<(), Box<dyn std:
             );
             return Err(e.into());
         }
-    }
+    };
 
     if !status.success() {
         return Err(format!(

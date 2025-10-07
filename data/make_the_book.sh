@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+
 # set -x
 
 here=$(dirname $(realpath $0))

@@ -146,7 +146,7 @@ pub async fn run(
     {
         let mut tikznames = Vec::new();
         let mut offset = 0;
-        let mut cumul = chrono::Duration::new(0, 0).expect("null duration");
+        let cumul = chrono::Duration::new(0, 0).expect("null duration");
         while offset < book.songs.len() {
             let l = if offset + number_of_songs_in_one_toc_page > book.songs.len() {
                 book.songs.len() - offset

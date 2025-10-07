@@ -1,9 +1,7 @@
-use crate::generate::handlebars_helpers::get_handlebar;
 use crate::model::use_model::{Book, Song, StructureItemContent, World};
 use std::ffi::OsStr;
 use std::fs;
-use std::fs::File;
-use std::io::{Error, Write};
+use std::io::Error;
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
