@@ -28,6 +28,7 @@ fn make_one_page_toc(
     #[derive(serde::Serialize, Clone)]
     struct Xxx {
         songs: Vec<Sss>,
+        offset: usize,
     }
     // let mut cumul = cumul ;
     let songs = book
@@ -51,7 +52,7 @@ fn make_one_page_toc(
         })
         .collect::<Vec<_>>();
     let songs = songs[offset..offset + number_of_songs_in_one_toc_page].to_vec();
-    let data = Xxx { songs };
+    let data = Xxx { songs, offset };
     log::debug!("generate book-setlist-{offset}.tikz");
     let mut h = get_handlebar()?;
     h.register_template_string("t1", template)?;

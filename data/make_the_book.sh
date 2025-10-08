@@ -11,6 +11,7 @@ songdir=$here/songs
 doc="[]"
 
 ftmp=$(mktemp)
+# ftmp=a.json
 echo $doc > $ftmp
 
 find $songdir -name song.json | while read f ; do
@@ -21,14 +22,13 @@ find $songdir -name song.json | while read f ; do
 done
 sorted_songs=$(cat $ftmp | jq -r ". | sort_by(.author,.title)")
 doc="{\"title\": \"The Book\",\"songs\":$sorted_songs}"
+echo $doc | jq "." > $ftmp
 
 bookfile=$here/books/the-book.json
 
-if diff $bookfile $ftmp >/dev/null ; then
+if ! diff $bookfile $ftmp >/dev/null; then
     echo "$bookfile updated"
-    echo $olddata > olddata.json
-    echo $newdata > newdata.json
-    echo $newdata > $bookfile
+    mv $ftmp $bookfile
     exit 1
 else
     echo "$bookfile not changed"    

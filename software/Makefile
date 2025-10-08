@@ -1,15 +1,36 @@
-.PHONY: all lambda deploy-lambda build docker base-image
+.PHONY: all lambda deploy-lambda build docker base-image guitarjpg x gdrive
+
+here := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+root := $(dir $(realpath ${here}))
+builddir := ${root}build
+dataimagesdir := ${root}data/images
+datasongsdir := ${root}data/songs
+databooksdir := ${root}data/books
+
+x:
+	echo "here is ${here}"
+	echo "root is ${root}"
+	echo ${builddir}
+	echo "data songsdir is '${datasongsdir}'"
+	echo ${dataimagesdir}
+	echo ${databooksdir}
+
+guitarjpg:
+	mkdir -p ${builddir}/books
+	echo "" > logs/songbook.log
+	cp ${dataimagesdir}/myguitar.jpg ${builddir}/books/myguitar.jpg
+
 
 help:
 	echo """
 	build : build binary
 	"""
 
-run: build
-	mkdir -p ../build
-	./target/release/songbook-cli --force --nb-workers 8 $(realpath ../data/songs) $(realpath ../data/books) $(realpath ../build)
+run: build guitarjpg
+	mkdir -p $builddir
+	./target/release/songbook-cli --force --nb-workers 8 ${datasongsdir} ${databooksdir} ${builddir}
 
-run-k: build
+run-k: build guitarjpg
 	./target/release/songbook-cli --force --nb-workers 12 $(realpath ../data/songs/muse) $(realpath ../data/empty) $(realpath ../build)
 
 run-x:
@@ -79,3 +100,7 @@ batch-push: docker-login
 	docker build -t laurent/batch  --platform=linux/amd64  --provenance=false -f Dockerfile-2 .
 	docker tag laurent/batch:latest  579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/batch:latest
 	docker push 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/batch:latest
+
+gdrive: run
+	rm -rf ${builddir}/delivery/digest 
+	${here}/others/shfiles/make_gdrive.sh /zik/songs ${builddir}/delivery 

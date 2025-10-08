@@ -47,7 +47,7 @@
 
         \node[anchor=center] (b) at (Atitle) {
 %            {{{this.tempo}}} bpm     %
-            \hyperref[sec:song{{@index}}]{%
+            \hyperref[sec:song{{add-helper @index ../offset}}]{%
                         \bfseries\slshape%
                         \fontsize{30pt}{30pt}\selectfont%
                         \color{blue}%
