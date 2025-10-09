@@ -1,5 +1,5 @@
 %\documentclass[a4paper, 12 pt, showframe, french]{scrartcl}
-\documentclass[a4paper, 14 pt]{article}
+\documentclass[a4paper, 10 pt]{article}
 \usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{geometry}
 \usepackage{import}
 \usepackage{fancyhdr}
@@ -50,11 +50,7 @@
 
 {{#each offsets}}
 {{#with this}}
-\vspace*{\fill}
-\begin{center}
 \input{ {{this}} }
-\end{center}
-\vspace*{\fill}
 \newpage
 {{/with}}
 {{/each}}
@@ -93,4 +89,3 @@
 {{/each}}
 
 \end{document}
-

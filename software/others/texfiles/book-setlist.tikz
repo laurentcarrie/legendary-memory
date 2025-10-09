@@ -40,18 +40,19 @@
     {{#each songs }}
         \node[anchor=south east] (b) at (Atime) { {\color{magenta}{\textbf{~{{{this.tempo}}} BPM}}} ;  {{{this.duration}}} } ;
         \node[anchor=north east] (b) at (Atime) { cumul : {{{this.cumul_duration}}} } ;
+%        \node[anchor=south west] (b) at (Atime) { {{{this.tempo}}} bpm } ;
+
+%        \node[circle,draw=black, fill=red, inner sep=0pt,minimum size=5pt] (b) at (Atime) {};
+%        \node[circle,draw=black, fill=green, inner sep=0pt,minimum size=5pt] (b) at (Atitle) {};
+
         \node[anchor=center] (b) at (Atitle) {
+%            {{{this.tempo}}} bpm     %
             \hyperref[sec:song{{add-helper @index ../offset}}]{%
                         \bfseries\slshape%
                         \fontsize{30pt}{30pt}\selectfont%
                         \color{blue}%
                         {{{this.title}}}    %
                 }%
-            };
-        \path (Atitle) ++(0,-\yr/2) coordinate(Aauthor) ;
-
-        \node[anchor=center] (b) at (Aauthor) {
-            \hyperref[sec:song{{add-helper @index ../offset}}]
             {%
                 %\Fontskrivan\bfseries\slshape%
                 \cursive\bfseries%
@@ -60,6 +61,17 @@
                 ( {{{this.author}}} ) %
             }%
             };
+%        \path (Atitle) ++(0,-\yoffset) coordinate(Atitleb) ;
+%        \node[anchor=center] (b) at (Atitleb) {%
+%            {{{this.tempo}}} bpm     %
+%            \hyperref[sec:song{{@index}}]{%
+%                        \Fontskrivan\bfseries\slshape%
+%                        \fontsize{15pt}{15pt}\selectfont%
+%                        \color{orange}%
+%                        {{{this.author}}}%
+%                }%
+%            };
+%
 
         \path (Atime) ++(0,-\yr) coordinate(Atime) ;
         \path (Atitle) ++(0,-\yr) coordinate(Atitle) ;
