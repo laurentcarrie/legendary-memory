@@ -46,7 +46,13 @@ impl std::fmt::Debug for EArtefact {
             EArtefact::BootstrapSong(song) => {
                 write!(f, "Bootstrap {} @ {}", song.author, song.title)
             }
-            EArtefact::BootstrapBook(book) => write!(f, "Boostrap book {}", book.title),
+            EArtefact::BootstrapBook(book) => {
+                write!(
+                    f,
+                    "Boostrap book {} (lyrics only: {})",
+                    book.title, book.lyrics_only
+                )
+            }
             EArtefact::Broken(path) => write!(f, "Broken({})", path.display()),
         }
     }

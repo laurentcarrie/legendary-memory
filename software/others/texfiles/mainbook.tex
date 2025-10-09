@@ -1,23 +1,29 @@
 %\documentclass[a4paper, 12 pt, showframe, french]{scrartcl}
-\documentclass[a4paper, 10 pt]{article}
+\documentclass[a4paper, 14 pt]{article}
 \usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{geometry}
 \usepackage{import}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage[default]{frcursive}
 \usepackage{graphicx}
+\usepackage{etoolbox}
 \pagestyle{fancy}
 \fancyhf{}
 \newcommand{\makesongtitle}{}
 \newcommand{\songlastupdate}{}
 \newcommand{\songtoday}{}
 \newcommand{\xxcfoot}[2]{}
+
+\newtoggle{lyricsonly}
+\settoggle{lyricsonly}{ {{~lyrics_only~}} } % 
+
+
 \input{preamble}
 \input{sections}
 \input{chords}
 \begin{document}
 
-
+{{#if coverimage}}
 \begin{titlepage}
 	\vspace*{\fill}
 	\begin{center}
@@ -26,7 +32,7 @@
 			\cursive\bfseries%
 			\fontsize{25pt}{25pt}\selectfont%
 			\color{orange}%
-			( My Song Book ) %
+			( {{ helper_tex_sanitize title }}) %
 		}%
 		
 		%   {Huge [[Book]]}\\[0.5cm]
@@ -38,6 +44,7 @@
 	
 	\vspace*{\fill}
 \end{titlepage}
+{{/if}}
 
 \label{top}
 
@@ -49,8 +56,8 @@
 {{/each}}
 
 
-\tableofcontents
-\newpage
+%\tableofcontents
+%\newpage
 
 \newcounter{xxxrowcount}
 \newcounter{xxxsectioncount}
@@ -82,3 +89,4 @@
 {{/each}}
 
 \end{document}
+

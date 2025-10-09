@@ -351,6 +351,8 @@ pub fn decode_book(
                 songs,
                 builddir: book_builddir,
                 pdfname: uconf.title.clone(),
+                lyrics_only: uconf.lyrics_only,
+                cover_image: uconf.cover_image,
             };
             let ubook_with_path = UserBookWithPath {
                 book: uconf.clone(),

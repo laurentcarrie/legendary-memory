@@ -115,6 +115,8 @@ pub struct UserBook {
     pub title: String,
     /// the list of songs in the book
     pub songs: Vec<UserBookSong>,
+    pub lyrics_only: bool,
+    pub cover_image: bool,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]

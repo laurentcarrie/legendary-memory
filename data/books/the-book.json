@@ -1,5 +1,8 @@
 {
   "title": "The Book",
+    "lyrics_only": false,"cover_image": true,
+
+
   "songs": [
     {
       "author": "Alannah Myles",

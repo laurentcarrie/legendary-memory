@@ -68,6 +68,15 @@ fn make_one_page_toc(
     Ok(changed)
 }
 
+// fn make_maintex_book(
+//     _world: M::World,
+//     book: M::Book,
+//     number_of_songs_in_one_toc_page: usize,
+// ) -> Result<u32, Box<dyn std::error::Error>> {
+//     let ret = _make_maintex_book(_world, book, number_of_songs_in_one_toc_page, false)?;
+//     Ok(ret)
+// }
+
 fn make_maintex_book(
     _world: M::World,
     book: M::Book,
@@ -75,11 +84,13 @@ fn make_maintex_book(
 ) -> Result<u32, Box<dyn std::error::Error>> {
     let template =
         String::from_utf8(include_bytes!("../../others/texfiles/mainbook.tex").to_vec())?;
-
     #[derive(serde::Serialize, Clone)]
     struct Sss {
         songs: Vec<M::BookSong>,
         offsets: Vec<String>,
+        lyrics_only: bool,
+        title: String,
+        cover_image: bool,
     }
 
     let mut offsets: Vec<String> = Vec::new();
@@ -92,6 +103,9 @@ fn make_maintex_book(
     let data = Sss {
         songs: book.songs,
         offsets,
+        lyrics_only: book.lyrics_only,
+        title: book.title,
+        cover_image: book.cover_image,
     };
     let mut h = get_handlebar()?;
     h.register_template_string("t1", template)?;

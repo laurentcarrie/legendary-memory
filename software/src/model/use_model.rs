@@ -97,6 +97,8 @@ pub struct Book {
     pub songs: Vec<BookSong>,
     pub builddir: PathBuf,
     pub pdfname: String,
+    pub lyrics_only: bool,
+    pub cover_image: bool,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
