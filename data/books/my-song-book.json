@@ -1,7 +1,5 @@
 {
-  "title": "The Book",
-    "lyrics_only": false,
-"cover_image": true,
+  "title": "Mon Song Book",
   "songs": [
     {
       "author": "Alannah Myles",
@@ -131,5 +129,7 @@
       "author": "The Strokes",
       "title": "The End Has No End"
     }
-  ]
+  ],
+  "cover_image": true,
+  "lyrics_only": false
 }

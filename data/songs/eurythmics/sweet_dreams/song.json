@@ -30,6 +30,12 @@
       }
     },
     {
+      "id": "hr1",
+      "item": {
+        "HRule": 80
+      }
+    },
+    {
       "id": "couplet2",
       "item": {
         "Ref": {
@@ -67,6 +73,12 @@
           "section_title": "refrain 2",
           "link": "refrain1"
         }
+      }
+    },
+    {
+      "id": "hr",
+      "item": {
+        "HRule": 80
       }
     },
     {
@@ -113,18 +125,20 @@
       }
     },
     {
-      "id": "couplet6",
+      "id": "fin",
       "item": {
-        "Ref": {
-          "section_title": "couplet 6",
-          "section_type": "couplet",
-          "link": "couplet1"
+        "Chords": {
+          "section_title": "fin",
+          "section_type": "intro",
+          "rows": [
+            "Cm"
+          ]
         }
       }
     }
   ],
   "wavfiles": [],
-  "digest": "e6547cba6dcee1a7ec7f7b774bc1e7c2",
+  "digest": "af77ed2e7edf825a7c3b75aaccad3fae",
   "date": "2025-10-09",
   "hash": "0"
 }

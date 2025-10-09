@@ -21,10 +21,10 @@ find $songdir -name song.json | while read f ; do
     echo $doc > $ftmp
 done
 sorted_songs=$(cat $ftmp | jq -r ". | sort_by(.author,.title)")
-doc="{\"title\": \"The Book\",\"songs\":$sorted_songs}"
+doc="{\"title\": \"Mon Song Book\",\"songs\":$sorted_songs,\"cover_image\": true,\"lyrics_only\": false}"
 echo $doc | jq "." > $ftmp
 
-bookfile=$here/books/the-book.json
+bookfile=$here/books/my-song-book.json
 
 if ! diff $bookfile $ftmp >/dev/null; then
     echo "$bookfile updated"

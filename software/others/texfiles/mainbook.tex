@@ -77,7 +77,16 @@
 \setcounter{xxxcolumncount}{0}
 
 \import{ {{~this.path~}} }{data.tex}
-\section{ \songauthor / \songtitle }
+% \section{ \songauthor / \songtitle }
+
+\iftoggle{lyricsonly}
+{
+	\makesongtitle
+	
+}
+{
+}
+
 
 \hyperref[top]{
 	\color{blue}(haut)
