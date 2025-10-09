@@ -1,0 +1,124 @@
+{
+  "tempo": 84,
+  "title": "Under The Bridge",
+  "author": "Red Hot Chili Peppers",
+  "texfiles": [
+  ],
+  "lilypondfiles": [],
+  "structure": [
+    {
+      "id": "intro",
+      "item": {
+        "Chords": {
+          "section_title": "intro",
+          "section_type": "intro",
+          "rows": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet1",
+      "item": {
+        "Chords": {
+          "section_title": "couplet 1",
+          "section_type": "couplet",
+          "rows": [
+            "E|B|Csm|A",
+            "E|B|Csm|A"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet2",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 2"
+        }
+      }
+    },
+    {
+      "id": "refrain1",
+      "item": {
+        "Chords": {
+          "section_title": "refrain",
+          "section_type": "refrain",
+          "rows": [
+            "Fsm|A|E|B",
+            "Fsm|A|E|B",
+            "Fsm|A|E|B",
+            "Csm|A|E|B"
+          ]
+        }
+      }
+    },
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 3"
+        }
+      }
+    },
+    {
+      "id": "refrain2",
+      "item": {
+        "Ref": {
+          "link": "refrain1",
+          "section_title": "refrain 2"
+        }
+      }
+    },
+
+    {
+      "id": "couplet3",
+      "item": {
+        "Ref": {
+          "link": "couplet1",
+          "section_title": "couplet 3"
+        }
+      }
+    },
+
+    {"id": "pont",
+      "item": {
+        "Chords": {
+          "section_title": "pont",
+          "section_type": "pont",
+          "rows": [
+            "A|Am|G|F|x3",
+            "F7M|E7|G|G"
+          ]
+        }
+      }
+    },
+    {
+      "id": "final1",
+      "item": {
+        "Chords": {
+          "section_type": "coupletb",
+          "section_title": "final 1",
+          "rows": [
+            "A|Am|G|F|x4"
+          ]
+        }
+      }
+    },
+    {
+      "id": "final2",
+      "item": {
+        "Ref": {
+          "link": "final1",
+          "section_title": "final 2"
+        }
+      }
+    }  ],
+  "wavfiles": [],
+  "digest": "d791bc897e8a1c1d9341ad6ae02e11ae",
+  "date": "2025-09-30",
+  "hash": "0"
+}

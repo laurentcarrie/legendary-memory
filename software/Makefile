@@ -31,7 +31,7 @@ run: build guitarjpg
 	./target/release/songbook-cli --force --nb-workers 8 ${datasongsdir} ${databooksdir} ${builddir}
 
 run-k: build guitarjpg
-	./target/release/songbook-cli --force --nb-workers 12 $(realpath ../data/songs/muse) $(realpath ../data/empty) $(realpath ../build)
+	./target/release/songbook-cli --force --nb-workers 12 $(realpath ../data/songs/red_hot_chili_peppers/under_the_bridge) $(realpath ../data/empty) $(realpath ../build)
 
 run-x:
 	cargo build --release --bin songbook-cli
@@ -42,6 +42,7 @@ run-x:
 	builddir=$(realpath ../build)
 	rm -rf $builddir
 	mkdir -p $builddir
+	echo "" > logs/songbook.log
 	#./target/release/songbook-cli --force --nb-workers 4 ${songdir} $(bookdir) $(builddir)
 	./target/release/songbook-cli --force --nb-workers 4 $(realpath ../data/songs/$x) ../data/empty $(realpath  ../build)
 
