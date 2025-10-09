@@ -50,7 +50,11 @@
 
 {{#each offsets}}
 {{#with this}}
+\vspace*{\fill}
+\begin{center}
 \input{ {{this}} }
+\end{center}
+\vspace*{\fill}
 \newpage
 {{/with}}
 {{/each}}

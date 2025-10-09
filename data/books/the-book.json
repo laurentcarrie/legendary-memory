@@ -1,8 +1,7 @@
 {
   "title": "The Book",
-    "lyrics_only": false,"cover_image": true,
-
-
+    "lyrics_only": false,
+"cover_image": true,
   "songs": [
     {
       "author": "Alannah Myles",
@@ -115,6 +114,10 @@
     {
       "author": "Red Hot Chili Peppers",
       "title": "Dani California"
+    },
+    {
+      "author": "Red Hot Chili Peppers",
+      "title": "Under The Bridge"
     },
     {
       "author": "Steely Dan",

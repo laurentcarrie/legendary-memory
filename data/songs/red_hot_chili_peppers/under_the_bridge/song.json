@@ -2,8 +2,7 @@
   "tempo": 84,
   "title": "Under The Bridge",
   "author": "Red Hot Chili Peppers",
-  "texfiles": [
-  ],
+  "texfiles": [],
   "lilypondfiles": [],
   "structure": [
     {
@@ -73,7 +72,6 @@
         }
       }
     },
-
     {
       "id": "couplet3",
       "item": {
@@ -83,8 +81,8 @@
         }
       }
     },
-
-    {"id": "pont",
+    {
+      "id": "pont",
       "item": {
         "Chords": {
           "section_title": "pont",
@@ -116,9 +114,10 @@
           "section_title": "final 2"
         }
       }
-    }  ],
+    }
+  ],
   "wavfiles": [],
-  "digest": "d791bc897e8a1c1d9341ad6ae02e11ae",
-  "date": "2025-09-30",
+  "digest": "6f0c54f525474d0560ae7f5eb78820b2",
+  "date": "2025-10-09",
   "hash": "0"
 }
