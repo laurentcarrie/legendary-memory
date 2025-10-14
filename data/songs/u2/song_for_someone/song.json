@@ -36,7 +36,7 @@
           "section_title": "pré refrain 1",
           "section_type": "prerefrain",
           "rows": [
-            "E| B | Fs | Gs | x4 "
+            "E| B | Fs | Gsm | x2 "
           ]
         }
       }
@@ -48,8 +48,7 @@
           "section_title": "refrain 1",
           "section_type": "refrain",
           "rows": [
-            "Fs | Cs| Gs| Dsm ",
-            "Fs | Cs| Gs| Dsm "
+            "E| B | Fs | Gsm | x4 "
           ]
         }
       }
@@ -88,7 +87,7 @@
           "section_title": "solo",
           "section_type": "solo",
           "rows": [
-            "E| E | Fs | Gs | x2"
+            "E| B | Gsm | Cs | x2"
           ]
         }
       }
@@ -100,14 +99,14 @@
           "section_title": "outtro",
           "section_type": "intro",
           "rows": [
-            "E| E | Fs | Gs | x2"
+            "E| E | Fs | Gsm | x2"
           ]
         }
       }
     }
   ],
   "wavfiles": [],
-  "digest": "dedcf4b77070a09fe4b220373aecd571",
+  "digest": "ac7870efc879f4987e067dd8ce46d6ad",
   "date": "2025-10-14",
   "hash": "0"
 }

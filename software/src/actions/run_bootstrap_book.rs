@@ -156,7 +156,7 @@ pub async fn run(
     }
 
     // number of songs in one toc page
-    let number_of_songs_in_one_toc_page: usize = 12;
+    let number_of_songs_in_one_toc_page: usize = 8;
 
     {
         let mut tikznames = Vec::new();
