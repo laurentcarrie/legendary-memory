@@ -1,7 +1,7 @@
 {
-  "tempo": 94,
-  "author": "Matmatah",
-  "title": "Au Conditionnel",
+  "tempo": 105,
+  "title": "Song For Someone",
+  "author": "U2",
   "texfiles": [],
   "lilypondfiles": [],
   "structure": [
@@ -12,7 +12,7 @@
           "section_title": "intro",
           "section_type": "intro",
           "rows": [
-            "E Csm | E Csm | E Csm | B "
+            "E| E | Fs | Gs | x2"
           ]
         }
       }
@@ -24,8 +24,7 @@
           "section_title": "couplet 1",
           "section_type": "couplet",
           "rows": [
-            "E Csm | E Csm | E Csm | B |",
-            "E Csm | E Csm | E Csm | "
+            "E| E | Fs | Gs | x2"
           ]
         }
       }
@@ -37,7 +36,7 @@
           "section_title": "pré refrain 1",
           "section_type": "prerefrain",
           "rows": [
-            "B|B|B|B"
+            "E| B | Fs | Gs | x4 "
           ]
         }
       }
@@ -49,19 +48,8 @@
           "section_title": "refrain 1",
           "section_type": "refrain",
           "rows": [
-            "E Csm|Gsm B|E Gs|A|x2"
-          ]
-        }
-      }
-    },
-    {
-      "id": "pont",
-      "item": {
-        "Chords": {
-          "section_title": "pont",
-          "section_type": "fill",
-          "rows": [
-            "E Csm|Gsm B|E Gs|A|"
+            "Fs | Cs| Gs| Dsm ",
+            "Fs | Cs| Gs| Dsm "
           ]
         }
       }
@@ -70,8 +58,7 @@
       "id": "couplet2",
       "item": {
         "Ref": {
-          "section_title": "couplet2",
-          "section_type": "couplet",
+          "section_title": "couplet 2",
           "link": "couplet1"
         }
       }
@@ -81,7 +68,6 @@
       "item": {
         "Ref": {
           "section_title": "pré refrain 2",
-          "section_type": "prerefrain",
           "link": "prerefrain1"
         }
       }
@@ -91,51 +77,19 @@
       "item": {
         "Ref": {
           "section_title": "refrain 2",
-          "section_type": "refrain",
           "link": "refrain1"
         }
       }
     },
     {
-      "id": "interlude",
+      "id": "solo",
       "item": {
         "Chords": {
-          "section_title": "interlude",
-          "section_type": "pont",
+          "section_title": "solo",
+          "section_type": "solo",
           "rows": [
-            "Fsm A | Fsm A | Fsm A | Csm | x2",
-            "Csm"
+            "E| E | Fs | Gs | x2"
           ]
-        }
-      }
-    },
-    {
-      "id": "prerefrain3",
-      "item": {
-        "Ref": {
-          "section_title": "pré refrain 3",
-          "section_type": "prerefrain",
-          "link": "prerefrain1"
-        }
-      }
-    },
-    {
-      "id": "refrain3",
-      "item": {
-        "Ref": {
-          "section_title": "refrain 3",
-          "section_type": "refrain",
-          "link": "refrain1"
-        }
-      }
-    },
-    {
-      "id": "refrain4",
-      "item": {
-        "Ref": {
-          "section_title": "refrain 4",
-          "section_type": "refrain",
-          "link": "refrain1"
         }
       }
     },
@@ -146,13 +100,14 @@
           "section_title": "outtro",
           "section_type": "intro",
           "rows": [
-            "E"
+            "E| E | Fs | Gs | x2"
           ]
         }
       }
     }
   ],
   "wavfiles": [],
-  "digest": "e8f8ba23bf104a66ffb575557b17e5e2",
-  "date": "2025-10-14"
+  "digest": "dedcf4b77070a09fe4b220373aecd571",
+  "date": "2025-10-14",
+  "hash": "0"
 }
