@@ -1,6 +1,7 @@
 use crate::helpers::helpers::normalize_pdf_name;
 use crate::model::use_model as M;
 // use handlebars::template::Parameter::Path;
+use crate::helpers::io::write_string;
 use human_sort::compare;
 use regex::Regex;
 use std::cmp::Ordering;
@@ -303,9 +304,18 @@ pub fn decode_book(
     let contents = fs::read_to_string(filepath)
         .expect("Should have been able to read the file")
         .clone();
-    let uconf: UserBook = serde_json::from_str(&contents)
-        .unwrap_or_else(|_| panic!("read json {}", filepath.display()));
-
+    let uconf: UserBook = {
+        match filepath.extension() {
+            Some(value) => match value.to_str() {
+                Some("json") => serde_json::from_str(&contents)
+                    .unwrap_or_else(|_| panic!("read json {}", filepath.display())),
+                Some("yml") => serde_yaml::from_str(&contents)
+                    .unwrap_or_else(|_| panic!("read json {}", filepath.display())),
+                _ => unimplemented!(),
+            },
+            _ => unimplemented!(),
+        }
+    };
     let mut book_builddir = buildroot.to_path_buf();
     book_builddir.push("books");
     book_builddir.push(&uconf.title);
@@ -410,7 +420,22 @@ pub fn decode_song(
     let contents = fs::read_to_string(filepath)
         .expect("Should have been able to read the file")
         .clone();
-    let uconf: UserSong = serde_json::from_str(&contents)?;
+    log::info!("reading song description {filepath:?}");
+    let uconf: UserSong = match filepath.extension() {
+        Some(value) => match value.to_str() {
+            Some("json") => {
+                let data = &serde_json::from_str(&contents)?;
+                let yml = serde_yaml::to_string::<UserSong>(data)?;
+                let mut o = filepath.clone();
+                o.set_extension("yml");
+                write_string(&o, &yml)?;
+                data.clone()
+            }
+            Some("yml") => serde_yaml::from_str(&contents)?,
+            _ => unimplemented!(),
+        },
+        None => unimplemented!(),
+    };
 
     let mut song_builddir = buildroot.to_path_buf();
     song_builddir.push("songs");

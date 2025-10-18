@@ -5,7 +5,8 @@ root := $(dir $(realpath ${here}))
 builddir := ${root}build
 dataimagesdir := ${root}data/images
 datasongsdir := ${root}data/songs
-databooksdir := ${root}data/books
+# databooksdir := ${root}data/books
+databooksdir := ${root}data/empty
 
 x:
 	echo "here is ${here}"
@@ -27,7 +28,8 @@ help:
 	"""
 
 run: build guitarjpg
-	mkdir -p $builddir
+	mkdir -p ${builddir}
+	rm -rf ${builddir}/songs/bb_brunes
 	./target/release/songbook-cli --force --nb-workers 8 ${datasongsdir} ${databooksdir} ${builddir}
 
 run-k: build guitarjpg

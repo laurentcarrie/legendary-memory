@@ -28,11 +28,22 @@ pub fn make(
     // the available song sections, for rendering
     let sections = get_sections();
 
+    log::info!("x");
     // for all song.json found in the songdir tree
     let (songs, broken_songs): (Vec<_>, Vec<_>) = get_song_json_paths(srcdir)
         .into_iter()
         .map(|p| (p.clone(), decode_song(builddir, &sections, &p)))
         .partition(|x| x.1.is_ok());
+
+    log::info!("y");
+    {
+        for b in &broken_songs {
+            log::info!("{:?}", b.0);
+            if b.1.is_err() {
+                log::error!("{:?}", b.1);
+            }
+        }
+    }
 
     let (songs, usongs_with_path): (Vec<_>, Vec<_>) =
         songs.into_iter().map(|x| x.1.unwrap()).unzip();

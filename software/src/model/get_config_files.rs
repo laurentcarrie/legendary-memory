@@ -9,6 +9,9 @@ pub fn get_song_json_paths(current_dir: &PathBuf) -> Vec<PathBuf> {
         if entry.file_name().to_str() == Some("song.json") {
             filenames.push(x.clone());
         }
+        if entry.file_name().to_str() == Some("song.yml") {
+            filenames.push(x.clone());
+        }
     }
     filenames
 }
