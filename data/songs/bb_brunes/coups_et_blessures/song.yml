@@ -7,23 +7,23 @@ structure:
   - id: intro
     item:
       !Chords
-        section_title: intro
-        section_type: intro
+        title: intro
+        type: intro
         rows:
           - D | D | Bm | Bm | x2
   - id: couplet1
     item:
       !Chords
-        section_title: couplet 1
-        section_type: couplet
+        title: couplet 1
+        type: couplet
         rows:
           - D | D | Bm | Bm | x2
           - G|  A | G | 
   - id: refrain1
     item:
       !Chords
-        section_title: refrain 1
-        section_type: refrain
+        title: refrain 1
+        type: refrain
         rows:
           - G | A | D | D | 
           - G | A | Bm | Bm | 

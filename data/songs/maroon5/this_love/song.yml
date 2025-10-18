@@ -11,81 +11,81 @@ date: 2025-10-14
 structure:
 - id: intro1
   item: !Chords
-    section_title: intro d/b
-    section_type: intro
+    title: intro d/b
+    type: intro
     section_body: null
     rows:
     - G7 | Cm7 | Fm7 | Afdim
 - id: intro
   item: !Chords
-    section_title: intro tous
-    section_type: intro
+    title: intro tous
+    type: intro
     section_body: null
     rows:
     - G7 | Cm7 | Fm7 | Afdim
 - id: couplet_1
   item: !Chords
-    section_title: couplet 1
-    section_type: couplet
+    title: couplet 1
+    type: couplet
     section_body: null
     rows:
     - G7 | Cm7 | Fm7 | Afdim
     - G7 | Cm7 | Fm7 | Afdim
 - id: refrain_1
   item: !Chords
-    section_title: refrain 1
-    section_type: refrain
+    title: refrain 1
+    type: refrain
     section_body: null
     rows:
     - Cm Fm7 | Bf Ef | Cm Fm7 | Bf Ef
     - Cm Fm7 | Bf Ef | Cm7 F7 | Af G
 - id: couplet_2
   item: !Chords
-    section_title: \textonehalf~couplet 2
-    section_type: couplet
+    title: \textonehalf~couplet 2
+    type: couplet
     section_body: null
     rows:
     - G7 | Cm7 | Fm7 | Afdim
 - id: couplet_3
   item: !Ref
-    section_title: couplet 3
+    title: couplet 3
     section_body: '{\color{red} stop \sharp 29}'
-    section_type: couplet
+    type: couplet
     link: couplet_1
 - id: refrain_2
   item: !Ref
-    section_title: refrain 2
+    title: refrain 2
     section_body: null
-    section_type: refrain
+    type: refrain
     link: refrain_1
 - id: nc
   item: NewColumn
 - id: couplet_4
   item: !Chords
-    section_title: \textonehalf~couplet 4
-    section_type: couplet
+    title: \textonehalf~couplet 4
+    type: couplet
     section_body: null
     rows:
     - G7 | Cm7 | Fm7 | Afdim
 - id: pont
   item: !Chords
-    section_title: pont
-    section_type: pont
+    title: pont
+    type: pont
     section_body: null
     rows:
     - 'Fm7 | Ef7M | Fdim | Cm7 '
     - Fm7 | Ef7M | Afdim | Afdim
 - id: refrain_3
   item: !Ref
-    section_title: refrain 3
+    title: refrain 3
     section_body: null
-    section_type: refrain
+    type: refrain
     link: refrain_1
 - id: refrain_4
   item: !Ref
-    section_title: refrain 4
+    title: refrain 4
     section_body: null
-    section_type: refrain
+    type: refrain
     link: refrain_1
 tempo: 95
 time_signature: null

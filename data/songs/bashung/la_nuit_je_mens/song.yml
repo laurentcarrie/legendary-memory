@@ -8,8 +8,8 @@ date: 2025-10-14
 structure:
 - id: couplet1
   item: !Chords
-    section_title: couplet 1
-    section_type: couplet
+    title: couplet 1
+    type: couplet
     section_body: null
     rows:
     - G Em | Bm | G A | Bm |
@@ -18,16 +18,16 @@ structure:
     - A|Em|Em
 - id: refrain1
   item: !Chords
-    section_title: refrain 1
-    section_type: refrain
+    title: refrain 1
+    type: refrain
     section_body: null
     rows:
     - 'Bm | G | Bm | G '
     - Em| A|Em|Em
 - id: fill1
   item: !Chords
-    section_title: fill 1
-    section_type: refrainb
+    title: fill 1
+    type: refrainb
     section_body: null
     rows:
     - G Em|Bm
@@ -35,8 +35,8 @@ structure:
   item: NewColumn
 - id: couplet2
   item: !Chords
-    section_title: couplet 2
-    section_type: coupletb
+    title: couplet 2
+    type: coupletb
     section_body: null
     rows:
     - G Em|Bm|G Em|Bm
@@ -45,41 +45,41 @@ structure:
     - A|Em
 - id: refrain2
   item: !Ref
-    section_title: refrain 2
+    title: refrain 2
     section_body: null
-    section_type: null
+    type: null
     link: refrain1
 - id: fill2
   item: !Ref
-    section_title: fill 2
+    title: fill 2
     section_body: null
-    section_type: null
+    type: null
     link: fill1
 - id: couplet3
   item: !Chords
-    section_title: couplet 3
-    section_type: coupletc
+    title: couplet 3
+    type: coupletc
     section_body: null
     rows:
     - G Em | Bm | G A | Bm |
     - A|Asus4|G|G|
 - id: refrain3
   item: !Ref
-    section_title: refrain 3
+    title: refrain 3
     section_body: null
-    section_type: null
+    type: null
     link: refrain1
 - id: refrain4
   item: !Ref
-    section_title: refrain 4
+    title: refrain 4
     section_body: \songbookcomment{instrumental}
-    section_type: null
+    type: null
     link: refrain1
 - id: refrain5
   item: !Ref
-    section_title: refrain 5
+    title: refrain 5
     section_body: \songbookcomment{fade out}
-    section_type: null
+    type: null
     link: refrain1
 tempo: 147
 time_signature: null

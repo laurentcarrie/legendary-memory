@@ -7,11 +7,13 @@ use serde::{Deserialize, Serialize};
 pub struct UserChordSection {
     /// the title of the section, must be a valid latex expression
     /// this will be rendered
+    #[serde(rename(serialize = "title", deserialize = "title"))]
     pub section_title: String,
     /// the type of the section, ie couplet, refrain, ...
     /// must be a valid section type, see @todo show how to do it
     /// to add a section type, [edit this file](/legendary-memory/others/texfiles/sections.json)
     /// and rebuild the tool
+    #[serde(rename(serialize = "type", deserialize = "type"))]
     pub section_type: String,
     /// a latex string, that will be shown in the grid rendering
     pub section_body: Option<String>,
@@ -29,6 +31,7 @@ pub struct UserChordSection {
 pub struct UserRef {
     /// the title of the section, must be a valid latex expression
     /// this will be rendered
+    #[serde(rename(serialize = "title", deserialize = "title"))]
     pub section_title: String,
     /// a latex string, that will be shown in the grid rendering
     pub section_body: Option<String>,
@@ -36,6 +39,7 @@ pub struct UserRef {
     /// if missing, it will be the type of the section that is refered to
     /// to add a section type, [edit this file](/legendary-memory/others/texfiles/sections.json)
     /// and rebuild the tool
+    #[serde(rename(serialize = "type", deserialize = "type"))]
     pub section_type: Option<String>,
     /// the id of the refered to section, it must exist
     pub link: String,

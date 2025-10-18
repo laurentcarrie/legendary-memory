@@ -9,22 +9,22 @@ date: 2025-10-14
 structure:
 - id: intro_batteriex
   item: !Chords
-    section_title: intro
-    section_type: intro
+    title: intro
+    type: intro
     section_body: null
     rows:
     - 'HRest | HRest '
 - id: intro
   item: !Chords
-    section_title: intro
-    section_type: intro
+    title: intro
+    type: intro
     section_body: null
     rows:
     - Dm | Dm | Dm | Dm
 - id: couplet_1
   item: !Chords
-    section_title: couplet 1
-    section_type: couplet
+    title: couplet 1
+    type: couplet
     section_body: null
     rows:
     - Dm | Gm | A | Dm
@@ -33,8 +33,8 @@ structure:
     - F | F | E7 | A
 - id: refrain_1
   item: !Chords
-    section_title: refrain 1
-    section_type: refrain
+    title: refrain 1
+    type: refrain
     section_body: null
     rows:
     - Dm | Am | E | Am
@@ -45,48 +45,48 @@ structure:
   item: !HRule 67
 - id: pont
   item: !Chords
-    section_title: pont
-    section_type: pont
+    title: pont
+    type: pont
     section_body: null
     rows:
     - HRest | HRest
 - id: couplet_2
   item: !Ref
-    section_title: couplet 2
+    title: couplet 2
     section_body: null
-    section_type: null
+    type: null
     link: couplet_1
 - id: refrain_2
   item: !Ref
-    section_title: refrain 2
+    title: refrain 2
     section_body: null
-    section_type: null
+    type: null
     link: refrain_1
 - id: hr
   item: !HRule 70
 - id: pont_guitare
   item: !Ref
-    section_title: pont guitare
+    title: pont guitare
     section_body: null
-    section_type: null
+    type: null
     link: intro
 - id: couplet_3
   item: !Ref
-    section_title: couplet 3
+    title: couplet 3
     section_body: null
-    section_type: null
+    type: null
     link: couplet_1
 - id: refrain_3
   item: !Ref
-    section_title: refrain 3
+    title: refrain 3
     section_body: null
-    section_type: null
+    type: null
     link: refrain_1
 - id: refrain_4
   item: !Ref
-    section_title: refrain 4
+    title: refrain 4
     section_body: null
-    section_type: null
+    type: null
     link: refrain_1
 tempo: 103
 time_signature: null

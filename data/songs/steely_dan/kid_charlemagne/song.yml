@@ -12,48 +12,48 @@ date: 2025-10-14
 structure:
 - id: intro
   item: !Chords
-    section_title: intro
-    section_type: intro
+    title: intro
+    type: intro
     section_body: \songly{chordsintro}
     rows:
     - C7 | C7 | C7 | C7
 - id: couplet1
   item: !Chords
-    section_title: couplet
-    section_type: couplet
+    title: couplet
+    type: couplet
     section_body: \songly{chordscouplet}
     rows:
     - Am7 | G | F | Bf | x2
 - id: pont1
   item: !Chords
-    section_title: pont 1
-    section_type: pont
+    title: pont 1
+    type: pont
     section_body: null
     rows:
     - G | C | F | Am
 - id: interlude1
   item: !Chords
-    section_title: interlude
-    section_type: intro
+    title: interlude
+    type: intro
     section_body: \songly{chordsintro}
     rows:
     - 'C7 | C7 '
 - id: couplet2
   item: !Ref
-    section_title: couplet 2
+    title: couplet 2
     section_body: null
-    section_type: couplet
+    type: couplet
     link: couplet1
 - id: pont2
   item: !Ref
-    section_title: pont 2
+    title: pont 2
     section_body: null
-    section_type: pont
+    type: pont
     link: pont1
 - id: refrain1
   item: !Chords
-    section_title: refrain
-    section_type: refrain
+    title: refrain
+    type: refrain
     section_body: \newline\songly{chordsrefrain}
     rows:
     - F G| F G| F G| G F7
@@ -62,26 +62,26 @@ structure:
   item: NewColumn
 - id: couplet3
   item: !Ref
-    section_title: couplet 3
+    title: couplet 3
     section_body: null
-    section_type: couplet
+    type: couplet
     link: couplet1
 - id: pont3
   item: !Ref
-    section_title: pont 3
+    title: pont 3
     section_body: null
-    section_type: pont
+    type: pont
     link: pont1
 - id: refrain3
   item: !Ref
-    section_title: refrain
+    title: refrain
     section_body: null
-    section_type: refrain
+    type: refrain
     link: refrain1
 - id: pont
   item: !Chords
-    section_title: 1 mesure
-    section_type: pont
+    title: 1 mesure
+    type: pont
     section_body: null
     rows:
     - A
@@ -89,8 +89,8 @@ structure:
   item: !HRule 80
 - id: solo
   item: !Chords
-    section_title: solo
-    section_type: solo
+    title: solo
+    type: solo
     section_body: null
     rows:
     - A | Dm7 | Bm7 | Am7 G|

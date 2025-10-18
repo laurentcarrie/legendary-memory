@@ -7,24 +7,24 @@ date: 2025-10-14
 structure:
 - id: intro
   item: !Chords
-    section_title: intro
-    section_type: intro
+    title: intro
+    type: intro
     section_body: null
     rows:
     - Cs | A | Fsm | Fsm
     - Cs | A | Fsm | Fsm
 - id: refrain1
   item: !Chords
-    section_title: refrain 1
-    section_type: refrain
+    title: refrain 1
+    type: refrain
     section_body: '{\color{red}stop \sharp~15}'
     rows:
     - Cs | A | Fsm | Fsm
     - Cs | A | Fsm | Fsm
 - id: couplet1
   item: !Chords
-    section_title: couplet 1
-    section_type: couplet
+    title: couplet 1
+    type: couplet
     section_body: null
     rows:
     - Cs | A | Fsm | Fsm
@@ -33,44 +33,44 @@ structure:
     - Cs | A | Fsm | Fsm
 - id: refrain2
   item: !Ref
-    section_title: refrain 2
+    title: refrain 2
     section_body: '{\color{red}stop \sharp~39}'
-    section_type: refrain
+    type: refrain
     link: refrain1
 - id: nc
   item: NewColumn
 - id: pont1
   item: !Chords
-    section_title: pont 1
-    section_type: pont
+    title: pont 1
+    type: pont
     section_body: null
     rows:
     - Cs | A | Fsm | Fsm
 - id: couplet2
   item: !Ref
-    section_title: couplet 2
+    title: couplet 2
     section_body: null
-    section_type: couplet
+    type: couplet
     link: couplet1
 - id: refrain3
   item: !Ref
-    section_title: refrain 3
+    title: refrain 3
     section_body: '{\color{green}pas de stop !}'
-    section_type: refrain
+    type: refrain
     link: refrain1
 - id: pont2
   item: !Chords
-    section_title: pont 2
-    section_type: pont
+    title: pont 2
+    type: pont
     section_body: '{\color{red} stop \sharp~75}'
     rows:
     - Cs | A | Fsm | Fsm
     - Cs | A | Fsm | Fsm
 - id: refrain4
   item: !Ref
-    section_title: refrain 4
+    title: refrain 4
     section_body: '{\color{red} stop \sharp~83}'
-    section_type: refrain
+    type: refrain
     link: refrain1
 tempo: 118
 time_signature: null

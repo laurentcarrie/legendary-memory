@@ -7,74 +7,74 @@ date: 2025-10-14
 structure:
 - id: riff1
   item: !Chords
-    section_title: riff A
-    section_type: riff
+    title: riff A
+    type: riff
     section_body: null
     rows:
     - Em | Em |Em |Em |
 - id: riff2
   item: !Chords
-    section_title: riff B
-    section_type: riff
+    title: riff B
+    type: riff
     section_body: null
     rows:
     - Em | A |Em |A |
 - id: riff3
   item: !Chords
-    section_title: riff C
-    section_type: riff
+    title: riff C
+    type: riff
     section_body: null
     rows:
     - Em | Em |Em |Em |
 - id: couplet1
   item: !Chords
-    section_title: couplet 1
-    section_type: couplet
+    title: couplet 1
+    type: couplet
     section_body: null
     rows:
     - Em | G A |Em |G A |x2
 - id: refrain1
   item: !Chords
-    section_title: refrain 1
-    section_type: refrain
+    title: refrain 1
+    type: refrain
     section_body: null
     rows:
     - Em | G A |Em |G A |x2
 - id: riff-c2
   item: !Ref
-    section_title: riff C
+    title: riff C
     section_body: null
-    section_type: riff
+    type: riff
     link: riff3
 - id: couplet2
   item: !Ref
-    section_title: couplet 2
+    title: couplet 2
     section_body: null
-    section_type: couplet
+    type: couplet
     link: couplet1
 - id: refrain2
   item: !Ref
-    section_title: refrain 2
+    title: refrain 2
     section_body: null
-    section_type: refrain
+    type: refrain
     link: refrain1
 - id: riff-a2
   item: !Ref
-    section_title: riff A
+    title: riff A
     section_body: null
-    section_type: riff
+    type: riff
     link: riff2
 - id: riff-b2
   item: !Ref
-    section_title: riff B
+    title: riff B
     section_body: null
-    section_type: riff
+    type: riff
     link: riff2
 - id: refrain3
   item: !Ref
-    section_title: refrain 3
+    title: refrain 3
     section_body: null
-    section_type: refrain
+    type: refrain
     link: refrain1
 tempo: 86
 time_signature: null

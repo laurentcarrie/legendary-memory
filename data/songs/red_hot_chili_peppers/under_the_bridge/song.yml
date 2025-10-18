@@ -7,29 +7,29 @@ date: 2025-10-14
 structure:
 - id: intro
   item: !Chords
-    section_title: intro
-    section_type: intro
+    title: intro
+    type: intro
     section_body: null
     rows:
     - D
 - id: couplet1
   item: !Chords
-    section_title: couplet 1
-    section_type: couplet
+    title: couplet 1
+    type: couplet
     section_body: null
     rows:
     - E|B|Csm|A
     - E|B|Csm|A
 - id: couplet2
   item: !Ref
-    section_title: couplet 2
+    title: couplet 2
     section_body: null
-    section_type: null
+    type: null
     link: couplet1
 - id: refrain1
   item: !Chords
-    section_title: refrain
-    section_type: refrain
+    title: refrain
+    type: refrain
     section_body: null
     rows:
     - Fsm|A|E|B
@@ -38,42 +38,42 @@ structure:
     - Csm|A|E|B
 - id: couplet3
   item: !Ref
-    section_title: couplet 3
+    title: couplet 3
     section_body: null
-    section_type: null
+    type: null
     link: couplet1
 - id: refrain2
   item: !Ref
-    section_title: refrain 2
+    title: refrain 2
     section_body: null
-    section_type: null
+    type: null
     link: refrain1
 - id: couplet3
   item: !Ref
-    section_title: couplet 3
+    title: couplet 3
     section_body: null
-    section_type: null
+    type: null
     link: couplet1
 - id: pont
   item: !Chords
-    section_title: pont
-    section_type: pont
+    title: pont
+    type: pont
     section_body: null
     rows:
     - A|Am|G|F|x3
     - F7M|E7|G|G
 - id: final1
   item: !Chords
-    section_title: final 1
-    section_type: coupletb
+    title: final 1
+    type: coupletb
     section_body: null
     rows:
     - A|Am|G|F|x4
 - id: final2
   item: !Ref
-    section_title: final 2
+    title: final 2
     section_body: null
-    section_type: null
+    type: null
     link: final1
 tempo: 84
 time_signature: null

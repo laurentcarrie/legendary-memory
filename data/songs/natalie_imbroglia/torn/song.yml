@@ -9,36 +9,36 @@ date: 2025-10-14
 structure:
 - id: intro
   item: !Chords
-    section_title: intro
-    section_type: intro
+    title: intro
+    type: intro
     section_body: null
     rows:
     - F|F|F|F
 - id: couplet1
   item: !Chords
-    section_title: couplet 1
-    section_type: couplet
+    title: couplet 1
+    type: couplet
     section_body: null
     rows:
     - F|F|Am|Am
     - Bf7|Bf7
 - id: couplet2
   item: !Ref
-    section_title: couplet 2
+    title: couplet 2
     section_body: null
-    section_type: couplet
+    type: couplet
     link: couplet1
 - id: prerefrain1
   item: !Chords
-    section_title: pré refrain 1
-    section_type: prerefrain
+    title: pré refrain 1
+    type: prerefrain
     section_body: null
     rows:
     - Dm|C|Am|C
 - id: refrain1
   item: !Chords
-    section_title: refrain 1
-    section_type: refrain
+    title: refrain 1
+    type: refrain
     section_body: null
     rows:
     - F|C|Dm|Bf
@@ -46,56 +46,56 @@ structure:
     - F|C|Dm|Bf
 - id: couplet3
   item: !Ref
-    section_title: couplet 3
+    title: couplet 3
     section_body: null
-    section_type: couplet
+    type: couplet
     link: couplet1
 - id: prerefrain2
   item: !Ref
-    section_title: pré refrain 2
+    title: pré refrain 2
     section_body: null
-    section_type: prerefrain
+    type: prerefrain
     link: prerefrain1
 - id: refrain2
   item: !Ref
-    section_title: refrain 2
+    title: refrain 2
     section_body: null
-    section_type: refrain
+    type: refrain
     link: refrain1
 - id: nc
   item: NewColumn
 - id: pont
   item: !Chords
-    section_title: pont
-    section_type: pont
+    title: pont
+    type: pont
     section_body: null
     rows:
     - Dm|Bf
     - Dm|Dm|F|C
 - id: prerefrain3
   item: !Ref
-    section_title: pré refrain 3
+    title: pré refrain 3
     section_body: '{\color{red} g + voix}'
-    section_type: prerefrain
+    type: prerefrain
     link: prerefrain1
 - id: refrain3
   item: !Ref
-    section_title: refrain 3
+    title: refrain 3
     section_body: null
-    section_type: refrain
+    type: refrain
     link: refrain1
 - id: pont2
   item: !Chords
-    section_title: pont 2
-    section_type: pont
+    title: pont 2
+    type: pont
     section_body: null
     rows:
     - Dm|C|C
 - id: refrain4
   item: !Ref
-    section_title: refrain 4
+    title: refrain 4
     section_body: null
-    section_type: refrain
+    type: refrain
     link: refrain1
 tempo: 96
 time_signature: null
