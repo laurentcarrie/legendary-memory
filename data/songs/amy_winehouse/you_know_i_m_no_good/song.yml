@@ -1,0 +1,92 @@
+title: you know I'm no good
+author: Amy Winehouse
+texfiles: []
+lilypondfiles:
+- intro.ly
+- couplet.ly
+wavfiles: []
+date: 2025-10-14
+structure:
+- id: intro_batteriex
+  item: !Chords
+    section_title: intro
+    section_type: intro
+    section_body: null
+    rows:
+    - 'HRest | HRest '
+- id: intro
+  item: !Chords
+    section_title: intro
+    section_type: intro
+    section_body: null
+    rows:
+    - Dm | Dm | Dm | Dm
+- id: couplet_1
+  item: !Chords
+    section_title: couplet 1
+    section_type: couplet
+    section_body: null
+    rows:
+    - Dm | Gm | A | Dm
+    - 'Dm | Gm | A | Dm '
+    - 'Gm | Gm | E | E '
+    - F | F | E7 | A
+- id: refrain_1
+  item: !Chords
+    section_title: refrain 1
+    section_type: refrain
+    section_body: null
+    rows:
+    - Dm | Am | E | Am
+    - Dm | Am | E | Am
+- id: nc
+  item: NewColumn
+- id: hr
+  item: !HRule 67
+- id: pont
+  item: !Chords
+    section_title: pont
+    section_type: pont
+    section_body: null
+    rows:
+    - HRest | HRest
+- id: couplet_2
+  item: !Ref
+    section_title: couplet 2
+    section_body: null
+    section_type: null
+    link: couplet_1
+- id: refrain_2
+  item: !Ref
+    section_title: refrain 2
+    section_body: null
+    section_type: null
+    link: refrain_1
+- id: hr
+  item: !HRule 70
+- id: pont_guitare
+  item: !Ref
+    section_title: pont guitare
+    section_body: null
+    section_type: null
+    link: intro
+- id: couplet_3
+  item: !Ref
+    section_title: couplet 3
+    section_body: null
+    section_type: null
+    link: couplet_1
+- id: refrain_3
+  item: !Ref
+    section_title: refrain 3
+    section_body: null
+    section_type: null
+    link: refrain_1
+- id: refrain_4
+  item: !Ref
+    section_title: refrain 4
+    section_body: null
+    section_type: null
+    link: refrain_1
+tempo: 103
+time_signature: null

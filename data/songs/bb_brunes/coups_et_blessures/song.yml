@@ -1,0 +1,34 @@
+tempo: 120
+title: Coups Et Blessures
+author: BB Brunes
+texfiles:
+lilypondfiles:
+structure:
+  - id: intro
+    item:
+      !Chords
+        section_title: intro
+        section_type: intro
+        rows:
+          - D | D | Bm | Bm | x2
+  - id: couplet1
+    item:
+      !Chords
+        section_title: couplet 1
+        section_type: couplet
+        rows:
+          - D | D | Bm | Bm | x2
+          - G|  A | G | 
+  - id: refrain1
+    item:
+      !Chords
+        section_title: refrain 1
+        section_type: refrain
+        rows:
+          - G | A | D | D | 
+          - G | A | Bm | Bm | 
+wavfiles:
+digest: ac7870efc879f4987e067dd8ce46d6ad
+date: 2025-10-14
+hash: 0
+

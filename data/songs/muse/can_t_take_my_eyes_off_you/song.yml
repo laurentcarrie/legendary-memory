@@ -1,0 +1,56 @@
+title: Can't Take My Eyes Off You
+author: Muse
+texfiles: []
+lilypondfiles: []
+wavfiles: []
+date: 2025-10-14
+structure:
+- id: intro
+  item: !Chords
+    section_title: intro
+    section_type: intro
+    section_body: null
+    rows:
+    - 'F| F7M '
+- id: couplet1
+  item: !Chords
+    section_title: couplet 1
+    section_type: couplet
+    section_body: null
+    rows:
+    - F| F7M |F7|Bf
+    - Bfm| F | Bf Bfm|F
+- id: couplet2
+  item: !Ref
+    section_title: couplet 2
+    section_body: null
+    section_type: couplet
+    link: couplet1
+- id: pont
+  item: !Chords
+    section_title: pont
+    section_type: pont
+    section_body: null
+    rows:
+    - 'HRest | HRest | '
+    - Gm | C | F | F
+    - Gm | C | F | D7
+    - 'HRest | HRest | '
+- id: refrain
+  item: !Chords
+    section_title: refrain
+    section_type: refrain
+    section_body: null
+    rows:
+    - Gm | C | Am | Dm
+    - Gm | C | F | D7
+    - Gm | C | Am | Dm
+    - Gm | Gm | C | C
+- id: couplet3
+  item: !Ref
+    section_title: couplet 3
+    section_body: null
+    section_type: couplet
+    link: couplet1
+tempo: 127
+time_signature: null

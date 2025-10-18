@@ -1,0 +1,76 @@
+title: Modern Love
+author: David Bowie
+texfiles: []
+lilypondfiles:
+- chordsrefrain.ly
+wavfiles: []
+date: 2025-10-14
+structure:
+- id: introdg
+  item: !Chords
+    section_title: intro g-d
+    section_type: intro
+    section_body: null
+    rows:
+    - Em | Em | Em | Em
+- id: intro
+  item: !Chords
+    section_title: intro
+    section_type: pont
+    section_body: null
+    rows:
+    - Em | C | D | Em
+- id: couplet1
+  item: !Chords
+    section_title: couplet 1
+    section_type: couplet
+    section_body: null
+    rows:
+    - C | C | G | Am
+    - E7 | F | C | G
+    - 'Em '
+- id: couplet2
+  item: !Ref
+    section_title: couplet 2
+    section_body: null
+    section_type: couplet
+    link: couplet1
+- id: refrain1
+  item: !Chords
+    section_title: refrain 1
+    section_type: refrain
+    section_body: null
+    rows:
+    - C|D|Em|F|x3
+- id: pont
+  item: !Ref
+    section_title: pont
+    section_body: null
+    section_type: null
+    link: intro
+- id: solo
+  item: !Ref
+    section_title: solo
+    section_body: null
+    section_type: solo
+    link: couplet1
+- id: couplet3
+  item: !Ref
+    section_title: couplet 3
+    section_body: null
+    section_type: null
+    link: couplet1
+- id: refrain2
+  item: !Ref
+    section_title: refrain 2
+    section_body: null
+    section_type: null
+    link: refrain1
+- id: refrain3
+  item: !Ref
+    section_title: refrain 3
+    section_body: null
+    section_type: null
+    link: refrain1
+tempo: 91
+time_signature: null

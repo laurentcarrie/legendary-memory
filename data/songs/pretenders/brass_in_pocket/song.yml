@@ -1,0 +1,81 @@
+title: Brass In Pocket
+author: Pretenders
+texfiles: []
+lilypondfiles:
+- intro.ly
+- couplet.ly
+- prerefrain.ly
+wavfiles:
+- intro.wav
+- couplet.wav
+- prerefrain.wav
+date: 2025-10-14
+structure:
+- id: intro
+  item: !Chords
+    section_title: intro
+    section_type: intro
+    section_body: null
+    rows:
+    - A
+- id: couplet1
+  item: !Chords
+    section_title: couplet 1
+    section_type: couplet
+    section_body: null
+    rows:
+    - A E | D A | A E | D A
+    - 'A E | D A | A | A '
+- id: couplet2
+  item: !Ref
+    section_title: couplet 2
+    section_body: null
+    section_type: couplet
+    link: couplet1
+- id: prerefrain1
+  item: !Chords
+    section_title: pré refrain 1
+    section_type: prerefrain
+    section_body: null
+    rows:
+    - A E | A E | A E | A E | x2
+- id: refrain1
+  item: !Chords
+    section_title: refrain 1
+    section_type: refrain
+    section_body: null
+    rows:
+    - A|A|Bm|Bm
+    - D|D|E7|E7
+- id: couplet3
+  item: !Ref
+    section_title: couplet 3
+    section_body: null
+    section_type: couplet
+    link: couplet1
+- id: prerefrain2
+  item: !Ref
+    section_title: pré refrain 2
+    section_body: null
+    section_type: prerefrain
+    link: prerefrain1
+- id: refrain2
+  item: !Ref
+    section_title: refrain 2
+    section_body: null
+    section_type: refrain
+    link: refrain1
+- id: refrain3
+  item: !Ref
+    section_title: refrain 3
+    section_body: null
+    section_type: refrain
+    link: refrain1
+- id: outtro
+  item: !Ref
+    section_title: outtro
+    section_body: \songbookcomment{outro mesure 8}
+    section_type: null
+    link: couplet1
+tempo: 107
+time_signature: null

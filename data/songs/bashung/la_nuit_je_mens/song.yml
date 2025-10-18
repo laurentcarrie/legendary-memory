@@ -1,0 +1,85 @@
+title: La Nuit Je Mens
+author: Bashung
+texfiles:
+- body.tex
+lilypondfiles: []
+wavfiles: []
+date: 2025-10-14
+structure:
+- id: couplet1
+  item: !Chords
+    section_title: couplet 1
+    section_type: couplet
+    section_body: null
+    rows:
+    - G Em | Bm | G A | Bm |
+    - A|Asus4|G|G|
+    - A|Asus4|G|Bm|
+    - A|Em|Em
+- id: refrain1
+  item: !Chords
+    section_title: refrain 1
+    section_type: refrain
+    section_body: null
+    rows:
+    - 'Bm | G | Bm | G '
+    - Em| A|Em|Em
+- id: fill1
+  item: !Chords
+    section_title: fill 1
+    section_type: refrainb
+    section_body: null
+    rows:
+    - G Em|Bm
+- id: nc
+  item: NewColumn
+- id: couplet2
+  item: !Chords
+    section_title: couplet 2
+    section_type: coupletb
+    section_body: null
+    rows:
+    - G Em|Bm|G Em|Bm
+    - A|A|Fsm|Bm
+    - A|Bm|Em|G
+    - A|Em
+- id: refrain2
+  item: !Ref
+    section_title: refrain 2
+    section_body: null
+    section_type: null
+    link: refrain1
+- id: fill2
+  item: !Ref
+    section_title: fill 2
+    section_body: null
+    section_type: null
+    link: fill1
+- id: couplet3
+  item: !Chords
+    section_title: couplet 3
+    section_type: coupletc
+    section_body: null
+    rows:
+    - G Em | Bm | G A | Bm |
+    - A|Asus4|G|G|
+- id: refrain3
+  item: !Ref
+    section_title: refrain 3
+    section_body: null
+    section_type: null
+    link: refrain1
+- id: refrain4
+  item: !Ref
+    section_title: refrain 4
+    section_body: \songbookcomment{instrumental}
+    section_type: null
+    link: refrain1
+- id: refrain5
+  item: !Ref
+    section_title: refrain 5
+    section_body: \songbookcomment{fade out}
+    section_type: null
+    link: refrain1
+tempo: 147
+time_signature: null

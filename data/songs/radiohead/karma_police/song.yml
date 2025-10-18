@@ -1,0 +1,57 @@
+title: Karma Police
+author: Radiohead
+texfiles: []
+lilypondfiles: []
+wavfiles: []
+date: 2025-10-14
+structure:
+- id: intro
+  item: !Chords
+    section_title: intro
+    section_type: intro
+    section_body: null
+    rows:
+    - 'Am D | Em G | Am F | Em G '
+    - 'Am D | G D | C G | Am '
+    - Bm D
+- id: couplet1
+  item: !Ref
+    section_title: couplet 1
+    section_body: null
+    section_type: couplet
+    link: intro
+- id: couplet2
+  item: !Ref
+    section_title: couplet 2
+    section_body: null
+    section_type: couplet
+    link: intro
+- id: prerefrain1
+  item: !Chords
+    section_title: pré refrain 1
+    section_type: prerefrain
+    section_body: null
+    rows:
+    - C D | G Fs | C D | G Fs
+    - C D | G Fs | C | Bm D
+- id: couplet3
+  item: !Ref
+    section_title: couplet 3
+    section_body: null
+    section_type: couplet
+    link: intro
+- id: prerefrain2
+  item: !Ref
+    section_title: pré refrain 2
+    section_body: null
+    section_type: prerefrain
+    link: prerefrain1
+- id: refrain1
+  item: !Chords
+    section_title: refrain 1
+    section_type: refrain
+    section_body: null
+    rows:
+    - Bm D | G D | G D |E | x4
+tempo: 113
+time_signature: null

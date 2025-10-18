@@ -1,0 +1,72 @@
+title: Quand T'Es Dans Le Désert
+author: Capdevielle
+texfiles: []
+lilypondfiles: []
+wavfiles: []
+date: 2025-10-14
+structure:
+- id: intro
+  item: !Chords
+    section_title: intro
+    section_type: intro
+    section_body: null
+    rows:
+    - 'D|E|F|Fs '
+    - G|G|Am|D
+    - Am|D|Am|D
+- id: couplet1
+  item: !Chords
+    section_title: couplet 1
+    section_type: couplet
+    section_body: null
+    rows:
+    - Am|Am|Em|Em
+    - G|G|Am|Am
+    - Am|Am|Em|Em
+    - G|G|Am|Am
+- id: refrain1
+  item: !Chords
+    section_title: refrain 1
+    section_type: refrain
+    section_body: null
+    rows:
+    - C|G|Am|Am
+    - C|G|D|D
+- id: couplet2
+  item: !Ref
+    section_title: couplet 2
+    section_body: null
+    section_type: null
+    link: couplet1
+- id: refrain2
+  item: !Ref
+    section_title: refrain 2
+    section_body: null
+    section_type: null
+    link: refrain1
+- id: couplet3
+  item: !Ref
+    section_title: couplet 3
+    section_body: null
+    section_type: null
+    link: couplet1
+- id: refrain3
+  item: !Ref
+    section_title: refrain 3
+    section_body: null
+    section_type: null
+    link: refrain1
+- id: couplet4
+  item: !Ref
+    section_title: couplet 4
+    section_body: null
+    section_type: null
+    link: couplet1
+- id: refrain4
+  item: !Ref
+    section_title: refrain 4
+    section_body: null
+    section_type: null
+    link: refrain1
+tempo: 155
+time_signature: null
