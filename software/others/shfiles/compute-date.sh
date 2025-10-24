@@ -17,27 +17,27 @@ work() {
 
 	here=$(dirname $(realpath $1))
 	echo $here
-	jsonfile=$here/song.json
+	ymlfile=$here/song.yml
 	tmpfile=$(mktemp /tmp/pch-legendary-memory.XXXXXX)
 
 
-	for f in $(jq -r ".lilypondfiles[]" $jsonfile) ; do
+	for f in $(yq ".lilypondfiles[]" $ymlfile) ; do
 		#  echo "--------> $1 ; $f"
 		md5sum $here/$f >> $tmpfile
 	done
 
-	for f in $(jq -r ".texfiles[]" $jsonfile) ; do
+	for f in $(yq ".texfiles[]" $ymfile) ; do
 		#  echo "--------> $1 ; $f"
 		md5sum $here/$f >> $tmpfile
 	done
 
-	cat $jsonfile | jq -r ".structure[] | select (.item.Chords != null ) | .id "  | while read -r id; do
-    lyricsfile=$(dirname $jsonfile)/lyrics/$id.tex
+	yq ".structure[] | select ( tag == "!Chords" ) | .id " $ymlfile | while read -r id; do
+    lyricsfile=$(dirname $ymlfile)/lyrics/$id.tex
     md5sum $lyricsfile >> $tmpfile
   done
 
-  cat $jsonfile | jq -r ".structure[] | select (.item.Ref != null ) | .id "  | while read -r id; do
-    lyricsfile=$(dirname $jsonfile)/lyrics/$id.tex
+	yq  ".structure[] | select ( tag == "!Ref" ) | .id " $ymlfile | while read -r id; do
+    lyricsfile=$(dirname $ymlfile)/lyrics/$id.tex
     md5sum $lyricsfile >> $tmpfile
   done
 
@@ -45,7 +45,7 @@ work() {
 
 
 	new_digest=$(md5sum $tmpfile | sed "s/ .*//")
-	old_digest=$(jq -r ".digest " $jsonfile)
+	old_digest=$(yq ".digest " $ymlfile)
 
 	today=$(date +"%Y-%m-%d")
 
@@ -53,11 +53,11 @@ work() {
 		echo "changed $here"
 		#echo "new digest : $new_digest"
 		#echo "old digest : $old_digest"
-		author=$(cat $jsonfile | jq -r ".author")
-		title=$(cat $jsonfile | jq -r ".title")
+		author=$(yq ".author" $ymlfile)
+		title=$(yq ".title" $ymlfile)
 		printf "date updated : ${Red}$author${Color_Off} $Blue$title$Color_Off in $Yellow$here$Color_Off\n"
-		j=$(jq . $jsonfile | jq ".digest=\"$new_digest\"" | jq ".date=\"$today\"")
-		echo $j | jq "." > $jsonfile
+		yq -i '.digest="$new_digest"' $ymlfile
+		yq -i '.date="$today"' $ymlfile
 		echo 1 > $tmpresultfile
 	fi
 

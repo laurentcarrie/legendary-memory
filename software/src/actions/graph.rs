@@ -49,7 +49,7 @@ impl std::fmt::Debug for EArtefact {
             EArtefact::BootstrapBook(book) => {
                 write!(
                     f,
-                    "Boostrap book {} (lyrics only: {})",
+                    "Bootstrap book {} (lyrics only: {})",
                     book.title, book.lyrics_only
                 )
             }

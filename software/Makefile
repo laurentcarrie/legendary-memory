@@ -5,8 +5,8 @@ root := $(dir $(realpath ${here}))
 builddir := ${root}build
 dataimagesdir := ${root}data/images
 datasongsdir := ${root}data/songs
-# databooksdir := ${root}data/books
-databooksdir := ${root}data/empty
+databooksdir := ${root}data/books
+# databooksdir := ${root}data/empty
 
 x:
 	echo "here is ${here}"

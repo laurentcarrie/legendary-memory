@@ -318,7 +318,7 @@ pub fn decode_book(
     };
     let mut book_builddir = buildroot.to_path_buf();
     book_builddir.push("books");
-    book_builddir.push(&uconf.title);
+    book_builddir.push(&uconf.title.replace(" ", "_"));
     let (songs, errors): (
         Vec<Result<BookSong, Box<dyn std::error::Error>>>,
         Vec<Result<BookSong, Box<dyn std::error::Error>>>,

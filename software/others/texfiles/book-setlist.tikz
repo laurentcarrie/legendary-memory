@@ -43,7 +43,7 @@
 %        \node[anchor=west] (b) at (Atime) {
 %             cumul : {{{this.cumul_duration}}} } ;
         \node[anchor=center] (b) at (Atitle) {
-            \hyperref[sec:song{{add-helper @index ../offset}}]{%
+            \hyperref[book:song:{{add-helper @index ../offset}}]{%
                         \bfseries\slshape%
                         \fontsize{30pt}{40pt}\selectfont%
                         \color{blue}%
@@ -53,8 +53,7 @@
         \path (Atitle) ++(0,-\yr/2) coordinate(Aauthor) ;
 
         \node[anchor=center] (b) at (Aauthor) {
-            \hyperref[sec:song{{add-helper @index ../offset}}]
-            {%
+            \hyperref[book:song:{{add-helper @index ../offset}}]{%
                 %\Fontskrivan\bfseries\slshape%
                 \cursive\bfseries%
                 \fontsize{15pt}{10pt}\selectfont%

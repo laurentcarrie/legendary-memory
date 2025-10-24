@@ -17,7 +17,7 @@
 \usepackage{setspace}
 
 \usepackage{aurical}
-\usepackage[T1]{fontenc}
+% \usepackage[T1]{fontenc}
 %\usepackage{css-colors}
 \usepackage{latexcolors}
 %\usepackage[table,svgnames]{xcolor}
@@ -46,7 +46,9 @@
 	citecolor=black,
 	filecolor=black,
 	linkcolor=black,
-	urlcolor=black
+	urlcolor=black,
+	bookmarks=false,
+	hypertexnames=false
 }
 
 \usepackage{units}
@@ -80,6 +82,13 @@
 
 % pour les lignes pointillées dans les tableaux
 % \usepackage{arydshln}
+
+\newcommand{\fakesection}[1]{%
+  \par\refstepcounter{section}% Increase section counter
+  \sectionmark{#1}% Add section mark (header)
+  \addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}% Add section to ToC
+  % Add more content here, if needed.
+}
 
 \newcommand{\songbookcomment}[1]{{
 			\fontsize{8pt}{8pt}\selectfont

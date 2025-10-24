@@ -47,7 +47,7 @@
 {{/if}}
 
 \label{top}
-
+% \tableofcontents
 {{#each offsets}}
 {{#with this}}
 \vspace*{\fill}
@@ -58,8 +58,6 @@
 {{/each}}
 
 
-%\tableofcontents
-%\newpage
 
 \newcounter{xxxrowcount}
 \newcounter{xxxsectioncount}
@@ -77,7 +75,7 @@
 \setcounter{xxxcolumncount}{0}
 
 \import{ {{~this.path~}} }{data.tex}
-% \section{ \songauthor / \songtitle }
+\fakesection{ \songauthor / \songtitle }
 
 \iftoggle{lyricsonly}
 {
@@ -91,7 +89,7 @@
 \hyperref[top]{
 	\color{blue}(haut)
 }
-\label{sec:song{{@../index}}}
+\label{book:song:{{@../index}}}
 %\lfoot{ \songauthor / \songtitle }
 %\makesongtitle
 \import{ {{~path~}} }{body.tex}
