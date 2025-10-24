@@ -3,7 +3,6 @@ author: Dionysos
 texfiles: []
 lilypondfiles: []
 wavfiles: []
-date: 2025-10-14
 structure:
   - id: intro
     item: !Chords
@@ -94,4 +93,5 @@ structure:
       link: refrain1
 tempo: 116
 time_signature: null
-digest: blah
+digest: 99e0fabc029759830623d916ef975dc1
+date: "2025-10-24"

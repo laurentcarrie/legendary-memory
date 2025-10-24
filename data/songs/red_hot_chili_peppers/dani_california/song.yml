@@ -1,32 +1,33 @@
 title: Dani California
 author: Red Hot Chili Peppers
 texfiles:
-- lyrics.tex
+  - lyrics.tex
 lilypondfiles: []
 wavfiles: []
-date: 2025-10-14
+date: "2025-10-24"
 structure:
-- id: couplet1
-  item: !Chords
-    title: couplet 1
-    type: couplet
-    section_body: null
-    rows:
-    - Am G| Dm Am|Am G| Dm Am
-- id: add
-  item: !Chords
-    title: add
-    type: couplet
-    section_body: null
-    rows:
-    - Dm
-- id: refrain1
-  item: !Chords
-    title: refrain 1
-    type: refrain
-    section_body: null
-    rows:
-    - F C | Dm G | F G | Dm G | x2
-    - Dm
+  - id: couplet1
+    item: !Chords
+      title: couplet 1
+      type: couplet
+      section_body: null
+      rows:
+        - Am G| Dm Am|Am G| Dm Am
+  - id: add
+    item: !Chords
+      title: add
+      type: couplet
+      section_body: null
+      rows:
+        - Dm
+  - id: refrain1
+    item: !Chords
+      title: refrain 1
+      type: refrain
+      section_body: null
+      rows:
+        - F C | Dm G | F G | Dm G | x2
+        - Dm
 tempo: 80
 time_signature: null
+digest: 3b783f78562726a6291ec63e1147a080

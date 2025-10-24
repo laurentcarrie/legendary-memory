@@ -2,49 +2,50 @@ title: Gouge Away
 author: Pixies
 texfiles: []
 lilypondfiles:
-- basse.ly
+  - basse.ly
 wavfiles: []
-date: 2025-10-14
+date: "2025-10-24"
 structure:
-- id: couplet1
-  item: !Chords
-    title: couplet 1
-    type: couplet
-    section_body: null
-    rows:
-    - Fsm | A |D |Fsm |D|x4
-- id: refrain1
-  item: !Chords
-    title: refrain 1
-    type: refrain
-    section_body: null
-    rows:
-    - Fsm | A |D |Fsm |D|
-- id: couplet2
-  item: !Ref
-    title: couplet 2
-    section_body: null
-    type: couplet
-    link: couplet1
-- id: refrain2
-  item: !Ref
-    title: refrain 2
-    section_body: null
-    type: refrain
-    link: refrain1
-- id: couplet3
-  item: !Chords
-    title: couplet 3
-    type: couplet
-    section_body: null
-    rows:
-    - Fsm | A |D |Fsm |D|x3
-- id: final
-  item: !Chords
-    title: final
-    type: refrain
-    section_body: null
-    rows:
-    - Fsm | A |D |Fsm |D|x3
+  - id: couplet1
+    item: !Chords
+      title: couplet 1
+      type: couplet
+      section_body: null
+      rows:
+        - Fsm | A |D |Fsm |D|x4
+  - id: refrain1
+    item: !Chords
+      title: refrain 1
+      type: refrain
+      section_body: null
+      rows:
+        - Fsm | A |D |Fsm |D|
+  - id: couplet2
+    item: !Ref
+      title: couplet 2
+      section_body: null
+      type: couplet
+      link: couplet1
+  - id: refrain2
+    item: !Ref
+      title: refrain 2
+      section_body: null
+      type: refrain
+      link: refrain1
+  - id: couplet3
+    item: !Chords
+      title: couplet 3
+      type: couplet
+      section_body: null
+      rows:
+        - Fsm | A |D |Fsm |D|x3
+  - id: final
+    item: !Chords
+      title: final
+      type: refrain
+      section_body: null
+      rows:
+        - Fsm | A |D |Fsm |D|x3
 tempo: 126
 time_signature: null
+digest: 0e7b1f2f893582f1390c7aeb7177d102

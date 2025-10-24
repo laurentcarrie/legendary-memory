@@ -5,30 +5,26 @@ texfiles:
 lilypondfiles:
 structure:
   - id: intro
-    item:
-      !Chords
-        title: intro
-        type: intro
-        rows:
-          - D | D | Bm | Bm | x2
+    item: !Chords
+      title: intro
+      type: intro
+      rows:
+        - D | D | Bm | Bm | x2
   - id: couplet1
-    item:
-      !Chords
-        title: couplet 1
-        type: couplet
-        rows:
-          - D | D | Bm | Bm | x2
-          - G|  A | G | 
+    item: !Chords
+      title: couplet 1
+      type: couplet
+      rows:
+        - D | D | Bm | Bm | x2
+        - G|  A | G |
   - id: refrain1
-    item:
-      !Chords
-        title: refrain 1
-        type: refrain
-        rows:
-          - G | A | D | D | 
-          - G | A | Bm | Bm | 
+    item: !Chords
+      title: refrain 1
+      type: refrain
+      rows:
+        - G | A | D | D |
+        - G | A | Bm | Bm |
 wavfiles:
-digest: ac7870efc879f4987e067dd8ce46d6ad
-date: 2025-10-14
+digest: 824f77a4b66745e94782007fdee45836
+date: "2025-10-24"
 hash: 0
-
