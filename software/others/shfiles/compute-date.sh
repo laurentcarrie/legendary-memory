@@ -31,12 +31,12 @@ work() {
 		md5sum $here/$f >> $tmpfile
 	done
 
-	yq ".structure[] | select ( tag == "!Chords" ) | .id " $ymlfile | while read -r id; do
+	yq ".structure[].item | select ( tag == "!Chords" ) | .id " $ymlfile | while read -r id; do
     lyricsfile=$(dirname $ymlfile)/lyrics/$id.tex
     md5sum $lyricsfile >> $tmpfile
   done
 
-	yq  ".structure[] | select ( tag == "!Ref" ) | .id " $ymlfile | while read -r id; do
+	yq  ".structure[].item | select ( tag == "!Ref" ) | .id " $ymlfile | while read -r id; do
     lyricsfile=$(dirname $ymlfile)/lyrics/$id.tex
     md5sum $lyricsfile >> $tmpfile
   done
