@@ -1,4 +1,6 @@
-author: Axel Bauer
+info:
+  title: Eteins La Lumière
+  author: Axel Bauer
 lilypondfiles:
   - pont2.ly
 meta:
@@ -129,6 +131,5 @@ structure:
 tempo: 146
 texfiles: []
 time_signature: null
-title: Eteins La Lumière
 wavfiles:
   - pont2.wav

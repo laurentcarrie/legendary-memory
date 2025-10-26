@@ -1,4 +1,6 @@
-author: Red Hot Chili Peppers
+info:
+  title: Can't Stop
+  author: Red Hot Chili Peppers
 lilypondfiles:
   - solo.ly
   - intro.ly
@@ -88,7 +90,6 @@ structure:
 tempo: 91
 texfiles: []
 time_signature: null
-title: Can't Stop
 wavfiles:
   - intro.wav
   - riff_a.wav

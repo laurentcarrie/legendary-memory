@@ -1,4 +1,6 @@
-author: The Strokes
+info:
+  title: The End Has No End
+  author: The Strokes
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -98,5 +100,4 @@ structure:
 tempo: 80
 texfiles: []
 time_signature: null
-title: The End Has No End
 wavfiles: []

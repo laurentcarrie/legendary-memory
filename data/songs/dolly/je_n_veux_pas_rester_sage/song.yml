@@ -1,4 +1,6 @@
-author: Dolly
+info:
+  title: Je N'Veux Pas Rester Sage
+  author: Dolly
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -89,5 +91,4 @@ structure:
 tempo: 98
 texfiles: []
 time_signature: null
-title: Je N'Veux Pas Rester Sage
 wavfiles: []

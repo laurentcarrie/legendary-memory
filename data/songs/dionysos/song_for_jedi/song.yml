@@ -1,4 +1,6 @@
-author: Dionysos
+info:
+  title: Song For Jedi
+  author: Dionysos
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -94,5 +96,4 @@ structure:
 tempo: 116
 texfiles: []
 time_signature: null
-title: Song For Jedi
 wavfiles: []

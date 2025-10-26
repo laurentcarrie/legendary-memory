@@ -1,4 +1,6 @@
-author: Depeche Mode
+info:
+  title: Enjoy The Silence
+  author: Depeche Mode
 lilypondfiles:
   - riff.ly
   - chordscouplet.ly
@@ -104,5 +106,4 @@ tempo: 113
 texfiles:
   - body.tex
 time_signature: null
-title: Enjoy The Silence
 wavfiles: []

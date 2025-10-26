@@ -1,4 +1,6 @@
-author: Steely Dan
+info:
+  title: Kid Charlemagne
+  author: Steely Dan
 lilypondfiles:
   - solo.ly
   - chordscouplet.ly
@@ -99,6 +101,5 @@ structure:
 tempo: 97
 texfiles: []
 time_signature: null
-title: Kid Charlemagne
 wavfiles:
   - solo.wav

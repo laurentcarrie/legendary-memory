@@ -1,4 +1,6 @@
-author: Mademoiselle K
+info:
+  title: Ca me vexe
+  author: Mademoiselle K
 lilypondfiles:
   - intro.ly
   - refrain1.ly
@@ -100,5 +102,4 @@ tempo: 140
 texfiles:
   - body.tex
 time_signature: null
-title: Ca me vexe
 wavfiles: []

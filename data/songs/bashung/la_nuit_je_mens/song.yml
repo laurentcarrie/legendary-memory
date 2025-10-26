@@ -1,4 +1,6 @@
-author: Bashung
+info:
+  title: La Nuit Je Mens
+  author: Bashung
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -83,5 +85,4 @@ tempo: 147
 texfiles:
   - body.tex
 time_signature: null
-title: La Nuit Je Mens
 wavfiles: []

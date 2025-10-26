@@ -1,4 +1,6 @@
-author: Noir Désir
+info:
+  title: Marlène
+  author: Noir Désir
 lilypondfiles:
   - couplet1.ly
   - couplet2.ly
@@ -88,7 +90,6 @@ structure:
 tempo: 134
 texfiles: []
 time_signature: null
-title: Marlène
 wavfiles:
   - couplet1.wav
   - couplet2.wav

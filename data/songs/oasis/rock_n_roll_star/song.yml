@@ -1,4 +1,6 @@
-author: Oasis
+info:
+  title: Rock 'N Roll Star
+  author: Oasis
 lilypondfiles:
   - pontbasse.ly
   - coupletbasse.ly
@@ -117,7 +119,6 @@ structure:
 tempo: 140
 texfiles: []
 time_signature: null
-title: Rock 'N Roll Star
 wavfiles:
   - coupletbasse.wav
   - pontbasse.wav

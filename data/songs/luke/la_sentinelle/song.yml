@@ -1,4 +1,6 @@
-author: Luke
+info:
+  title: La Sentinelle
+  author: Luke
 lilypondfiles:
   - couplet1.ly
 meta:
@@ -121,5 +123,4 @@ structure:
 tempo: 94
 texfiles: []
 time_signature: null
-title: La Sentinelle
 wavfiles: []

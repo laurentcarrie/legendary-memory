@@ -1,4 +1,6 @@
-author: Telephone
+info:
+  title: Au Coeur De La Nuit
+  author: Telephone
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -56,5 +58,4 @@ structure:
 tempo: 164
 texfiles: []
 time_signature: null
-title: Au Coeur De La Nuit
 wavfiles: []

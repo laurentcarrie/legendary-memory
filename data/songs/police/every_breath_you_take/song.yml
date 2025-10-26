@@ -1,4 +1,6 @@
-author: Police
+info:
+  title: Every Breath You Take
+  author: Police
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -95,5 +97,4 @@ structure:
 tempo: 117
 texfiles: []
 time_signature: null
-title: Every Breath You Take
 wavfiles: []

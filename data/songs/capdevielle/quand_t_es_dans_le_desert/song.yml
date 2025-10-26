@@ -1,4 +1,6 @@
-author: Capdevielle
+info:
+  title: Quand T'Es Dans Le Désert
+  author: Capdevielle
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -70,5 +72,4 @@ structure:
 tempo: 155
 texfiles: []
 time_signature: null
-title: Quand T'Es Dans Le Désert
 wavfiles: []

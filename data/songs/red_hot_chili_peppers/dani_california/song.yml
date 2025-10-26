@@ -1,4 +1,6 @@
-author: Red Hot Chili Peppers
+info:
+  title: Dani California
+  author: Red Hot Chili Peppers
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -30,5 +32,4 @@ tempo: 80
 texfiles:
   - lyrics.tex
 time_signature: null
-title: Dani California
 wavfiles: []

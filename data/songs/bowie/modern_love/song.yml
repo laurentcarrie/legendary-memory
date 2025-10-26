@@ -1,4 +1,6 @@
-author: David Bowie
+info:
+  title: Modern Love
+  author: David Bowie
 lilypondfiles:
   - chordsrefrain.ly
 meta:
@@ -74,5 +76,4 @@ structure:
 tempo: 91
 texfiles: []
 time_signature: null
-title: Modern Love
 wavfiles: []

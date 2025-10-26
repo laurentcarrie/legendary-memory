@@ -1,4 +1,6 @@
-author: Muse
+info:
+  title: Can't Take My Eyes Off You
+  author: Muse
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -54,5 +56,4 @@ structure:
 tempo: 127
 texfiles: []
 time_signature: null
-title: Can't Take My Eyes Off You
 wavfiles: []

@@ -19,15 +19,14 @@ xxxwork() {
 
 	here=$(dirname $(realpath $1))
 	ymlfile=$here/song.yml
-	yq -i "del(.date)" $ymlfile
-	yq -i "del(.digest)" $ymlfile
-	title=$(yq ".title") $ymlfile
-	yq -i ".info.title=\"$title\"" $ymlfile
+	x=$(yq ".lilypondfiles" $ymlfile)
+	yq -i ".files.lilypond=\"$x\"" $ymlfile
+	yq -i "del(.lilypondfiles)" $ymlfile
 	tmpfile=$(mktemp /tmp/pch-legendary-memory.XXXXXX)
 	cp $ymlfile $tmpfile
 	yq -i ". | sort_keys(.)" $ymlfile 
 	if test "x$(cat $ymlfile)" != "x$(cat $tmpfile)" ; then
-		printf "changed by sorting ;  ${Red}$songdir${Color_Off}\n"
+		printf "changed by sorting ;  ${Red}$ymlfile${Color_Off}\n"
 		echo 1 > $tmpresultfile
 	fi
 	rm $tmpfile

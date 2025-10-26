@@ -1,4 +1,6 @@
-author: Natalie Imbroglia
+info:
+  title: Torn
+  author: Natalie Imbroglia
 lilypondfiles:
   - intro.ly
   - couplet.ly
@@ -99,5 +101,4 @@ structure:
 tempo: 96
 texfiles: []
 time_signature: null
-title: Torn
 wavfiles: []

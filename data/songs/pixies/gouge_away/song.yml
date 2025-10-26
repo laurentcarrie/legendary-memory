@@ -1,4 +1,6 @@
-author: Pixies
+info:
+  title: Gouge Away
+  author: Pixies
 lilypondfiles:
   - basse.ly
 meta:
@@ -48,5 +50,4 @@ structure:
 tempo: 126
 texfiles: []
 time_signature: null
-title: Gouge Away
 wavfiles: []

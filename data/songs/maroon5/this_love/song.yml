@@ -1,4 +1,6 @@
-author: Maroon 5
+info:
+  title: This Love
+  author: Maroon 5
 lilypondfiles:
   - couplet.ly
   - refrain.ly
@@ -89,5 +91,4 @@ structure:
 tempo: 95
 texfiles: []
 time_signature: null
-title: This Love
 wavfiles: []

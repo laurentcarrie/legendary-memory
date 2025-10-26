@@ -1,4 +1,6 @@
-author: Matmatah
+info:
+  title: Au Conditionnel
+  author: Matmatah
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -94,5 +96,4 @@ structure:
 tempo: 94
 texfiles: []
 time_signature: null
-title: Au Conditionnel
 wavfiles: []

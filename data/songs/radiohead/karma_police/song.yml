@@ -1,4 +1,6 @@
-author: Radiohead
+info:
+  title: Karma Police
+  author: Radiohead
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -55,5 +57,4 @@ structure:
 tempo: 113
 texfiles: []
 time_signature: null
-title: Karma Police
 wavfiles: []

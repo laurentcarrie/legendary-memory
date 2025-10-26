@@ -1,4 +1,6 @@
-author: U2
+info:
+  title: Song For Someone
+  author: U2
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -67,5 +69,4 @@ structure:
 tempo: 105
 texfiles: []
 time_signature: null
-title: Song For Someone
 wavfiles: []

@@ -1,4 +1,6 @@
-author: Alannah Myles
+info:
+  title: Black Velvet
+  author: Alannah Myles
 lilypondfiles:
   - pont.ly
   - solo.ly
@@ -108,5 +110,4 @@ structure:
 tempo: 91
 texfiles: []
 time_signature: null
-title: Black Velvet
 wavfiles: []

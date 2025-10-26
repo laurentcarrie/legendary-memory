@@ -1,4 +1,6 @@
-author: Pretenders
+info:
+  title: Brass In Pocket
+  author: Pretenders
 lilypondfiles:
   - intro.ly
   - couplet.ly
@@ -76,7 +78,6 @@ structure:
 tempo: 107
 texfiles: []
 time_signature: null
-title: Brass In Pocket
 wavfiles:
   - intro.wav
   - couplet.wav

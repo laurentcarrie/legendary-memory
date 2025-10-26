@@ -1,4 +1,6 @@
-author: Maroon 5
+info:
+  title: Misery
+  author: Maroon 5
 lilypondfiles:
   - couplet.ly
   - refrain.ly
@@ -26,5 +28,4 @@ structure:
 tempo: 103
 texfiles: []
 time_signature: null
-title: Misery
 wavfiles: []

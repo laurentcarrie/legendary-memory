@@ -1,4 +1,6 @@
-author: Amy Winehouse
+info:
+  title: you know I'm no good
+  author: Amy Winehouse
 lilypondfiles:
   - intro.ly
   - couplet.ly
@@ -90,5 +92,4 @@ structure:
 tempo: 103
 texfiles: []
 time_signature: null
-title: you know I'm no good
 wavfiles: []

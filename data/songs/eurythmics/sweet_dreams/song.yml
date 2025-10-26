@@ -1,4 +1,6 @@
-author: Eurythmics
+info:
+  title: Sweet Dreams (Are Made of This)
+  author: Eurythmics
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -85,5 +87,4 @@ structure:
 tempo: 80
 texfiles: []
 time_signature: null
-title: Sweet Dreams (Are Made of This)
 wavfiles: []

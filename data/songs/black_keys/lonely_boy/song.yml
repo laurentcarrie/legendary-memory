@@ -1,4 +1,6 @@
-author: Black Keys
+info:
+  title: "Lonely Boy"
+  author: Black Keys
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -78,5 +80,4 @@ structure:
 tempo: 86
 texfiles: []
 time_signature: null
-title: Lonely Boy
 wavfiles: []

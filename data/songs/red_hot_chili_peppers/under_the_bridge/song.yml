@@ -1,4 +1,6 @@
-author: Red Hot Chili Peppers
+info:
+  title: Under The Bridge
+  author: Red Hot Chili Peppers
 lilypondfiles: []
 meta:
   date: "2025-10-26"
@@ -77,5 +79,4 @@ structure:
 tempo: 84
 texfiles: []
 time_signature: null
-title: Under The Bridge
 wavfiles: []
