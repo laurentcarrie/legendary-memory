@@ -10,7 +10,7 @@ info:
   time_signature: null
 meta:
   date: "2025-10-26"
-  digest: 8d21fd59b0e1ee0ccf0e28c96a09b8cb
+  digest: 1057cbd47ffaa5edecdddee8c9c6df85
 structure:
   - id: couplet1
     item: !Chords
@@ -34,7 +34,6 @@ structure:
     item: !Ref
       title: pré refrain 2
       link: prerefrain1
-
   - id: refrain1
     item: !Chords
       title: refrain 1
@@ -42,7 +41,6 @@ structure:
       section_body: null
       rows:
         - F C | Dm G | F C | Dm G | x2
-
   - id: fill1
     item: !Chords
       title: fill 1
@@ -50,12 +48,10 @@ structure:
       section_body: null
       rows:
         - Dm
-
   - id: couplet3
     item: !Ref
       title: couplet 3
       link: couplet1
-
   - id: prerefrain3
     item: !Ref
       title: pré refrain 3
@@ -72,7 +68,7 @@ structure:
     item: !Chords
       title: interlude
       type: interlude
-      rows: 
+      rows:
         - A | A | A |A | x3 # @todo
   - id: couplet4
     item: !Ref
