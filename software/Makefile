@@ -29,7 +29,7 @@ help:
 
 run: build guitarjpg
 	mkdir -p ${builddir}
-	rm -rf ${builddir}/songs/bb_brunes
+# 	rm -rf ${builddir}/songs/bb_brunes
 	./target/release/songbook-cli --force --nb-workers 8 ${datasongsdir} ${databooksdir} ${builddir}
 
 run-k: build guitarjpg

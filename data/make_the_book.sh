@@ -32,7 +32,7 @@ done
 
 yq -i ".songs |= sort_by(.author,.title)" $ymlfile
 
-old_ymlfile=$here/books/my-song-book.yml
+old_ymlfile=$here/books/mon-song-book.yml
 
 if ! diff $old_ymlfile $ymlfile >/dev/null; then
     printf "${Red}$old_ymlfile updated${Color_Off}\n"
