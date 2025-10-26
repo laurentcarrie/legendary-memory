@@ -72,33 +72,46 @@ pub struct UserStructureItem {
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
-/// the ``song.json`` master file that defines a song
-pub struct UserSong {
+pub struct UserSongInfo {
     /// the title of the song
     pub title: String,
     /// the author of the song
     pub author: String,
+    pub tempo: u32,
+    pub time_signature: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct UserSongMeta {
+    /// the last modified date of the song.
+    /// it is updated with a shell helper @todo : which one ?
+    pub date: String,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct UserSongFiles {
     /// the list of additional texfiles, in the song directory
-    /// this will be added in the OMakefile, and therefore virtually mounted in the build directory
-    pub texfiles: Vec<String>,
+    pub tex: Vec<String>,
     /// the list of additional lilypond files, in the song directory
     /// this will be added in the OMakefile, and therefore virtually mounted in the build directory
     /// for each of this file, for example ```solo.ly```, at build time ```solo.output``` directory will be built
     /// in your source tex file, use
     /// ```\subimport{solo.output/}{solo}```
     /// to input the musicsheet in your output
-    pub lilypondfiles: Vec<String>,
+    pub lilypond: Vec<String>,
     /// the list of additional wav files, to build.
     /// the wav file will be built from the lilypond file with the same name, that must exist
-    pub wavfiles: Vec<String>,
-    /// the last modified date of the song.
-    /// it is updated with a shell helper @todo : which one ?
-    pub date: String,
+    pub wav: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+/// the ``song.json`` master file that defines a song
+pub struct UserSong {
+    pub info: UserSongInfo,
     /// the structure of the song : this is a list of items
     pub structure: Vec<UserStructureItem>,
-    /// the tempo of the song, in BPM (beats per minute)
-    pub tempo: u32,
-    pub time_signature: Option<String>,
+    pub meta: UserSongMeta,
+    pub files: UserSongFiles,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]

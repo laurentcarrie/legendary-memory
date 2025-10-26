@@ -285,8 +285,8 @@ fn song_exists(
     songs: &Vec<UserSongWithPath>,
 ) -> Option<UserSongWithPath> {
     for song in songs {
-        if compare(author, song.song.author.as_str()) == Ordering::Equal
-            && compare(title, song.song.title.as_str()) == Ordering::Equal
+        if compare(author, song.song.info.author.as_str()) == Ordering::Equal
+            && compare(title, song.song.info.title.as_str()) == Ordering::Equal
         {
             return Some(song.clone());
         }
@@ -386,16 +386,16 @@ fn song_of_usersong(
             .to_str()
             .ok_or("bad srcdir".to_string())?
             .to_string(),
-        texfiles: uconf.texfiles.clone(),
-        author: uconf.author.clone(),
-        tempo: uconf.tempo,
-        time_signature: time_signature_of_string(uconf.time_signature)?,
-        pdfname: normalize_pdf_name(&uconf.author, &uconf.title),
-        title: uconf.title.clone(),
+        texfiles: uconf.files.tex.clone(),
+        author: uconf.info.author.clone(),
+        tempo: uconf.info.tempo,
+        time_signature: time_signature_of_string(uconf.info.time_signature)?,
+        pdfname: normalize_pdf_name(&uconf.info.author, &uconf.info.title),
+        title: uconf.info.title.clone(),
         builddir: song_builddir,
-        lilypondfiles: uconf.lilypondfiles.clone(),
-        wavfiles: uconf.wavfiles.clone(),
-        date: uconf.date.clone(),
+        lilypondfiles: uconf.files.lilypond.clone(),
+        wavfiles: uconf.files.wav.clone(),
+        date: uconf.meta.date.clone(),
         structure: {
             let s = &uconf.structure;
             {
