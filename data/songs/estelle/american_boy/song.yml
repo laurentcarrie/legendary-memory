@@ -1,9 +1,8 @@
-title: American Boy
 author: Estelle / K. West / Cocoon
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 212c1a88a18c64fc80ffb331608a066e
 structure:
   - id: intro
     item: !Chords
@@ -73,5 +72,7 @@ structure:
       type: refrain
       link: refrain1
 tempo: 118
+texfiles: []
 time_signature: null
-digest: 212c1a88a18c64fc80ffb331608a066e
+title: American Boy
+wavfiles: []

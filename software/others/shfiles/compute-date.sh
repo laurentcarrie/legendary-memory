@@ -19,15 +19,25 @@ xxxwork() {
 
 	here=$(dirname $(realpath $1))
 	ymlfile=$here/song.yml
+	yq -i "del(.date)" $ymlfile
+	yq -i "del(.digest)" $ymlfile
+	title=$(yq ".title") $ymlfile
+	yq -i ".info.title=\"$title\"" $ymlfile
 	tmpfile=$(mktemp /tmp/pch-legendary-memory.XXXXXX)
-
+	cp $ymlfile $tmpfile
+	yq -i ". | sort_keys(.)" $ymlfile 
+	if test "x$(cat $ymlfile)" != "x$(cat $tmpfile)" ; then
+		printf "changed by sorting ;  ${Red}$songdir${Color_Off}\n"
+		echo 1 > $tmpresultfile
+	fi
+	rm $tmpfile
 
 	for f in $(yq ".lilypondfiles[]" $ymlfile) ; do
 		# echo "--------> $1 ; $f"
 		md5sum $here/$f >> $tmpfile
 	done
 
-	for f in $(yq ".texfiles[]" $ymfile) ; do
+	for f in $(yq ".texfiles[]" $ymlfile) ; do
 		# echo "--------> $1 ; $f"
 		md5sum $here/$f >> $tmpfile
 	done
@@ -42,14 +52,12 @@ xxxwork() {
     	md5sum $lyricsfile >> $tmpfile
   	done
 
-	# echo "x45"
-
 	md5sum $here/add.tikz >> $tmpfile
 
 
 	new_digest=$(md5sum $tmpfile | sed "s/ .*//")
-	old_digest=$(yq ".digest " $ymlfile)
-	old_date=$(yq ".date " $ymlfile)
+	old_digest=$(yq ".meta.digest " $ymlfile)
+	old_date=$(yq ".meta.date " $ymlfile)
 	# echo "old date : '$old_date'"
 
 	if test "x$old_date" == "xnull" ; then
@@ -69,12 +77,16 @@ xxxwork() {
 		#echo "old digest : $old_digest"
 		author=$(yq ".author" $ymlfile)
 		title=$(yq ".title" $ymlfile)
-		printf "date updated : ${Red}$author${Color_Off} $Blue$title$Color_Off in $Yellow$here$Color_Off\n"
-		yq -i ".digest=\"$new_digest\"" $ymlfile
-		yq -i ".date=\"$today\"" $ymlfile
+		printf "$old_digest \n"
+		printf "$new_digest \n"
+		printf "digest changed : ${Red}$author${Color_Off} $Blue$title$Color_Off in $Yellow$here$Color_Off\n"
+		yq -i ".meta.digest=\"$new_digest\"" $ymlfile
+		# yq -i ".date=\"$today\"" $ymlfile
+		yq -i ".meta.date=\"$today\"" $ymlfile
+		yq -i ". | sort_keys(.)" $ymlfile 
 		echo 1 > $tmpresultfile
-	else
-		echo "not changed $here"
+	# else
+		# echo "not changed $here"
 	fi
 
 	# echo "x"
@@ -106,7 +118,6 @@ done
 # echo "x92"
 
 ret=$(cat $tmpresultfile)
-echo "$ret"
 if test "x$ret" = "x0"; then
   exit 0
 fi

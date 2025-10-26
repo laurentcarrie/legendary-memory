@@ -1,9 +1,8 @@
-title: Karma Police
 author: Radiohead
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 10a02569dc19382e4f22156d581ea17a
 structure:
   - id: intro
     item: !Chords
@@ -54,5 +53,7 @@ structure:
       rows:
         - Bm D | G D | G D |E | x4
 tempo: 113
+texfiles: []
 time_signature: null
-digest: 10a02569dc19382e4f22156d581ea17a
+title: Karma Police
+wavfiles: []

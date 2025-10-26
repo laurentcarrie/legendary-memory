@@ -1,14 +1,12 @@
-title: Kid Charlemagne
 author: Steely Dan
-texfiles: []
 lilypondfiles:
   - solo.ly
   - chordscouplet.ly
   - chordsintro.ly
   - chordsrefrain.ly
-wavfiles:
-  - solo.wav
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: b23b8a7d10ddfbeaa8030b993a17743e
 structure:
   - id: intro
     item: !Chords
@@ -99,5 +97,8 @@ structure:
         - G|A|Bf|F G
         - Am G|Dm7 G|
 tempo: 97
+texfiles: []
 time_signature: null
-digest: b23b8a7d10ddfbeaa8030b993a17743e
+title: Kid Charlemagne
+wavfiles:
+  - solo.wav

@@ -29,15 +29,21 @@ pub struct UserStructureItem {
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct UserSongMeta {
+        pub date: String,
+
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
 pub struct UserSong {
     pub title: String,
     pub author: String,
     pub texfiles: Vec<String>,
     pub lilypondfiles: Vec<String>,
     pub wavfiles: Vec<String>,
-    pub date: String,
     pub structure: Vec<UserStructureItem>,
     pub tempo: u32,
+    pub meta: UserSongMeta
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]

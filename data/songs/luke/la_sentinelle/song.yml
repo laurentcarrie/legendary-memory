@@ -1,10 +1,9 @@
-title: La Sentinelle
 author: Luke
-texfiles: []
 lilypondfiles:
   - couplet1.ly
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 8267769ff6a2a1c5dfd101a91a9a3d0f
 structure:
   - id: introg
     item: !Chords
@@ -120,5 +119,7 @@ structure:
       rows:
         - Em Bm|Em Bm|Em Bm |Em Bm
 tempo: 94
+texfiles: []
 time_signature: null
-digest: 8267769ff6a2a1c5dfd101a91a9a3d0f
+title: La Sentinelle
+wavfiles: []

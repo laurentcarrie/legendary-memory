@@ -1,9 +1,8 @@
-title: Au Coeur De La Nuit
 author: Telephone
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 08a817f09753d5612daca374871734ad
 structure:
   - id: couplet1
     item: !Chords
@@ -55,5 +54,7 @@ structure:
       type: null
       link: refrain1
 tempo: 164
+texfiles: []
 time_signature: null
-digest: 08a817f09753d5612daca374871734ad
+title: Au Coeur De La Nuit
+wavfiles: []

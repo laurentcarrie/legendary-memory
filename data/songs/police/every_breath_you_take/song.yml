@@ -1,9 +1,8 @@
-title: Every Breath You Take
 author: Police
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: fd4252426f71b3fd1aa440c1dcebeb36
 structure:
   - id: intro
     item: !Chords
@@ -94,5 +93,7 @@ structure:
       rows:
         - Bf|Bf|Gm|Ef|x4
 tempo: 117
+texfiles: []
 time_signature: null
-digest: fd4252426f71b3fd1aa440c1dcebeb36
+title: Every Breath You Take
+wavfiles: []

@@ -1,9 +1,8 @@
-title: Je N'Veux Pas Rester Sage
 author: Dolly
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 3715f66b0aed6eeae4af4bb74bff2350
 structure:
   - id: intro
     item: !Chords
@@ -88,5 +87,7 @@ structure:
       rows:
         - F |F|G|G|x4
 tempo: 98
+texfiles: []
 time_signature: null
-digest: 3715f66b0aed6eeae4af4bb74bff2350
+title: Je N'Veux Pas Rester Sage
+wavfiles: []

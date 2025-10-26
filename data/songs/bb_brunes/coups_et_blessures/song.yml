@@ -1,8 +1,9 @@
-tempo: 120
-title: Coups Et Blessures
 author: BB Brunes
-texfiles:
+hash: 0
 lilypondfiles:
+meta:
+  date: "2025-10-26"
+  digest: 824f77a4b66745e94782007fdee45836
 structure:
   - id: intro
     item: !Chords
@@ -24,7 +25,7 @@ structure:
       rows:
         - G | A | D | D |
         - G | A | Bm | Bm |
+tempo: 120
+texfiles:
+title: Coups Et Blessures
 wavfiles:
-digest: 824f77a4b66745e94782007fdee45836
-date: "2025-10-24"
-hash: 0

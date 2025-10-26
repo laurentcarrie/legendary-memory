@@ -1,9 +1,8 @@
-title: Au Conditionnel
 author: Matmatah
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: e8f8ba23bf104a66ffb575557b17e5e2
 structure:
   - id: intro
     item: !Chords
@@ -93,5 +92,7 @@ structure:
       rows:
         - E
 tempo: 94
+texfiles: []
 time_signature: null
-digest: e8f8ba23bf104a66ffb575557b17e5e2
+title: Au Conditionnel
+wavfiles: []

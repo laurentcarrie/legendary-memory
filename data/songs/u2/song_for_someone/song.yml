@@ -1,9 +1,8 @@
-title: Song For Someone
 author: U2
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: ac7870efc879f4987e067dd8ce46d6ad
 structure:
   - id: intro
     item: !Chords
@@ -66,5 +65,7 @@ structure:
       rows:
         - E| E | Fs | Gsm | x2
 tempo: 105
+texfiles: []
 time_signature: null
-digest: ac7870efc879f4987e067dd8ce46d6ad
+title: Song For Someone
+wavfiles: []

@@ -1,13 +1,11 @@
-title: Enjoy The Silence
 author: Depeche Mode
-texfiles:
-  - body.tex
 lilypondfiles:
   - riff.ly
   - chordscouplet.ly
   - chordsrefrain.ly
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 5b9a53ae8216a4dd799bef315b4254f3
 structure:
   - id: introbatterie
     item: !Chords
@@ -103,5 +101,8 @@ structure:
       type: refrain
       link: refrain1
 tempo: 113
+texfiles:
+  - body.tex
 time_signature: null
-digest: 91725e9a7f24827d13b971b3f805ca11
+title: Enjoy The Silence
+wavfiles: []

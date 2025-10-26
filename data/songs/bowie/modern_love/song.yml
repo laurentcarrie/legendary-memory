@@ -1,10 +1,9 @@
-title: Modern Love
 author: David Bowie
-texfiles: []
 lilypondfiles:
   - chordsrefrain.ly
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 05cb466ce6b7c8a0ad43233e51b747fc
 structure:
   - id: introdg
     item: !Chords
@@ -73,5 +72,7 @@ structure:
       type: null
       link: refrain1
 tempo: 91
+texfiles: []
 time_signature: null
-digest: 05cb466ce6b7c8a0ad43233e51b747fc
+title: Modern Love
+wavfiles: []

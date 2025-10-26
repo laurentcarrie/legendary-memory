@@ -1,9 +1,8 @@
-title: Bohemian Like You
 author: Dandy Warhols
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 89f75d6a3df95d4925fd5b34fb12ed3e
 structure:
   - id: introb
     item: !Chords
@@ -106,5 +105,7 @@ structure:
         - B|B|B|B
         - B HRest|B HRest
 tempo: 132
+texfiles: []
 time_signature: null
-digest: 89f75d6a3df95d4925fd5b34fb12ed3e
+title: Bohemian Like You
+wavfiles: []

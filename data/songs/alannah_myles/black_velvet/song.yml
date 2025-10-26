@@ -1,11 +1,10 @@
-title: Black Velvet
 author: Alannah Myles
-texfiles: []
 lilypondfiles:
   - pont.ly
   - solo.ly
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 5369524fc6f8762c413e6e2ff5c17ae6
 structure:
   - id: intro
     item: !Chords
@@ -107,5 +106,7 @@ structure:
       type: refrain
       link: refrain1
 tempo: 91
+texfiles: []
 time_signature: null
-digest: 5369524fc6f8762c413e6e2ff5c17ae6
+title: Black Velvet
+wavfiles: []

@@ -1,9 +1,8 @@
-title: Can't Take My Eyes Off You
 author: Muse
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 6abee4e08449a9f07ae199350ec7e968
 structure:
   - id: intro
     item: !Chords
@@ -53,5 +52,7 @@ structure:
       type: couplet
       link: couplet1
 tempo: 127
+texfiles: []
 time_signature: null
-digest: 6abee4e08449a9f07ae199350ec7e968
+title: Can't Take My Eyes Off You
+wavfiles: []

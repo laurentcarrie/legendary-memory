@@ -1,8 +1,8 @@
-title: Lonely Boy
 author: Black Keys
-texfiles: []
 lilypondfiles: []
-wavfiles: []
+meta:
+  date: "2025-10-26"
+  digest: 64abf92fcb9b3675cd54e7bf1f9d97e7
 structure:
   - id: riff1
     item: !Chords
@@ -76,6 +76,7 @@ structure:
       type: refrain
       link: refrain1
 tempo: 86
+texfiles: []
 time_signature: null
-digest: 64abf92fcb9b3675cd54e7bf1f9d97e7
-date: "2025-10-24"
+title: Lonely Boy
+wavfiles: []

@@ -1,11 +1,10 @@
-title: you know I'm no good
 author: Amy Winehouse
-texfiles: []
 lilypondfiles:
   - intro.ly
   - couplet.ly
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 963e78ec17b0e804486f014e4d6499e5
 structure:
   - id: intro_batteriex
     item: !Chords
@@ -89,5 +88,7 @@ structure:
       type: null
       link: refrain_1
 tempo: 103
+texfiles: []
 time_signature: null
-digest: 963e78ec17b0e804486f014e4d6499e5
+title: you know I'm no good
+wavfiles: []

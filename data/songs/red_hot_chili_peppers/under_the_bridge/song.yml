@@ -1,9 +1,8 @@
-title: Under The Bridge
 author: Red Hot Chili Peppers
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 57e73ab61685e95f07b79dc9863ac0e5
 structure:
   - id: intro
     item: !Chords
@@ -76,5 +75,7 @@ structure:
       type: null
       link: final1
 tempo: 84
+texfiles: []
 time_signature: null
-digest: 57e73ab61685e95f07b79dc9863ac0e5
+title: Under The Bridge
+wavfiles: []

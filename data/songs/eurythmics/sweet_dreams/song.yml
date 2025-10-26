@@ -1,9 +1,8 @@
-title: Sweet Dreams (Are Made of This)
 author: Eurythmics
-texfiles: []
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: fb4c9edc3e2de388bbe9429fc4371067
 structure:
   - id: intro
     item: !Chords
@@ -84,5 +83,7 @@ structure:
       rows:
         - Cm
 tempo: 80
+texfiles: []
 time_signature: null
-digest: fb4c9edc3e2de388bbe9429fc4371067
+title: Sweet Dreams (Are Made of This)
+wavfiles: []

@@ -1,13 +1,12 @@
-title: This Love
 author: Maroon 5
-texfiles: []
 lilypondfiles:
   - couplet.ly
   - refrain.ly
   - pont.ly
   - chordspont.ly
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 41133c7a87cda801507d2f668914d23c
 structure:
   - id: intro1
     item: !Chords
@@ -88,5 +87,7 @@ structure:
       type: refrain
       link: refrain_1
 tempo: 95
+texfiles: []
 time_signature: null
-digest: 41133c7a87cda801507d2f668914d23c
+title: This Love
+wavfiles: []

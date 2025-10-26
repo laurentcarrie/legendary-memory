@@ -1,12 +1,11 @@
-title: Misery
 author: Maroon 5
-texfiles: []
 lilypondfiles:
   - couplet.ly
   - refrain.ly
   - pont.ly
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: adb9b5ad5a7cf0718be0f3b9fb3bf13f
 structure:
   - id: intro
     item: !Chords
@@ -25,5 +24,7 @@ structure:
         - C|B|C|B
         - C|B
 tempo: 103
+texfiles: []
 time_signature: null
-digest: adb9b5ad5a7cf0718be0f3b9fb3bf13f
+title: Misery
+wavfiles: []

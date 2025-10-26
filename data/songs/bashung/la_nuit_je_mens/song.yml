@@ -1,10 +1,8 @@
-title: La Nuit Je Mens
 author: Bashung
-texfiles:
-  - body.tex
 lilypondfiles: []
-wavfiles: []
-date: "2025-10-24"
+meta:
+  date: "2025-10-26"
+  digest: 145a6d0509ae88e91570ff65075e9ff1
 structure:
   - id: couplet1
     item: !Chords
@@ -82,5 +80,8 @@ structure:
       type: null
       link: refrain1
 tempo: 147
+texfiles:
+  - body.tex
 time_signature: null
-digest: 8d6d142cde85e66dc7e4de5f29d00d44
+title: La Nuit Je Mens
+wavfiles: []
