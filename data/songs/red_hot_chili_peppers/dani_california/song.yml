@@ -10,7 +10,7 @@ info:
   time_signature: null
 meta:
   date: "2025-10-26"
-  digest: 3b783f78562726a6291ec63e1147a080
+  digest: 8d21fd59b0e1ee0ccf0e28c96a09b8cb
 structure:
   - id: couplet1
     item: !Chords
@@ -19,18 +19,74 @@ structure:
       section_body: null
       rows:
         - Am G| Dm Am|Am G| Dm Am
-  - id: add
+  - id: prerefrain1
     item: !Chords
-      title: add
-      type: couplet
+      title: pré refrain 1
+      type: prerefrain
       section_body: null
       rows:
-        - Dm
+        - Am G| Dm Am|Am G| Dm Am
+  - id: couplet2
+    item: !Ref
+      title: couplet 2
+      link: couplet1
+  - id: prerefrain2
+    item: !Ref
+      title: pré refrain 2
+      link: prerefrain1
+
   - id: refrain1
     item: !Chords
       title: refrain 1
       type: refrain
       section_body: null
       rows:
-        - F C | Dm G | F G | Dm G | x2
+        - F C | Dm G | F C | Dm G | x2
+
+  - id: fill1
+    item: !Chords
+      title: fill 1
+      type: fill
+      section_body: null
+      rows:
         - Dm
+
+  - id: couplet3
+    item: !Ref
+      title: couplet 3
+      link: couplet1
+
+  - id: prerefrain3
+    item: !Ref
+      title: pré refrain 3
+      link: prerefrain1
+  - id: refrain2
+    item: !Ref
+      title: refrain 2
+      link: refrain1
+  - id: fill2
+    item: !Ref
+      title: fill 2
+      link: fill1
+  - id: interlude
+    item: !Chords
+      title: interlude
+      type: interlude
+      rows: 
+        - A | A | A |A | x3 # @todo
+  - id: couplet4
+    item: !Ref
+      title: couplet 4
+      link: couplet1
+  - id: prerefrain4
+    item: !Ref
+      title: pré refrain 4
+      link: prerefrain1
+  - id: refrain3
+    item: !Ref
+      title: refrain 3
+      link: refrain1
+  - id: refrain4
+    item: !Ref
+      title: refrain 4
+      link: refrain1
