@@ -1,15 +1,22 @@
+files:
+  lilypond:
+    - solo.ly
+    - intro.ly
+    - riff_a.ly
+    - riff_b.ly
+    - chordsrefrain.ly
+  tex: []
+  wav:
+    - intro.wav
+    - riff_a.wav
 info:
   title: Can't Stop
   author: Red Hot Chili Peppers
-lilypondfiles:
-  - solo.ly
-  - intro.ly
-  - riff_a.ly
-  - riff_b.ly
-  - chordsrefrain.ly
+  tempo: 91
+  time_signature: null
 meta:
   date: "2025-10-26"
-  digest: 88428a066aaefd18c0d0772c6fa85afa
+  digest: 1a47039d38ebe2281866447c7e946fac
 structure:
   - id: intro
     item: !Chords
@@ -87,9 +94,3 @@ structure:
       section_body: '{\color{red}chant seul}'
       rows:
         - HRest|HRest
-tempo: 91
-texfiles: []
-time_signature: null
-wavfiles:
-  - intro.wav
-  - riff_a.wav

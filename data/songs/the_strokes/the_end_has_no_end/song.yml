@@ -1,7 +1,12 @@
+files:
+  lilypond: []
+  tex: []
+  wav: []
 info:
   title: The End Has No End
   author: The Strokes
-lilypondfiles: []
+  tempo: 80
+  time_signature: null
 meta:
   date: "2025-10-26"
   digest: 4408004fd2f076a5b3c0a5fd61e6b4ab
@@ -97,7 +102,3 @@ structure:
       section_body: null
       type: intro
       link: intro
-tempo: 80
-texfiles: []
-time_signature: null
-wavfiles: []

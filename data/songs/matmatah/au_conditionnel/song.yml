@@ -1,7 +1,12 @@
+files:
+  lilypond: []
+  tex: []
+  wav: []
 info:
   title: Au Conditionnel
   author: Matmatah
-lilypondfiles: []
+  tempo: 94
+  time_signature: null
 meta:
   date: "2025-10-26"
   digest: e8f8ba23bf104a66ffb575557b17e5e2
@@ -93,7 +98,3 @@ structure:
       section_body: null
       rows:
         - E
-tempo: 94
-texfiles: []
-time_signature: null
-wavfiles: []

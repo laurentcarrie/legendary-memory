@@ -1,10 +1,16 @@
+files:
+  lilypond: []
+  tex:
+    - lyrics.tex
+  wav: []
 info:
   title: Dani California
   author: Red Hot Chili Peppers
-lilypondfiles: []
+  tempo: 80
+  time_signature: null
 meta:
   date: "2025-10-26"
-  digest: 7c7b343e72477809b4970b65bd4fc6dc
+  digest: 3b783f78562726a6291ec63e1147a080
 structure:
   - id: couplet1
     item: !Chords
@@ -28,8 +34,3 @@ structure:
       rows:
         - F C | Dm G | F G | Dm G | x2
         - Dm
-tempo: 80
-texfiles:
-  - lyrics.tex
-time_signature: null
-wavfiles: []

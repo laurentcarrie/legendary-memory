@@ -1,14 +1,23 @@
+files:
+  lilypond:
+    - couplet1.ly
+    - couplet2.ly
+    - couplet3.ly
+    - couplet4.ly
+  tex: []
+  wav:
+    - couplet1.wav
+    - couplet2.wav
+    - couplet3.wav
+    - couplet4.wav
 info:
   title: Marlène
   author: Noir Désir
-lilypondfiles:
-  - couplet1.ly
-  - couplet2.ly
-  - couplet3.ly
-  - couplet4.ly
+  tempo: 134
+  time_signature: null
 meta:
   date: "2025-10-26"
-  digest: 069324dc9d19187ea25b5bf65bb9b57b
+  digest: 546a7a93213d5ea0d9b51616a2bdec11
 structure:
   - id: intro
     item: !Chords
@@ -87,11 +96,3 @@ structure:
       section_body: \songbookcomment{ triolets ?}
       rows:
         - 'Am | Am | Am | Am '
-tempo: 134
-texfiles: []
-time_signature: null
-wavfiles:
-  - couplet1.wav
-  - couplet2.wav
-  - couplet3.wav
-  - couplet4.wav

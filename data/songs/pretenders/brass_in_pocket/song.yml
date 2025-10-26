@@ -1,13 +1,21 @@
+files:
+  lilypond:
+    - intro.ly
+    - couplet.ly
+    - prerefrain.ly
+  tex: []
+  wav:
+    - intro.wav
+    - couplet.wav
+    - prerefrain.wav
 info:
   title: Brass In Pocket
   author: Pretenders
-lilypondfiles:
-  - intro.ly
-  - couplet.ly
-  - prerefrain.ly
+  tempo: 107
+  time_signature: null
 meta:
   date: "2025-10-26"
-  digest: 42c8acb867e2537c7195c4b6ed4acb2e
+  digest: b8534c4fca42bcfb045b212525f21218
 structure:
   - id: intro
     item: !Chords
@@ -75,10 +83,3 @@ structure:
       section_body: \songbookcomment{outro mesure 8}
       type: null
       link: couplet1
-tempo: 107
-texfiles: []
-time_signature: null
-wavfiles:
-  - intro.wav
-  - couplet.wav
-  - prerefrain.wav

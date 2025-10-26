@@ -1,12 +1,19 @@
+files:
+  lilypond:
+    - pontbasse.ly
+    - coupletbasse.ly
+  tex: []
+  wav:
+    - coupletbasse.wav
+    - pontbasse.wav
 info:
   title: Rock 'N Roll Star
   author: Oasis
-lilypondfiles:
-  - pontbasse.ly
-  - coupletbasse.ly
+  tempo: 140
+  time_signature: null
 meta:
   date: "2025-10-26"
-  digest: fe77a29994e41332ddc1d289918cd725
+  digest: b777430533f4c5ad982891af9f2af994
 structure:
   - id: intro
     item: !Chords
@@ -116,9 +123,3 @@ structure:
       section_body: null
       type: refrain
       link: refrain1
-tempo: 140
-texfiles: []
-time_signature: null
-wavfiles:
-  - coupletbasse.wav
-  - pontbasse.wav

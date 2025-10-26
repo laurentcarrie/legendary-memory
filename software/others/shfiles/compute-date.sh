@@ -19,9 +19,9 @@ xxxwork() {
 
 	here=$(dirname $(realpath $1))
 	ymlfile=$here/song.yml
-	x=$(yq ".lilypondfiles" $ymlfile)
-	yq -i ".files.lilypond=\"$x\"" $ymlfile
-	yq -i "del(.lilypondfiles)" $ymlfile
+	# yq -i ".info.time_signature=.time_signature" $ymlfile
+	# yq -i "del(.time_signature)" $ymlfile
+	# yq -i "del(.lilypondfiles)" $ymlfile
 	tmpfile=$(mktemp /tmp/pch-legendary-memory.XXXXXX)
 	cp $ymlfile $tmpfile
 	yq -i ". | sort_keys(.)" $ymlfile 
@@ -74,10 +74,10 @@ xxxwork() {
 		# echo "changed $here"
 		#echo "new digest : $new_digest"
 		#echo "old digest : $old_digest"
-		author=$(yq ".author" $ymlfile)
-		title=$(yq ".title" $ymlfile)
-		printf "$old_digest \n"
-		printf "$new_digest \n"
+		author=$(yq ".info.author" $ymlfile)
+		title=$(yq ".info.title" $ymlfile)
+		# printf "$old_digest \n"
+		# printf "$new_digest \n"
 		printf "digest changed : ${Red}$author${Color_Off} $Blue$title$Color_Off in $Yellow$here$Color_Off\n"
 		yq -i ".meta.digest=\"$new_digest\"" $ymlfile
 		# yq -i ".date=\"$today\"" $ymlfile

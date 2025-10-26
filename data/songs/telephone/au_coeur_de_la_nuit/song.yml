@@ -1,7 +1,12 @@
+files:
+  lilypond: []
+  tex: []
+  wav: []
 info:
   title: Au Coeur De La Nuit
   author: Telephone
-lilypondfiles: []
+  tempo: 164
+  time_signature: null
 meta:
   date: "2025-10-26"
   digest: 08a817f09753d5612daca374871734ad
@@ -55,7 +60,3 @@ structure:
       section_body: null
       type: null
       link: refrain1
-tempo: 164
-texfiles: []
-time_signature: null
-wavfiles: []

@@ -1,11 +1,16 @@
+files:
+  lilypond:
+    - basse.ly
+  tex: []
+  wav: []
 info:
   title: Gouge Away
   author: Pixies
-lilypondfiles:
-  - basse.ly
+  tempo: 126
+  time_signature: null
 meta:
   date: "2025-10-26"
-  digest: 0e7b1f2f893582f1390c7aeb7177d102
+  digest: c3f230572e0551053395a44c307543a4
 structure:
   - id: couplet1
     item: !Chords
@@ -47,7 +52,3 @@ structure:
       section_body: null
       rows:
         - Fsm | A |D |Fsm |D|x3
-tempo: 126
-texfiles: []
-time_signature: null
-wavfiles: []

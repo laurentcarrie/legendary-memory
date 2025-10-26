@@ -1,11 +1,17 @@
+files:
+  lilypond:
+    - pont2.ly
+  tex: []
+  wav:
+    - pont2.wav
 info:
   title: Eteins La Lumière
   author: Axel Bauer
-lilypondfiles:
-  - pont2.ly
+  tempo: 146
+  time_signature: null
 meta:
+  digest: 3b3d94f04697065d8e87947cadba979a
   date: "2025-10-26"
-  digest: 6fadec9d5bb55ab9dba66efb1dae5a82
 structure:
   - id: intro
     item: !Chords
@@ -128,8 +134,3 @@ structure:
       section_body: \songbookcomment{stop sur le 1 après}
       rows:
         - Am|Am|Dsus4|F|x2
-tempo: 146
-texfiles: []
-time_signature: null
-wavfiles:
-  - pont2.wav

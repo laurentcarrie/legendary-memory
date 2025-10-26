@@ -1,12 +1,17 @@
+files:
+  lilypond:
+    - intro.ly
+    - couplet.ly
+  tex: []
+  wav: []
 info:
   title: you know I'm no good
   author: Amy Winehouse
-lilypondfiles:
-  - intro.ly
-  - couplet.ly
+  tempo: 103
+  time_signature: null
 meta:
   date: "2025-10-26"
-  digest: 963e78ec17b0e804486f014e4d6499e5
+  digest: fddae9783ed01293cf3bd57800b2bfc2
 structure:
   - id: intro_batteriex
     item: !Chords
@@ -89,7 +94,3 @@ structure:
       section_body: null
       type: null
       link: refrain_1
-tempo: 103
-texfiles: []
-time_signature: null
-wavfiles: []

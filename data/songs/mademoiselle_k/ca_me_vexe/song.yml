@@ -1,14 +1,20 @@
+files:
+  lilypond:
+    - intro.ly
+    - refrain1.ly
+    - refrain2.ly
+    - interlude.ly
+  tex:
+    - body.tex
+  wav: []
 info:
   title: Ca me vexe
   author: Mademoiselle K
-lilypondfiles:
-  - intro.ly
-  - refrain1.ly
-  - refrain2.ly
-  - interlude.ly
+  tempo: 140
+  time_signature: null
 meta:
   date: "2025-10-26"
-  digest: b256f43e2648e5e10d952c78032011cd
+  digest: d567519f86af9b7c126342a2a7a5d5c2
 structure:
   - id: intro
     item: !Chords
@@ -98,8 +104,3 @@ structure:
       rows:
         - Em|G|Am|C7|
         - Em|G|A|C7|
-tempo: 140
-texfiles:
-  - body.tex
-time_signature: null
-wavfiles: []

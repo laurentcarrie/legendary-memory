@@ -1,7 +1,12 @@
+files:
+  lilypond: []
+  tex: []
+  wav: []
 info:
   title: Je N'Veux Pas Rester Sage
   author: Dolly
-lilypondfiles: []
+  tempo: 98
+  time_signature: null
 meta:
   date: "2025-10-26"
   digest: 3715f66b0aed6eeae4af4bb74bff2350
@@ -88,7 +93,3 @@ structure:
       section_body: null
       rows:
         - F |F|G|G|x4
-tempo: 98
-texfiles: []
-time_signature: null
-wavfiles: []

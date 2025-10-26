@@ -1,12 +1,17 @@
+files:
+  lilypond:
+    - pont.ly
+    - solo.ly
+  tex: []
+  wav: []
 info:
   title: Black Velvet
   author: Alannah Myles
-lilypondfiles:
-  - pont.ly
-  - solo.ly
+  tempo: 91
+  time_signature: null
 meta:
   date: "2025-10-26"
-  digest: 5369524fc6f8762c413e6e2ff5c17ae6
+  digest: 41324fdf06caf7629dc66063bf540380
 structure:
   - id: intro
     item: !Chords
@@ -107,7 +112,3 @@ structure:
       section_body: null
       type: refrain
       link: refrain1
-tempo: 91
-texfiles: []
-time_signature: null
-wavfiles: []

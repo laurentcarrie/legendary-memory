@@ -1,7 +1,12 @@
+files:
+  lilypond: []
+  tex: []
+  wav: []
 info:
   title: Can't Take My Eyes Off You
   author: Muse
-lilypondfiles: []
+  tempo: 127
+  time_signature: null
 meta:
   date: "2025-10-26"
   digest: 6abee4e08449a9f07ae199350ec7e968
@@ -53,7 +58,3 @@ structure:
       section_body: null
       type: couplet
       link: couplet1
-tempo: 127
-texfiles: []
-time_signature: null
-wavfiles: []

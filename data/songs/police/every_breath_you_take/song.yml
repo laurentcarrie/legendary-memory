@@ -1,7 +1,12 @@
+files:
+  lilypond: []
+  tex: []
+  wav: []
 info:
   title: Every Breath You Take
   author: Police
-lilypondfiles: []
+  tempo: 117
+  time_signature: null
 meta:
   date: "2025-10-26"
   digest: fd4252426f71b3fd1aa440c1dcebeb36
@@ -94,7 +99,3 @@ structure:
       section_body: null
       rows:
         - Bf|Bf|Gm|Ef|x4
-tempo: 117
-texfiles: []
-time_signature: null
-wavfiles: []

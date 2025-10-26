@@ -1,7 +1,12 @@
+files:
+  lilypond: []
+  tex: []
+  wav: []
 info:
   title: Song For Jedi
   author: Dionysos
-lilypondfiles: []
+  tempo: 116
+  time_signature: null
 meta:
   date: "2025-10-26"
   digest: 99e0fabc029759830623d916ef975dc1
@@ -93,7 +98,3 @@ structure:
       section_body: null
       type: refrain
       link: refrain1
-tempo: 116
-texfiles: []
-time_signature: null
-wavfiles: []

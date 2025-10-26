@@ -1,12 +1,17 @@
+files:
+  lilypond:
+    - intro.ly
+    - couplet.ly
+  tex: []
+  wav: []
 info:
   title: Torn
   author: Natalie Imbroglia
-lilypondfiles:
-  - intro.ly
-  - couplet.ly
+  tempo: 96
+  time_signature: null
 meta:
   date: "2025-10-26"
-  digest: 38aa3eae598570b564f6133ed5eb78f3
+  digest: c5273445384b403f7ee99ee03e9b7ba8
 structure:
   - id: intro
     item: !Chords
@@ -98,7 +103,3 @@ structure:
       section_body: null
       type: refrain
       link: refrain1
-tempo: 96
-texfiles: []
-time_signature: null
-wavfiles: []

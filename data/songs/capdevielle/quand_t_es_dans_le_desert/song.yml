@@ -1,7 +1,12 @@
+files:
+  lilypond: []
+  tex: []
+  wav: []
 info:
   title: Quand T'Es Dans Le Désert
   author: Capdevielle
-lilypondfiles: []
+  tempo: 155
+  time_signature: null
 meta:
   date: "2025-10-26"
   digest: baa5bb0136672b5e265d33ea9bd65258
@@ -69,7 +74,3 @@ structure:
       section_body: null
       type: null
       link: refrain1
-tempo: 155
-texfiles: []
-time_signature: null
-wavfiles: []

@@ -1,7 +1,12 @@
+files:
+  lilypond: []
+  tex: []
+  wav: []
 info:
   title: Bohemian Like You
   author: Dandy Warhols
-lilypondfiles: []
+  tempo: 132
+  time_signature: null
 meta:
   date: "2025-10-26"
   digest: 89f75d6a3df95d4925fd5b34fb12ed3e
@@ -106,7 +111,3 @@ structure:
       rows:
         - B|B|B|B
         - B HRest|B HRest
-tempo: 132
-texfiles: []
-time_signature: null
-wavfiles: []
