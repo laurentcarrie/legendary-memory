@@ -307,10 +307,17 @@ pub fn decode_book(
     let uconf: UserBook = {
         match filepath.extension() {
             Some(value) => match value.to_str() {
-                Some("json") => serde_json::from_str(&contents)
-                    .unwrap_or_else(|_| panic!("read json {}", filepath.display())),
+                Some("json") => {
+                    let data = &serde_json::from_str(&contents)?;
+                    let yml = serde_yaml::to_string::<UserBook>(data)?;
+                    let mut o = filepath.clone();
+                    o.set_extension("yml");
+                    write_string(&o, &yml)?;
+                    data.clone()
+                }
+
                 Some("yml") => serde_yaml::from_str(&contents)
-                    .unwrap_or_else(|_| panic!("read json {}", filepath.display())),
+                    .unwrap_or_else(|_| panic!("read yml {}", filepath.display())),
                 _ => unimplemented!(),
             },
             _ => unimplemented!(),

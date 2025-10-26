@@ -1,36 +1,44 @@
 #!/bin/sh
 
 set -e
-
 # set -x
+
+
+# Reset
+Color_Off='\033[0m'       # Text Reset
+Red='\033[0;31m'          # Red
+Green='\033[0;32m'        # Green
+
+
 
 here=$(dirname $(realpath $0))
 songdir=$here/songs
 
+ymlfile=$(mktemp /tmp/pch-legendary-memory.XXXXXX)
 
-doc="[]"
+echo "" > $ymlfile
+yq -i '.title="Mon Song Book"' $ymlfile
+yq -i '.songs= []' $ymlfile
+yq -i '.lyrics_only=false' $ymlfile
+yq -i '.cover_image= true' $ymlfile
 
-ftmp=$(mktemp)
-# ftmp=a.json
-echo $doc > $ftmp
-
-find $songdir -name song.json | while read f ; do
-    data=$(cat $f | jq ". | {author,title}")
-    # doc=$(cat $ftmp | jq ".songs += [$data]" )
-    doc=$(cat $ftmp | jq ". += [$data]" )
-    echo $doc > $ftmp
+find $songdir -name song.yml | while read f ; do
+    author=$(yq ".info.author" $f)
+    title=$(yq ".info.title" $f)
+    # yq -i "songs += [(.author=\"$author\",.title=\"$title\")]" $ymlfile
+    yq -i ".songs += [{\"author\":\"$author\",\"title\":\"$title\"}] " $ymlfile
+    # break
 done
-sorted_songs=$(cat $ftmp | jq -r ". | sort_by(.author,.title)")
-doc="{\"title\": \"Mon Song Book\",\"songs\":$sorted_songs,\"cover_image\": true,\"lyrics_only\": false}"
-echo $doc | jq "." > $ftmp
 
-bookfile=$here/books/my-song-book.json
+yq -i ".songs |= sort_by(.author,.title)" $ymlfile
 
-if ! diff $bookfile $ftmp >/dev/null; then
-    echo "$bookfile updated"
-    mv $ftmp $bookfile
+old_ymlfile=$here/books/my-song-book.yml
+
+if ! diff $old_ymlfile $ymlfile >/dev/null; then
+    printf "${Red}$old_ymlfile updated${Color_Off}\n"
+    mv $ymlfile $old_ymlfile
     exit 1
 else
-    echo "$bookfile not changed"    
+    printf "${Green}$old_ymlfile not changed${Color_Off}\n"    
 fi
 exit 0
