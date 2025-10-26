@@ -32,7 +32,7 @@ repos:
     hooks:
       - id: my-latexindent
         name: latexindent
-        entry: bash ./my-latexindent.sh
+        entry: bash ./software/others/shfiles/my-latexindent.sh
         language: system
         #        pass_filenames: true
         files: .*
