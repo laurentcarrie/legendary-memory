@@ -9,26 +9,40 @@ info:
   tempo: 120
   time_signature: null
 meta:
-  date: "2025-10-26"
-  digest: 824f77a4b66745e94782007fdee45836
+  date: "2025-10-27"
+  digest: 316a969427aea975559d5e7a4615e73b
 structure:
   - id: intro
     item: !Chords
       title: intro
       type: intro
       rows:
-        - D | D | Bm | Bm | x2
+        - D | D | Bm | Bm |
   - id: couplet1
     item: !Chords
       title: couplet 1
       type: couplet
       rows:
         - D | D | Bm | Bm | x2
-        - G|  A | G |
+        - G |  A | Bm | A |
+        - G | A | D |
   - id: refrain1
     item: !Chords
       title: refrain 1
       type: refrain
       rows:
-        - G | A | D | D |
-        - G | A | Bm | Bm |
+        - G  A | D | G A | Bm
+        - A | A | G | G |
+  - id: pont1
+    item: !Chords
+      title: pont 1
+      type: pont
+      rows:
+        - D | D | Bm |Bm | x2
+  - id: couplet2
+    item: !Chords
+      title: couplet 2
+      type: coupletb
+      rows:
+        - D | D | Bm | Bm | x2
+        - G  A | Bm F | G A | Bm D | x2

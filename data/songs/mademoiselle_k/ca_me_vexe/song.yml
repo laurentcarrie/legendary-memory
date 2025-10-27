@@ -13,8 +13,8 @@ info:
   tempo: 140
   time_signature: null
 meta:
-  date: "2025-10-26"
-  digest: d567519f86af9b7c126342a2a7a5d5c2
+  date: "2025-10-27"
+  digest: 94fb533e610b0d2149efc55bde56d7d6
 structure:
   - id: intro
     item: !Chords
@@ -66,6 +66,8 @@ structure:
       section_body: null
       rows:
         - Em|G|Am|C|x2
+  - id: nc
+    item: !NewColumn
   - id: couplet3a
     item: !Chords
       title: couplet 3a

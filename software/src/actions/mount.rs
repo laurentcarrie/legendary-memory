@@ -2,9 +2,7 @@ use crate::helpers::io::{read_to_string, read_to_vec_u8, write, write_string};
 use std::path::PathBuf;
 
 pub fn mount_from_data(bytes: Vec<u8>, target: PathBuf) -> Result<u32, Box<dyn std::error::Error>> {
-    log::info!("");
     let needs_write = if target.try_exists()? {
-        log::info!("{}:{}", file!(), line!());
         let data = read_to_vec_u8(&target)?;
         data != bytes
     } else {

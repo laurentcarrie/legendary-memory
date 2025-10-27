@@ -23,6 +23,10 @@ pub async fn run(
     let mut pdffile = song.builddir.clone();
     pdffile.push("main.pdf");
 
+    for x in &deps {
+        log::info!("song : {}, dep {:?}", song.title, x);
+    }
+
     if pdffile.try_exists()? {
         if !digest_has_changed(pdffile.clone(), deps.clone())? {
             return Ok(M::BuildType::NotTouched(pdffile));

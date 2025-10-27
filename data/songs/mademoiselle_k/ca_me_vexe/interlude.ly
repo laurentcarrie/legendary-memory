@@ -67,6 +67,8 @@ lead = {
     %    %<c\6_\thumb c'\4 e'\3 g'\2 b'\1>1
     %  }
 
+    \set Score.currentBarNumber = 89
+
     \new ChordNames {
       \song_chords
     }

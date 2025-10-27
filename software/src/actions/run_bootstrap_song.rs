@@ -2,6 +2,7 @@ use crate::actions::mount::{mount_from_data, mount_from_file};
 use crate::generate::handlebars_helpers::get_handlebar;
 use crate::helpers::io::{
     create_dir_all,
+    read_to_string,
     // read_to_string, read_to_vec_u8, write,
     write_string,
 };
@@ -16,29 +17,49 @@ pub async fn run(
     let mut target = song.builddir.clone();
     target.push("bootstrap");
 
-    let mut changed = 0;
+    let mut all_input_data = serde_yaml::to_string(&song)?;
 
     create_dir_all(&song.builddir)?;
-    changed += mount_from_data(
-        include_bytes!("../../others/texfiles/preamble.tex").to_vec(),
-        make_path(song.builddir.clone(), vec!["preamble.tex"]),
-    )?;
-    changed += mount_from_data(
-        include_bytes!("../../others/texfiles/main.tex").to_vec(),
-        make_path(song.builddir.clone(), vec!["main.tex"]),
-    )?;
-    assert!(make_path(song.builddir.clone(), vec!["main.tex"]).exists());
-    changed += mount_from_data(
-        include_bytes!("../../others/texfiles/tikzlibraryspline.code.tex").to_vec(),
-        make_path(song.builddir.clone(), vec!["tikzlibraryspline.code.tex"]),
-    )?;
-
-    changed += mount_from_data(
-        include_bytes!("../../others/texfiles/chords.tex").to_vec(),
-        make_path(song.builddir.clone(), vec!["chords.tex"]),
-    )?;
+    {
+        let target = make_path(song.builddir.clone(), vec!["preamble.tex"]);
+        mount_from_data(
+            include_bytes!("../../others/texfiles/preamble.tex").to_vec(),
+            target.clone(),
+        )?;
+        all_input_data += read_to_string(&target)?.as_str();
+    }
 
     {
+        let target = make_path(song.builddir.clone(), vec!["main.tex"]);
+        mount_from_data(
+            include_bytes!("../../others/texfiles/main.tex").to_vec(),
+            target.clone(),
+        )?;
+        all_input_data += read_to_string(&target)?.as_str();
+    }
+
+    assert!(make_path(song.builddir.clone(), vec!["main.tex"]).exists());
+    {
+        let target = make_path(song.builddir.clone(), vec!["tikzlibraryspline.code.tex"]);
+
+        mount_from_data(
+            include_bytes!("../../others/texfiles/tikzlibraryspline.code.tex").to_vec(),
+            target.clone(),
+        )?;
+        all_input_data += read_to_string(&target)?.as_str();
+    }
+
+    {
+        let target = make_path(song.builddir.clone(), vec!["chords.tex"]);
+        mount_from_data(
+            include_bytes!("../../others/texfiles/chords.tex").to_vec(),
+            target.clone(),
+        )?;
+        all_input_data += read_to_string(&target)?.as_str();
+    }
+
+    {
+        let target = make_path(song.builddir.clone(), vec!["macros.ly"]);
         let template =
             String::from_utf8(include_bytes!("../../others/lyfiles/macros.ly").to_vec())?;
         let mut h = get_handlebar()?;
@@ -46,13 +67,12 @@ pub async fn run(
         // let sections: Vec<Section> = world.sections.iter().map(|x| x.1.clone()).collect();
         // let j = handlebars::to_json(&sections);
         let output_data = h.render("t1", &song)?;
-        changed += mount_from_data(
-            output_data.into(),
-            make_path(song.builddir.clone(), vec!["macros.ly"]),
-        )?;
+        mount_from_data(output_data.into(), target.clone())?;
+        all_input_data += read_to_string(&target)?.as_str();
     }
 
     {
+        let target = make_path(song.builddir.clone(), vec!["data.tex"]);
         let mut p: PathBuf = song.builddir.clone();
         p.push("data.tex");
 
@@ -62,22 +82,20 @@ pub async fn run(
         let mut h = get_handlebar()?;
         h.register_template_string("t1", template)?;
         let output_data = h.render("t1", &song)?;
-        changed += mount_from_data(
-            output_data.into(),
-            make_path(song.builddir.clone(), vec!["data.tex"]),
-        )?;
+        mount_from_data(output_data.into(), target.clone())?;
+        all_input_data += read_to_string(&target)?.as_str();
     }
 
     {
+        let target = make_path(song.builddir.clone(), vec!["sections.tex"]);
+
         let template =
             String::from_utf8(include_bytes!("../../others/texfiles/sections.tex").to_vec())?;
         let mut h = get_handlebar()?;
         h.register_template_string("t1", template)?;
         let output_data = h.render("t1", &world)?;
-        changed += mount_from_data(
-            output_data.into(),
-            make_path(song.builddir.clone(), vec!["sections.tex"]),
-        )?;
+        mount_from_data(output_data.into(), target.clone())?;
+        all_input_data += read_to_string(&target)?.as_str();
     }
 
     let srcdir = PathBuf::from(song.srcdir.clone());
@@ -91,21 +109,22 @@ pub async fn run(
         pto.push("lyrics");
         create_dir_all(&pto)?;
     }
-    changed += mount_from_file(
-        make_path(srcdir.clone(), vec!["body.tex"]),
-        make_path(song.builddir.clone(), vec!["body.tex"]),
-    )?;
+    {
+        let pto = make_path(song.builddir.clone(), vec!["body.tex"]);
+        mount_from_file(make_path(srcdir.clone(), vec!["body.tex"]), pto.clone())?;
+        all_input_data += read_to_string(&pto)?.as_str();
+    }
 
-    changed += mount_from_file(
-        make_path(srcdir.clone(), vec!["add.tikz"]),
-        make_path(song.builddir.clone(), vec!["add.tikz"]),
-    )?;
+    {
+        let pto = make_path(song.builddir.clone(), vec!["add.tikz"]);
+        mount_from_file(make_path(srcdir.clone(), vec!["add.tikz"]), pto.clone())?;
+        all_input_data += read_to_string(&pto)?.as_str();
+    }
 
     for lyfile in &song.lilypondfiles {
-        changed += mount_from_file(
-            make_path(srcdir.clone(), vec![lyfile]),
-            make_path(song.builddir.clone(), vec![lyfile]),
-        )?;
+        let pto = make_path(song.builddir.clone(), vec![lyfile]);
+        mount_from_file(make_path(srcdir.clone(), vec![lyfile]), pto.clone())?;
+        all_input_data += read_to_string(&pto)?.as_str();
     }
 
     let lyrics_ids = &song
@@ -129,7 +148,8 @@ pub async fn run(
             vec!["lyrics", format!("{id}.tex").as_str()],
         );
 
-        changed += mount_from_file(pfrom, pto)?
+        mount_from_file(pfrom, pto.clone())?;
+        all_input_data += read_to_string(&pto)?.as_str();
     }
 
     {
@@ -154,7 +174,7 @@ pub async fn run(
             songtikzuserinput: String,
             // id: u32,
         }
-        let data = Xxx {
+        let datax = Xxx {
             song: &song,
             songtikzuserinput,
             // id: id.try_into()?,
@@ -162,17 +182,26 @@ pub async fn run(
         log::debug!("generate song.tikz");
         let mut h = get_handlebar()?;
         h.register_template_string("t1", template)?;
-        let output_data = h.render("t1", &data)?;
-        changed += mount_from_data(
-            output_data.into(),
+        let output_data = h.render("t1", &datax)?;
+        mount_from_data(
+            output_data.clone().into(),
             make_path(song.builddir.clone(), vec!["song.tikz"]),
         )?;
+        all_input_data += output_data.as_str();
     }
 
-    log::info!("bootstrap changed : {}", changed);
-    write_string(&target, &"".to_string())?;
+    let old_all_input_data = if target.exists() {
+        read_to_string(&target)?
+    } else {
+        "".to_string()
+    };
 
-    if changed > 0 {
+    let changed = old_all_input_data == all_input_data;
+
+    log::info!("bootstrap changed : {}", changed);
+    write_string(&target, &all_input_data.to_string())?;
+
+    if changed {
         Ok(M::BuildType::Rebuilt(target))
     } else {
         Ok(M::BuildType::NotTouched(target))
