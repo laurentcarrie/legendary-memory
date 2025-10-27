@@ -1,25 +1,9 @@
 %\node[anchor=east](b) at (D) { \tiny{ {{this.row_start_bar_number}} } } ;
 \path (CELL24) +(\xr/2,0) coordinate (X) ;
 %\node[circle,fill=red] (b) at (X) {};
-\node[anchor=west](b) at (CELL24) {\songly{chordsrefrain}} ;
+\node[anchor=west](b) at (X) {\songly{chordsrefrain}} ;
 %\coordinate (A) at (2*\xr+\xxxcolumnwidth/2,0) ;
-\coordinate (A) at (\xr*2+\xxxcolumnwidth/2,0) ;
-\path (A) ++(0,-.4) coordinate(B) ;
-\node[anchor=south ,rotate=0](b) at (A) {
+%\coordinate (A) at (\xr*2+\xxxcolumnwidth/2,0) ;
+%\path (A) ++(0,-.4) coordinate(B) ;
 
-        {
-        \Fontskrivan\bfseries\slshape
-        \fontsize{60pt}{50pt}\selectfont
-        \color{blue}
-        \songtitle
-    }
-} ;
 
-\node[anchor=south ,rotate=0](b) at (B) {
-    {
-        \Fontskrivan\bfseries\slshape
-        \fontsize{20pt}{10pt}\selectfont
-        \color{orange}
-        \songauthor
-    }
-    } ;

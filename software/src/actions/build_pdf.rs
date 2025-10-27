@@ -26,7 +26,7 @@ fn needs_rerun(path: PathBuf) -> Result<bool, Box<dyn std::error::Error>> {
 /// the lyrics, the additional tex files, the lilypond files
 fn compute_digest(song: &M::Song) -> Result<String, Box<dyn std::error::Error>> {
     let mut hasher = Sha256::new();
-    hasher.update(serde_json::to_string(&song)?.as_bytes());
+    hasher.update(serde_yaml::to_string(&song)?.as_bytes());
 
     let mut lyrics_files = song
         .structure
@@ -67,7 +67,7 @@ fn compute_digest(song: &M::Song) -> Result<String, Box<dyn std::error::Error>> 
 
     let mut all_files: Vec<PathBuf> = vec![];
     all_files.append(&mut lyrics_files);
-    for f in ["song.json", "body.tex", "add.tikz"] {
+    for f in ["song.yml", "body.tex", "add.tikz"] {
         all_files.push({
             let mut p = PathBuf::from(&song.srcdir.clone());
             p.push(f);

@@ -65,8 +65,8 @@ structure:
       section_body: '{\color{red} reggae}'
       rows:
         - Fsm | E | Csm7 | D7M E | x4
-  - id: nc
-    item: NewColumn
+  # - id: nc
+  #   item: NewColumn
   - id: soloseul
     item: !Chords
       title: solo seul
