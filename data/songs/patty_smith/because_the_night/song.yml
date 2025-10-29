@@ -1,0 +1,40 @@
+files:
+  lilypond: []
+  tex:
+    - lyrics.tex
+  wav: []
+info:
+  title: Because The Night
+  author: Patty Smith
+  tempo: 96
+  time_signature: null
+meta:
+  date: "2025-10-29"
+  digest: f2e6ed03c4e119fd962ec4ffe3f794bd
+structure:
+  - id: intro
+    item: !Chords
+      title: intro
+      type: intro
+      rows:
+        - Em C | D Em  | Em C | D Em
+  - id: couplet1
+    item: !Chords
+      title: couplet 1
+      type: couplet
+      rows:
+        - Em C | D Em  | Em C | D Em |  x2
+  - id: prerefrain1
+    item: !Chords
+      title: pré refrain 1
+      type: prerefrain
+      rows:
+        - C D | G D | Em C |C  D
+        - C D | G D| F |Em |
+        - B |B
+  - id: refrain1
+    item: !Chords
+      title: refrain 1
+      type: refrain
+      rows:
+        - Em C | C D | Em C | C D | x2
