@@ -17,24 +17,24 @@ structure:
       title: intro
       type: intro
       rows:
-        - Em C | D Em  | Em C | D Em
+        - Bm D | A Bm | Bm D | A Bm
   - id: couplet1
     item: !Chords
       title: couplet 1
       type: couplet
       rows:
-        - Em C | D Em  | Em C | D Em |  x2
+        - Bm D | A Bm | Bm D | A Bm | x2
   - id: prerefrain1
     item: !Chords
       title: pré refrain 1
       type: prerefrain
       rows:
-        - C D | G D | Em C |C  D
-        - C D | G D| F |Em |
-        - B |B
+        - G A | D A | Bm G |G  A
+        - D G | D A| C |Bm |
+        - Fs |Fs
   - id: refrain1
     item: !Chords
       title: refrain 1
       type: refrain
       rows:
-        - Em C | C D | Em C | C D | x2
+        - Bm G | G A | Bm G | G A | x2
