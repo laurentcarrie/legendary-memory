@@ -8,8 +8,8 @@ info:
   tempo: 96
   time_signature: null
 meta:
-  date: "2025-10-29"
-  digest: f2e6ed03c4e119fd962ec4ffe3f794bd
+  date: "2025-11-02"
+  digest: bc988bde1359922c8f32e87dd6010a37
 structure:
   - id: intro
     item: !Chords
@@ -57,14 +57,18 @@ structure:
         - G  A    | D   A   | Bm G    | G   A   |
         - D  G    | G   A   | G       | G
   - id: pont
-    item: !Chords 
+    item: !Chords
       title: pont
       type: pont
       rows:
-        - D    A    |     D       A      |         Bm       A | D A 
-        -   Bm        A  |      D        A | G D | G |
-        -    Bm       |     D     |        G       |   Fs
+        - D    A    |     D       A      |         Bm       A | D A
+        - Bm        A  |      D        A | G D | G |
+        - Bm       |     D     |        G       |   Fs
   - id: refrain3
     item: !Ref
       title: refrain 3
+      link: refrain1
+  - id: refrain4
+    item: !Ref
+      title: refrain 4
       link: refrain1
