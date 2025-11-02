@@ -1,7 +1,6 @@
 files:
   lilypond: []
-  tex:
-    - lyrics.tex
+  tex: []
   wav: []
 info:
   title: Because The Night
@@ -38,3 +37,34 @@ structure:
       type: refrain
       rows:
         - Bm G | G A | Bm G | G A | x2
+  - id: couplet2
+    item: !Ref
+      title: couplet 2
+      link: couplet1
+  - id: prerefrain2
+    item: !Ref
+      title: pré refrain 2
+      link: prerefrain1
+  - id: refrain2
+    item: !Ref
+      title: refrain 2
+      link: refrain1
+  - id: solo
+    item: !Chords
+      title: solo
+      type: solo
+      rows:
+        - G  A    | D   A   | Bm G    | G   A   |
+        - D  G    | G   A   | G       | G
+  - id: pont
+    item: !Chords 
+      title: pont
+      type: pont
+      rows:
+        - D    A    |     D       A      |         Bm       A | D A 
+        -   Bm        A  |      D        A | G D | G |
+        -    Bm       |     D     |        G       |   Fs
+  - id: refrain3
+    item: !Ref
+      title: refrain 3
+      link: refrain1
