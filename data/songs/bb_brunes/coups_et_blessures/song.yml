@@ -9,8 +9,8 @@ info:
   tempo: 120
   time_signature: null
 meta:
-  date: "2025-10-27"
-  digest: 316a969427aea975559d5e7a4615e73b
+  date: "2025-11-06"
+  digest: f256d32d3f39516acd1c98c5fc3e6473
 structure:
   - id: intro
     item: !Chords
@@ -47,8 +47,8 @@ structure:
       type: coupletb
       rows:
         - Ef | Ef | Cm | Cm | x2
-        - Af  Bf | Cm Fm | Af Bf | Cm F | 
-        - Af  Bf | Cm Fm | Af Bf | Ef | 
+        - Af  Bf | Cm Fm | Af Bf | Cm F |
+        - Af  Bf | Cm Fm | Af Bf | Ef |
   - id: refrain2
     item: !Ref
       title: refrain 2
@@ -62,8 +62,8 @@ structure:
       title: interlude
       type: interlude
       rows:
-        -  Af Bf  | Cm Fm |  Af Bf  |  Cm Dm 
-        -  Af Bf  | Cm Fm |  Af Bf  |  HRest
+        - Af Bf  | Cm Fm |  Af Bf  |  Cm Dm
+        - Af Bf  | Cm Fm |  Af Bf  |  HRest
   - id: refrain3
     item: !Ref
       title: refrain 3
