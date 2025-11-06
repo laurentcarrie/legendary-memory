@@ -17,32 +17,64 @@ structure:
       title: intro
       type: intro
       rows:
-        - D | D | Bm | Bm |
+        - Ef | Ef | Cm | Cm |
   - id: couplet1
     item: !Chords
       title: couplet 1
       type: couplet
       rows:
-        - D | D | Bm | Bm | x2
-        - G |  A | Bm | A |
-        - G | A | D |
+        - Ef | Ef | Cm | Cm | x2
+        - Af |  Bf | Cm | Bf |
+        - Af | Bf | Ef | HRest |
   - id: refrain1
     item: !Chords
       title: refrain 1
       type: refrain
       rows:
-        - G  A | D | G A | Bm
-        - A | A | G | G |
+        - Af  Bf | Ef | Af Bf | Cm
+        - Bf | Bf | Af | Af |
   - id: pont1
     item: !Chords
       title: pont 1
       type: pont
       rows:
-        - D | D | Bm |Bm | x2
+        - Ef | Ef | Cm | Cm | x2
+  - id: nr
+    item: !NewColumn
   - id: couplet2
     item: !Chords
       title: couplet 2
       type: coupletb
       rows:
-        - D | D | Bm | Bm | x2
-        - G  A | Bm F | G A | Bm D | x2
+        - Ef | Ef | Cm | Cm | x2
+        - Af  Bf | Cm Fm | Af Bf | Cm F | 
+        - Af  Bf | Cm Fm | Af Bf | Ef | 
+  - id: refrain2
+    item: !Ref
+      title: refrain 2
+      link: refrain1
+  - id: pont2
+    item: !Ref
+      title: pont 2
+      link: pont1
+  - id: interlude
+    item: !Chords
+      title: interlude
+      type: interlude
+      rows:
+        -  Af Bf  | Cm Fm |  Af Bf  |  Cm Dm 
+        -  Af Bf  | Cm Fm |  Af Bf  |  HRest
+  - id: refrain3
+    item: !Ref
+      title: refrain 3
+      link: refrain1
+  - id: pont3
+    item: !Ref
+      title: pont 3
+      link: pont1
+  - id: outtro
+    item: !Chords
+      title: final
+      type: intro
+      rows:
+        - Af | Bf | Cm | Ef| x4
