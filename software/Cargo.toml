@@ -68,6 +68,7 @@ tracing-subscriber = { version = "0.3", default-features = false, features = ["f
 petgraph = "0.8.2"
 colored_text = "0.3.0"
 log4rs = "1.4.0"
+yamake = {path="../../yamake/yamake"}
 
 #[[bin]]
 #name = "songbook-client"

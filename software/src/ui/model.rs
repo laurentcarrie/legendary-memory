@@ -114,6 +114,7 @@ impl TEstate for UISong {
         world: &World,
         force_rebuild: bool,
     ) {
+        unimplemented!();
         let _ = set.spawn(wrapped_build_pdf_song(
             tx.clone(),
             world.clone(),

@@ -184,6 +184,7 @@ pub async fn wrapped_build_pdf_song(
     song: M::Song,
     force_rebuild: bool,
 ) {
+    unimplemented!();
     match build_pdf_song(tx, world.clone(), song.clone(), force_rebuild).await {
         Ok(()) => (),
         Err(e) => log::error!(
@@ -252,6 +253,7 @@ pub async fn build_pdf_song(
             status: M::ELogType::Lilypond(lyfile.clone()),
         });
         tx.send(li).await?;
+        unimplemented!();
         match build_lytex(song.clone(), lyfile.clone()).await {
             Ok(()) => (),
             Err(_) => success = false,
