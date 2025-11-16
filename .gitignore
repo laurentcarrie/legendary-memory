@@ -19,3 +19,6 @@ indent.log
 *.log
 .vscode
 *.lock
+
+# Local Netlify folder
+.netlify

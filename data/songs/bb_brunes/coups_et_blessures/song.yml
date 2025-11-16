@@ -1,7 +1,9 @@
 files:
   lilypond:
-  tex:
-  wav:
+    - riff1.ly
+    - riff2.ly
+  tex: []
+  wav: []
 hash: 0
 info:
   title: Coups Et Blessures
@@ -17,28 +19,28 @@ structure:
       title: intro
       type: intro
       rows:
-        - Ef | Ef | Cm | Cm |
+        - D | D | Bm | Bm |
   - id: couplet1
     item: !Chords
       title: couplet 1
       type: couplet
       rows:
-        - Ef | Ef | Cm | Cm | x2
-        - Af |  Bf | Cm | Bf |
-        - Af | Bf | Ef | HRest |
+        - D | D | Bm | Bm | x2
+        - G |  A | Bm | A |
+        - G | A | D | HRest |
   - id: refrain1
     item: !Chords
       title: refrain 1
       type: refrain
       rows:
-        - Af  Bf | Ef | Af Bf | Cm
-        - Bf | Bf | Af | Af |
+        - G  A | D | G A | Bm
+        - A | A | G | G |
   - id: pont1
     item: !Chords
       title: pont 1
       type: pont
       rows:
-        - Ef | Ef | Cm | Cm | x2
+        - D | D | Bm | Bm | x2
   - id: nr
     item: !NewColumn
   - id: couplet2
@@ -46,9 +48,9 @@ structure:
       title: couplet 2
       type: coupletb
       rows:
-        - Ef | Ef | Cm | Cm | x2
-        - Af  Bf | Cm Fm | Af Bf | Cm F |
-        - Af  Bf | Cm Fm | Af Bf | Ef |
+        - D | D | Bm | Bm | x2
+        - G  A | Bm Em | G A | Bm Em |
+        - G  A | Bm Em | G A | D |
   - id: refrain2
     item: !Ref
       title: refrain 2
@@ -62,8 +64,8 @@ structure:
       title: interlude
       type: interlude
       rows:
-        - Af Bf  | Cm Fm |  Af Bf  |  Cm Dm
-        - Af Bf  | Cm Fm |  Af Bf  |  HRest
+        - G A  | Bm Em |  G A  |  Bm D
+        - G A  | Bm Em |  G A  |  HRest
   - id: refrain3
     item: !Ref
       title: refrain 3
@@ -77,4 +79,4 @@ structure:
       title: final
       type: intro
       rows:
-        - Af | Bf | Cm | Ef| x4
+        - G | A | Bm | D| x4
