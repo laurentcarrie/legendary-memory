@@ -1,5 +1,6 @@
 files:
-  lilypond: []
+  lilypond:
+    - solo.ly
   tex: []
   wav: []
 info:
