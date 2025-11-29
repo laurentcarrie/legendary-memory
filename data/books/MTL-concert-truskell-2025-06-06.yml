@@ -29,4 +29,4 @@ songs:
 - author: Oasis
   title: Rock 'N Roll Star
 lyrics_only: false
-cover_image: true
+cover_image: false

@@ -1,5 +1,8 @@
 files:
-  lilypond: []
+  lilypond:
+    - couplet.ly
+    - prerefrain.ly
+    - solo.ly
   tex: []
   wav: []
 info:
@@ -24,7 +27,7 @@ structure:
       type: couplet
       section_body: null
       rows:
-        - E| E | Fs | Gs | x2
+        - E| E | Fs | Gs | x4
   - id: prerefrain1
     item: !Chords
       title: pré refrain 1
@@ -38,13 +41,23 @@ structure:
       type: refrain
       section_body: null
       rows:
-        - 'E| B | Fs | Gsm | x4 '
+        - 'E| B | Fs | Gsm | x2'
+  - id: fill
+    item: !Chords
+      title: fill
+      type: fill
+      section_body: null
+      rows :
+        - 'HRest'
   - id: couplet2
-    item: !Ref
+    item: !Chords
       title: couplet 2
       section_body: null
-      type: null
-      link: couplet1
+      type: coupletb
+      rows:
+        - E| E | Fs | Gs | x2
+        - E| B | Fs | Gs | x2
+
   - id: prerefrain2
     item: !Ref
       title: pré refrain 2
@@ -70,4 +83,4 @@ structure:
       type: intro
       section_body: null
       rows:
-        - E| E | Fs | Gsm | x2
+        - E| G | Fs | Gsm | x4

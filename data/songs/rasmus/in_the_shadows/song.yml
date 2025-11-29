@@ -17,26 +17,31 @@ structure:
       type: intro
       section_body: null
       rows:
-        - D | Fsm | Bm | Fsm | x2
+        # - D | Fsm | Bm | Fsm | x2
+        - E | Gsm | Csm | Gsm | x2
   - id: couplet1
     item: !Chords
       title: couplet 1
       type: couplet
       rows:
-        - Bm | Fsm | Bm | Fsm | x2
-        - D |Fsm | Bm | Fsm | x2
+        # - Bm | Fsm | Bm | Fsm | x2
+        # - D |Fsm | Bm | Fsm | x2        
+        - Em | Gsm | Csm | Gsm | x2
+        - E  | Gsm | Csm | Gsm | x2
   - id: refrain1
     item: !Chords
       title: refrain 1
       type: refrain
       rows:
-        - D | Fsm | Bm | Fsm | x2
+        # - D | Fsm | Bm | Fsm | x2
+        - E | Gsm | Gsm | Gsm | x2
   - id: interlude
     item: !Chords
       title: interlude
       type: interlude
       rows:
-        - D | Fsm | Bm | Fsm | x2
+        # - D | Fsm | Bm | Fsm | x2
+        - E | Gsm | Csm | Gsm | x2
   - id: couplet2
     item: !Ref
       title: couplet 2
@@ -52,8 +57,10 @@ structure:
       title: pont
       type: pont
       rows:
-        - D | D | E Fsm | Fsm A |
-        - Bm | Bm | Fsm | Fsm
+        # - D | D | E Fsm | Fsm A |
+        # - Bm | Bm | Fsm | Fsm       
+        - E | E | Fs Gsm | Gsm B |
+        - Csm | Csm | Gsm | Gsm
   - id: refrain3
     item: !Ref
       title: refrain 3
