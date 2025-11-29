@@ -1,0 +1,2 @@
+\path(CELL28) ++(.5*\xr,-.5*\yr) coordinate (A) ;
+\node[anchor=south](b) at (A) {\color{red} pas de riff sur refrain} ;
