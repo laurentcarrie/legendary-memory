@@ -11,8 +11,8 @@ info:
   tempo: 105
   time_signature: null
 meta:
-  date: "2025-10-26"
-  digest: ac7870efc879f4987e067dd8ce46d6ad
+  date: "2025-11-29"
+  digest: 67db264bf35004a21287203c74a25654
 structure:
   - id: intro
     item: !Chords
@@ -47,7 +47,7 @@ structure:
       title: fill
       type: fill
       section_body: null
-      rows :
+      rows:
         - 'HRest'
   - id: couplet2
     item: !Chords
@@ -57,7 +57,6 @@ structure:
       rows:
         - E| E | Fs | Gs | x2
         - E| B | Fs | Gs | x2
-
   - id: prerefrain2
     item: !Ref
       title: pré refrain 2
