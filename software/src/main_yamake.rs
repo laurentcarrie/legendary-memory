@@ -15,13 +15,16 @@ use log4rs::{
 };
 use std::path::PathBuf;
 
-use crate::actions::xxx::build;
-
 pub mod actions;
 pub mod generate;
 pub mod helpers;
 pub mod model;
 pub mod ui;
+pub mod yamakegraph;
+
+use yamakegraph::graph::make_graph;
+
+use crate::model::world::make;
 
 /// cli doc
 #[derive(Debug, FromArgs)]
@@ -84,24 +87,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let cli: Cli = argh::from_env();
 
-    let pb = |s, m| {
-        let s = PathBuf::from(s);
+    let world = make(
+        &PathBuf::from(cli.songdir),
+        &PathBuf::from(cli.bookdir),
+        &PathBuf::from(cli.builddir),
+    )?;
 
-        if s.is_relative() {
-            Err(format!("{m} has to be an absolute path"))
-        } else {
-            Ok(s)
-        }
-    };
+    make_graph(world).await?;
 
-    build(
-        pb(cli.songdir, "songdir")?,
-        pb(cli.bookdir, "bookdir")?,
-        pb(cli.builddir, "builddir")?,
-        cli.force,
-        cli.nb_workers,
-    )
-    .await?;
     log::info!("SUCCESS");
     Ok(())
 }

@@ -1,4 +1,5 @@
-.PHONY: all lambda deploy-lambda build docker base-image guitarjpg x gdrive
+.PHONY: all lambda deploy-lambda build docker base-image guitarjpg x gdrive help
+.DEFAULT: help
 
 here := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 root := $(dir $(realpath ${here}))
@@ -7,6 +8,16 @@ dataimagesdir := ${root}data/images
 datasongsdir := ${root}data/songs
 databooksdir := ${root}data/books
 # databooksdir := ${root}data/empty
+
+include colorprint
+
+
+help: ## Show this help message
+	@echo "Available commands:"
+# 	echo $(MAKEFILE_LIST)
+#	was $(MAKEFILE_LIST) but fails if there is an include. So we use Makefile
+	@grep -E '^[ a-zA-Z_0-9-]+:.*?## .*$$' Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "$(Red)%-20s$(Color_Off) : $(Blue)%s$(Color_Off)\n", $$1, $$2}'
+
 
 x:
 	echo "here is ${here}"
@@ -22,16 +33,18 @@ guitarjpg:
 	cp ${dataimagesdir}/myguitar.jpg ${builddir}/books/myguitar.jpg
 
 
-help:
-	echo """
-	build : build binary
-	"""
 
-run: build guitarjpg
+run: build guitarjpg ## run the songbook generation
 	mkdir -p ${builddir}
 # 	rm -rf ${builddir}/songs/bb_brunes
 	echo "" > logs/songbook.log
 	./target/release/songbook-cli --force --nb-workers 8 ${datasongsdir} ${databooksdir} ${builddir}
+
+run-y: build guitarjpg ## run the songbook generation
+	mkdir -p ${builddir}
+	echo "" > logs/songbook.log
+	./target/release/songbook-yamake --force --nb-workers 8 ${datasongsdir} ${databooksdir} ${builddir}
+
 
 run-k: build guitarjpg
 	./target/release/songbook-cli --force --nb-workers 12 $(realpath ../data/songs/red_hot_chili_peppers/under_the_bridge) $(realpath ../data/empty) $(realpath ../build)
@@ -52,9 +65,10 @@ run-x:
 
 
 
-build:
+build: ## build the CLI binary
 	cargo fmt
 	cargo build --release --bin songbook-cli
+	cargo build --release --bin songbook-yamake
 
 lambda:
 	cargo lambda build --no-default-features --release --bin songbook-lambda
@@ -92,7 +106,6 @@ lambda-run:
 
 check-identity:
 	aws sts get-caller-identity --profile default
-	aws sts get-caller-identity --profile bayer
 
 
 batch-run:
@@ -105,6 +118,6 @@ batch-push: docker-login
 	docker tag laurent/batch:latest  579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/batch:latest
 	docker push 579871531410.dkr.ecr.eu-west-3.amazonaws.com/laurent/batch:latest
 
-gdrive: run
+gdrive: run ## deploy to google drive
 	rm -rf ${builddir}/delivery/digest 
 	${here}/others/shfiles/make_gdrive.sh /zik/songs ${builddir}/delivery 
