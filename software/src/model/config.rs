@@ -261,7 +261,7 @@ fn structure_of_structure(
     (barcount, si)
 }
 
-fn build_relative_path_of_source_absolute_path(
+pub fn build_relative_path_of_source_absolute_path(
     songdir: &Path,
     builddir: &Path,
     p: PathBuf,
@@ -386,13 +386,15 @@ fn song_of_usersong(
     song_srcdir: PathBuf,
     song_builddir: PathBuf,
 ) -> Result<Song, Box<dyn std::error::Error>> {
+    log::info!("{:?}", song_srcdir);
     let song = Song {
-        srcdir: song_srcdir
-            .parent()
-            .ok_or("bad srcdir, no parent".to_string())?
-            .to_str()
-            .ok_or("bad srcdir".to_string())?
-            .to_string(),
+        // srcdir: song_srcdir
+        //     .parent()
+        //     .ok_or("bad srcdir, no parent".to_string())?
+        //     .to_str()
+        //     .ok_or("bad srcdir".to_string())?
+        //     .to_string(),
+        srcdir: song_srcdir.parent().expect("parent").to_path_buf(),
         texfiles: uconf.files.tex.clone(),
         author: uconf.info.author.clone(),
         tempo: uconf.info.tempo,

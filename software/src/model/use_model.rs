@@ -80,7 +80,7 @@ pub struct Song {
     pub wavfiles: Vec<String>,
     pub date: String,
     pub structure: Vec<StructureItem>,
-    pub srcdir: String,
+    pub srcdir: PathBuf,
 }
 
 #[derive(Serialize, Deserialize, Eq, PartialEq, Debug, Clone, Hash)]

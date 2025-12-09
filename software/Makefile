@@ -5,9 +5,10 @@ here := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 root := $(dir $(realpath ${here}))
 builddir := ${root}build
 dataimagesdir := ${root}data/images
-datasongsdir := ${root}data/songs
-databooksdir := ${root}data/books
-# databooksdir := ${root}data/empty
+# datasongsdir := ${root}data/songs
+datasongsdir := ${root}data/songs/the_strokes/the_end_has_no_end
+# databooksdir := ${root}data/books
+databooksdir := ${root}data/empty
 
 include colorprint
 
