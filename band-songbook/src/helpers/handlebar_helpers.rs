@@ -1,7 +1,9 @@
 use crate::chords::glyph::glyph_of_baritem;
 use crate::chords::model::BarItem;
 use crate::chords::parse::parse;
-use handlebars::{Context, Handlebars, Helper, Output, RenderContext, RenderError, RenderErrorReason};
+use handlebars::{
+    Context, Handlebars, Helper, Output, RenderContext, RenderError, RenderErrorReason,
+};
 
 /// Returns the length of an array
 pub fn len_helper(
@@ -25,9 +27,12 @@ pub fn number_of_bars_helper(
     _: &mut RenderContext,
     out: &mut dyn Output,
 ) -> Result<(), RenderError> {
-    let input = h.param(0)
+    let input = h
+        .param(0)
         .and_then(|v| v.value().as_str())
-        .ok_or(RenderErrorReason::Other("missing input parameter".to_string()))?;
+        .ok_or(RenderErrorReason::Other(
+            "missing input parameter".to_string(),
+        ))?;
 
     let count = parse(input)
         .map_err(|e| RenderErrorReason::Other(e.to_string()))?
@@ -45,13 +50,19 @@ pub fn bar_helper(
     _: &mut RenderContext,
     out: &mut dyn Output,
 ) -> Result<(), RenderError> {
-    let input = h.param(0)
+    let input = h
+        .param(0)
         .and_then(|v| v.value().as_str())
-        .ok_or(RenderErrorReason::Other("missing input parameter".to_string()))?;
+        .ok_or(RenderErrorReason::Other(
+            "missing input parameter".to_string(),
+        ))?;
 
-    let index = h.param(1)
+    let index = h
+        .param(1)
         .and_then(|v| v.value().as_u64())
-        .ok_or(RenderErrorReason::Other("missing index parameter".to_string()))? as usize;
+        .ok_or(RenderErrorReason::Other(
+            "missing index parameter".to_string(),
+        ))? as usize;
 
     let result = parse(input)
         .ok()
@@ -80,13 +91,19 @@ pub fn bar_glyph_helper(
     _: &mut RenderContext,
     out: &mut dyn Output,
 ) -> Result<(), RenderError> {
-    let input = h.param(0)
+    let input = h
+        .param(0)
         .and_then(|v| v.value().as_str())
-        .ok_or(RenderErrorReason::Other("missing input parameter".to_string()))?;
+        .ok_or(RenderErrorReason::Other(
+            "missing input parameter".to_string(),
+        ))?;
 
-    let index = h.param(1)
+    let index = h
+        .param(1)
         .and_then(|v| v.value().as_u64())
-        .ok_or(RenderErrorReason::Other("missing index parameter".to_string()))? as usize;
+        .ok_or(RenderErrorReason::Other(
+            "missing index parameter".to_string(),
+        ))? as usize;
 
     let result = parse(input)
         .ok()
@@ -94,7 +111,7 @@ pub fn bar_glyph_helper(
         .map(|bar| {
             bar.items
                 .iter()
-                .map(|item| glyph_of_baritem(item))
+                .map(glyph_of_baritem)
                 .collect::<Vec<_>>()
                 .join(" ")
         })
@@ -113,28 +130,31 @@ pub fn bar_rects_helper(
     _: &mut RenderContext,
     out: &mut dyn Output,
 ) -> Result<(), RenderError> {
-    let input = h.param(0)
+    let input = h
+        .param(0)
         .and_then(|v| v.value().as_str())
-        .ok_or(RenderErrorReason::Other("missing input parameter".to_string()))?;
+        .ok_or(RenderErrorReason::Other(
+            "missing input parameter".to_string(),
+        ))?;
 
-    let color = h.param(1)
+    let color = h
+        .param(1)
         .and_then(|v| v.value().as_str())
         .unwrap_or("gray");
 
-    let parsed = parse(input)
-        .map_err(|e| RenderErrorReason::Other(e.to_string()))?;
+    let parsed = parse(input).map_err(|e| RenderErrorReason::Other(e.to_string()))?;
 
     for (i, bar) in parsed.bars.iter().enumerate() {
-        let glyphs: Vec<_> = bar.items
+        let glyphs: Vec<_> = bar
+            .items
             .iter()
-            .map(|item| glyph_of_baritem(item))
+            .map(glyph_of_baritem)
             .collect();
 
         if glyphs.len() >= 2 {
             // Two or more chords: draw rectangle, then position first chord up 10%, second down 10%
             let draw_cmd = format!(
-                "    \\draw[draw=black, fill={}] (\\columnleft + {}*\\xr, \\currentline) rectangle ++(\\xr, -\\yr);\n",
-                color, i
+                "    \\draw[draw=black, fill={color}] (\\columnleft + {i}*\\xr, \\currentline) rectangle ++(\\xr, -\\yr);\n"
             );
             out.write(&draw_cmd)?;
 
@@ -154,16 +174,14 @@ pub fn bar_rects_helper(
 
             // Draw oblique bar
             let oblique_cmd = format!(
-                "    \\draw[draw=black] (\\columnleft + {}*\\xr + \\xr, \\currentline) -- ++(-\\xr, -\\yr);\n",
-                i
+                "    \\draw[draw=black] (\\columnleft + {i}*\\xr + \\xr, \\currentline) -- ++(-\\xr, -\\yr);\n"
             );
             out.write(&oblique_cmd)?;
         } else {
             // Single chord: original behavior
             let glyph = glyphs.join(" ");
             let draw_cmd = format!(
-                "    \\draw[draw=black, fill={}] (\\columnleft + {}*\\xr, \\currentline) rectangle ++(\\xr, -\\yr) node[midway] {{ {} }};\n",
-                color, i, glyph
+                "    \\draw[draw=black, fill={color}] (\\columnleft + {i}*\\xr, \\currentline) rectangle ++(\\xr, -\\yr) node[midway] {{ {glyph} }};\n"
             );
             out.write(&draw_cmd)?;
         }

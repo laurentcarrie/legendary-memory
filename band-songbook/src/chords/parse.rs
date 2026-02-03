@@ -9,7 +9,7 @@ pub enum ParseError {
 impl std::fmt::Display for ParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ParseError::InvalidChord(s) => write!(f, "Invalid chord: {}", s),
+            ParseError::InvalidChord(s) => write!(f, "Invalid chord: {s}"),
         }
     }
 }
@@ -29,7 +29,8 @@ fn parse_item(s: &str) -> Result<BarItem, ParseError> {
     let mut chars = s.chars().peekable();
 
     // First letter must be A-G
-    let name = chars.next()
+    let name = chars
+        .next()
         .filter(|c| ('A'..='G').contains(c))
         .map(|c| c.to_string())
         .ok_or_else(|| ParseError::InvalidChord(s.to_string()))?;
@@ -37,7 +38,10 @@ fn parse_item(s: &str) -> Result<BarItem, ParseError> {
     // Check for accidental (# or s for sharp, b or f for flat)
     // Note: 's' for sharp must not be followed by 'u' (to avoid confusion with 'sus')
     let accidental = match chars.peek() {
-        Some('#') => { chars.next(); Accidental::Sharp }
+        Some('#') => {
+            chars.next();
+            Accidental::Sharp
+        }
         Some('s') => {
             let mut lookahead = chars.clone();
             lookahead.next();
@@ -48,7 +52,10 @@ fn parse_item(s: &str) -> Result<BarItem, ParseError> {
                 Accidental::Sharp
             }
         }
-        Some('b') | Some('f') => { chars.next(); Accidental::Flat }
+        Some('b') | Some('f') => {
+            chars.next();
+            Accidental::Flat
+        }
         _ => Accidental::None,
     };
 
@@ -89,7 +96,12 @@ fn parse_item(s: &str) -> Result<BarItem, ParseError> {
         return Err(ParseError::InvalidChord(s.to_string()));
     }
 
-    Ok(BarItem::Chord(Chord { name, accidental, minor, alteration }))
+    Ok(BarItem::Chord(Chord {
+        name,
+        accidental,
+        minor,
+        alteration,
+    }))
 }
 
 /// Parses a string of chords separated by | into a ParsedRow
@@ -102,8 +114,8 @@ pub fn parse(input: &str) -> Result<ParsedRow, ParseError> {
     // Check if the last part is a repeat marker (xN)
     let (bar_parts, repeat) = if let Some(last) = parts.last() {
         let trimmed = last.trim();
-        if trimmed.starts_with('x') {
-            if let Ok(n) = trimmed[1..].parse::<u32>() {
+        if let Some(stripped) = trimmed.strip_prefix('x') {
+            if let Ok(n) = stripped.parse::<u32>() {
                 (&parts[..parts.len() - 1], Repeat { n })
             } else {
                 (&parts[..], Repeat { n: 1 })
@@ -120,13 +132,16 @@ pub fn parse(input: &str) -> Result<ParsedRow, ParseError> {
         .map(|bar_str| {
             let items: Result<Vec<BarItem>, ParseError> = bar_str
                 .split_whitespace()
-                .map(|item_str| parse_item(item_str))
+                .map(parse_item)
                 .collect();
             Ok(Bar { items: items? })
         })
         .collect();
 
-    let bars = bars?.into_iter().filter(|bar| !bar.items.is_empty()).collect();
+    let bars = bars?
+        .into_iter()
+        .filter(|bar| !bar.items.is_empty())
+        .collect();
 
     Ok(ParsedRow { bars, repeat })
 }
@@ -190,6 +205,9 @@ mod tests {
         let input = "X";
         let result = parse(input);
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), ParseError::InvalidChord("X".to_string()));
+        assert_eq!(
+            result.unwrap_err(),
+            ParseError::InvalidChord("X".to_string())
+        );
     }
 }

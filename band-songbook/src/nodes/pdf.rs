@@ -53,7 +53,7 @@ impl GNode for PdfFile {
 
         // Ensure workdir exists
         if let Err(e) = std::fs::create_dir_all(&workdir) {
-            log::error!("Failed to create workdir: {}", e);
+            log::error!("Failed to create workdir: {e}");
             return false;
         }
 
@@ -63,7 +63,11 @@ impl GNode for PdfFile {
         let logs_dir = stdout_path.parent().unwrap_or(Path::new(""));
         let _ = std::fs::create_dir_all(logs_dir);
 
-        log::info!("Building {} in {}", pdf_filename.to_string_lossy(), workdir.display());
+        log::info!(
+            "Building {} in {}",
+            pdf_filename.to_string_lossy(),
+            workdir.display()
+        );
 
         for run in 1..=3 {
             let output = Command::new("lualatex")
@@ -79,35 +83,48 @@ impl GNode for PdfFile {
                     let _ = std::fs::write(&stdout_path, &stdout);
                     stdout
                 }
-                Err(e) => {
-                    log::error!("Failed to run lualatex: {}", e);
+                Err(_e) => {
+                    log::error!("Failed to run lualatex, look at error in log files");
                     return false;
                 }
             };
 
             // Check if PDF was created (lualatex may exit with error but still create PDF)
             if !pdf_path.exists() {
-                log::error!("lualatex did not create PDF after run {}", run);
+                log::error!(
+                    "lualatex did not create PDF after run {} ; {}",
+                    run,
+                    &self.pathbuf().display()
+                );
                 // Log the output for debugging
-                log::error!("LaTeX output: {}", stdout_content);
+                // log::error!("LaTeX output: {}", stdout_content);
                 return false;
             }
 
             // Log LaTeX errors but don't fail if PDF was created (nonstopmode continues)
             if stdout_content.contains("! LaTeX Error:") {
-                log::warn!("LaTeX errors detected in {} (PDF still created)", self.path.display());
+                log::warn!(
+                    "LaTeX errors detected in {} (PDF still created)",
+                    self.path.display()
+                );
+            }
+
+            // Fail on undefined control sequence
+            if stdout_content.contains("! Undefined control sequence.") {
+                log::error!("Undefined control sequence in {}", self.path.display());
+                return false;
             }
 
             // Check if we need to rerun for references
             let needs_rerun = stdout_content.contains("Rerun to get the references right");
 
             if !needs_rerun {
-                log::info!("LaTeX completed after {} run(s)", run);
+                log::info!("LaTeX completed after {run} run(s)");
                 break;
             }
 
             if run < 3 {
-                log::info!("LaTeX needs rerun for references (run {}/3)", run);
+                log::info!("LaTeX needs rerun for references (run {run}/3)");
             }
         }
 
@@ -120,9 +137,23 @@ impl GNode for PdfFile {
         sandbox: &Path,
         predecessors: &[&(dyn GNode + Send + Sync)],
     ) -> (bool, Vec<PathBuf>) {
+        let (_, inputs, _) = self.scan_with_toplevel_ly(sandbox, predecessors);
+        (true, inputs)
+    }
+}
+
+impl PdfFile {
+    /// Scan for inputs, returning (success, all_inputs, toplevel_ly_files)
+    /// toplevel_ly_files are .ly files directly referenced from tex via \lyfile{} or \songly{}
+    pub fn scan_with_toplevel_ly(
+        &self,
+        sandbox: &Path,
+        predecessors: &[&(dyn GNode + Send + Sync)],
+    ) -> (bool, Vec<PathBuf>, Vec<PathBuf>) {
         use std::collections::HashSet;
 
         let mut inputs = Vec::new();
+        let mut toplevel_ly = Vec::new();
         let mut visited: HashSet<PathBuf> = HashSet::new();
 
         // Start with predecessor paths
@@ -143,6 +174,11 @@ impl GNode for PdfFile {
             };
 
             for line in content.lines() {
+                // Skip LaTeX comments
+                if line.trim_start().starts_with('%') {
+                    continue;
+                }
+                // Detect \input{xxx} -> xxx.tex
                 if let Some(start) = line.find("\\input{") {
                     let rest = &line[start + 7..];
                     if let Some(end) = rest.find('}') {
@@ -157,10 +193,43 @@ impl GNode for PdfFile {
                         to_scan.push(input_path);
                     }
                 }
+                // Detect \lyfile{xxx} or \songly{xxx} -> xxx.ly (top-level ly files)
+                for (pattern, len) in [("\\lyfile{", 8), ("\\songly{", 8)] {
+                    if let Some(start) = line.find(pattern) {
+                        let rest = &line[start + len..];
+                        if let Some(end) = rest.find('}') {
+                            let ly_file = &rest[..end];
+                            let mut ly_path = parent_dir.join(ly_file);
+                            // Add .ly extension if no extension present
+                            if ly_path.extension().is_none() {
+                                ly_path.set_extension("ly");
+                            }
+                            inputs.push(ly_path.clone());
+                            toplevel_ly.push(ly_path.clone());
+                            // Add to scan queue for recursive scanning of .ly files
+                            to_scan.push(ly_path);
+                        }
+                    }
+                }
+                // Detect \include "filename" in lilypond files (included, not top-level)
+                if let Some(start) = line.find("\\include") {
+                    let rest = &line[start + 8..];
+                    // Find opening quote
+                    if let Some(quote_start) = rest.find('"') {
+                        let after_quote = &rest[quote_start + 1..];
+                        // Find closing quote
+                        if let Some(quote_end) = after_quote.find('"') {
+                            let include_file = &after_quote[..quote_end];
+                            let include_path = parent_dir.join(include_file);
+                            inputs.push(include_path.clone());
+                            // Add to scan queue for recursive scanning
+                            to_scan.push(include_path);
+                        }
+                    }
+                }
             }
         }
 
-        (true, inputs)
+        (true, inputs, toplevel_ly)
     }
-
 }

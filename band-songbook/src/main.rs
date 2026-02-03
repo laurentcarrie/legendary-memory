@@ -7,12 +7,20 @@ use std::process::ExitCode;
 /// Build all songs in a directory
 struct Args {
     /// source directory containing song.yml files
-    #[argh(positional)]
+    #[argh(option, short = 's')]
     srcdir: PathBuf,
 
     /// output directory for built files
-    #[argh(positional)]
+    #[argh(option, short = 'o')]
     sandbox: PathBuf,
+
+    /// path to settings.yml file
+    #[argh(option, short = 'c')]
+    settings: Option<PathBuf>,
+
+    /// pattern to filter songs (e.g. "black_keys" or "red_hot*")
+    #[argh(option, short = 'p')]
+    pattern: Option<String>,
 }
 
 fn main() -> ExitCode {
@@ -25,17 +33,26 @@ fn main() -> ExitCode {
     }
 
     if let Err(e) = std::fs::create_dir_all(&args.sandbox) {
-        eprintln!("Error: failed to create sandbox '{}': {}", args.sandbox.display(), e);
+        eprintln!(
+            "Error: failed to create sandbox '{}': {}",
+            args.sandbox.display(),
+            e
+        );
         return ExitCode::from(1);
     }
 
-    let (success, g) = make_all(&args.srcdir, &args.sandbox);
+    let (success, g) = make_all(
+        &args.srcdir,
+        &args.sandbox,
+        args.settings.as_deref(),
+        args.pattern.as_deref(),
+    );
 
     // Write mermaid graph to sandbox
     let graph_path = args.sandbox.join("graph.md");
     let graph_content = format!("# graph\n\n```mermaid\n\n{}\n```\n", g.to_mermaid());
     if let Err(e) = std::fs::write(&graph_path, graph_content) {
-        eprintln!("Warning: failed to write graph.md: {}", e);
+        eprintln!("Warning: failed to write graph.md: {e}");
     }
 
     if success {

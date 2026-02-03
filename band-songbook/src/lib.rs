@@ -13,17 +13,41 @@ use std::path::Path;
 
 pub use yamake::model::G;
 
+/// Checks if pattern is a subsequence of text (fuzzy match).
+/// Each character in pattern must appear in text in order, but not necessarily contiguously.
+fn fuzzy_match(text: &str, pattern: &str) -> bool {
+    let mut text_chars = text.chars().peekable();
+    for pat_char in pattern.chars() {
+        loop {
+            match text_chars.next() {
+                Some(c) if c == pat_char => break,
+                Some(_) => continue,
+                None => return false,
+            }
+        }
+    }
+    true
+}
+
 /// Discovers all songs in the given directory and builds them all.
 /// Returns (success, graph) where success is true if all builds succeeded.
-pub fn make_all(srcdir: &Path, sandbox: &Path) -> (bool, G) {
+/// If settings_path is provided, it will be copied to sandbox/settings.yml.
+/// If pattern is provided, only songs matching the pattern will be built.
+pub fn make_all(
+    srcdir: &Path,
+    sandbox: &Path,
+    settings_path: Option<&Path>,
+    pattern: Option<&str>,
+) -> (bool, G) {
     let songs = discover(srcdir);
     let mut g = G::new(srcdir.to_path_buf(), sandbox.to_path_buf());
 
-    // Add settings.yml as root node if it exists (so it gets copied to sandbox)
-    let colors_path = srcdir.join("settings.yml");
-    if colors_path.exists() {
-        let colors_node = TexFile::new("settings.yml".into());
-        let _ = g.add_root_node(colors_node);
+    // Copy settings.yml to sandbox if provided
+    if let Some(settings) = settings_path {
+        let dest = sandbox.join("settings.yml");
+        if let Err(e) = std::fs::copy(settings, &dest) {
+            log::error!("Failed to copy settings.yml to sandbox: {e}");
+        }
     }
 
     if songs.is_empty() {
@@ -44,6 +68,17 @@ pub fn make_all(srcdir: &Path, sandbox: &Path) -> (bool, G) {
             .ok()
             .and_then(|content| serde_yaml::from_str(&content).ok());
 
+        // Filter by pattern if provided (fuzzy match against author + title)
+        if let Some(pat) = pattern {
+            let matches = song.as_ref().is_some_and(|s| {
+                let search_str = format!("{} {}", s.info.author, s.info.title).to_lowercase();
+                fuzzy_match(&search_str, &pat.to_lowercase())
+            });
+            if !matches {
+                continue;
+            }
+        }
+
         // Create SongYml node
         let song_node = SongYml::new(rel_path.clone());
         let song_idx = match g.add_root_node(song_node) {
@@ -61,7 +96,8 @@ pub fn make_all(srcdir: &Path, sandbox: &Path) -> (bool, G) {
             for item in &song_data.structure {
                 match &item.item {
                     SectionItem::Chords(_) | SectionItem::Ref(_) => {
-                        let lyrics_path = parent_dir.join("lyrics").join(format!("{}.tex", item.id));
+                        let lyrics_path =
+                            parent_dir.join("lyrics").join(format!("{}.tex", item.id));
                         let lyrics_node = TexFile::new(lyrics_path);
                         let _ = g.add_root_node(lyrics_node);
                     }

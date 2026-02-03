@@ -12,7 +12,7 @@ fn main() {
     std::fs::create_dir_all(sandbox).expect("Failed to create sandbox directory");
 
     println!("Building all songs...");
-    let (success, _g) = make_all(srcdir, sandbox);
+    let (success, _g) = make_all(srcdir, sandbox, None, None);
 
     if success {
         println!("Build succeeded!");
