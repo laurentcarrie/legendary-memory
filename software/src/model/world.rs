@@ -1,12 +1,13 @@
 use crate::model::config::{decode_book, decode_song};
 use crate::model::get_config_files::{get_book_json_paths, get_song_json_paths};
 use crate::model::input_model::UserWorld;
-use crate::model::model::{Section, World};
+use crate::model::use_model::{Section, World};
 use serde_json;
 use std::collections::BTreeMap;
+// use std::error::Error;
 use std::fs::File;
 use std::io::Write;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 fn get_sections() -> BTreeMap<String, Section> {
     let data =
@@ -22,16 +23,27 @@ fn get_sections() -> BTreeMap<String, Section> {
 pub fn make(
     srcdir: &PathBuf,
     srcbookdir: &PathBuf,
-    builddir: &PathBuf,
+    builddir: &Path,
 ) -> Result<World, Box<dyn std::error::Error>> {
     // the available song sections, for rendering
     let sections = get_sections();
 
+    log::info!("x");
     // for all song.json found in the songdir tree
-    let (songs, broken_songs): (Vec<_>, Vec<_>) = get_song_json_paths(&srcdir)
+    let (songs, broken_songs): (Vec<_>, Vec<_>) = get_song_json_paths(srcdir)
         .into_iter()
-        .map(|p| (p.clone(), decode_song(&builddir, &sections, &p)))
+        .map(|p| (p.clone(), decode_song(builddir, &sections, &p)))
         .partition(|x| x.1.is_ok());
+
+    log::info!("y");
+    {
+        for b in &broken_songs {
+            log::info!("{:?}", b.0);
+            if b.1.is_err() {
+                log::error!("{:?}", b.1);
+            }
+        }
+    }
 
     let (songs, usongs_with_path): (Vec<_>, Vec<_>) =
         songs.into_iter().map(|x| x.1.unwrap()).unzip();
@@ -40,12 +52,12 @@ pub fn make(
         .map(|(p, e)| (p, e.err().unwrap().to_string()))
         .collect();
 
-    let (books, broken_books): (Vec<_>, Vec<_>) = get_book_json_paths(&srcbookdir)
+    let (books, broken_books): (Vec<_>, Vec<_>) = get_book_json_paths(srcbookdir)
         .into_iter()
         .map(|p| {
             (
                 p.clone(),
-                decode_book(&srcdir, &builddir, &p, &usongs_with_path),
+                decode_book(srcdir, builddir, &p, &usongs_with_path),
             )
         })
         .partition(|x| x.1.is_ok());
@@ -60,11 +72,11 @@ pub fn make(
         builddir: builddir.to_path_buf(),
         songdir: srcdir.to_path_buf(),
         bookdir: srcbookdir.to_path_buf(),
-        songs: songs,
-        books: books,
-        sections: sections,
-        broken_songs: broken_songs,
-        broken_books: broken_books,
+        songs,
+        books,
+        sections,
+        broken_songs,
+        broken_books,
     };
     {
         let data = {
@@ -74,38 +86,27 @@ pub fn make(
             };
             serde_json::to_string(&user_world).unwrap()
         };
-        let mut path = builddir.clone();
+        let mut path = builddir.to_path_buf();
         path.push("world.json");
         let mut file = File::create(&path).unwrap();
         file.write_all(data.as_bytes()).unwrap();
     }
     {
         let data = serde_json::to_string(&world)?;
-        let mut path = builddir.clone();
+        let mut path = builddir.to_path_buf();
         path.push("world-internal.json");
-        let _ = std::fs::write(path.as_path(), data)?;
+        std::fs::write(path.as_path(), data)?;
     }
 
-    log::info!("found {} song errors", world.broken_books.len());
+    log::debug!("found {} song errors", world.broken_books.len());
 
-    for e in world.broken_songs.iter() {
-        log::error!(
-            "¨{}:{} {:?} , {}",
-            file!(),
-            line!(),
-            e.0.to_str(),
-            e.1.to_string()
-        );
-    }
+    // for e in world.broken_songs.iter() {
+    //     log::error!("¨{}:{} {:?} , {}", file!(), line!(), e.0.to_str(), e.1);
+    //     return Err(format!("song : {:?}, error : {:?}", e.0.to_str(), e.1).into());
+    // }
 
     for e in world.broken_books.iter() {
-        log::error!(
-            "¨{}:{} {:?} , {}",
-            file!(),
-            line!(),
-            e.0.to_str(),
-            e.1.to_string()
-        );
+        log::error!("¨{}:{} {:?} , {}", file!(), line!(), e.0.to_str(), e.1);
     }
     // dbg!(&world);
     // if errors.is_empty() {

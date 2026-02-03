@@ -1,74 +1,95 @@
-navigate to mdbook documentation
-# [mdbook documentation](https://laurentcarrie.github.io/legendary-memory/)
+# band-songbook
 
-# What is this ?
+A build system for generating PDF songbooks with chord charts and LilyPond music notation.
 
-This is a tool to build pdf and wav files, in a form suitable ( for me ) to play in a pop/rock/jazz band.
-This needs to be :
+## Features
 
-- compact
+- Parses `song.yml` files defining song structure (chords, lyrics, sections)
+- Generates LaTeX/TikZ chord charts
+- Integrates LilyPond for music notation (tablature, scores)
+- Incremental builds using the yamake dependency graph system
+- Fuzzy pattern matching to build specific songs
 
-partitions tend to be very long, pages long, but pop music is made of repetetions of verses, bridge, chorus, and I want
-that to fit in one A4 page, so I can have it and play without turning the page.
+## Installation
 
-this is what a real music sheet looks like. We have a hundred times the same `D` chord.
-![alt text](doc/real-music-sheet2.png)
+```bash
+cargo install band-songbook
+```
 
-It is suited for real musicians, and has all the informations, but I want something easier to read
-and fits on one page
+### Requirements
 
-![alt text](doc/doc1.png)
+- **LuaLaTeX** - for PDF generation
+- **LilyPond** with `lilypond-book` - for music notation (optional)
 
-- chord grid oriented
+## Usage
 
-We want to see grid of chords, so in the band we easily agree on the structures, breaks, ...
-![alt text](doc/doc2.png)
+```bash
+band-songbook --srcdir <SOURCE_DIR> --sandbox <OUTPUT_DIR> [--settings <SETTINGS_FILE>] [--pattern <PATTERN>]
+```
 
-- versioned in github, as text files. We don't want a word or other format
+### Options
 
-last modified date will automatically be updated.
+- `-s, --srcdir` - Source directory containing `song.yml` files
+- `-o, --sandbox` - Output directory for generated files
+- `-c, --settings` - Path to `settings.yml` for colors and configuration
+- `-p, --pattern` - Fuzzy pattern to filter songs (e.g., "beatles" or "yesterday")
 
-- normalized
+### Example
 
-We want to have all music sheets with the same look
+```bash
+band-songbook --srcdir ./songs --sandbox ./build --settings ./settings.yml
+```
 
-- support of real music notation
+Build only songs matching "velvet":
+```bash
+band-songbook --srcdir ./songs --sandbox ./build --pattern velvet
+```
 
-We want to able to import music notation, we choose lilypond music notation for that
+## Song Format
 
-![alt text](doc/doc3.png)
+Each song is defined by a `song.yml` file:
 
+```yaml
+info:
+  author: "Artist Name"
+  title: "Song Title"
+  tempo: 120
 
-- support of midi and wav export
+structure:
+  - id: intro
+    item:
+      Chords:
+        section_type: intro
+        chords: "Am | G | F | E"
 
-We will use lilypond and synth for that.
+  - id: verse1
+    item:
+      Chords:
+        section_type: couplet
+        chords: "Am | G | C | F | Am | G | E | E"
 
-- support for all latex features, in case we want to enhance the look of the lyrics. I have to admit that,
-not being the singer in the band, I did not put much effort on that.
-But this is latex, you can put anything you like.
+  - id: chorus
+    item:
+      Chords:
+        section_type: refrain
+        chords: "F | G | Am | Am | F | G | C | C"
+```
 
-![alt text](doc/doc4.png)
+### Directory Structure
 
-- support for books ( set list )
+```
+songs/
+  artist_name/
+    song_title/
+      song.yml        # Song definition
+      body.tex        # Main content template
+      lyrics/
+        intro.tex     # Lyrics for intro section
+        verse1.tex    # Lyrics for verse1 section
+        chorus.tex    # Lyrics for chorus section
+      interlude.ly    # Optional LilyPond notation
+```
 
-a book is a list of songs. You usually work on a set list, and you don't want to browse your google drive to
-find each song when you rehearse. We want to have all of them in one file.
+## License
 
-
-# How does it work ?
-
-There is a tool written in rust, that is basically a code generator. It will generate :
-- tex glue files
-- OMakefile ( omake replacement for make )
-from your songs.
-
-## what is a song ?
-
-A song is a directory in the tree ( look at [songs](songs)). It has :
-- a song.json description file ( look at [song.json](songs/alannah_myles/black_velvet/song.json)
-- a body.tex file ( it is the body of the `\begin{document} .... \end{document}` in latex)
-- your stuff : latex files, lilypond files,... just declare them in the `song.json`
-
-# How do I run it ?
-
-look at [help.md](help.md)
+MIT

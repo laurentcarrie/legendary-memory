@@ -1,0 +1,78 @@
+FROM public.ecr.aws/lambda/provided:al2023
+
+RUN dnf -y install tar
+RUN dnf -y install texlive
+RUN dnf -y install gzip
+RUN dnf -y install texlive
+RUN dnf -y install texlive-collection-latex
+# RUN dnf repoquery "texlive*" > texlive.txt
+# RUN dnf -y install $(dnf repoquery "texlive*" | grep texlive) > texlive.txt
+RUN dnf -y install texlive-import
+RUN dnf -y install $(dnf repoquery "*tex*mwe*" )
+RUN dnf -y install $(dnf repoquery "*tex*grid*" )
+RUN dnf -y install $(dnf repoquery "*tex*verse*" )
+RUN dnf -y install $(dnf repoquery "*tex*aurical*" )
+RUN dnf -y install $(dnf repoquery "*tex*color*" )
+RUN dnf -y install $(dnf repoquery "*tex*array*" )
+RUN dnf -y install $(dnf repoquery "*tex*page*" )
+RUN dnf -y install $(dnf repoquery "*tex*paracol*" )
+RUN dnf -y install $(dnf repoquery "*tex*units*" )
+RUN dnf -y install $(dnf repoquery "*tex*garamond*" )
+RUN dnf -y install texlive-collection-fontsrecommended
+# RUN dnf -y install texlive-collection-fontsextra
+RUN dnf -y install texlive texlive-frcursive
+RUN dnf -y install texlive-nicematrix
+
+
+# COPY tabularray.sty tabularray.sty
+
+# COPY texlive.txt texlive.txt
+# RUN cat texlive.txt | while read ff; do dnf -y install "$ff"; done
+
+#RUN dnf -y install lilypond
+
+
+RUN curl --proto '=https' --tlsv1.2 -sSf -L https://gitlab.com/lilypond/lilypond/-/releases/v2.24.4/downloads/lilypond-2.24.4-linux-x86_64.tar.gz  -o lilypond.tar.gz
+RUN tar xvzf lilypond.tar.gz
+RUN rm lilypond.tar.gz
+
+ENV PATH="/var/task/lilypond-2.24.4/bin:${PATH}"
+ENV LANG=C.UTF-8
+ENV LC_ADDRESS=C.UTF-8
+ENV LC_NAME=C.UTF-8
+ENV LC_MONETARY=C.UTF-8
+ENV LC_PAPER=C.UTF-8
+ENV LC_IDENTIFICATION=C.UTF-8
+ENV LC_TELEPHONE=C.UTF-8
+ENV LC_MEASUREMENT=C.UTF-8
+ENV LC_TIME=C.UTF-8
+ENV LC_NUMERIC=C.UTF-8
+ENV TEXMFOUTPUT=/mnt/efs/tmp
+
+RUN echo "TEXMFOUTPUT=/mnt/efs/tmp" >> /etc/texlive/web2c/texmf.cnf
+
+# COPY main.tex main.tex
+# RUN lualatex --interaction=nonstopmode main.tex
+# COPY fonts fonts
+
+COPY fonts /root/.fonts
+RUN mktexlsr
+RUN mktexfmt user
+# RUN update-fmtutil
+# COPY xxxx xxxx
+# WORKDIR xxxx
+# RUN ls
+# RUN ( cd xxxx && lualatex --interaction=nonstopmode main.tex  )
+
+# RUN mktexlsr
+# RUN mktexfmt user
+# RUN update-fmtutil
+# COPY xxxx xxxx
+
+COPY fonts /root/.fonts
+
+
+# ENTRYPOINT ["sh"]
+
+# Not used with custom runtime, but kept for info
+CMD ["app.handler"]

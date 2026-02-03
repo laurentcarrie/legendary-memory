@@ -7,11 +7,13 @@ use serde::{Deserialize, Serialize};
 pub struct UserChordSection {
     /// the title of the section, must be a valid latex expression
     /// this will be rendered
+    #[serde(rename(serialize = "title", deserialize = "title"))]
     pub section_title: String,
     /// the type of the section, ie couplet, refrain, ...
     /// must be a valid section type, see @todo show how to do it
     /// to add a section type, [edit this file](/legendary-memory/others/texfiles/sections.json)
     /// and rebuild the tool
+    #[serde(rename(serialize = "type", deserialize = "type"))]
     pub section_type: String,
     /// a latex string, that will be shown in the grid rendering
     pub section_body: Option<String>,
@@ -29,6 +31,7 @@ pub struct UserChordSection {
 pub struct UserRef {
     /// the title of the section, must be a valid latex expression
     /// this will be rendered
+    #[serde(rename(serialize = "title", deserialize = "title"))]
     pub section_title: String,
     /// a latex string, that will be shown in the grid rendering
     pub section_body: Option<String>,
@@ -36,6 +39,7 @@ pub struct UserRef {
     /// if missing, it will be the type of the section that is refered to
     /// to add a section type, [edit this file](/legendary-memory/others/texfiles/sections.json)
     /// and rebuild the tool
+    #[serde(rename(serialize = "type", deserialize = "type"))]
     pub section_type: Option<String>,
     /// the id of the refered to section, it must exist
     pub link: String,
@@ -68,33 +72,46 @@ pub struct UserStructureItem {
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
-/// the ``song.json`` master file that defines a song
-pub struct UserSong {
+pub struct UserSongInfo {
     /// the title of the song
     pub title: String,
     /// the author of the song
     pub author: String,
+    pub tempo: u32,
+    pub time_signature: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct UserSongMeta {
+    /// the last modified date of the song.
+    /// it is updated with a shell helper @todo : which one ?
+    pub date: String,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+pub struct UserSongFiles {
     /// the list of additional texfiles, in the song directory
-    /// this will be added in the OMakefile, and therefore virtually mounted in the build directory
-    pub texfiles: Vec<String>,
+    pub tex: Vec<String>,
     /// the list of additional lilypond files, in the song directory
     /// this will be added in the OMakefile, and therefore virtually mounted in the build directory
     /// for each of this file, for example ```solo.ly```, at build time ```solo.output``` directory will be built
     /// in your source tex file, use
     /// ```\subimport{solo.output/}{solo}```
     /// to input the musicsheet in your output
-    pub lilypondfiles: Vec<String>,
+    pub lilypond: Vec<String>,
     /// the list of additional wav files, to build.
     /// the wav file will be built from the lilypond file with the same name, that must exist
-    pub wavfiles: Vec<String>,
-    /// the last modified date of the song.
-    /// it is updated with a shell helper @todo : which one ?
-    pub date: String,
+    pub wav: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
+/// the ``song.json`` master file that defines a song
+pub struct UserSong {
+    pub info: UserSongInfo,
     /// the structure of the song : this is a list of items
     pub structure: Vec<UserStructureItem>,
-    /// the tempo of the song, in BPM (beats per minute)
-    pub tempo: u32,
-    pub time_signature: Option<String>,
+    pub meta: UserSongMeta,
+    pub files: UserSongFiles,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]
@@ -115,6 +132,8 @@ pub struct UserBook {
     pub title: String,
     /// the list of songs in the book
     pub songs: Vec<UserBookSong>,
+    pub lyrics_only: bool,
+    pub cover_image: bool,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Hash, Clone)]

@@ -1,0 +1,191 @@
+%\usepackage[margin=0.5cm]{geometry}
+\usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{geometry}
+% Note: inputenc not needed with lualatex (handles UTF-8 natively)
+%\usepackage[light, largesmallcaps]{kpfonts}
+\usepackage{mwe}
+\usepackage{multicol}
+\usepackage{pgfkeys}
+
+%\usepackage{geometry}
+\usepackage{lipsum}
+\usepackage{microtype}
+\usepackage{grid-system}
+\usepackage{babel}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{import}
+\usepackage{verse}
+\usepackage{setspace}
+
+\usepackage{aurical}
+% \usepackage[T1]{fontenc}
+%\usepackage{css-colors}
+\usepackage{latexcolors}
+% xcolor is loaded via tikz in main.tex with svgnames option
+% \usepackage{tabularray}
+\usepackage{nicematrix}
+
+% we want only the chapters in the toc, for books. No toc for rsongs
+%\setcounter{tocdepth}{1}
+\usepackage{amssymb}
+\usepackage[default]{frcursive}
+
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+%\usepackage{tabularx}
+\usepackage[most]{tcolorbox}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{paracol}
+
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black,
+	bookmarks=false,
+	hypertexnames=false
+}
+
+\usepackage{units}
+
+\usepackage[most]{tcolorbox}
+\usepackage{tikz, adjustbox}
+
+%\setlength{\headheight}{10pt}
+\usepackage[normalem]{ulem}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{2pt}
+
+%\lhead{\includegraphics[width=1cm]{example-image-a}}
+\rhead{}
+
+
+
+\rfoot{\thepage/\pageref{LastPage}}
+%\cfoot{\today}
+%\cfoot{derni\`ere modif le \songlastupdate, g\'en\'er\'e le \songtoday }
+%\cfoot{derni\`ere modif le \songlastupdate }
+
+\definecolor{bg}{HTML}{ADFF2F}
+%\definecolor{bgred}{\color{Seashell3}}
+
+% Song metadata from YAML (handlebars template)
+\newcommand{\songtitle}{ {{{song.info.title}}} }
+\newcommand{\songauthor}{ {{{song.info.author}}} }
+\newcommand{\songtempo}{ {{{song.info.tempo}}} }
+\newcommand{\songlastupdate}{ \today }
+
+\usepackage{fontspec}
+\setmainfont{Garamond Libre}
+
+% pour les lignes pointillées dans les tableaux
+% \usepackage{arydshln}
+
+
+\newcommand{\basecouplet}[3]{
+	\fcolorbox{gray}{#1}{
+		\fontsize{18pt}{18pt}\selectfont
+		#2
+	}
+	{
+		{
+				\fontsize{16pt}{16pt}\selectfont
+				#3
+			}
+	}
+}
+
+
+\newcommand{\xxcfoot}[2]{
+\cfoot\{{
+		\Fontskrivan\bfseries\slshape
+		\fontsize{14pt}{14pt}\selectfont
+		\color{blue}
+		#2
+	}
+	{
+		\cursive\bfseries
+		\fontsize{10pt}{10pt}\selectfont
+		\color{orange}
+		#1
+	}
+; {\fontsize{10pt}{10pt}\selectfont derni\`ere modif le \songlastupdate}
+}
+}
+
+
+\newcommand{\makesongtitle}{}
+
+\newcommand{\xxmakesongtitle}[3] {
+	\begin{center}
+		{
+			\Fontskrivan\bfseries\slshape
+			\fontsize{60pt}{50pt}\selectfont
+			\color{blue}
+			#1
+		} \\
+
+		{
+		\textcursive{
+			\bfseries%
+			\fontsize{20pt}{10pt}\selectfont%
+			\color{orange}%
+			( #2 )%
+		}
+		}
+
+		{
+		%\Fontskrivan\bfseries\slshape
+		\fontsize{10pt}{5pt}\selectfont
+		\color{blue}
+		#3 BPM
+		}\\
+	\end{center}
+
+}
+
+
+
+
+
+\newcommand{\songlyrics}{}
+
+
+\newcommand{\songly}[1]{ %
+	this is songly, for #1
+
+	\subimport{#1.output}{#1}
+}
+
+\newcommand{\songbookcomment}[1]{%
+	#1
+}
+
+\newcommand{\songword}[1]{%
+	%\tikz[]\node [direct] (N2) {#1};%
+	#1%
+}
+
+% songworkd first beat
+\newcommand{\songwordfb}[1]{%
+	%\tikz[]\node [firstbar] (N1) {#1};%
+	\fcolorbox{black}{red!20}{#1}%
+}
+
+%levee
+\newcommand{\songwordl}[1]{%
+	%\fcolorbox{black}{blue!10}{$[$\it #1$]$}%
+	%\tikz[]\node [levee] (N1) {#1};%
+	{\color{blue!60}{$[${\it #1}$]$}}%
+}
+
+\newcommand{\songwordcount}[1]{
+	\textsubscript{\tiny\color{red}#1}%
+}
+

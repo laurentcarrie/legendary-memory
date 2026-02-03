@@ -1,4 +1,4 @@
-use crate::model::model::Song;
+use crate::model::use_model::Song;
 use std::fs::File;
 use std::io::prelude::*;
 use std::process::{ExitStatus, Stdio};
@@ -6,7 +6,7 @@ use std::process::{ExitStatus, Stdio};
 use tokio::process::Command;
 
 pub async fn build_lytex(song: Song, lyfile: String) -> Result<(), Box<dyn std::error::Error>> {
-    log::info!(
+    log::debug!(
         "begin lilypond {} for {} {}",
         lyfile,
         song.author,
@@ -32,7 +32,7 @@ pub async fn build_lytex(song: Song, lyfile: String) -> Result<(), Box<dyn std::
             .to_str()
             .unwrap()
     ));
-    log::info!(
+    log::debug!(
         "{}:{} lytexfile : {}",
         file!(),
         line!(),
@@ -40,7 +40,7 @@ pub async fn build_lytex(song: Song, lyfile: String) -> Result<(), Box<dyn std::
     );
     let mut status = ExitStatus::default();
     for _index in 0..2 {
-        let child = Command::new("lilypond-book")
+        let child = Command::new("xxxxlilypond-book")
             .arg("--output")
             // .arg(format!("{}.output", plyfiletex_noextension.to_str().unwrap()).as_str())
             .arg(outputdir.to_str().unwrap())
@@ -54,8 +54,8 @@ pub async fn build_lytex(song: Song, lyfile: String) -> Result<(), Box<dyn std::
             .spawn();
         match child {
             Ok(mut child) => {
-                status = (&mut child).wait().await?;
-                log::info!(
+                status = child.wait().await?;
+                log::debug!(
                     "lilypond {} for {} {}, status {:?}",
                     lyfile,
                     song.author,

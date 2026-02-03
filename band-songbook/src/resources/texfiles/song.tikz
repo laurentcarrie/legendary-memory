@@ -1,0 +1,95 @@
+%\let\Im\relax
+%\DeclareMathOperator{\Im}{Im}
+%\let\Re\relax
+%\DeclareMathOperator{\Re}{Re}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{math} %needed tikz library
+\usetikzlibrary{spline}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
+%\usetikzlibrary{shadings}
+%\usetikzlibrary{shapes.geometric}
+%\usetikzlibrary{arrows}
+
+%\tikzset{declare
+%function={Gauss(\x,mu,\sig)=1/(\sig*sqrt(2*pi))*exp(-0.5*((\x-\mu)/\sig)^2);}}
+
+\begin{tikzpicture}[]
+    \usetikzlibrary{arrows.meta}
+
+    % size of a cell
+    \tikzmath{\xr=1.7;}
+    \tikzmath{\yr=1.5;}
+    \tikzmath{\topline=0;}
+    \tikzmath{\titleheight=.6;}
+    \tikzmath{\sectionsep=.1;}
+    \tikzmath{\xxxcolumnwidth=10;}
+    \tikzmath{\barcountoffset=.1;}
+    \tikzmath{\spacebetweensections=.2;}
+    \tikzmath{\commentheight=1;}
+    \tikzmath{\titlewidth=.7;}
+    \tikzmath{\titlexoffset=1;}
+    \tikzmath{\topline=-1;}
+    \tikzmath{\currentline=\topline;}
+    \tikzmath{\columnleft=0;}
+    \tikzmath{\columnwidth=\xxxcolumnwidth;}
+
+    % Song title
+    \coordinate (A) at (\xr*2+\xxxcolumnwidth/2,.5) ;
+    \path (A) ++(0,+1.5) coordinate(B) ;
+    \node[anchor=center,rotate=0](b) at (A) {
+        {
+            \Fontskrivan\bfseries\slshape
+            \fontsize{60pt}{50pt}\selectfont
+            \color{blue}
+            {{{song.info.title}}}
+        }
+    } ;
+
+    % Song author
+    \node[anchor=center,rotate=0](b) at (B) {
+        {%
+            \textcursive{
+                \bfseries%
+                \fontsize{20pt}{10pt}\selectfont%
+                \color{orange}%
+                {{{song.info.author}}}%
+            }
+        }
+    } ;
+
+    % BPM indicator
+    \coordinate (BPM) at (-\titlexoffset-.7,-\yr*.1) ;
+    \draw (BPM) [draw,dotted,rotate=0,fill=red!20,opacity=100] rectangle ++(\xr,\yr/2) node[midway,color=black]{
+        140 BPM
+    } ;
+
+    % Structure items
+{{#each song.structure}}
+{{#if this.item.Chords}}
+    \coordinate (A) at (\columnleft, \currentline);
+{{#each this.item.Chords.rows}}
+    \coordinate (A1) at (\columnleft + \xr * {{number_of_bars this}}, \currentline);
+    \coordinate (A2) at ($(A1) + (0, -\yr)$);
+{{{bar_rects this ../this.item.Chords.color}}}
+    \tikzmath{\currentline = \currentline - \yr;}
+{{/each}}
+    \coordinate (B) at (\columnleft, \currentline);
+    \coordinate (C) at ($(A)!0.5!(B)$);
+    \coordinate (D) at ($(C) + (-\titlexoffset, 0)$);
+    \node[ellipse, fill={{this.item.Chords.color}}, inner sep=3pt, rotate=70] at (D) { \fontsize{12pt}{12pt}\selectfont\bfseries {{{this.item.Chords.title}}} };
+    \tikzmath{\currentline = \currentline - \spacebetweensections;}
+{{/if}}
+{{#if this.item.Ref}}
+    \draw[draw=black, fill={{this.item.Ref.color}}] (\columnleft + \xr, \currentline) rectangle ++(2*\xr, -\yr/2) node[midway] { {{{this.item.Ref.title}}} };
+    \tikzmath{\currentline = \currentline - \yr/2;}
+    \tikzmath{\currentline = \currentline - \spacebetweensections;}
+{{/if}}
+{{#if (eq this.item "NewColumn")}}
+    \tikzmath{\columnleft = \columnleft + \columnwidth;}
+    \tikzmath{\currentline = \topline;}
+{{/if}}
+{{/each}}
+
+\end{tikzpicture}

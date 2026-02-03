@@ -4,6 +4,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{tikz}
 \usepackage{fontspec}
+\usepackage{etoolbox}
 
 \usepackage{expl3}
 
@@ -17,6 +18,9 @@
 \newcommand{\songtoday}{}
 \newcommand{\xxcfoot}[2]{}
 %\newcommand{\songlyrics}{}
+
+\newtoggle{lyricsonly}
+\settoggle{lyricsonly}{false} % true = lyrics only, false = full song
 
 \usepackage{multicol}
 

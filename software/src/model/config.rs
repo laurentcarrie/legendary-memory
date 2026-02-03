@@ -1,15 +1,15 @@
 use crate::helpers::helpers::normalize_pdf_name;
-use crate::model::model;
-use crate::model::model::{Section, TimeSignature};
+use crate::model::use_model as M;
 // use handlebars::template::Parameter::Path;
+use crate::helpers::io::write_string;
 use human_sort::compare;
 use regex::Regex;
 use std::cmp::Ordering;
 use std::collections::BTreeMap;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
-use crate::model::model::{
+use crate::model::use_model::{
     Bar, Book, BookSong, Chords, Row, Song, StructureItem, StructureItemContent,
 };
 
@@ -20,18 +20,18 @@ use crate::model::input_model::{
 
 fn time_signature_of_string(
     input: Option<String>,
-) -> Result<TimeSignature, Box<dyn std::error::Error>> {
+) -> Result<M::TimeSignature, Box<dyn std::error::Error>> {
     match input {
-        None => Ok(TimeSignature { top: 4, low: 4 }),
+        None => Ok(M::TimeSignature { top: 4, low: 4 }),
         Some(s) => {
             let re = Regex::new("(.*)/(.*)").unwrap();
             let ss = re.captures(&s);
             match ss {
-                None => Err(format!("'{} is not a valid time signature", s).into()),
+                None => Err(format!("'{s} is not a valid time signature").into()),
                 Some(caps) => {
-                    let top = (&caps[0]).to_string().parse::<u8>()?;
-                    let low = (&caps[1]).to_string().parse::<u8>()?;
-                    Ok(TimeSignature { top: top, low: low })
+                    let top = (caps[0]).to_string().parse::<u8>()?;
+                    let low = (caps[1]).to_string().parse::<u8>()?;
+                    Ok(M::TimeSignature { top, low })
                 }
             }
         }
@@ -39,36 +39,38 @@ fn time_signature_of_string(
 }
 
 fn check_section_types(
-    sections: &BTreeMap<String, Section>,
+    sections: &BTreeMap<String, M::Section>,
     song: &Song,
 ) -> Result<(), Box<dyn std::error::Error>> {
     // let f = |x: i32| 2 * x;
 
-    let check = |item: &model::StructureItem| -> Result<(), Box<dyn std::error::Error>> {
+    let check = |item: &M::StructureItem| -> Result<(), Box<dyn std::error::Error>> {
         match &item.item {
-            model::StructureItemContent::ItemRef { .. } => Ok(()),
-            model::StructureItemContent::ItemNewColumn => Ok(()),
-            model::StructureItemContent::ItemChords(c) => {
+            M::StructureItemContent::ItemRef { .. } => Ok(()),
+            M::StructureItemContent::ItemNewColumn => Ok(()),
+            M::StructureItemContent::ItemChords(c) => {
                 if sections.contains_key(&c.section_type) {
                     Ok(())
                 } else {
-                    log::info!("bad section type : '{}'", &c.section_type);
+                    log::debug!("bad section type : '{}'", &c.section_type);
                     Err(format!("unknown section type : {}", &c.section_type).into())
                 }
             }
-            model::StructureItemContent::ItemHRule { .. } => Ok(()),
+            M::StructureItemContent::ItemHRule { .. } => Ok(()),
         }
         // if ! sections.contains_key()
     };
-    let l = song
-        .structure
-        .iter()
-        .fold(Ok(()), |acc, current| match acc {
-            Err(e) => Err(e),
-            Ok(()) => check(current),
-        });
+    // let l = song
+    //     .structure
+    //     .iter()
+    //     .fold(Ok(()), |acc, current| match acc {
+    //         Err(e) => Err(e),
+    //         Ok(()) => check(current),
+    //     });
     // iter().map(|i|check(i)).collect::<Vec<_>>()? ;
-    l
+    let ll = song.structure.iter().try_for_each(check);
+
+    ll
 }
 
 fn chord_of_string(s: String) -> String {
@@ -77,6 +79,7 @@ fn chord_of_string(s: String) -> String {
         .replace("2", "deux")
         .replace("3", "trois")
         .replace("4", "quatre")
+        .replace("5", "cinq")
 }
 
 fn bar_of_string(s: String) -> Result<Bar, Box<dyn std::error::Error>> {
@@ -84,10 +87,10 @@ fn bar_of_string(s: String) -> Result<Bar, Box<dyn std::error::Error>> {
     let re_ts = Regex::new("time_signature\\((.*)/(.*)\\)(.*)").unwrap();
     let (s, time_signature) = match re_ts.captures(&s) {
         Some(caps) => (
-            (&caps[3]).to_string(),
-            Some(TimeSignature {
-                top: (&caps[1]).to_string().parse::<u8>()?,
-                low: (&caps[2]).to_string().parse::<u8>()?,
+            (caps[3]).to_string(),
+            Some(M::TimeSignature {
+                top: (caps[1]).to_string().parse::<u8>()?,
+                low: (caps[2]).to_string().parse::<u8>()?,
             }),
         ),
         None => (s, None),
@@ -97,16 +100,16 @@ fn bar_of_string(s: String) -> Result<Bar, Box<dyn std::error::Error>> {
     let ss = re.captures(&s);
     match ss {
         Some(caps) => Ok(Bar {
-            chords: vec![(&caps[1]).to_string()],
-            time_signature: time_signature,
+            chords: vec![(caps[1]).to_string()],
+            time_signature,
         }),
         None => Ok(Bar {
             chords: s
                 .split(" ")
                 .map(|c| chord_of_string(c.to_string()))
-                .filter(|c| c.ne(""))
+                .filter(|c| !c.is_empty())
                 .collect(),
-            time_signature: time_signature,
+            time_signature,
         }),
     }
 }
@@ -115,11 +118,8 @@ fn bar_of_string(s: String) -> Result<Bar, Box<dyn std::error::Error>> {
 /// and returns the number of bars, and a row
 /// the number of bars takes the repeat into account, in this example 8
 fn row_of_string(barcount: u32, s: String) -> (u32, Row) {
-    let bars: Result<Vec<Bar>, Box<dyn std::error::Error>> = s
-        .split("|")
-        .map(|b| bar_of_string(b.to_string()))
-        .into_iter()
-        .collect();
+    let bars: Result<Vec<Bar>, Box<dyn std::error::Error>> =
+        s.split("|").map(|b| bar_of_string(b.to_string())).collect();
     // the string looks like "| A | B |C | x2"
     // the repeat if any is in the last cell
     let mut bars = bars.unwrap();
@@ -133,6 +133,8 @@ fn row_of_string(barcount: u32, s: String) -> (u32, Row) {
                     "xdeux" => 2,
                     "xtrois" => 3,
                     "xquatre" => 4,
+                    "xcinq" => 5,
+
                     _ => {
                         b.chords.push(s);
                         bars.push(b);
@@ -146,9 +148,9 @@ fn row_of_string(barcount: u32, s: String) -> (u32, Row) {
     (
         barcount + repeat * bars.len() as u32,
         Row {
-            repeat: repeat,
+            repeat,
             row_start_bar_number: barcount,
-            bars: bars,
+            bars,
         },
     )
 }
@@ -165,12 +167,12 @@ fn rows_of_userchordsection(barcount: u32, uc: &UserChordSection) -> (u32, Vec<R
 
 fn structure_of_structure(
     barcount: u32,
-    previous: &Vec<StructureItem>,
+    previous: &[StructureItem],
     u: &UserStructureItem,
 ) -> (u32, StructureItem) {
     let (barcount, item) = match &u.item {
         UserStructureItemContent::Chords(l) => {
-            let (new_barcount, rows) = rows_of_userchordsection(barcount, &l);
+            let (new_barcount, rows) = rows_of_userchordsection(barcount, l);
             (
                 new_barcount,
                 StructureItemContent::ItemChords(Chords {
@@ -188,7 +190,7 @@ fn structure_of_structure(
                         .clone()
                         .into_iter()
                         .fold(0, |acc, row| acc + row.bars.len() as u32 * row.repeat),
-                    rows: rows,
+                    rows,
                 }),
             )
         }
@@ -197,7 +199,7 @@ fn structure_of_structure(
                 let others = previous
                     .iter()
                     .filter_map(|usi| match &usi.item {
-                        model::StructureItemContent::ItemChords(ic) => {
+                        M::StructureItemContent::ItemChords(ic) => {
                             if ic.section_id.eq(&s.link) {
                                 Some(usi)
                             } else {
@@ -209,7 +211,7 @@ fn structure_of_structure(
                     .collect::<Vec<_>>()
                     .clone();
                 match others.len() {
-                    1 => *others.get(0).unwrap(),
+                    1 => *others.first().unwrap(),
                     n => {
                         panic!("found {} (instead of 1) sections with id {}", n, s.link)
                     }
@@ -217,10 +219,10 @@ fn structure_of_structure(
             };
             (
                 match &other.item {
-                    model::StructureItemContent::ItemChords(ic) => barcount + ic.nb_bars,
+                    M::StructureItemContent::ItemChords(ic) => barcount + ic.nb_bars,
                     _ => panic!("input error"),
                 },
-                StructureItemContent::ItemRef(crate::model::model::Ref {
+                StructureItemContent::ItemRef(M::Ref {
                     section_title: s.section_title.clone(),
                     section_id: u.id.clone(),
                     section_body: {
@@ -230,7 +232,7 @@ fn structure_of_structure(
                         }
                     },
                     section_type: match &other.item {
-                        model::StructureItemContent::ItemChords(ic) => match &s.section_type {
+                        M::StructureItemContent::ItemChords(ic) => match &s.section_type {
                             Some(s) => s.clone(),
                             None => ic.section_type.clone(),
                         }, // ic.section_type.clone(),
@@ -238,7 +240,7 @@ fn structure_of_structure(
                     },
                     row_start_bar_number: barcount,
                     nb_bars: match &other.item {
-                        model::StructureItemContent::ItemChords(ic) => ic.nb_bars,
+                        M::StructureItemContent::ItemChords(ic) => ic.nb_bars,
                         _ => panic!("not implemented"),
                     },
                 }),
@@ -246,24 +248,22 @@ fn structure_of_structure(
         }
         UserStructureItemContent::HRule(u) => (
             barcount,
-            model::StructureItemContent::ItemHRule(model::HRule {
+            M::StructureItemContent::ItemHRule(M::HRule {
                 percent: match u {
                     Some(s) => *s,
                     None => 70,
                 },
             }),
         ),
-        UserStructureItemContent::NewColumn => {
-            (barcount, model::StructureItemContent::ItemNewColumn)
-        }
+        UserStructureItemContent::NewColumn => (barcount, M::StructureItemContent::ItemNewColumn),
     };
-    let si = StructureItem { item: item };
+    let si = StructureItem { item };
     (barcount, si)
 }
 
 fn build_relative_path_of_source_absolute_path(
-    songdir: &PathBuf,
-    builddir: &PathBuf,
+    songdir: &Path,
+    builddir: &Path,
     p: PathBuf,
 ) -> Result<PathBuf, Box<dyn std::error::Error>> {
     let songdir = songdir.to_str().ok_or("? songdir".to_string())?;
@@ -273,52 +273,30 @@ fn build_relative_path_of_source_absolute_path(
         .to_str()
         .ok_or("? songdir".to_string())?
         .to_string();
-    let p = p.replace(format!("{}/", songdir).as_str(), "songs/");
-    let mut ret = builddir.clone();
+    let p = p.replace(format!("{songdir}/").as_str(), "songs/");
+    let mut ret = builddir.to_path_buf();
     ret.push(p);
     Ok(ret)
 }
 
 fn song_exists(
-    author: &String,
-    title: &String,
+    author: &str,
+    title: &str,
     songs: &Vec<UserSongWithPath>,
 ) -> Option<UserSongWithPath> {
     for song in songs {
-        if compare(author.as_str(), song.song.author.as_str()) == Ordering::Equal {
-            if compare(title.as_str(), song.song.title.as_str()) == Ordering::Equal {
-                return Some(song.clone());
-                // let p = build_relative_path_of_source_absolute_path(
-                //     songdir,
-                //     builddir,
-                //     PathBuf::from(song.path.clone()),
-                // );
-                // match p {
-                //     Ok(p) => {
-                //         let x = p.as_path().to_str().map(|x| x.to_string());
-                //         return x;
-                //     }
-                //     _ => (),
-                // }
-            }
+        if compare(author, song.song.info.author.as_str()) == Ordering::Equal
+            && compare(title, song.song.info.title.as_str()) == Ordering::Equal
+        {
+            return Some(song.clone());
         }
     }
-    // log::info!("DID NOT FIND '{}' '{}'", author, title);
-    // for song in songs {
-    //     log::info!(
-    //         "{}:{} '{}' '{}'",
-    //         file!(),
-    //         line!(),
-    //         song.author.as_str(),
-    //         song.title.as_str()
-    //     );
-    // }
     None
 }
 /// read a json file and returns a Book
 pub fn decode_book(
-    songdir: &PathBuf,
-    buildroot: &PathBuf,
+    songdir: &Path,
+    buildroot: &Path,
     filepath: &PathBuf,
     songs: &Vec<UserSongWithPath>,
 ) -> Result<(Book, UserBookWithPath), Box<dyn std::error::Error>> {
@@ -326,12 +304,28 @@ pub fn decode_book(
     let contents = fs::read_to_string(filepath)
         .expect("Should have been able to read the file")
         .clone();
-    let uconf: UserBook = serde_json::from_str(&contents)
-        .expect(format!("read json {}", filepath.display()).as_str());
+    let uconf: UserBook = {
+        match filepath.extension() {
+            Some(value) => match value.to_str() {
+                Some("json") => {
+                    let data = &serde_json::from_str(&contents)?;
+                    let yml = serde_yaml::to_string::<UserBook>(data)?;
+                    let mut o = filepath.clone();
+                    o.set_extension("yml");
+                    write_string(&o, &yml)?;
+                    data.clone()
+                }
 
-    let mut book_builddir = buildroot.clone();
+                Some("yml") => serde_yaml::from_str(&contents)
+                    .unwrap_or_else(|_| panic!("read yml {}", filepath.display())),
+                _ => unimplemented!(),
+            },
+            _ => unimplemented!(),
+        }
+    };
+    let mut book_builddir = buildroot.to_path_buf();
     book_builddir.push("books");
-    book_builddir.push(&uconf.title);
+    book_builddir.push(&uconf.title.replace(" ", "_"));
     let (songs, errors): (
         Vec<Result<BookSong, Box<dyn std::error::Error>>>,
         Vec<Result<BookSong, Box<dyn std::error::Error>>>,
@@ -342,8 +336,8 @@ pub fn decode_book(
         .map(|ub| match song_exists(&ub.author, &ub.title, songs) {
             Some(uswp) => {
                 let path = build_relative_path_of_source_absolute_path(
-                    &songdir,
-                    &buildroot,
+                    songdir,
+                    buildroot,
                     PathBuf::from(uswp.path),
                 )?
                 .to_str()
@@ -353,7 +347,7 @@ pub fn decode_book(
                     title: ub.title.clone(),
                     author: ub.author.clone(),
                     pdfname: normalize_pdf_name(&ub.author, &ub.title),
-                    path: path,
+                    path,
                 })
             }
             None => Err(format!(
@@ -371,9 +365,11 @@ pub fn decode_book(
         None => {
             let book = Book {
                 title: uconf.title.clone(),
-                songs: songs,
+                songs,
                 builddir: book_builddir,
                 pdfname: uconf.title.clone(),
+                lyrics_only: uconf.lyrics_only,
+                cover_image: uconf.cover_image,
             };
             let ubook_with_path = UserBookWithPath {
                 book: uconf.clone(),
@@ -397,27 +393,26 @@ fn song_of_usersong(
             .to_str()
             .ok_or("bad srcdir".to_string())?
             .to_string(),
-        texfiles: uconf.texfiles.clone(),
-        author: uconf.author.clone(),
-        tempo: uconf.tempo,
-        time_signature: time_signature_of_string(uconf.time_signature)?,
-        pdfname: normalize_pdf_name(&uconf.author, &uconf.title),
-        title: uconf.title.clone(),
+        texfiles: uconf.files.tex.clone(),
+        author: uconf.info.author.clone(),
+        tempo: uconf.info.tempo,
+        time_signature: time_signature_of_string(uconf.info.time_signature)?,
+        pdfname: normalize_pdf_name(&uconf.info.author, &uconf.info.title),
+        title: uconf.info.title.clone(),
         builddir: song_builddir,
-        lilypondfiles: uconf.lilypondfiles.clone(),
-        wavfiles: uconf.wavfiles.clone(),
-        date: uconf.date.clone(),
+        lilypondfiles: uconf.files.lilypond.clone(),
+        wavfiles: uconf.files.wav.clone(),
+        date: uconf.meta.date.clone(),
         structure: {
-            match uconf.structure {
-                ref s => {
-                    let acc = s.iter().fold((1, Vec::new()), |mut acc, s| {
-                        let (newcount, si) = structure_of_structure(acc.0, &(acc.1), s);
-                        acc.0 = newcount;
-                        acc.1.push(si);
-                        acc
-                    });
-                    acc.1
-                }
+            let s = &uconf.structure;
+            {
+                let acc = s.iter().fold((1, Vec::new()), |mut acc, s| {
+                    let (newcount, si) = structure_of_structure(acc.0, &(acc.1), s);
+                    acc.0 = newcount;
+                    acc.1.push(si);
+                    acc
+                });
+                acc.1
             }
         },
     };
@@ -425,16 +420,31 @@ fn song_of_usersong(
 }
 
 pub fn decode_song(
-    buildroot: &PathBuf,
-    sections: &BTreeMap<String, Section>,
+    buildroot: &Path,
+    sections: &BTreeMap<String, M::Section>,
     filepath: &PathBuf,
 ) -> Result<(Song, UserSongWithPath), Box<dyn std::error::Error>> {
     let contents = fs::read_to_string(filepath)
         .expect("Should have been able to read the file")
         .clone();
-    let uconf: UserSong = serde_json::from_str(&contents)?;
+    log::info!("reading song description {filepath:?}");
+    let uconf: UserSong = match filepath.extension() {
+        Some(value) => match value.to_str() {
+            Some("json") => {
+                let data = &serde_json::from_str(&contents)?;
+                let yml = serde_yaml::to_string::<UserSong>(data)?;
+                let mut o = filepath.clone();
+                o.set_extension("yml");
+                write_string(&o, &yml)?;
+                data.clone()
+            }
+            Some("yml") => serde_yaml::from_str(&contents)?,
+            _ => unimplemented!(),
+        },
+        None => unimplemented!(),
+    };
 
-    let mut song_builddir = buildroot.clone();
+    let mut song_builddir = buildroot.to_path_buf();
     song_builddir.push("songs");
     let parent_title = filepath
         .parent()
@@ -452,21 +462,21 @@ pub fn decode_song(
         .expect("has file name")
         .to_str()
         .expect("has name");
-    song_builddir.push(&parent_author);
-    song_builddir.push(&parent_title);
+    song_builddir.push(parent_author);
+    song_builddir.push(parent_title);
     let song = song_of_usersong(uconf.clone(), filepath.clone(), song_builddir)?;
     let usersongwithpath = UserSongWithPath {
         song: uconf.clone(),
         path: filepath.to_str().unwrap().to_string(),
     };
-    check_section_types(&sections, &song)?;
+    check_section_types(sections, &song)?;
     Ok((song, usersongwithpath))
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::model::{input_model, model};
+    use crate::model::{input_model, use_model};
 
     #[test]
     fn test1_bar_of_string() {
@@ -594,7 +604,7 @@ mod tests {
             id: "".to_string(),
         };
         let expected = StructureItem {
-            item: StructureItemContent::ItemChords(model::Chords {
+            item: StructureItemContent::ItemChords(use_model::Chords {
                 section_title: "".to_string(),
                 section_id: "".to_string(),
                 section_type: "".to_string(),
@@ -647,14 +657,20 @@ mod tests {
     #[test]
     fn test_4() {
         let input = UserSong {
-            tempo: 80,
-            time_signature: None,
-            title: "".to_string(),
-            author: "".to_string(),
-            texfiles: vec![],
-            lilypondfiles: vec![],
-            wavfiles: vec![],
-            date: "".to_string(),
+            info: input_model::UserSongInfo {
+                tempo: 80,
+                time_signature: None,
+                title: "".to_string(),
+                author: "".to_string(),
+            },
+            meta: input_model::UserSongMeta {
+                date: "".to_string(),
+            },
+            files: input_model::UserSongFiles {
+                tex: vec![],
+                lilypond: vec![],
+                wav: vec![],
+            },
             structure: vec![
                 input_model::UserStructureItem {
                     item: UserStructureItemContent::Chords(UserChordSection {
@@ -695,7 +711,7 @@ mod tests {
             title: "".to_string(),
             author: "".to_string(),
             tempo: 80 as u32,
-            time_signature: TimeSignature { top: 4, low: 4 },
+            time_signature: M::TimeSignature { top: 4, low: 4 },
             pdfname: "--@--".to_string(),
             texfiles: vec![],
             builddir: Default::default(),
@@ -703,8 +719,8 @@ mod tests {
             wavfiles: vec![],
             date: "".to_string(),
             structure: vec![
-                model::StructureItem {
-                    item: model::StructureItemContent::ItemChords(Chords {
+                M::StructureItem {
+                    item: M::StructureItemContent::ItemChords(Chords {
                         section_title: "".to_string(),
                         section_id: "blahblah".to_string(),
                         section_type: "".to_string(),
@@ -730,7 +746,7 @@ mod tests {
                                     },
                                     Bar {
                                         chords: vec!["D".to_string()],
-                                        time_signature: Some(TimeSignature { top: 2, low: 4 }),
+                                        time_signature: Some(M::TimeSignature { top: 2, low: 4 }),
                                     },
                                 ],
                             },
@@ -759,8 +775,8 @@ mod tests {
                         ],
                     }),
                 },
-                model::StructureItem {
-                    item: model::StructureItemContent::ItemRef(model::Ref {
+                use_model::StructureItem {
+                    item: use_model::StructureItemContent::ItemRef(use_model::Ref {
                         section_title: "".to_string(),
                         section_id: "".to_string(),
                         section_type: "".to_string(),
@@ -769,8 +785,8 @@ mod tests {
                         nb_bars: 16,
                     }),
                 },
-                model::StructureItem {
-                    item: model::StructureItemContent::ItemRef(model::Ref {
+                use_model::StructureItem {
+                    item: use_model::StructureItemContent::ItemRef(use_model::Ref {
                         section_title: "".to_string(),
                         section_id: "".to_string(),
                         section_type: "".to_string(),
@@ -812,7 +828,7 @@ mod tests {
         let x = "time_signature(2/4)E".to_string();
         let expected = Bar {
             chords: vec!["E".to_string()],
-            time_signature: Some(TimeSignature { top: 2, low: 4 }),
+            time_signature: Some(M::TimeSignature { top: 2, low: 4 }),
         };
         let result = bar_of_string(x).unwrap();
         assert_eq!(expected, result);
@@ -820,7 +836,7 @@ mod tests {
         let x = "time_signature(3/4) {latex \\tiny{uu}}".to_string();
         let expected = Bar {
             chords: vec!["\\tiny{uu}".to_string()],
-            time_signature: Some(TimeSignature { top: 3, low: 4 }),
+            time_signature: Some(M::TimeSignature { top: 3, low: 4 }),
         };
         let result = bar_of_string(x).unwrap();
         assert_eq!(expected, result);
