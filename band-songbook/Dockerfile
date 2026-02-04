@@ -23,21 +23,7 @@ FROM public.ecr.aws/lambda/provided:al2023
 
 # Install LaTeX and LilyPond
 RUN dnf update -y && dnf install -y \
-    texlive-scheme-basic \
-    texlive-luatex \
-    texlive-collection-luatex \
-    texlive-collection-fontsrecommended \
-    texlive-collection-latexrecommended \
-    texlive-collection-pictures \
-    texlive-pgf \
-    texlive-tikz-cd \
-    texlive-xcolor \
-    texlive-geometry \
-    texlive-fancyhdr \
-    texlive-hyperref \
-    texlive-inputenc \
-    texlive-fontenc \
-    texlive-babel \
+    texlive-scheme-full \
     lilypond \
     && dnf clean all \
     && rm -rf /var/cache/dnf
