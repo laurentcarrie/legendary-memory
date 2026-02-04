@@ -67,6 +67,14 @@ impl GNode for TexOfLilypond {
             .current_dir(workdir);
 
         let node_id = self.path.to_string_lossy();
-        run_command(&mut cmd, sandbox, &node_id)
+        let success = run_command(&mut cmd, sandbox, &node_id);
+        if !success {
+            log::error!(
+                "lilypond-book failed for {} (lytex: {})",
+                self.path.display(),
+                lytex_filename
+            );
+        }
+        success
     }
 }
