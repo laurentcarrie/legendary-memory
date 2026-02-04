@@ -21,12 +21,24 @@ RUN cargo build --release --target x86_64-unknown-linux-musl --bin band-songbook
 # Runtime stage
 FROM public.ecr.aws/lambda/provided:al2023
 
-# Install LaTeX and LilyPond
+# Install LaTeX and required tools
 RUN dnf update -y && dnf install -y \
     texlive-scheme-full \
-    lilypond \
+    wget \
+    tar \
+    fontconfig \
+    freetype \
+    ghostscript \
     && dnf clean all \
     && rm -rf /var/cache/dnf
+
+# Install LilyPond manually (not available in AL2023 repos)
+RUN cd /tmp && \
+    wget -q https://gitlab.com/lilypond/lilypond/-/releases/v2.24.3/downloads/lilypond-2.24.3-linux-x86_64.tar.gz && \
+    tar -xzf lilypond-2.24.3-linux-x86_64.tar.gz && \
+    mv lilypond-2.24.3 /opt/lilypond && \
+    ln -s /opt/lilypond/bin/lilypond /usr/local/bin/lilypond && \
+    rm -f lilypond-2.24.3-linux-x86_64.tar.gz
 
 # Copy the Lambda binary
 COPY --from=builder /usr/src/app/target/x86_64-unknown-linux-musl/release/band-songbook-lambda ${LAMBDA_RUNTIME_DIR}/bootstrap
