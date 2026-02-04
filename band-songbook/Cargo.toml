@@ -31,7 +31,7 @@ tempfile = "3"
 # Lambda dependencies
 lambda_runtime = "0.13"
 tracing = { version = "0.1", features = ["log"] }
-tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt"] }
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt", "tracing-log"] }
 
 [[bin]]
 name = "band-songbook"

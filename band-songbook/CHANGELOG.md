@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.6] - 2026-02-04
+
+### Fixed
+- Lambda now shows application logs in CloudWatch (added `tracing-log` feature)
+
 ## [0.0.5] - 2026-02-04
 
 ### Changed
