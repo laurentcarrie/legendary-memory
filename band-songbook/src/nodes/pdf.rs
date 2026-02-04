@@ -79,12 +79,24 @@ impl GNode for PdfFile {
             let stdout_content = match output {
                 Ok(out) => {
                     let stdout = String::from_utf8_lossy(&out.stdout).to_string();
-                    // Save stdout for debugging
+                    let stderr = String::from_utf8_lossy(&out.stderr).to_string();
+                    // Save stdout and stderr for debugging
                     let _ = std::fs::write(&stdout_path, &stdout);
+                    let stderr_path = sandbox.join("logs").join(format!("{}.stderr", &node_id));
+                    let _ = std::fs::write(&stderr_path, &stderr);
+                    if !out.status.success() {
+                        log::error!(
+                            "lualatex failed with status {:?} for {}",
+                            out.status.code(),
+                            self.path.display()
+                        );
+                    }
                     stdout
                 }
-                Err(_e) => {
-                    log::error!("Failed to run lualatex, look at error in log files");
+                Err(e) => {
+                    log::error!("Failed to run lualatex: {} for {}", e, self.path.display());
+                    let stderr_path = sandbox.join("logs").join(format!("{}.stderr", &node_id));
+                    let _ = std::fs::write(&stderr_path, format!("Failed to run lualatex: {}", e));
                     return false;
                 }
             };
