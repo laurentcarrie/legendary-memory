@@ -4,14 +4,33 @@ pub mod helpers;
 pub mod model;
 pub mod nodes;
 pub mod settings;
+pub mod storage;
 
 pub use discover::discover;
+pub use nodes::PdfFile;
+pub use storage::StoragePath;
 
 use model::{SectionItem, Song};
-use nodes::{PdfFile, SongYml, TexFile};
+use nodes::{SongYml, TexFile};
+use object_store::ObjectStoreExt;
 use std::path::Path;
 
 pub use yamake::model::G;
+use yamake::model::GNode;
+
+/// Returns all LilyPond files (.ly) referenced by a PdfFile node.
+/// Scans the tex files to find \lyfile{}, \songly{}, and \include directives.
+pub fn get_lilypond_files(
+    pdf: &PdfFile,
+    sandbox: &Path,
+    predecessors: &[&(dyn GNode + Send + Sync)],
+) -> Vec<std::path::PathBuf> {
+    let (_, inputs, _) = pdf.scan_with_toplevel_ly(sandbox, predecessors);
+    inputs
+        .into_iter()
+        .filter(|p| p.extension().map(|e| e == "ly").unwrap_or(false))
+        .collect()
+}
 
 /// Checks if pattern is a subsequence of text (fuzzy match).
 /// Each character in pattern must appear in text in order, but not necessarily contiguously.
@@ -41,6 +60,16 @@ pub fn make_all(
 ) -> (bool, G) {
     let songs = discover(srcdir);
     let mut g = G::new(srcdir.to_path_buf(), sandbox.to_path_buf());
+
+    // Check that lualatex is available
+    if std::process::Command::new("lualatex")
+        .arg("--help")
+        .output()
+        .is_err()
+    {
+        log::error!("lualatex is not available. Please install TeX Live or similar.");
+        return (false, g);
+    }
 
     // Copy settings.yml to sandbox if provided
     if let Some(settings) = settings_path {
@@ -119,6 +148,151 @@ pub fn make_all(
 
     let success = g.make();
     (success, g)
+}
+
+/// Async version of make_all that supports S3 paths.
+///
+/// This function:
+/// - Parses paths to determine if S3 or local
+/// - Downloads S3 srcdir to temp directory if needed
+/// - Calls existing `make_all()` with local paths
+/// - Uploads sandbox to S3 if sandbox was S3 URL
+/// - Cleans up temp directory
+pub async fn make_all_with_storage(
+    srcdir: &str,
+    sandbox: &str,
+    settings: Option<&str>,
+    pattern: Option<&str>,
+) -> Result<(bool, G), String> {
+    use storage::{download_to_local, StoragePath};
+
+    let srcdir_path = StoragePath::parse(srcdir)?;
+    let sandbox_path = StoragePath::parse(sandbox)?;
+    let settings_path = settings.map(StoragePath::parse).transpose()?;
+
+    // Determine local paths for the build
+    // These temp variables hold TempDir handles to keep directories alive until end of function
+    let _temp_srcdir: Option<tempfile::TempDir>;
+    let _temp_sandbox: Option<tempfile::TempDir>;
+
+    let local_srcdir: std::path::PathBuf;
+    let local_sandbox: std::path::PathBuf;
+
+    // Handle srcdir
+    if srcdir_path.is_s3() {
+        let temp = tempfile::tempdir().map_err(|e| format!("Failed to create temp srcdir: {e}"))?;
+        local_srcdir = temp.path().to_path_buf();
+        _temp_srcdir = Some(temp);
+        log::info!("Downloading srcdir from {} to {:?}", srcdir, local_srcdir);
+        download_to_local(&srcdir_path, &local_srcdir).await?;
+    } else {
+        _temp_srcdir = None;
+        local_srcdir = srcdir_path.as_local().unwrap().clone();
+    }
+
+    // Handle sandbox
+    if sandbox_path.is_s3() {
+        let temp = tempfile::tempdir().map_err(|e| format!("Failed to create temp sandbox: {e}"))?;
+        local_sandbox = temp.path().to_path_buf();
+        _temp_sandbox = Some(temp);
+    } else {
+        _temp_sandbox = None;
+        local_sandbox = sandbox_path.as_local().unwrap().clone();
+        // Create local sandbox if it doesn't exist
+        std::fs::create_dir_all(&local_sandbox)
+            .map_err(|e| format!("Failed to create sandbox: {e}"))?;
+    }
+
+    // Handle settings - download if S3, otherwise use local path
+    let local_settings: Option<std::path::PathBuf>;
+    let _temp_settings: Option<tempfile::NamedTempFile>;
+
+    if let Some(ref sp) = settings_path {
+        if sp.is_s3() {
+            // Download settings file to a temp file
+            let temp_file = tempfile::NamedTempFile::new()
+                .map_err(|e| format!("Failed to create temp settings file: {e}"))?;
+            let temp_path = temp_file.path().to_path_buf();
+
+            // Download settings from S3
+            let (bucket, prefix) = match sp {
+                StoragePath::S3 { bucket, prefix } => (bucket, prefix),
+                _ => unreachable!(),
+            };
+            let store = storage::create_s3_client(bucket).await?;
+
+            let object_path = object_store::path::Path::from(prefix.as_str());
+            let data = store
+                .get(&object_path)
+                .await
+                .map_err(|e| format!("Failed to get settings from S3: {e}"))?;
+            let bytes = data
+                .bytes()
+                .await
+                .map_err(|e| format!("Failed to read settings from S3: {e}"))?;
+            std::fs::write(&temp_path, &bytes)
+                .map_err(|e| format!("Failed to write temp settings: {e}"))?;
+
+            local_settings = Some(temp_path);
+            _temp_settings = Some(temp_file);
+        } else {
+            local_settings = Some(sp.as_local().unwrap().clone());
+            _temp_settings = None;
+        }
+    } else {
+        local_settings = None;
+        _temp_settings = None;
+    }
+
+    // Run the build
+    let (success, g) = make_all(
+        &local_srcdir,
+        &local_sandbox,
+        local_settings.as_deref(),
+        pattern,
+    );
+
+    // Upload sandbox to S3 if needed
+    if sandbox_path.is_s3() {
+        log::info!("Uploading sandbox to {}", sandbox);
+
+        // Collect paths from PdfFile nodes and make-report.yml
+        let mut paths_to_upload: Vec<std::path::PathBuf> = g
+            .g
+            .node_weights()
+            .filter(|node| node.tag() == "pdf")
+            .map(|node| node.pathbuf())
+            .collect();
+
+        // Also upload make-report.yml if it exists
+        let report_path = local_sandbox.join("make-report.yml");
+        if report_path.exists() {
+            paths_to_upload.push(report_path);
+        }
+
+        // Upload all log files (stdout/stderr) from the logs directory recursively
+        let logs_dir = local_sandbox.join("logs");
+        if logs_dir.exists() {
+            fn collect_files_recursive(dir: &std::path::Path, files: &mut Vec<std::path::PathBuf>) {
+                if let Ok(entries) = std::fs::read_dir(dir) {
+                    for entry in entries.flatten() {
+                        let path = entry.path();
+                        if path.is_file() {
+                            files.push(path);
+                        } else if path.is_dir() {
+                            collect_files_recursive(&path, files);
+                        }
+                    }
+                }
+            }
+            collect_files_recursive(&logs_dir, &mut paths_to_upload);
+        }
+
+        storage::upload_paths_to_s3(&paths_to_upload, &local_sandbox, &sandbox_path).await?;
+    }
+
+    // Temp directories are automatically cleaned up when dropped
+    Ok((success, g))
 }
 
 #[cfg(test)]

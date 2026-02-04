@@ -404,4 +404,54 @@ mod tests {
             );
         }
     }
+
+    #[tokio::test]
+    async fn test_make_all_with_storage_local() {
+        use crate::make_all_with_storage;
+
+        let srcdir = "tests/data";
+        let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
+        let sandbox_path = sandbox.path().to_str().unwrap();
+        let settings = "tests/data/settings.yml";
+
+        let result = make_all_with_storage(srcdir, sandbox_path, Some(settings), None).await;
+
+        assert!(result.is_ok(), "make_all_with_storage should succeed");
+        let (success, _g) = result.unwrap();
+        assert!(success, "Build should succeed");
+
+        // Verify PDFs were created
+        let pdf1 = sandbox.path().join("PJHarvey/Dress/main.pdf");
+        assert!(pdf1.exists(), "PJHarvey/Dress/main.pdf should be created");
+
+        let pdf2 = sandbox.path().join("mademoiselle_K/ca_me_vexe/main.pdf");
+        assert!(
+            pdf2.exists(),
+            "mademoiselle_K/ca_me_vexe/main.pdf should be created"
+        );
+    }
+
+    /// Integration test for S3 storage.
+    /// Run with: AWS_PROFILE=zik-laurent cargo test test_make_all_with_s3 -- --ignored --nocapture
+    #[tokio::test]
+    #[ignore]
+    async fn test_make_all_with_s3() {
+        use crate::make_all_with_storage;
+
+        let srcdir = "s3://zik-laurent/songs";
+        let sandbox = "s3://zik-laurent/output";
+        let settings = "s3://zik-laurent/songs/settings.yml";
+
+        let result = make_all_with_storage(srcdir, sandbox, Some(settings), None).await;
+
+        match &result {
+            Ok((success, _g)) => {
+                println!("Build completed, success: {}", success);
+                assert!(*success, "Build should succeed");
+            }
+            Err(e) => {
+                panic!("make_all_with_storage failed: {}", e);
+            }
+        }
+    }
 }

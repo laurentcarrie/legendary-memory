@@ -1,0 +1,118 @@
+name: Deploy Lambda
+
+on:
+  workflow_dispatch:
+    inputs:
+      srcdir:
+        description: 'Source directory (S3 URL, e.g., s3://bucket/songs)'
+        required: true
+        type: string
+      sandbox:
+        description: 'Output directory (S3 URL, e.g., s3://bucket/output)'
+        required: true
+        type: string
+      settings:
+        description: 'Settings file (S3 URL, e.g., s3://bucket/settings.yml)'
+        required: false
+        type: string
+      pattern:
+        description: 'Pattern to filter songs (optional)'
+        required: false
+        type: string
+      function_name:
+        description: 'Lambda function name'
+        required: false
+        default: 'band-songbook'
+        type: string
+      aws_region:
+        description: 'AWS region'
+        required: false
+        default: 'eu-west-3'
+        type: string
+      deploy_only:
+        description: 'Only deploy, do not invoke'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-musl
+
+      - name: Install musl tools
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
+
+      - name: Install cargo-lambda
+        run: pip3 install cargo-lambda
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            band-songbook/target
+          key: ${{ runner.os }}-cargo-lambda-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build Lambda function
+        working-directory: band-songbook
+        run: cargo lambda build --release --bin band-songbook-lambda
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ inputs.aws_region }}
+
+      - name: Deploy Lambda function
+        working-directory: band-songbook
+        run: |
+          cargo lambda deploy ${{ inputs.function_name }} \
+            --timeout 900 \
+            --memory 1024 \
+            --env-var RUST_LOG=info
+
+      - name: Invoke Lambda function
+        if: ${{ !inputs.deploy_only }}
+        run: |
+          # Build the payload
+          PAYLOAD='{"srcdir":"${{ inputs.srcdir }}","sandbox":"${{ inputs.sandbox }}"'
+
+          if [ -n "${{ inputs.settings }}" ]; then
+            PAYLOAD="${PAYLOAD},\"settings\":\"${{ inputs.settings }}\""
+          fi
+
+          if [ -n "${{ inputs.pattern }}" ]; then
+            PAYLOAD="${PAYLOAD},\"pattern\":\"${{ inputs.pattern }}\""
+          fi
+
+          PAYLOAD="${PAYLOAD}}"
+
+          echo "Invoking Lambda with payload: $PAYLOAD"
+
+          aws lambda invoke \
+            --function-name ${{ inputs.function_name }} \
+            --payload "$PAYLOAD" \
+            --cli-binary-format raw-in-base64-out \
+            response.json
+
+          echo "Lambda response:"
+          cat response.json
+
+          # Check if the build succeeded
+          SUCCESS=$(jq -r '.success' response.json)
+          if [ "$SUCCESS" != "true" ]; then
+            echo "Build failed!"
+            exit 1
+          fi
