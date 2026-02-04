@@ -180,7 +180,7 @@ pub async fn make_all_with_storage(
     settings: Option<&str>,
     pattern: Option<&str>,
 ) -> Result<(bool, G), String> {
-    use storage::{download_to_local, StoragePath};
+    use storage::{StoragePath, download_to_local};
 
     let srcdir_path = StoragePath::parse(srcdir)?;
     let sandbox_path = StoragePath::parse(sandbox)?;
@@ -199,7 +199,7 @@ pub async fn make_all_with_storage(
         let temp = tempfile::tempdir().map_err(|e| format!("Failed to create temp srcdir: {e}"))?;
         local_srcdir = temp.path().to_path_buf();
         _temp_srcdir = Some(temp);
-        log::info!("Downloading srcdir from {} to {:?}", srcdir, local_srcdir);
+        log::info!("Downloading srcdir from {srcdir} to {local_srcdir:?}");
         download_to_local(&srcdir_path, &local_srcdir).await?;
     } else {
         _temp_srcdir = None;
@@ -208,7 +208,8 @@ pub async fn make_all_with_storage(
 
     // Handle sandbox
     if sandbox_path.is_s3() {
-        let temp = tempfile::tempdir().map_err(|e| format!("Failed to create temp sandbox: {e}"))?;
+        let temp =
+            tempfile::tempdir().map_err(|e| format!("Failed to create temp sandbox: {e}"))?;
         local_sandbox = temp.path().to_path_buf();
         _temp_sandbox = Some(temp);
     } else {
@@ -270,15 +271,14 @@ pub async fn make_all_with_storage(
 
     // Upload sandbox to S3 if needed
     if sandbox_path.is_s3() {
-        log::info!("Uploading sandbox to {}", sandbox);
+        log::info!("Uploading sandbox to {sandbox}");
 
         // Collect paths from PdfFile and PdfCopyFile nodes and make-report.yml
-        let mut paths_to_upload: Vec<std::path::PathBuf> = g
-            .g
-            .node_weights()
-            .filter(|node| node.tag() == "pdf" || node.tag() == "pdfcopy")
-            .map(|node| node.pathbuf())
-            .collect();
+        let mut paths_to_upload: Vec<std::path::PathBuf> =
+            g.g.node_weights()
+                .filter(|node| node.tag() == "pdf" || node.tag() == "pdfcopy")
+                .map(|node| node.pathbuf())
+                .collect();
 
         // Also upload make-report.yml if it exists
         let report_path = local_sandbox.join("make-report.yml");

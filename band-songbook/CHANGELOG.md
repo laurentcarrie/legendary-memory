@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.5] - 2026-02-04
+
+### Changed
+- CLI now supports S3 paths for srcdir, sandbox, and settings arguments
+- Main function is now async using tokio runtime
+- Uses `make_all_with_storage` for unified local/S3 path handling
+
 ## [0.0.4] - 2026-02-04
 
 ### Added

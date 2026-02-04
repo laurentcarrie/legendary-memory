@@ -22,8 +22,7 @@ impl StoragePath {
     /// Parse a string into a StoragePath.
     /// S3 URLs should be in the format `s3://bucket/prefix`.
     pub fn parse(s: &str) -> Result<Self, String> {
-        if s.starts_with("s3://") {
-            let without_scheme = &s[5..];
+        if let Some(without_scheme) = s.strip_prefix("s3://") {
             let parts: Vec<&str> = without_scheme.splitn(2, '/').collect();
             if parts.is_empty() || parts[0].is_empty() {
                 return Err("Invalid S3 URL: missing bucket name".to_string());
@@ -61,9 +60,9 @@ impl std::fmt::Display for StoragePath {
             StoragePath::Local(p) => write!(f, "{}", p.display()),
             StoragePath::S3 { bucket, prefix } => {
                 if prefix.is_empty() {
-                    write!(f, "s3://{}", bucket)
+                    write!(f, "s3://{bucket}")
                 } else {
-                    write!(f, "s3://{}/{}", bucket, prefix)
+                    write!(f, "s3://{bucket}/{prefix}")
                 }
             }
         }
@@ -78,9 +77,7 @@ impl std::fmt::Display for StoragePath {
 /// - Instance metadata (EC2, ECS, etc.)
 pub async fn create_s3_client(bucket: &str) -> Result<impl ObjectStore, String> {
     // Load AWS config using the SDK's credential chain (supports profiles)
-    let sdk_config = aws_config::defaults(BehaviorVersion::latest())
-        .load()
-        .await;
+    let sdk_config = aws_config::defaults(BehaviorVersion::latest()).load().await;
 
     let region = sdk_config
         .region()
@@ -165,12 +162,12 @@ pub async fn download_to_local(src: &StoragePath, dest: &Path) -> Result<(), Str
         let data = store
             .get(&meta.location)
             .await
-            .map_err(|e| format!("Failed to get object {}: {e}", key))?;
+            .map_err(|e| format!("Failed to get object {key}: {e}"))?;
 
         let bytes = data
             .bytes()
             .await
-            .map_err(|e| format!("Failed to read object {}: {e}", key))?;
+            .map_err(|e| format!("Failed to read object {key}: {e}"))?;
 
         std::fs::write(&local_path, &bytes)
             .map_err(|e| format!("Failed to write {}: {e}", local_path.display()))?;
@@ -231,7 +228,7 @@ pub async fn upload_paths_to_s3(
         store
             .put(&object_path, PutPayload::from(data))
             .await
-            .map_err(|e| format!("Failed to upload {}: {e}", key))?;
+            .map_err(|e| format!("Failed to upload {key}: {e}"))?;
 
         log::debug!("Uploaded {} -> {}", local_path.display(), key);
     }
@@ -279,7 +276,7 @@ pub async fn upload_to_s3(src: &Path, dest: &StoragePath) -> Result<(), String> 
         store
             .put(&object_path, PutPayload::from(data))
             .await
-            .map_err(|e| format!("Failed to upload {}: {e}", key))?;
+            .map_err(|e| format!("Failed to upload {key}: {e}"))?;
 
         log::debug!("Uploaded {} -> {}", local_path.display(), key);
     }
@@ -295,8 +292,8 @@ fn walkdir(dir: &Path) -> Result<Vec<PathBuf>, String> {
         return Ok(files);
     }
 
-    let entries =
-        std::fs::read_dir(dir).map_err(|e| format!("Failed to read directory {}: {e}", dir.display()))?;
+    let entries = std::fs::read_dir(dir)
+        .map_err(|e| format!("Failed to read directory {}: {e}", dir.display()))?;
 
     for entry in entries {
         let entry = entry.map_err(|e| format!("Failed to read directory entry: {e}"))?;
@@ -371,7 +368,7 @@ mod tests {
     #[test]
     fn test_display_local() {
         let path = StoragePath::Local(PathBuf::from("/home/user/songs"));
-        assert_eq!(format!("{}", path), "/home/user/songs");
+        assert_eq!(format!("{path}"), "/home/user/songs");
     }
 
     #[test]
@@ -380,7 +377,7 @@ mod tests {
             bucket: "my-bucket".to_string(),
             prefix: "path/to/songs".to_string(),
         };
-        assert_eq!(format!("{}", path), "s3://my-bucket/path/to/songs");
+        assert_eq!(format!("{path}"), "s3://my-bucket/path/to/songs");
     }
 
     #[test]
@@ -389,6 +386,6 @@ mod tests {
             bucket: "my-bucket".to_string(),
             prefix: "".to_string(),
         };
-        assert_eq!(format!("{}", path), "s3://my-bucket");
+        assert_eq!(format!("{path}"), "s3://my-bucket");
     }
 }

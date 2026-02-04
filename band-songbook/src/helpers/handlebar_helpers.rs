@@ -145,11 +145,7 @@ pub fn bar_rects_helper(
     let parsed = parse(input).map_err(|e| RenderErrorReason::Other(e.to_string()))?;
 
     for (i, bar) in parsed.bars.iter().enumerate() {
-        let glyphs: Vec<_> = bar
-            .items
-            .iter()
-            .map(glyph_of_baritem)
-            .collect();
+        let glyphs: Vec<_> = bar.items.iter().map(glyph_of_baritem).collect();
 
         if glyphs.len() >= 2 {
             // Two or more chords: draw rectangle, then position first chord up 10%, second down 10%

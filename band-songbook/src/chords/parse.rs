@@ -130,10 +130,8 @@ pub fn parse(input: &str) -> Result<ParsedRow, ParseError> {
     let bars: Result<Vec<Bar>, ParseError> = bar_parts
         .iter()
         .map(|bar_str| {
-            let items: Result<Vec<BarItem>, ParseError> = bar_str
-                .split_whitespace()
-                .map(parse_item)
-                .collect();
+            let items: Result<Vec<BarItem>, ParseError> =
+                bar_str.split_whitespace().map(parse_item).collect();
             Ok(Bar { items: items? })
         })
         .collect();
