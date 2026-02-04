@@ -38,12 +38,14 @@ RUN cd /tmp && \
     tar -xzf lilypond-2.24.3-linux-x86_64.tar.gz && \
     mv lilypond-2.24.3 /opt/lilypond && \
     ln -s /opt/lilypond/bin/lilypond /usr/local/bin/lilypond && \
+    ln -s /opt/lilypond/bin/lilypond-book /usr/local/bin/lilypond-book && \
     rm -f lilypond-2.24.3-linux-x86_64.tar.gz
 
 # Copy the Lambda binary
 COPY --from=builder /usr/src/app/target/x86_64-unknown-linux-musl/release/band-songbook-lambda ${LAMBDA_RUNTIME_DIR}/bootstrap
 
 # Set environment variables
+ENV PATH="/opt/lilypond/bin:${PATH}"
 ENV RUST_LOG=info
 ENV SRCDIR=s3://zik-laurent/songs
 ENV SANDBOX=s3://zik-laurent/sandbox
