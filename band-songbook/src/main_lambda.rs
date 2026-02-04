@@ -2,18 +2,36 @@ use band_songbook::make_all_with_storage;
 use lambda_runtime::{run, service_fn, Error, LambdaEvent};
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize)]
-struct Request {
-    /// Source directory containing song.yml files (s3://bucket/prefix)
-    srcdir: String,
-    /// Output directory for built files (s3://bucket/prefix)
-    sandbox: String,
-    /// Optional path to settings.yml file (s3://bucket/key)
-    #[serde(default)]
-    settings: Option<String>,
-    /// Optional pattern to filter songs
-    #[serde(default)]
-    pattern: Option<String>,
+/// S3 Event notification structure
+#[derive(Deserialize, Debug)]
+struct S3Event {
+    #[serde(rename = "Records", default)]
+    records: Vec<S3EventRecord>,
+}
+
+#[derive(Deserialize, Debug)]
+struct S3EventRecord {
+    #[serde(rename = "eventSource")]
+    event_source: Option<String>,
+    #[serde(rename = "eventName")]
+    event_name: Option<String>,
+    s3: Option<S3Data>,
+}
+
+#[derive(Deserialize, Debug)]
+struct S3Data {
+    bucket: S3Bucket,
+    object: S3Object,
+}
+
+#[derive(Deserialize, Debug)]
+struct S3Bucket {
+    name: String,
+}
+
+#[derive(Deserialize, Debug)]
+struct S3Object {
+    key: String,
 }
 
 #[derive(Serialize)]
@@ -21,27 +39,71 @@ struct Response {
     request_id: String,
     success: bool,
     message: String,
+    triggered_by: Option<String>,
 }
 
-async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error> {
-    let request = event.payload;
-    let request_id = event.context.request_id.clone();
+/// Configuration from environment variables
+struct Config {
+    srcdir: String,
+    sandbox: String,
+    settings: Option<String>,
+}
 
-    log::info!("Processing request {}", request_id);
-    log::info!("srcdir: {}", &request.srcdir);
-    log::info!("sandbox: {}", &request.sandbox);
-    if let Some(ref settings) = request.settings {
-        log::info!("settings: {}", settings);
+impl Config {
+    fn from_env() -> Result<Self, String> {
+        let srcdir = std::env::var("SRCDIR")
+            .unwrap_or_else(|_| "s3://zik-laurent/songs".to_string());
+        let sandbox = std::env::var("SANDBOX")
+            .unwrap_or_else(|_| "s3://zik-laurent/sandbox".to_string());
+        let settings = std::env::var("SETTINGS").ok()
+            .or_else(|| Some("s3://zik-laurent/songs/settings.yml".to_string()));
+
+        Ok(Config {
+            srcdir,
+            sandbox,
+            settings,
+        })
     }
-    if let Some(ref pattern) = request.pattern {
-        log::info!("pattern: {}", pattern);
+}
+
+async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error> {
+    let request_id = event.context.request_id.clone();
+    let s3_event = event.payload;
+
+    // Log the trigger
+    let triggered_by = if let Some(record) = s3_event.records.first() {
+        if let Some(s3_data) = &record.s3 {
+            let key = &s3_data.object.key;
+            log::info!(
+                "Triggered by S3 event: {} on s3://{}/{}",
+                record.event_name.as_deref().unwrap_or("unknown"),
+                s3_data.bucket.name,
+                key
+            );
+            Some(format!("s3://{}/{}", s3_data.bucket.name, key))
+        } else {
+            log::info!("Triggered manually or by unknown event");
+            None
+        }
+    } else {
+        log::info!("Triggered manually (no S3 records)");
+        None
+    };
+
+    // Get configuration from environment
+    let config = Config::from_env().map_err(|e| Error::from(e))?;
+
+    log::info!("srcdir: {}", &config.srcdir);
+    log::info!("sandbox: {}", &config.sandbox);
+    if let Some(ref settings) = config.settings {
+        log::info!("settings: {}", settings);
     }
 
     match make_all_with_storage(
-        &request.srcdir,
-        &request.sandbox,
-        request.settings.as_deref(),
-        request.pattern.as_deref(),
+        &config.srcdir,
+        &config.sandbox,
+        config.settings.as_deref(),
+        None, // no pattern filter
     )
     .await
     {
@@ -56,6 +118,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
                 request_id,
                 success,
                 message,
+                triggered_by,
             })
         }
         Err(e) => {
@@ -64,6 +127,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
                 request_id,
                 success: false,
                 message: format!("Build failed: {}", e),
+                triggered_by,
             })
         }
     }

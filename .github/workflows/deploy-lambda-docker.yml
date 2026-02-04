@@ -1,0 +1,123 @@
+name: Deploy Lambda (Docker)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'band-songbook/src/**'
+      - 'band-songbook/Cargo.toml'
+      - 'band-songbook/Dockerfile'
+    branches:
+      - main
+
+env:
+  AWS_REGION: eu-west-3
+  ECR_REPOSITORY: band-songbook-lambda
+  LAMBDA_FUNCTION_NAME: band-songbook
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Create ECR repository if not exists
+        run: |
+          aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }} || \
+          aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY }}
+
+      - name: Build, tag, and push Docker image
+        working-directory: band-songbook
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Update Lambda function
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Check if function exists and is image-based
+          PACKAGE_TYPE=$(aws lambda get-function --function-name ${{ env.LAMBDA_FUNCTION_NAME }} --query 'Configuration.PackageType' --output text 2>/dev/null || echo "NOT_FOUND")
+
+          if [ "$PACKAGE_TYPE" = "Image" ]; then
+            echo "Updating existing image-based function..."
+            aws lambda update-function-code \
+              --function-name ${{ env.LAMBDA_FUNCTION_NAME }} \
+              --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          elif [ "$PACKAGE_TYPE" = "Zip" ]; then
+            echo "Deleting existing zip-based function and creating image-based..."
+            aws lambda delete-function --function-name ${{ env.LAMBDA_FUNCTION_NAME }}
+            sleep 5
+            aws lambda create-function \
+              --function-name ${{ env.LAMBDA_FUNCTION_NAME }} \
+              --package-type Image \
+              --code ImageUri=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+              --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/cargo-lambda-role-71626fb1-b25c-4726-88fc-cf2f0162918c \
+              --timeout 900 \
+              --memory-size 2048 \
+              --environment "Variables={RUST_LOG=info,SRCDIR=s3://zik-laurent/songs,SANDBOX=s3://zik-laurent/sandbox,SETTINGS=s3://zik-laurent/songs/settings.yml}"
+          else
+            echo "Creating new function..."
+            aws lambda create-function \
+              --function-name ${{ env.LAMBDA_FUNCTION_NAME }} \
+              --package-type Image \
+              --code ImageUri=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+              --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/cargo-lambda-role-71626fb1-b25c-4726-88fc-cf2f0162918c \
+              --timeout 900 \
+              --memory-size 2048 \
+              --environment "Variables={RUST_LOG=info,SRCDIR=s3://zik-laurent/songs,SANDBOX=s3://zik-laurent/sandbox,SETTINGS=s3://zik-laurent/songs/settings.yml}"
+          fi
+
+      - name: Wait for Lambda to be ready
+        run: |
+          echo "Waiting for Lambda function to be updated..."
+          aws lambda wait function-updated --function-name ${{ env.LAMBDA_FUNCTION_NAME }} 2>/dev/null || \
+          aws lambda wait function-active --function-name ${{ env.LAMBDA_FUNCTION_NAME }}
+
+      - name: Configure Lambda settings
+        run: |
+          aws lambda update-function-configuration \
+            --function-name ${{ env.LAMBDA_FUNCTION_NAME }} \
+            --timeout 900 \
+            --memory-size 2048 \
+            --environment "Variables={RUST_LOG=info,SRCDIR=s3://zik-laurent/songs,SANDBOX=s3://zik-laurent/sandbox,SETTINGS=s3://zik-laurent/songs/settings.yml}" || true
+
+      - name: Setup S3 trigger (if not exists)
+        run: |
+          # Add permission for S3 to invoke Lambda (ignore if exists)
+          aws lambda add-permission \
+            --function-name ${{ env.LAMBDA_FUNCTION_NAME }} \
+            --statement-id s3-trigger-permission \
+            --action lambda:InvokeFunction \
+            --principal s3.amazonaws.com \
+            --source-arn arn:aws:s3:::zik-laurent \
+            --source-account ${{ secrets.AWS_ACCOUNT_ID }} 2>/dev/null || echo "Permission already exists"
+
+      - name: Print deployment info
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          echo "Deployment complete!"
+          echo "Image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "Lambda: ${{ env.LAMBDA_FUNCTION_NAME }}"
+          LAMBDA_ARN=$(aws lambda get-function --function-name ${{ env.LAMBDA_FUNCTION_NAME }} --query 'Configuration.FunctionArn' --output text)
+          echo "Lambda ARN: $LAMBDA_ARN"
