@@ -26,6 +26,28 @@ pub struct SongInfo {
     pub time_signature: Option<String>,
 }
 
+impl SongInfo {
+    /// Returns a normalized PDF filename based on author and title.
+    /// Format: "<author>--@--<title>"
+    /// - Capitals are replaced with lowercase
+    /// - All characters which are not A-Za-z0-9 are replaced with '_'
+    pub fn pdf_name_of_song(&self) -> String {
+        let normalize = |s: &str| -> String {
+            s.chars()
+                .map(|c| {
+                    if c.is_ascii_alphanumeric() {
+                        c.to_ascii_lowercase()
+                    } else {
+                        '_'
+                    }
+                })
+                .collect()
+        };
+
+        format!("{}--@--{}", normalize(&self.author), normalize(&self.title))
+    }
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 pub struct SongMeta {
     pub date: Option<String>,

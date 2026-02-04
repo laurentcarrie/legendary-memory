@@ -11,7 +11,7 @@ pub use nodes::PdfFile;
 pub use storage::StoragePath;
 
 use model::{SectionItem, Song};
-use nodes::{SongYml, TexFile};
+use nodes::{PdfCopyFile, SongYml, TexFile};
 use object_store::ObjectStoreExt;
 use std::path::Path;
 
@@ -83,6 +83,12 @@ pub fn make_all(
         return (true, g);
     }
 
+    // Create pdf directory for copied PDFs
+    let pdf_dir = sandbox.join("pdf");
+    if let Err(e) = std::fs::create_dir_all(&pdf_dir) {
+        log::error!("Failed to create pdf directory: {e}");
+    }
+
     for song_path in songs {
         // Convert absolute path to relative path from srcdir
         let rel_path = match song_path.strip_prefix(srcdir) {
@@ -137,13 +143,23 @@ pub fn make_all(
 
         // Create matching PdfFile node (main.pdf in same directory)
         let pdf_path = parent_dir.join("main.pdf");
-        let pdf_node = PdfFile::new(pdf_path);
+        let pdf_node = PdfFile::new(pdf_path.clone());
         let pdf_idx = match g.add_node(pdf_node) {
             Ok(idx) => idx,
             Err(_) => continue,
         };
 
         g.add_edge(song_idx, pdf_idx);
+
+        // Create PdfCopyFile node to copy the PDF to pdf/<author>--@--<title>.pdf
+        if let Some(ref song_data) = song {
+            let pdf_copy_path =
+                Path::new("pdf").join(format!("{}.pdf", song_data.info.pdf_name_of_song()));
+            let pdf_copy_node = PdfCopyFile::new(pdf_copy_path);
+            if let Ok(pdf_copy_idx) = g.add_node(pdf_copy_node) {
+                g.add_edge(pdf_idx, pdf_copy_idx);
+            }
+        }
     }
 
     let success = g.make();
@@ -256,11 +272,11 @@ pub async fn make_all_with_storage(
     if sandbox_path.is_s3() {
         log::info!("Uploading sandbox to {}", sandbox);
 
-        // Collect paths from PdfFile nodes and make-report.yml
+        // Collect paths from PdfFile and PdfCopyFile nodes and make-report.yml
         let mut paths_to_upload: Vec<std::path::PathBuf> = g
             .g
             .node_weights()
-            .filter(|node| node.tag() == "pdf")
+            .filter(|node| node.tag() == "pdf" || node.tag() == "pdfcopy")
             .map(|node| node.pathbuf())
             .collect();
 
