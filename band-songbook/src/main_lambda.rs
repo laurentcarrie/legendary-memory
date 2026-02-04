@@ -1,5 +1,5 @@
 use band_songbook::make_all_with_storage;
-use lambda_runtime::{run, service_fn, Error, LambdaEvent};
+use lambda_runtime::{Error, LambdaEvent, run, service_fn};
 use serde::{Deserialize, Serialize};
 
 /// S3 Event notification structure
@@ -51,11 +51,12 @@ struct Config {
 
 impl Config {
     fn from_env() -> Result<Self, String> {
-        let srcdir = std::env::var("SRCDIR")
-            .unwrap_or_else(|_| "s3://zik-laurent/songs".to_string());
-        let sandbox = std::env::var("SANDBOX")
-            .unwrap_or_else(|_| "s3://zik-laurent/sandbox".to_string());
-        let settings = std::env::var("SETTINGS").ok()
+        let srcdir =
+            std::env::var("SRCDIR").unwrap_or_else(|_| "s3://zik-laurent/songs".to_string());
+        let sandbox =
+            std::env::var("SANDBOX").unwrap_or_else(|_| "s3://zik-laurent/sandbox".to_string());
+        let settings = std::env::var("SETTINGS")
+            .ok()
             .or_else(|| Some("s3://zik-laurent/songs/settings.yml".to_string()));
 
         Ok(Config {
@@ -91,12 +92,12 @@ async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error
     };
 
     // Get configuration from environment
-    let config = Config::from_env().map_err(|e| Error::from(e))?;
+    let config = Config::from_env().map_err(Error::from)?;
 
     log::info!("srcdir: {}", &config.srcdir);
     log::info!("sandbox: {}", &config.sandbox);
     if let Some(ref settings) = config.settings {
-        log::info!("settings: {}", settings);
+        log::info!("settings: {settings}");
     }
 
     match make_all_with_storage(
@@ -113,7 +114,7 @@ async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error
             } else {
                 "Build completed with errors".to_string()
             };
-            log::info!("{}", message);
+            log::info!("{message}");
             Ok(Response {
                 request_id,
                 success,
@@ -122,11 +123,11 @@ async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error
             })
         }
         Err(e) => {
-            log::error!("Build failed: {}", e);
+            log::error!("Build failed: {e}");
             Ok(Response {
                 request_id,
                 success: false,
-                message: format!("Build failed: {}", e),
+                message: format!("Build failed: {e}"),
                 triggered_by,
             })
         }

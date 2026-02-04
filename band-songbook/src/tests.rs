@@ -98,8 +98,7 @@ mod tests {
             "final",
         ];
         for name in lyrics_files {
-            let lyrics_path =
-                PathBuf::from(format!("mademoiselle_K/ca_me_vexe/lyrics/{name}.tex"));
+            let lyrics_path = PathBuf::from(format!("mademoiselle_K/ca_me_vexe/lyrics/{name}.tex"));
             let lyrics_node = TexFile::new(lyrics_path);
             let _ = g.add_root_node(lyrics_node);
         }
@@ -446,11 +445,11 @@ mod tests {
 
         match &result {
             Ok((success, _g)) => {
-                println!("Build completed, success: {}", success);
+                println!("Build completed, success: {success}");
                 assert!(*success, "Build should succeed");
             }
             Err(e) => {
-                panic!("make_all_with_storage failed: {}", e);
+                panic!("make_all_with_storage failed: {e}");
             }
         }
     }

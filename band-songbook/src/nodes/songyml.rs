@@ -161,7 +161,8 @@ impl GRootNode for SongYml {
 \begin{document}
 \input{body}
 \end{document}
-"#.to_string();
+"#
+        .to_string();
         if let Err(e) = std::fs::write(&tex_full_path, &tex_content) {
             log::error!("Failed to write main.tex: {e}");
             return Err(ExpandError::Other(e.to_string()));

@@ -25,10 +25,7 @@ impl GNode for PdfCopyFile {
         let pdf_predecessor = match predecessors.iter().find(|p| p.tag() == "pdf") {
             Some(pred) => *pred,
             None => {
-                log::error!(
-                    "PdfCopyFile {} has no pdf predecessor",
-                    self.path.display()
-                );
+                log::error!("PdfCopyFile {} has no pdf predecessor", self.path.display());
                 return false;
             }
         };

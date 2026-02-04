@@ -96,7 +96,7 @@ impl GNode for PdfFile {
                 Err(e) => {
                     log::error!("Failed to run lualatex: {} for {}", e, self.path.display());
                     let stderr_path = sandbox.join("logs").join(format!("{}.stderr", &node_id));
-                    let _ = std::fs::write(&stderr_path, format!("Failed to run lualatex: {}", e));
+                    let _ = std::fs::write(&stderr_path, format!("Failed to run lualatex: {e}"));
                     return false;
                 }
             };
