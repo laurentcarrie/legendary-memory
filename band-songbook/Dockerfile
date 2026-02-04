@@ -44,6 +44,10 @@ RUN cd /tmp && \
 # Copy the Lambda binary
 COPY --from=builder /usr/src/app/target/x86_64-unknown-linux-musl/release/band-songbook-lambda ${LAMBDA_RUNTIME_DIR}/bootstrap
 
+# Copy and install custom fonts
+COPY fonts/ /usr/share/fonts/custom/
+RUN fc-cache -fv
+
 # Install locale packages and set up locale
 RUN dnf install -y glibc-locale-source glibc-langpack-en && \
     localedef -i en_US -f UTF-8 en_US.UTF-8
