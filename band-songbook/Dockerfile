@@ -12,10 +12,10 @@ RUN apt-get update && apt-get install -y \
 RUN rustup target add x86_64-unknown-linux-musl
 
 # Copy source code
-COPY Cargo.toml Cargo.lock ./
+COPY Cargo.toml ./
 COPY src ./src
 
-# Build the Lambda binary
+# Build the Lambda binary (generates Cargo.lock if not present)
 RUN cargo build --release --target x86_64-unknown-linux-musl --bin band-songbook-lambda
 
 # Runtime stage
