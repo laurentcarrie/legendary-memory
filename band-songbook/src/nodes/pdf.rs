@@ -143,6 +143,9 @@ impl GNode for PdfFile {
 }
 
 impl PdfFile {
+    // TODO: when parsing and discovering dependencies to lilypond files,
+    // check that it is coherent with the files declared in song.yml
+
     /// Scan for inputs, returning (success, all_inputs, toplevel_ly_files)
     /// toplevel_ly_files are .ly files directly referenced from tex via \lyfile{} or \songly{}
     pub fn scan_with_toplevel_ly(
