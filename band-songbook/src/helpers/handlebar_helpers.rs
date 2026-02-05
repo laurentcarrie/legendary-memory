@@ -207,6 +207,57 @@ pub fn row_multiplier_helper(
     Ok(())
 }
 
+/// Returns the total bar count for a referenced section (by link/id)
+/// Calculates sum of (number_of_bars * repeat) for each row in the referenced Chords section
+/// Usage: {{ref_bar_count link song.structure}}
+pub fn ref_bar_count_helper(
+    h: &Helper,
+    _: &Handlebars,
+    _: &Context,
+    _: &mut RenderContext,
+    out: &mut dyn Output,
+) -> Result<(), RenderError> {
+    let link = h
+        .param(0)
+        .and_then(|v| v.value().as_str())
+        .ok_or(RenderErrorReason::Other(
+            "missing link parameter".to_string(),
+        ))?;
+
+    let structure =
+        h.param(1)
+            .and_then(|v| v.value().as_array())
+            .ok_or(RenderErrorReason::Other(
+                "missing structure parameter".to_string(),
+            ))?;
+
+    // Find the referenced section by id
+    let mut total_bars: u32 = 0;
+    for item in structure {
+        let id = item.get("id").and_then(|v| v.as_str());
+        if id == Some(link) {
+            // Found the referenced section, check if it's a Chords section
+            if let Some(chords) = item.get("item").and_then(|v| v.get("Chords")) {
+                if let Some(rows) = chords.get("rows").and_then(|v| v.as_array()) {
+                    for row in rows {
+                        if let Some(row_str) = row.as_str() {
+                            if let Ok(parsed) = parse(row_str) {
+                                let bars = parsed.bars.len() as u32;
+                                let repeat = parsed.repeat.n;
+                                total_bars += bars * repeat;
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+    }
+
+    out.write(&total_bars.to_string())?;
+    Ok(())
+}
+
 /// Registers all custom helpers with the handlebars instance
 pub fn register_helpers(handlebars: &mut Handlebars) {
     handlebars.register_helper("len-helper", Box::new(len_helper));
@@ -215,6 +266,7 @@ pub fn register_helpers(handlebars: &mut Handlebars) {
     handlebars.register_helper("bar_glyph", Box::new(bar_glyph_helper));
     handlebars.register_helper("bar_rects", Box::new(bar_rects_helper));
     handlebars.register_helper("row_multiplier", Box::new(row_multiplier_helper));
+    handlebars.register_helper("ref_bar_count", Box::new(ref_bar_count_helper));
 }
 
 #[cfg(test)]
