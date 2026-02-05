@@ -413,7 +413,8 @@ mod tests {
         let sandbox_path = sandbox.path().to_str().unwrap();
         let settings = "tests/data/settings.yml";
 
-        let result = make_all_with_storage(srcdir, sandbox_path, Some(settings), None).await;
+        let result =
+            make_all_with_storage(srcdir, sandbox_path, sandbox.path(), Some(settings), None).await;
 
         assert!(result.is_ok(), "make_all_with_storage should succeed");
         let (success, _g) = result.unwrap();
@@ -440,8 +441,11 @@ mod tests {
         let srcdir = "s3://zik-laurent/songs";
         let sandbox = "s3://zik-laurent/output";
         let settings = "s3://zik-laurent/songs/settings.yml";
+        let local_sandbox = tempfile::tempdir().expect("Failed to create temp dir");
 
-        let result = make_all_with_storage(srcdir, sandbox, Some(settings), None).await;
+        let result =
+            make_all_with_storage(srcdir, sandbox, local_sandbox.path(), Some(settings), None)
+                .await;
 
         match &result {
             Ok((success, _g)) => {

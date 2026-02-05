@@ -100,9 +100,13 @@ async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error
         log::info!("settings: {settings}");
     }
 
+    // Use a fixed path for local sandbox (Lambda only has /tmp writable)
+    let local_sandbox = std::path::Path::new("/tmp/sandbox");
+
     match make_all_with_storage(
         &config.srcdir,
         &config.sandbox,
+        local_sandbox,
         config.settings.as_deref(),
         None, // no pattern filter
     )

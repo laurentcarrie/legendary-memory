@@ -174,9 +174,13 @@ pub fn make_all(
 /// - Calls existing `make_all()` with local paths
 /// - Uploads sandbox to S3 if sandbox was S3 URL
 /// - Cleans up temp directory
+///
+/// The `local_sandbox` parameter specifies where to run the build locally.
+/// If `sandbox` is an S3 path, results will be uploaded there after the build.
 pub async fn make_all_with_storage(
     srcdir: &str,
     sandbox: &str,
+    local_sandbox: &Path,
     settings: Option<&str>,
     pattern: Option<&str>,
 ) -> Result<(bool, G), String> {
@@ -187,12 +191,10 @@ pub async fn make_all_with_storage(
     let settings_path = settings.map(StoragePath::parse).transpose()?;
 
     // Determine local paths for the build
-    // These temp variables hold TempDir handles to keep directories alive until end of function
+    // This temp variable holds TempDir handle to keep directory alive until end of function
     let _temp_srcdir: Option<tempfile::TempDir>;
-    let _temp_sandbox: Option<tempfile::TempDir>;
 
     let local_srcdir: std::path::PathBuf;
-    let local_sandbox: std::path::PathBuf;
 
     // Handle srcdir
     if srcdir_path.is_s3() {
@@ -206,19 +208,8 @@ pub async fn make_all_with_storage(
         local_srcdir = srcdir_path.as_local().unwrap().clone();
     }
 
-    // Handle sandbox
-    if sandbox_path.is_s3() {
-        let temp =
-            tempfile::tempdir().map_err(|e| format!("Failed to create temp sandbox: {e}"))?;
-        local_sandbox = temp.path().to_path_buf();
-        _temp_sandbox = Some(temp);
-    } else {
-        _temp_sandbox = None;
-        local_sandbox = sandbox_path.as_local().unwrap().clone();
-        // Create local sandbox if it doesn't exist
-        std::fs::create_dir_all(&local_sandbox)
-            .map_err(|e| format!("Failed to create sandbox: {e}"))?;
-    }
+    // Create local sandbox if it doesn't exist
+    std::fs::create_dir_all(local_sandbox).map_err(|e| format!("Failed to create sandbox: {e}"))?;
 
     // Handle settings - download if S3, otherwise use local path
     let local_settings: Option<std::path::PathBuf>;
@@ -264,7 +255,7 @@ pub async fn make_all_with_storage(
     // Run the build
     let (success, g) = make_all(
         &local_srcdir,
-        &local_sandbox,
+        local_sandbox,
         local_settings.as_deref(),
         pattern,
     );
@@ -304,7 +295,7 @@ pub async fn make_all_with_storage(
             collect_files_recursive(&logs_dir, &mut paths_to_upload);
         }
 
-        storage::upload_paths_to_s3(&paths_to_upload, &local_sandbox, &sandbox_path).await?;
+        storage::upload_paths_to_s3(&paths_to_upload, local_sandbox, &sandbox_path).await?;
     }
 
     // Temp directories are automatically cleaned up when dropped
