@@ -90,6 +90,8 @@ impl GNode for PdfFile {
                             out.status.code(),
                             self.path.display()
                         );
+                        log::error!("stdout : {stdout}");
+                        log::error!("stderr : {stderr}");
                     }
                     stdout
                 }
