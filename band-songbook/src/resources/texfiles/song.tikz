@@ -34,6 +34,7 @@
     \tikzmath{\currentline=\topline;}
     \tikzmath{\columnleft=0;}
     \tikzmath{\columnwidth=\xxxcolumnwidth;}
+    \tikzmath{\barcount=1;}
 
     % Song title
     \coordinate (A) at (\xr*2+\xxxcolumnwidth/2,.5) ;
@@ -72,22 +73,26 @@
 {{#each this.item.Chords.rows}}
     \coordinate (A1) at (\columnleft + \xr * {{number_of_bars this}}, \currentline);
     \coordinate (A2) at ($(A1) + (0, -\yr)$);
+    \node[anchor=east] at (\columnleft - 0.02, \currentline - 0.85*\yr) { \fontsize{8pt}{8pt}\selectfont \pgfmathprintnumber[precision=0]{\barcount} };
 {{{bar_rects this ../this.item.Chords.color}}}
 {{#if (gt (row_multiplier this) 1)}}
     \node[anchor=west] at (\columnleft + \xr * {{number_of_bars this}} + 0.1, \currentline - 0.5*\yr) { \fontsize{10pt}{10pt}\selectfont\bfseries x{{row_multiplier this}} };
 {{/if}}
     \tikzmath{\currentline = \currentline - \yr;}
+    \tikzmath{\barcount = \barcount + {{number_of_bars this}} * {{row_multiplier this}};}
 {{/each}}
     \coordinate (B) at (\columnleft, \currentline);
     \coordinate (C) at ($(A)!0.5!(B)$);
-    \coordinate (D) at ($(C) + (-\titlexoffset, 0)$);
+    \coordinate (D) at ($(C) + (-\titlexoffset - 0.5, 0)$);
     \node[ellipse, fill={{this.item.Chords.color}}, inner sep=3pt, rotate=70] at (D) { \fontsize{12pt}{12pt}\selectfont\bfseries {{{this.item.Chords.title}}} };
     \tikzmath{\currentline = \currentline - \spacebetweensections;}
 {{/if}}
 {{#if this.item.Ref}}
+    \node[anchor=east] at (\columnleft + \xr - 0.02, \currentline - 0.35*\yr) { \fontsize{8pt}{8pt}\selectfont \pgfmathprintnumber[precision=0]{\barcount} };
     \draw[draw=black, fill={{this.item.Ref.color}}] (\columnleft + \xr, \currentline) rectangle ++(2*\xr, -\yr/2) node[midway] { {{{this.item.Ref.title}}} };
     \tikzmath{\currentline = \currentline - \yr/2;}
     \tikzmath{\currentline = \currentline - \spacebetweensections;}
+    \tikzmath{\barcount = \barcount + {{ref_bar_count this.item.Ref.link @root.song.structure}};}
 {{/if}}
 {{#if (eq this.item "NewColumn")}}
     \tikzmath{\columnleft = \columnleft + \columnwidth;}
