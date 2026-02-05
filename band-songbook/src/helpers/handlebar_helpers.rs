@@ -224,12 +224,12 @@ pub fn ref_bar_count_helper(
             "missing link parameter".to_string(),
         ))?;
 
-    let structure = h
-        .param(1)
-        .and_then(|v| v.value().as_array())
-        .ok_or(RenderErrorReason::Other(
-            "missing structure parameter".to_string(),
-        ))?;
+    let structure =
+        h.param(1)
+            .and_then(|v| v.value().as_array())
+            .ok_or(RenderErrorReason::Other(
+                "missing structure parameter".to_string(),
+            ))?;
 
     // Find the referenced section by id
     let mut total_bars: u32 = 0;
