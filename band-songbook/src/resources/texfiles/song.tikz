@@ -73,6 +73,9 @@
     \coordinate (A1) at (\columnleft + \xr * {{number_of_bars this}}, \currentline);
     \coordinate (A2) at ($(A1) + (0, -\yr)$);
 {{{bar_rects this ../this.item.Chords.color}}}
+{{#if (gt (row_multiplier this) 1)}}
+    \node[anchor=west] at (\columnleft + \xr * {{number_of_bars this}} + 0.1, \currentline - 0.5*\yr) { \fontsize{10pt}{10pt}\selectfont\bfseries x{{row_multiplier this}} };
+{{/if}}
     \tikzmath{\currentline = \currentline - \yr;}
 {{/each}}
     \coordinate (B) at (\columnleft, \currentline);

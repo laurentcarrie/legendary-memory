@@ -186,6 +186,27 @@ pub fn bar_rects_helper(
     Ok(())
 }
 
+/// Returns the repeat multiplier from a chord row (e.g., "Em|G|x2" returns 2)
+/// Usage: {{row_multiplier row}}
+pub fn row_multiplier_helper(
+    h: &Helper,
+    _: &Handlebars,
+    _: &Context,
+    _: &mut RenderContext,
+    out: &mut dyn Output,
+) -> Result<(), RenderError> {
+    let input = h
+        .param(0)
+        .and_then(|v| v.value().as_str())
+        .ok_or(RenderErrorReason::Other(
+            "missing input parameter".to_string(),
+        ))?;
+
+    let multiplier = parse(input).map(|parsed| parsed.repeat.n).unwrap_or(1);
+    out.write(&multiplier.to_string())?;
+    Ok(())
+}
+
 /// Registers all custom helpers with the handlebars instance
 pub fn register_helpers(handlebars: &mut Handlebars) {
     handlebars.register_helper("len-helper", Box::new(len_helper));
@@ -193,6 +214,7 @@ pub fn register_helpers(handlebars: &mut Handlebars) {
     handlebars.register_helper("bar", Box::new(bar_helper));
     handlebars.register_helper("bar_glyph", Box::new(bar_glyph_helper));
     handlebars.register_helper("bar_rects", Box::new(bar_rects_helper));
+    handlebars.register_helper("row_multiplier", Box::new(row_multiplier_helper));
 }
 
 #[cfg(test)]
