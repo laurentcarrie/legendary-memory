@@ -1,6 +1,5 @@
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use yamake::command::run_command;
 use yamake::model::GNode;
 
 pub struct TexOfLilypond {
@@ -67,14 +66,49 @@ impl GNode for TexOfLilypond {
             .current_dir(workdir);
 
         let node_id = self.path.to_string_lossy();
-        let success = run_command(&mut cmd, sandbox, &node_id);
-        if !success {
-            log::error!(
-                "lilypond-book failed for {} (lytex: {})",
-                self.path.display(),
-                lytex_filename
-            );
+
+        // Setup logging
+        let stdout_path = sandbox.join("logs").join(format!("{}.stdout", &node_id));
+        let stderr_path = sandbox.join("logs").join(format!("{}.stderr", &node_id));
+        let logs_dir = stdout_path.parent().unwrap_or(Path::new(""));
+        let _ = std::fs::create_dir_all(logs_dir);
+
+        let output = cmd.output();
+
+        match output {
+            Ok(out) => {
+                let stdout = String::from_utf8_lossy(&out.stdout).to_string();
+                let stderr = String::from_utf8_lossy(&out.stderr).to_string();
+
+                // Save stdout and stderr for debugging
+                let _ = std::fs::write(&stdout_path, &stdout);
+                let _ = std::fs::write(&stderr_path, &stderr);
+
+                if !out.status.success() {
+                    log::error!(
+                        "lilypond-book failed for {} (lytex: {})",
+                        self.path.display(),
+                        lytex_filename
+                    );
+                    if !stdout.is_empty() {
+                        log::error!("lilypond-book stdout: {stdout}");
+                    }
+                    if !stderr.is_empty() {
+                        log::error!("lilypond-book stderr: {stderr}");
+                    }
+                    return false;
+                }
+                true
+            }
+            Err(e) => {
+                log::error!(
+                    "Failed to run lilypond-book: {} for {}",
+                    e,
+                    self.path.display()
+                );
+                let _ = std::fs::write(&stderr_path, format!("Failed to run lilypond-book: {e}"));
+                false
+            }
         }
-        success
     }
 }

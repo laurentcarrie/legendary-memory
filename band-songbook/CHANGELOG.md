@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.7] - 2026-02-05
+
+### Changed
+- `make_all_with_storage` now takes `local_sandbox` as explicit parameter
+- Lambda uses fixed `/tmp/sandbox` path instead of temp directory
+
+### Improved
+- lilypond-book errors now log stdout and stderr content for easier debugging
+
 ## [0.0.6] - 2026-02-04
 
 ### Fixed

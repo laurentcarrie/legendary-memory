@@ -52,6 +52,10 @@ async fn main() -> ExitCode {
         }
     };
 
+    // Determine local sandbox path
+    let local_sandbox: std::path::PathBuf;
+    let _temp_sandbox: Option<tempfile::TempDir>;
+
     if let Some(local_path) = sandbox_path.as_local() {
         if let Err(e) = std::fs::create_dir_all(local_path) {
             eprintln!(
@@ -61,11 +65,26 @@ async fn main() -> ExitCode {
             );
             return ExitCode::from(1);
         }
+        local_sandbox = local_path.clone();
+        _temp_sandbox = None;
+    } else {
+        // S3 sandbox - create temp directory
+        match tempfile::tempdir() {
+            Ok(temp) => {
+                local_sandbox = temp.path().to_path_buf();
+                _temp_sandbox = Some(temp);
+            }
+            Err(e) => {
+                eprintln!("Error: failed to create temp sandbox: {e}");
+                return ExitCode::from(1);
+            }
+        }
     }
 
     let result: Result<(bool, band_songbook::G), String> = make_all_with_storage(
         &args.srcdir,
         &args.sandbox,
+        &local_sandbox,
         args.settings.as_deref(),
         args.pattern.as_deref(),
     )
