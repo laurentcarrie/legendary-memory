@@ -112,6 +112,26 @@ jobs:
             --source-arn arn:aws:s3:::zik-laurent \
             --source-account ${{ secrets.AWS_ACCOUNT_ID }} 2>/dev/null || echo "Permission already exists"
 
+          # Get Lambda ARN
+          LAMBDA_ARN=$(aws lambda get-function --function-name ${{ env.LAMBDA_FUNCTION_NAME }} --query 'Configuration.FunctionArn' --output text)
+
+          # Configure S3 bucket notification to trigger Lambda on object creation in songs/ prefix
+          aws s3api put-bucket-notification-configuration --bucket zik-laurent --notification-configuration "{
+            \"LambdaFunctionConfigurations\": [{
+              \"LambdaFunctionArn\": \"$LAMBDA_ARN\",
+              \"Events\": [\"s3:ObjectCreated:*\"],
+              \"Filter\": {
+                \"Key\": {
+                  \"FilterRules\": [{
+                    \"Name\": \"prefix\",
+                    \"Value\": \"songs/\"
+                  }]
+                }
+              }
+            }]
+          }"
+          echo "S3 trigger configured for songs/ prefix"
+
       - name: Print deployment info
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
