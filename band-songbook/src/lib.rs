@@ -275,6 +275,8 @@ pub async fn make_all_with_storage(
         let report_path = local_sandbox.join("make-report.yml");
         if report_path.exists() {
             paths_to_upload.push(report_path);
+        } else {
+            log::warn!("make-report.yml not found at {}", report_path.display());
         }
 
         // Upload all log files (stdout/stderr) from the logs directory recursively
@@ -295,6 +297,7 @@ pub async fn make_all_with_storage(
             collect_files_recursive(&logs_dir, &mut paths_to_upload);
         }
 
+        log::info!("Uploading {} files to S3", paths_to_upload.len());
         storage::upload_paths_to_s3(&paths_to_upload, local_sandbox, &sandbox_path).await?;
     }
 
