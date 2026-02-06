@@ -206,13 +206,13 @@ mod tests {
         assert!(success, "make_all should succeed");
 
         // Verify PDFs were created for both songs
-        let pdf1 = sandbox.path().join("PJHarvey/Dress/main.pdf");
-        assert!(pdf1.exists(), "PJHarvey/Dress/main.pdf should be created");
+        let pdf1 = sandbox.path().join("songs/PJHarvey/Dress/main.pdf");
+        assert!(pdf1.exists(), "songs/PJHarvey/Dress/main.pdf should be created");
 
-        let pdf2 = sandbox.path().join("mademoiselle_K/ca_me_vexe/main.pdf");
+        let pdf2 = sandbox.path().join("songs/mademoiselle_K/ca_me_vexe/main.pdf");
         assert!(
             pdf2.exists(),
-            "mademoiselle_K/ca_me_vexe/main.pdf should be created"
+            "songs/mademoiselle_K/ca_me_vexe/main.pdf should be created"
         );
     }
 
@@ -375,17 +375,17 @@ mod tests {
         assert!(success, "make_all with pattern should succeed");
 
         // Only Ca Me Vexe should be built (matches "Mademoiselle K Ca me vexe")
-        let pdf_vexe = sandbox.path().join("mademoiselle_K/ca_me_vexe/main.pdf");
+        let pdf_vexe = sandbox.path().join("songs/mademoiselle_K/ca_me_vexe/main.pdf");
         assert!(
             pdf_vexe.exists(),
-            "mademoiselle_K/ca_me_vexe/main.pdf should be created"
+            "songs/mademoiselle_K/ca_me_vexe/main.pdf should be created"
         );
 
         // PJHarvey/Dress should NOT be built (doesn't match pattern)
-        let pdf_dress = sandbox.path().join("PJHarvey/Dress/main.pdf");
+        let pdf_dress = sandbox.path().join("songs/PJHarvey/Dress/main.pdf");
         assert!(
             !pdf_dress.exists(),
-            "PJHarvey/Dress/main.pdf should NOT be created"
+            "songs/PJHarvey/Dress/main.pdf should NOT be created"
         );
     }
 
@@ -421,13 +421,13 @@ mod tests {
         assert!(success, "Build should succeed");
 
         // Verify PDFs were created
-        let pdf1 = sandbox.path().join("PJHarvey/Dress/main.pdf");
-        assert!(pdf1.exists(), "PJHarvey/Dress/main.pdf should be created");
+        let pdf1 = sandbox.path().join("songs/PJHarvey/Dress/main.pdf");
+        assert!(pdf1.exists(), "songs/PJHarvey/Dress/main.pdf should be created");
 
-        let pdf2 = sandbox.path().join("mademoiselle_K/ca_me_vexe/main.pdf");
+        let pdf2 = sandbox.path().join("songs/mademoiselle_K/ca_me_vexe/main.pdf");
         assert!(
             pdf2.exists(),
-            "mademoiselle_K/ca_me_vexe/main.pdf should be created"
+            "songs/mademoiselle_K/ca_me_vexe/main.pdf should be created"
         );
     }
 
