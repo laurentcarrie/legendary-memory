@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.8] - 2026-02-06
+
+### Added
+- Bar count display in TikZ song diagrams
+  - Shows bar number at the left of each row (Chords and Ref sections)
+  - Tracks cumulative bar count including repeats
+- Row multiplier display (xN) at end of rows when repeat > 1
+- `row_multiplier` Handlebars helper to extract repeat count from chord rows
+- `ref_bar_count` Handlebars helper to calculate total bars for referenced sections
+
+### Changed
+- Section labels moved slightly more to the left for better layout
+
 ## [0.0.7] - 2026-02-05
 
 ### Changed

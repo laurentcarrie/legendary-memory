@@ -71,25 +71,24 @@ async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error
     let request_id = event.context.request_id.clone();
     let s3_event = event.payload;
 
-    // Log the trigger
-    let triggered_by = if let Some(record) = s3_event.records.first() {
-        if let Some(s3_data) = &record.s3 {
-            let key = &s3_data.object.key;
+    // Check if triggered by S3 event - ignore S3 triggers, only respond to manual invocations
+    if let Some(record) = s3_event.records.first() {
+        if record.s3.is_some() {
             log::info!(
-                "Triggered by S3 event: {} on s3://{}/{}",
-                record.event_name.as_deref().unwrap_or("unknown"),
-                s3_data.bucket.name,
-                key
+                "Ignoring S3 event trigger: {}",
+                record.event_name.as_deref().unwrap_or("unknown")
             );
-            Some(format!("s3://{}/{}", s3_data.bucket.name, key))
-        } else {
-            log::info!("Triggered manually or by unknown event");
-            None
+            return Ok(Response {
+                request_id,
+                success: true,
+                message: "S3 trigger ignored - use manual invocation".to_string(),
+                triggered_by: None,
+            });
         }
-    } else {
-        log::info!("Triggered manually (no S3 records)");
-        None
-    };
+    }
+
+    log::info!("Triggered manually");
+    let triggered_by: Option<String> = None;
 
     // Get configuration from environment
     let config = Config::from_env().map_err(Error::from)?;

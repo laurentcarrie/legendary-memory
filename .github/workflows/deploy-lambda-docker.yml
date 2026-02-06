@@ -14,7 +14,7 @@ on:
 env:
   AWS_REGION: eu-west-3
   ECR_REPOSITORY: band-songbook-lambda
-  LAMBDA_FUNCTION_NAME: band-songbook4
+  LAMBDA_FUNCTION_NAME: band-songbook
 
 jobs:
   build-and-deploy:

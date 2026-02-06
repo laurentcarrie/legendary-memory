@@ -86,12 +86,13 @@ impl GNode for PdfFile {
                     let _ = std::fs::write(&stderr_path, &stderr);
                     if !out.status.success() {
                         log::error!(
-                            "lualatex failed with status {:?} for {}",
+                            "({}) lualatex failed with status {:?} for {}",
+                            pdf_filename.to_string_lossy(),
                             out.status.code(),
                             self.path.display()
                         );
-                        log::error!("stdout : {stdout}");
-                        log::error!("stderr : {stderr}");
+                        log::error!("({}) stdout : {stdout}", pdf_filename.to_string_lossy(),);
+                        log::error!("({}) stderr : {stderr}", pdf_filename.to_string_lossy(),);
                     }
                     stdout
                 }
