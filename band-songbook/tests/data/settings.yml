@@ -1,5 +1,5 @@
 # Settings for song rendering
-lyrics_font: ""
+lyrics_font: "\\setmainfont{Times New Roman}"
 
 # Default colors for section types (x11 color names)
 colors:

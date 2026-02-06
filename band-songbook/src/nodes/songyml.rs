@@ -330,11 +330,11 @@ impl GRootNode for SongYml {
 \end{{center}}
 \vspace{{1em}}
 
-\cursive
+{}
 {}
 \end{{document}}
 "#,
-            song.info.title, song.info.author, lyrics_inputs
+            song.info.title, song.info.author, settings.lyrics_font, lyrics_inputs
         );
 
         if let Err(e) = std::fs::write(&lyrics_tex_full_path, &lyrics_tex_content) {
