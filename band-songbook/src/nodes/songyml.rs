@@ -4,6 +4,7 @@ use std::path::{Path, PathBuf};
 use yamake::model::{Edge, ExpandError, ExpandResult, GNode, GRootNode};
 
 use super::{LilypondFile, LyTexFile, PdfFile, SongTikz, TexFile, TexOfLilypond};
+use crate::chords::bar_numbering::barcount_map_of_structure;
 use crate::helpers::register_helpers;
 use crate::model::{SectionItem, Song};
 use crate::settings::Settings;
@@ -281,21 +282,30 @@ impl GRootNode for SongYml {
         }
 
         // Build the lyrics/main.tex content
+        let bar_map = barcount_map_of_structure(&song.structure);
         let mut lyrics_inputs = String::new();
         for item in &song.structure {
             match &item.item {
                 SectionItem::Chords(chords) => {
                     let color = chords.color.as_deref().unwrap_or("white");
+                    let (first_bar, last_bar) = bar_map
+                        .get(&item.id)
+                        .map(|(rows, end)| (rows.first().copied().unwrap_or(1), end - 1))
+                        .unwrap_or((1, 1));
                     lyrics_inputs.push_str(&format!(
-                        "\\noindent\\colorbox{{{}}}{{\\makebox[\\dimexpr\\textwidth-2\\fboxsep][l]{{\\textbf{{{}}}}}}}\n\n\\input{{{}}}\n\\vspace{{1em}}\n\n",
-                        color, chords.title, item.id
+                        "\\noindent\\colorbox{{{}}}{{\\makebox[\\dimexpr\\columnwidth-2\\fboxsep][s]{{\\hfill \\Large\\textbf{{{}}} \\hfill {} $\\rightarrow$ {}}}}}\n\n\\input{{{}}}\n\\vspace{{1em}}\n\n",
+                        color, chords.title, first_bar, last_bar, item.id
                     ));
                 }
                 SectionItem::Ref(ref_section) => {
                     let color = ref_section.color.as_deref().unwrap_or("white");
+                    let (first_bar, last_bar) = bar_map
+                        .get(&item.id)
+                        .map(|(rows, end)| (rows.first().copied().unwrap_or(1), end - 1))
+                        .unwrap_or((1, 1));
                     lyrics_inputs.push_str(&format!(
-                        "\\noindent\\colorbox{{{}}}{{\\makebox[\\dimexpr\\textwidth-2\\fboxsep][l]{{\\textbf{{{}}}}}}}\n\n\\input{{{}}}\n\\vspace{{1em}}\n\n",
-                        color, ref_section.title, item.id
+                        "\\noindent\\colorbox{{{}}}{{\\makebox[\\dimexpr\\columnwidth-2\\fboxsep][s]{{\\hfill \\Large\\textbf{{{}}} \\hfill {} $\\rightarrow$ {}}}}}\n\n\\input{{{}}}\n\\vspace{{1em}}\n\n",
+                        color, ref_section.title, first_bar, last_bar, item.id
                     ));
                 }
                 _ => {}
@@ -310,6 +320,7 @@ impl GRootNode for SongYml {
 \usepackage{{setspace}}
 \usepackage{{verse}}
 \usepackage[x11names]{{xcolor}}
+\usepackage{{multicol}}
 \usepackage{{aurical}}
 \usepackage[default]{{frcursive}}
 
@@ -332,11 +343,14 @@ impl GRootNode for SongYml {
 \end{{center}}
 \vspace{{1em}}
 
+\setmainfont{{Times New Roman}}
+\setlength{{\columnseprule}}{{0.4pt}}
+\begin{{multicols}}{{2}}
 {}
-{}
+\end{{multicols}}
 \end{{document}}
 "#,
-            song.info.title, song.info.author, settings.lyrics_font, lyrics_inputs
+            song.info.title, song.info.author, lyrics_inputs
         );
 
         if let Err(e) = std::fs::write(&lyrics_tex_full_path, &lyrics_tex_content) {

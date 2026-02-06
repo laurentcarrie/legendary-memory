@@ -59,7 +59,8 @@ pub fn make_all(
     pattern: Option<&str>,
 ) -> (bool, G) {
     let songs = discover(srcdir);
-    let mut g = G::new(srcdir.to_path_buf(), sandbox.to_path_buf());
+    let songs_sandbox = sandbox.join("songs");
+    let mut g = G::new(srcdir.to_path_buf(), songs_sandbox.clone());
 
     // Check that lualatex is available
     if std::process::Command::new("lualatex")
@@ -71,9 +72,14 @@ pub fn make_all(
         return (false, g);
     }
 
-    // Copy settings.yml to sandbox if provided
+    // Create songs directory
+    if let Err(e) = std::fs::create_dir_all(&songs_sandbox) {
+        log::error!("Failed to create songs directory: {e}");
+    }
+
+    // Copy settings.yml to songs sandbox if provided
     if let Some(settings) = settings_path {
-        let dest = sandbox.join("settings.yml");
+        let dest = songs_sandbox.join("settings.yml");
         if let Err(e) = std::fs::copy(settings, &dest) {
             log::error!("Failed to copy settings.yml to sandbox: {e}");
         }
@@ -157,10 +163,10 @@ pub fn make_all(
 
         g.add_edge(song_idx, pdf_idx);
 
-        // Create PdfCopyFile node to copy the PDF to pdf/<author>--@--<title>.pdf
+        // Create PdfCopyFile node to copy the PDF to ../pdf/<author>--@--<title>.pdf
         if let Some(ref song_data) = song {
             let pdf_copy_path =
-                Path::new("pdf").join(format!("{}.pdf", song_data.info.pdf_name_of_song()));
+                Path::new("../pdf").join(format!("{}.pdf", song_data.info.pdf_name_of_song()));
             let pdf_copy_node = PdfCopyFile::new(pdf_copy_path);
             if let Ok(pdf_copy_idx) = g.add_node(pdf_copy_node) {
                 g.add_edge(pdf_idx, pdf_copy_idx);
@@ -173,7 +179,7 @@ pub fn make_all(
                 g.add_edge(song_idx, lyrics_pdf_idx);
 
                 // Create PdfCopyFile node for lyrics PDF
-                let lyrics_copy_path = Path::new("pdf-lyrics")
+                let lyrics_copy_path = Path::new("../pdf-lyrics")
                     .join(format!("{}-lyrics.pdf", song_data.info.pdf_name_of_song()));
                 let lyrics_copy_node = PdfCopyFile::new(lyrics_copy_path);
                 if let Ok(lyrics_copy_idx) = g.add_node(lyrics_copy_node) {
@@ -184,6 +190,25 @@ pub fn make_all(
     }
 
     let success = g.make();
+
+    // Move make-report.yml from songs_sandbox to sandbox root
+    let report_src = songs_sandbox.join("make-report.yml");
+    let report_dest = sandbox.join("make-report.yml");
+    if report_src.exists() {
+        if let Err(e) = std::fs::rename(&report_src, &report_dest) {
+            log::error!("Failed to move make-report.yml: {e}");
+        }
+    }
+
+    // Move logs directory from songs_sandbox to sandbox root
+    let logs_src = songs_sandbox.join("logs");
+    let logs_dest = sandbox.join("logs");
+    if logs_src.exists() {
+        if let Err(e) = std::fs::rename(&logs_src, &logs_dest) {
+            log::error!("Failed to move logs directory: {e}");
+        }
+    }
+
     (success, g)
 }
 

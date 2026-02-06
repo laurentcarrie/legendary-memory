@@ -1,6 +1,8 @@
+use crate::chords::bar_numbering::barcount_map_of_structure;
 use crate::chords::glyph::glyph_of_baritem;
 use crate::chords::model::BarItem;
 use crate::chords::parse::parse;
+use crate::model::StructureItem;
 use handlebars::{
     Context, Handlebars, Helper, Output, RenderContext, RenderError, RenderErrorReason,
 };
@@ -224,35 +226,28 @@ pub fn ref_bar_count_helper(
             "missing link parameter".to_string(),
         ))?;
 
-    let structure =
-        h.param(1)
-            .and_then(|v| v.value().as_array())
-            .ok_or(RenderErrorReason::Other(
-                "missing structure parameter".to_string(),
-            ))?;
+    let structure_json = h.param(1).ok_or(RenderErrorReason::Other(
+        "missing structure parameter".to_string(),
+    ))?;
 
-    // Find the referenced section by id
-    let mut total_bars: u32 = 0;
-    for item in structure {
-        let id = item.get("id").and_then(|v| v.as_str());
-        if id == Some(link) {
-            // Found the referenced section, check if it's a Chords section
-            if let Some(chords) = item.get("item").and_then(|v| v.get("Chords")) {
-                if let Some(rows) = chords.get("rows").and_then(|v| v.as_array()) {
-                    for row in rows {
-                        if let Some(row_str) = row.as_str() {
-                            if let Ok(parsed) = parse(row_str) {
-                                let bars = parsed.bars.len() as u32;
-                                let repeat = parsed.repeat.n;
-                                total_bars += bars * repeat;
-                            }
-                        }
-                    }
-                }
-            }
-            break;
-        }
-    }
+    // Deserialize structure into Vec<StructureItem>
+    let structure: Vec<StructureItem> =
+        serde_json::from_value(structure_json.value().clone()).map_err(|e| {
+            RenderErrorReason::Other(format!("failed to deserialize structure: {e}"))
+        })?;
+
+    let bar_numbers = barcount_map_of_structure(&structure);
+
+    // Get the bar count for the linked section
+    let total_bars = bar_numbers
+        .get(link)
+        .map(|(row_numbers, end_count)| {
+            row_numbers
+                .first()
+                .map(|start| end_count - start)
+                .unwrap_or(0)
+        })
+        .unwrap_or(0);
 
     out.write(&total_bars.to_string())?;
     Ok(())
