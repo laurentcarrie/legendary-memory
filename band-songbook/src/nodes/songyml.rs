@@ -273,6 +273,75 @@ impl GRootNode for SongYml {
             return Err(ExpandError::Other(e.to_string()));
         }
 
+        // Create lyrics/main.tex file with inputs for each Chords/Ref section
+        let lyrics_tex_path = parent_dir.join("lyrics").join("main.tex");
+        let lyrics_tex_full_path = sandbox.join(&lyrics_tex_path);
+        if let Some(parent) = lyrics_tex_full_path.parent() {
+            let _ = std::fs::create_dir_all(parent);
+        }
+
+        // Build the lyrics/main.tex content
+        let mut lyrics_inputs = String::new();
+        for item in &song.structure {
+            match &item.item {
+                SectionItem::Chords(chords) => {
+                    lyrics_inputs.push_str(&format!(
+                        "\\section*{{{}}}\n\\input{{{}}}\n\n",
+                        chords.title, item.id
+                    ));
+                }
+                SectionItem::Ref(ref_section) => {
+                    lyrics_inputs.push_str(&format!(
+                        "\\section*{{{}}}\n\\input{{{}}}\n\n",
+                        ref_section.title, item.id
+                    ));
+                }
+                _ => {}
+            }
+        }
+
+        let lyrics_tex_content = format!(
+            r#"\documentclass{{article}}
+\usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{{geometry}}
+\usepackage{{fontspec}}
+\setmainfont{{Garamond Libre}}
+\usepackage{{setspace}}
+\usepackage{{verse}}
+\usepackage{{xcolor}}
+\usepackage{{aurical}}
+\usepackage[default]{{frcursive}}
+
+\begin{{document}}
+\begin{{center}}
+{{
+    \Fontskrivan\bfseries\slshape
+    \fontsize{{40pt}}{{35pt}}\selectfont
+    \color{{blue}}
+    {}
+}} \\[0.5em]
+{{
+    \textcursive{{
+        \bfseries
+        \fontsize{{16pt}}{{12pt}}\selectfont
+        \color{{orange}}
+        {}
+    }}
+}}
+\end{{center}}
+\vspace{{1em}}
+
+\cursive
+{}
+\end{{document}}
+"#,
+            song.info.title, song.info.author, lyrics_inputs
+        );
+
+        if let Err(e) = std::fs::write(&lyrics_tex_full_path, &lyrics_tex_content) {
+            log::error!("Failed to write lyrics/main.tex: {e}");
+            return Err(ExpandError::Other(e.to_string()));
+        }
+
         // Create nodes (body.tex and lyrics files are added as root nodes in make_all)
         let tex_node = TexFile::new(tex_path.clone());
         let tikz_node = SongTikz::new(tikz_path.clone());
@@ -282,6 +351,7 @@ impl GRootNode for SongYml {
         let chords_node = TexFile::new(chords_path);
         let data_node = TexFile::new(data_path);
         let macros_ly_node = LilypondFile::new(macros_ly_path);
+        let lyrics_tex_node = TexFile::new(lyrics_tex_path.clone());
 
         // Scan for lilypond files referenced in tex files
         let pdf_for_scan = PdfFile::new(pdf_path.clone());
@@ -293,6 +363,10 @@ impl GRootNode for SongYml {
         // Included .ly files (from \include) don't need LyTexFile/TexOfLilypond
         let ly_files = toplevel_ly;
 
+        // Create lyrics PDF path
+        let lyrics_pdf_path = parent_dir.join("lyrics").join("main.pdf");
+        let lyrics_pdf_node = PdfFile::new(lyrics_pdf_path.clone());
+
         let mut nodes: Vec<Box<dyn GNode + Send + Sync>> = vec![
             Box::new(tex_node),
             Box::new(tikz_node),
@@ -302,6 +376,8 @@ impl GRootNode for SongYml {
             Box::new(chords_node),
             Box::new(data_node),
             Box::new(macros_ly_node),
+            Box::new(lyrics_tex_node),
+            Box::new(lyrics_pdf_node),
         ];
 
         let mut edges: Vec<Edge> = vec![];
@@ -314,6 +390,13 @@ impl GRootNode for SongYml {
             nto: Box::new(PdfFile::new(pdf_path.clone())),
         };
         edges.push(main_edge);
+
+        // Edge: lyrics/main.tex -> lyrics/main.pdf
+        let lyrics_edge = Edge {
+            nfrom: Box::new(TexFile::new(lyrics_tex_path)),
+            nto: Box::new(PdfFile::new(lyrics_pdf_path)),
+        };
+        edges.push(lyrics_edge);
 
         // Add LilypondFile -> LyTexFile -> PdfFile chain
         // Add LilypondFile -> TexOfLilypond -> PdfFile chain

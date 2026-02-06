@@ -89,6 +89,12 @@ pub fn make_all(
         log::error!("Failed to create pdf directory: {e}");
     }
 
+    // Create pdf-lyrics directory for copied lyrics PDFs
+    let pdf_lyrics_dir = sandbox.join("pdf-lyrics");
+    if let Err(e) = std::fs::create_dir_all(&pdf_lyrics_dir) {
+        log::error!("Failed to create pdf-lyrics directory: {e}");
+    }
+
     for song_path in songs {
         // Convert absolute path to relative path from srcdir
         let rel_path = match song_path.strip_prefix(srcdir) {
@@ -158,6 +164,21 @@ pub fn make_all(
             let pdf_copy_node = PdfCopyFile::new(pdf_copy_path);
             if let Ok(pdf_copy_idx) = g.add_node(pdf_copy_node) {
                 g.add_edge(pdf_idx, pdf_copy_idx);
+            }
+
+            // Create lyrics PdfFile node
+            let lyrics_pdf_path = parent_dir.join("lyrics").join("main.pdf");
+            let lyrics_pdf_node = PdfFile::new(lyrics_pdf_path.clone());
+            if let Ok(lyrics_pdf_idx) = g.add_node(lyrics_pdf_node) {
+                g.add_edge(song_idx, lyrics_pdf_idx);
+
+                // Create PdfCopyFile node for lyrics PDF
+                let lyrics_copy_path = Path::new("pdf-lyrics")
+                    .join(format!("{}-lyrics.pdf", song_data.info.pdf_name_of_song()));
+                let lyrics_copy_node = PdfCopyFile::new(lyrics_copy_path);
+                if let Ok(lyrics_copy_idx) = g.add_node(lyrics_copy_node) {
+                    g.add_edge(lyrics_pdf_idx, lyrics_copy_idx);
+                }
             }
         }
     }
