@@ -285,15 +285,17 @@ impl GRootNode for SongYml {
         for item in &song.structure {
             match &item.item {
                 SectionItem::Chords(chords) => {
+                    let color = chords.color.as_deref().unwrap_or("white");
                     lyrics_inputs.push_str(&format!(
-                        "\\section*{{{}}}\n\\input{{{}}}\n\n",
-                        chords.title, item.id
+                        "\\begin{{tcolorbox}}[colback={},colframe={},title={{{}}}]\n\\input{{{}}}\n\\end{{tcolorbox}}\n\n",
+                        color, color, chords.title, item.id
                     ));
                 }
                 SectionItem::Ref(ref_section) => {
+                    let color = ref_section.color.as_deref().unwrap_or("white");
                     lyrics_inputs.push_str(&format!(
-                        "\\section*{{{}}}\n\\input{{{}}}\n\n",
-                        ref_section.title, item.id
+                        "\\begin{{tcolorbox}}[colback={},colframe={},title={{{}}}]\n\\input{{{}}}\n\\end{{tcolorbox}}\n\n",
+                        color, color, ref_section.title, item.id
                     ));
                 }
                 _ => {}
@@ -307,7 +309,8 @@ impl GRootNode for SongYml {
 \setmainfont{{Garamond Libre}}
 \usepackage{{setspace}}
 \usepackage{{verse}}
-\usepackage{{xcolor}}
+\usepackage[x11names]{{xcolor}}
+\usepackage{{tcolorbox}}
 \usepackage{{aurical}}
 \usepackage[default]{{frcursive}}
 
