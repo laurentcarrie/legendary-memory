@@ -5,12 +5,12 @@ set -e
 FUNCTION_NAME="band-songbook"
 AWS_REGION="eu-west-3"
 S3_BUCKET="zik-laurent"
-S3_PREFIX="songs/"
+S3_PREFIX="songs"
 
-# Environment variables for the Lambda
-SRCDIR="s3://zik-laurent/songs"
-SANDBOX="s3://zik-laurent/sandbox"
-SETTINGS="s3://zik-laurent/songs/settings.yml"
+# Environment variables for the Lambda (derived from S3_BUCKET and S3_PREFIX)
+SRCDIR="s3://${S3_BUCKET}/${S3_PREFIX}"
+SANDBOX="s3://${S3_BUCKET}/sandbox"
+SETTINGS="s3://${S3_BUCKET}/${S3_PREFIX}/settings.yml"
 
 echo "=== Building Lambda function ==="
 cargo lambda build --release --bin band-songbook-lambda
@@ -75,7 +75,7 @@ aws s3api put-bucket-notification-configuration \
     --notification-configuration file:///tmp/s3-notification.json
 
 echo "=== Done! ==="
-echo "Lambda function '$FUNCTION_NAME' is now triggered when files in s3://$S3_BUCKET/$S3_PREFIX are modified."
+echo "Lambda function '$FUNCTION_NAME' is now triggered when files in s3://${S3_BUCKET}/${S3_PREFIX}/ are modified."
 echo ""
 echo "Configuration:"
 echo "  SRCDIR: $SRCDIR"

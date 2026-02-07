@@ -313,14 +313,23 @@ pub async fn make_all_with_storage(
     if sandbox_path.is_s3() {
         log::info!("Uploading sandbox to {sandbox}");
 
-        // Collect paths from PdfFile and PdfCopyFile nodes and make-report.yml
-        let mut paths_to_upload: Vec<std::path::PathBuf> =
-            g.g.node_weights()
-                .filter(|node| node.tag() == "pdf" || node.tag() == "pdfcopy")
-                .map(|node| node.pathbuf())
-                .collect();
+        let mut paths_to_upload: Vec<std::path::PathBuf> = Vec::new();
 
-        // Also upload make-report.yml if it exists
+        // Helper function to collect files recursively
+        fn collect_files_recursive(dir: &std::path::Path, files: &mut Vec<std::path::PathBuf>) {
+            if let Ok(entries) = std::fs::read_dir(dir) {
+                for entry in entries.flatten() {
+                    let path = entry.path();
+                    if path.is_file() {
+                        files.push(path);
+                    } else if path.is_dir() {
+                        collect_files_recursive(&path, files);
+                    }
+                }
+            }
+        }
+
+        // Upload make-report.yml if it exists
         let report_path = local_sandbox.join("make-report.yml");
         if report_path.exists() {
             paths_to_upload.push(report_path);
@@ -328,21 +337,21 @@ pub async fn make_all_with_storage(
             log::warn!("make-report.yml not found at {}", report_path.display());
         }
 
-        // Upload all log files (stdout/stderr) from the logs directory recursively
+        // Upload all files from pdf/ directory
+        let pdf_dir = local_sandbox.join("pdf");
+        if pdf_dir.exists() {
+            collect_files_recursive(&pdf_dir, &mut paths_to_upload);
+        }
+
+        // Upload all files from pdf-lyrics/ directory
+        let pdf_lyrics_dir = local_sandbox.join("pdf-lyrics");
+        if pdf_lyrics_dir.exists() {
+            collect_files_recursive(&pdf_lyrics_dir, &mut paths_to_upload);
+        }
+
+        // Upload all log files (stdout/stderr) from the logs directory
         let logs_dir = local_sandbox.join("logs");
         if logs_dir.exists() {
-            fn collect_files_recursive(dir: &std::path::Path, files: &mut Vec<std::path::PathBuf>) {
-                if let Ok(entries) = std::fs::read_dir(dir) {
-                    for entry in entries.flatten() {
-                        let path = entry.path();
-                        if path.is_file() {
-                            files.push(path);
-                        } else if path.is_dir() {
-                            collect_files_recursive(&path, files);
-                        }
-                    }
-                }
-            }
             collect_files_recursive(&logs_dir, &mut paths_to_upload);
         }
 

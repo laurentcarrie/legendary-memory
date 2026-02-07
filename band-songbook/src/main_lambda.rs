@@ -27,7 +27,7 @@ struct Response {
 /// Configuration from environment variables
 struct Config {
     srcdir: String,
-    sandbox: String,
+    sandbox_base: String,
     settings: Option<String>,
 }
 
@@ -35,7 +35,7 @@ impl Config {
     fn from_env() -> Result<Self, String> {
         let srcdir =
             std::env::var("SRCDIR").unwrap_or_else(|_| "s3://zik-laurent/songs".to_string());
-        let sandbox =
+        let sandbox_base =
             std::env::var("SANDBOX").unwrap_or_else(|_| "s3://zik-laurent/sandbox".to_string());
         let settings = std::env::var("SETTINGS")
             .ok()
@@ -43,9 +43,17 @@ impl Config {
 
         Ok(Config {
             srcdir,
-            sandbox,
+            sandbox_base,
             settings,
         })
+    }
+
+    /// Generate a unique sandbox path for this invocation
+    fn sandbox_for_request(&self, request_id: &str) -> String {
+        // Use a short hash of request_id to keep path manageable
+        let short_id: String = request_id.chars().take(8).collect();
+        let timestamp = chrono::Utc::now().format("%Y%m%d-%H%M%S");
+        format!("{}/{}-{}", self.sandbox_base, timestamp, short_id)
     }
 }
 
@@ -75,8 +83,11 @@ async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error
     // Get configuration from environment
     let config = Config::from_env().map_err(Error::from)?;
 
+    // Generate unique sandbox path for this invocation
+    let sandbox = config.sandbox_for_request(&request_id);
+
     log::info!("srcdir: {}", &config.srcdir);
-    log::info!("sandbox: {}", &config.sandbox);
+    log::info!("sandbox: {}", &sandbox);
     if let Some(ref settings) = config.settings {
         log::info!("settings: {settings}");
     }
@@ -86,7 +97,7 @@ async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error
 
     match make_all_with_storage(
         &config.srcdir,
-        &config.sandbox,
+        &sandbox,
         local_sandbox,
         config.settings.as_deref(),
         None, // no pattern filter

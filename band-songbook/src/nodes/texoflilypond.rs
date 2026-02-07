@@ -57,6 +57,12 @@ impl GNode for TexOfLilypond {
         // Working directory is the parent of the output directory
         let workdir = output_full_path.parent().unwrap_or(sandbox);
 
+        log::info!(
+            "Running lilypond-book on {} in {}",
+            lytex_filename,
+            workdir.display()
+        );
+
         let mut cmd = Command::new("lilypond-book");
         cmd.arg("--output")
             .arg(output_dir.file_name().unwrap_or_default())
