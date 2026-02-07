@@ -74,7 +74,7 @@ jobs:
               --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/cargo-lambda-role-71626fb1-b25c-4726-88fc-cf2f0162918c \
               --timeout 900 \
               --memory-size 2048 \
-              --environment "Variables={RUST_LOG=info,SRCDIR=s3://zik-laurent/songs,SANDBOX=s3://zik-laurent/sandbox,SETTINGS=s3://zik-laurent/songs/settings.yml}"
+              --environment "Variables={RUST_LOG=info}"
           else
             echo "Creating new function..."
             aws lambda create-function \
@@ -84,7 +84,7 @@ jobs:
               --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/cargo-lambda-role-71626fb1-b25c-4726-88fc-cf2f0162918c \
               --timeout 900 \
               --memory-size 2048 \
-              --environment "Variables={RUST_LOG=info,SRCDIR=s3://zik-laurent/songs,SANDBOX=s3://zik-laurent/sandbox,SETTINGS=s3://zik-laurent/songs/settings.yml}"
+              --environment "Variables={RUST_LOG=info}"
           fi
 
       - name: Wait for Lambda to be ready
@@ -99,7 +99,7 @@ jobs:
             --function-name ${{ env.LAMBDA_FUNCTION_NAME }} \
             --timeout 900 \
             --memory-size 2048 \
-            --environment "Variables={RUST_LOG=info,SRCDIR=s3://zik-laurent/songs,SANDBOX=s3://zik-laurent/sandbox,SETTINGS=s3://zik-laurent/songs/settings.yml}" || true
+            --environment "Variables={RUST_LOG=info}" || true
 
       - name: Setup S3 trigger (if not exists)
         run: |

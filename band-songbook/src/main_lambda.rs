@@ -2,18 +2,11 @@ use band_songbook::make_all_with_storage;
 use lambda_runtime::{Error, LambdaEvent, run, service_fn};
 use serde::{Deserialize, Serialize};
 
-/// S3 Event notification structure
 #[derive(Deserialize, Debug)]
-struct S3Event {
-    #[serde(rename = "Records", default)]
-    records: Vec<S3EventRecord>,
-}
-
-#[derive(Deserialize, Debug)]
-struct S3EventRecord {
-    #[serde(rename = "eventName")]
-    event_name: Option<String>,
-    s3: Option<serde_json::Value>,
+struct Request {
+    srcdir: String,
+    settings: String,
+    delivery: String,
 }
 
 #[derive(Serialize)]
@@ -21,75 +14,26 @@ struct Response {
     request_id: String,
     success: bool,
     message: String,
-    triggered_by: Option<String>,
 }
 
-/// Configuration from environment variables
-struct Config {
-    srcdir: String,
-    sandbox: String,
-    settings: Option<String>,
-}
-
-impl Config {
-    fn from_env() -> Result<Self, String> {
-        let srcdir =
-            std::env::var("SRCDIR").unwrap_or_else(|_| "s3://zik-laurent/songs".to_string());
-        let sandbox =
-            std::env::var("SANDBOX").unwrap_or_else(|_| "s3://zik-laurent/sandbox".to_string());
-        let settings = std::env::var("SETTINGS")
-            .ok()
-            .or_else(|| Some("s3://zik-laurent/songs/settings.yml".to_string()));
-
-        Ok(Config {
-            srcdir,
-            sandbox,
-            settings,
-        })
-    }
-}
-
-async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error> {
+async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error> {
     let request_id = event.context.request_id.clone();
-    let s3_event = event.payload;
-
-    // Check if triggered by S3 event - ignore S3 triggers, only respond to manual invocations
-    if let Some(record) = s3_event.records.first() {
-        if record.s3.is_some() {
-            log::info!(
-                "Ignoring S3 event trigger: {}",
-                record.event_name.as_deref().unwrap_or("unknown")
-            );
-            return Ok(Response {
-                request_id,
-                success: true,
-                message: "S3 trigger ignored - use manual invocation".to_string(),
-                triggered_by: None,
-            });
-        }
-    }
-
-    log::info!("Triggered manually");
-    let triggered_by: Option<String> = None;
-
-    // Get configuration from environment
-    let config = Config::from_env().map_err(Error::from)?;
-
-    log::info!("srcdir: {}", &config.srcdir);
-    log::info!("sandbox: {}", &config.sandbox);
-    if let Some(ref settings) = config.settings {
-        log::info!("settings: {settings}");
-    }
+    let req = event.payload;
 
     // Use a fixed path for local sandbox (Lambda only has /tmp writable)
-    let local_sandbox = std::path::Path::new("/tmp/sandbox");
+    let sandbox = std::path::Path::new("/tmp/sandbox");
+
+    log::info!("srcdir: {}", &req.srcdir);
+    log::info!("settings: {}", &req.settings);
+    log::info!("delivery: {}", &req.delivery);
+    log::info!("sandbox: {}", sandbox.display());
 
     match make_all_with_storage(
-        &config.srcdir,
-        &config.sandbox,
-        local_sandbox,
-        config.settings.as_deref(),
+        &req.srcdir,
+        sandbox,
+        Some(req.settings.as_str()),
         None, // no pattern filter
+        &req.delivery,
     )
     .await
     {
@@ -104,7 +48,6 @@ async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error
                 request_id,
                 success,
                 message,
-                triggered_by,
             })
         }
         Err(e) => {
@@ -113,7 +56,6 @@ async fn function_handler(event: LambdaEvent<S3Event>) -> Result<Response, Error
                 request_id,
                 success: false,
                 message: format!("Build failed: {e}"),
-                triggered_by,
             })
         }
     }

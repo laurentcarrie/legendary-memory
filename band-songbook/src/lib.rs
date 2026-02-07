@@ -8,7 +8,6 @@ pub mod storage;
 
 pub use discover::discover;
 pub use nodes::PdfFile;
-pub use storage::StoragePath;
 
 use model::{SectionItem, Song};
 use nodes::{PdfCopyFile, SongYml, TexFile};
@@ -215,29 +214,26 @@ pub fn make_all(
     (success, g)
 }
 
-/// Async version of make_all that supports S3 paths.
+/// Async version of make_all that supports S3 paths for srcdir, settings, and delivery.
 ///
 /// This function:
-/// - Parses paths to determine if S3 or local
 /// - Downloads S3 srcdir to temp directory if needed
+/// - Downloads S3 settings to temp file if needed
 /// - Calls existing `make_all()` with local paths
-/// - Uploads sandbox to S3 if sandbox was S3 URL
-/// - Cleans up temp directory
-///
-/// The `local_sandbox` parameter specifies where to run the build locally.
-/// If `sandbox` is an S3 path, results will be uploaded there after the build.
+/// - Copies delivery files (pdf/, pdf-lyrics/) to the delivery path (local or S3)
+/// - Cleans up temp directories
 pub async fn make_all_with_storage(
     srcdir: &str,
-    sandbox: &str,
-    local_sandbox: &Path,
+    sandbox: &Path,
     settings: Option<&str>,
     pattern: Option<&str>,
+    delivery: &str,
 ) -> Result<(bool, G), String> {
     use storage::{StoragePath, download_to_local};
 
     let srcdir_path = StoragePath::parse(srcdir)?;
-    let sandbox_path = StoragePath::parse(sandbox)?;
     let settings_path = settings.map(StoragePath::parse).transpose()?;
+    let delivery_path = StoragePath::parse(delivery)?;
 
     // Determine local paths for the build
     // This temp variable holds TempDir handle to keep directory alive until end of function
@@ -258,7 +254,7 @@ pub async fn make_all_with_storage(
     }
 
     // Create local sandbox if it doesn't exist
-    std::fs::create_dir_all(local_sandbox).map_err(|e| format!("Failed to create sandbox: {e}"))?;
+    std::fs::create_dir_all(sandbox).map_err(|e| format!("Failed to create sandbox: {e}"))?;
 
     // Handle settings - download if S3, otherwise use local path
     let local_settings: Option<std::path::PathBuf>;
@@ -304,50 +300,67 @@ pub async fn make_all_with_storage(
     // Run the build
     let (success, g) = make_all(
         &local_srcdir,
-        local_sandbox,
+        sandbox,
         local_settings.as_deref(),
         pattern,
     );
 
-    // Upload sandbox to S3 if needed
-    if sandbox_path.is_s3() {
-        log::info!("Uploading sandbox to {sandbox}");
+    // Helper function to collect files recursively
+    fn collect_files_recursive(dir: &std::path::Path, files: &mut Vec<std::path::PathBuf>) {
+        if let Ok(entries) = std::fs::read_dir(dir) {
+            for entry in entries.flatten() {
+                let path = entry.path();
+                if path.is_file() {
+                    files.push(path);
+                } else if path.is_dir() {
+                    collect_files_recursive(&path, files);
+                }
+            }
+        }
+    }
 
-        // Collect paths from PdfFile and PdfCopyFile nodes and make-report.yml
-        let mut paths_to_upload: Vec<std::path::PathBuf> =
-            g.g.node_weights()
-                .filter(|node| node.tag() == "pdf" || node.tag() == "pdfcopy")
-                .map(|node| node.pathbuf())
-                .collect();
+    // Copy delivery files (pdf/ and pdf-lyrics/) to delivery path
+    if delivery_path.is_s3() {
+        let mut delivery_files: Vec<std::path::PathBuf> = Vec::new();
 
-        // Also upload make-report.yml if it exists
-        let report_path = local_sandbox.join("make-report.yml");
-        if report_path.exists() {
-            paths_to_upload.push(report_path);
-        } else {
-            log::warn!("make-report.yml not found at {}", report_path.display());
+        let pdf_dir = sandbox.join("pdf");
+        if pdf_dir.exists() {
+            collect_files_recursive(&pdf_dir, &mut delivery_files);
         }
 
-        // Upload all log files (stdout/stderr) from the logs directory recursively
-        let logs_dir = local_sandbox.join("logs");
-        if logs_dir.exists() {
-            fn collect_files_recursive(dir: &std::path::Path, files: &mut Vec<std::path::PathBuf>) {
-                if let Ok(entries) = std::fs::read_dir(dir) {
-                    for entry in entries.flatten() {
-                        let path = entry.path();
-                        if path.is_file() {
-                            files.push(path);
-                        } else if path.is_dir() {
-                            collect_files_recursive(&path, files);
-                        }
+        let pdf_lyrics_dir = sandbox.join("pdf-lyrics");
+        if pdf_lyrics_dir.exists() {
+            collect_files_recursive(&pdf_lyrics_dir, &mut delivery_files);
+        }
+
+        log::info!("Uploading {} delivery files to {delivery}", delivery_files.len());
+        storage::upload_paths_to_s3(&delivery_files, sandbox, &delivery_path).await?;
+    } else {
+        let local_delivery = delivery_path.as_local().unwrap();
+        std::fs::create_dir_all(local_delivery)
+            .map_err(|e| format!("Failed to create delivery directory: {e}"))?;
+
+        for subdir in &["pdf", "pdf-lyrics"] {
+            let src_dir = sandbox.join(subdir);
+            if !src_dir.exists() {
+                continue;
+            }
+            let dest_dir = local_delivery.join(subdir);
+            std::fs::create_dir_all(&dest_dir)
+                .map_err(|e| format!("Failed to create delivery/{subdir}: {e}"))?;
+
+            if let Ok(entries) = std::fs::read_dir(&src_dir) {
+                for entry in entries.flatten() {
+                    let path = entry.path();
+                    if path.is_file() {
+                        let dest = dest_dir.join(entry.file_name());
+                        std::fs::copy(&path, &dest).map_err(|e| {
+                            format!("Failed to copy {} to delivery: {e}", path.display())
+                        })?;
                     }
                 }
             }
-            collect_files_recursive(&logs_dir, &mut paths_to_upload);
         }
-
-        log::info!("Uploading {} files to S3", paths_to_upload.len());
-        storage::upload_paths_to_s3(&paths_to_upload, local_sandbox, &sandbox_path).await?;
     }
 
     // Temp directories are automatically cleaned up when dropped

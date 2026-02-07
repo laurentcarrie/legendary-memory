@@ -415,11 +415,12 @@ async fn test_make_all_with_storage_local() {
 
     let srcdir = "tests/data";
     let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
-    let sandbox_path = sandbox.path().to_str().unwrap();
     let settings = "tests/data/settings.yml";
+    let delivery = tempfile::tempdir().expect("Failed to create delivery dir");
+    let delivery_path = delivery.path().to_str().unwrap();
 
     let result =
-        make_all_with_storage(srcdir, sandbox_path, sandbox.path(), Some(settings), None).await;
+        make_all_with_storage(srcdir, sandbox.path(), Some(settings), None, delivery_path).await;
 
     assert!(result.is_ok(), "make_all_with_storage should succeed");
     let (success, _g) = result.unwrap();
@@ -449,12 +450,12 @@ async fn test_make_all_with_s3() {
     use crate::make_all_with_storage;
 
     let srcdir = "s3://zik-laurent/songs";
-    let sandbox = "s3://zik-laurent/output";
     let settings = "s3://zik-laurent/songs/settings.yml";
-    let local_sandbox = tempfile::tempdir().expect("Failed to create temp dir");
+    let delivery = "s3://zik-laurent/delivery";
+    let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
 
     let result =
-        make_all_with_storage(srcdir, sandbox, local_sandbox.path(), Some(settings), None).await;
+        make_all_with_storage(srcdir, sandbox.path(), Some(settings), None, delivery).await;
 
     match &result {
         Ok((success, _g)) => {
