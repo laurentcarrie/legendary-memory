@@ -203,6 +203,9 @@ pub fn make_all(
     // Move logs directory from songs_sandbox to sandbox root
     let logs_src = songs_sandbox.join("logs");
     let logs_dest = sandbox.join("logs");
+    if logs_dest.exists() {
+        let _ = std::fs::remove_dir_all(&logs_dest);
+    }
     if logs_src.exists() {
         if let Err(e) = std::fs::rename(&logs_src, &logs_dest) {
             log::error!("Failed to move logs directory: {e}");

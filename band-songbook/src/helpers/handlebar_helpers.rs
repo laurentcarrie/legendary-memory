@@ -231,10 +231,8 @@ pub fn ref_bar_count_helper(
     ))?;
 
     // Deserialize structure into Vec<StructureItem>
-    let structure: Vec<StructureItem> =
-        serde_json::from_value(structure_json.value().clone()).map_err(|e| {
-            RenderErrorReason::Other(format!("failed to deserialize structure: {e}"))
-        })?;
+    let structure: Vec<StructureItem> = serde_json::from_value(structure_json.value().clone())
+        .map_err(|e| RenderErrorReason::Other(format!("failed to deserialize structure: {e}")))?;
 
     let bar_numbers = barcount_map_of_structure(&structure);
 
