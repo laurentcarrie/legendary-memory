@@ -1,0 +1,29 @@
+\documentclass{article}
+\PassOptionsToPackage{x11names}{xcolor}
+\input{../preamble}
+
+\begin{document}
+\begin{center}
+{
+    \Fontskrivan\bfseries\slshape
+    \fontsize{40pt}{35pt}\selectfont
+    \color{blue}
+    {{{song.info.title}}}
+} \\[0.5em]
+{
+    \textcursive{
+        \bfseries
+        \fontsize{16pt}{12pt}\selectfont
+        \color{orange}
+        {{{song.info.author}}}
+    }
+}
+\end{center}
+\vspace{1em}
+
+\setmainfont{Times New Roman}
+\setlength{\columnseprule}{0.4pt}
+\begin{multicols}{2}
+{{{lyrics_inputs}}}
+\end{multicols}
+\end{document}

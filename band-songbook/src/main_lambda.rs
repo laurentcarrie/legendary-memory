@@ -11,27 +11,9 @@ struct S3Event {
 
 #[derive(Deserialize, Debug)]
 struct S3EventRecord {
-    #[serde(rename = "eventSource")]
-    event_source: Option<String>,
     #[serde(rename = "eventName")]
     event_name: Option<String>,
-    s3: Option<S3Data>,
-}
-
-#[derive(Deserialize, Debug)]
-struct S3Data {
-    bucket: S3Bucket,
-    object: S3Object,
-}
-
-#[derive(Deserialize, Debug)]
-struct S3Bucket {
-    name: String,
-}
-
-#[derive(Deserialize, Debug)]
-struct S3Object {
-    key: String,
+    s3: Option<serde_json::Value>,
 }
 
 #[derive(Serialize)]

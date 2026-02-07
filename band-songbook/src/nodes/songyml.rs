@@ -16,6 +16,7 @@ const SECTIONS_TEMPLATE: &str = include_str!("../resources/texfiles/sections.tex
 const CHORDS_TEX: &str = include_str!("../resources/texfiles/chords.tex");
 const DATA_TEMPLATE: &str = include_str!("../resources/texfiles/data.tex");
 const MACROS_LY_TEMPLATE: &str = include_str!("../resources/lyfiles/macros.ly");
+const MAIN_LYRICS_TEMPLATE: &str = include_str!("../resources/texfiles/main-lyrics.tex");
 
 pub struct SongYml {
     pub path: PathBuf,
@@ -312,46 +313,16 @@ impl GRootNode for SongYml {
             }
         }
 
-        let lyrics_tex_content = format!(
-            r#"\documentclass{{article}}
-\usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{{geometry}}
-\usepackage{{fontspec}}
-\setmainfont{{Garamond Libre}}
-\usepackage{{setspace}}
-\usepackage{{verse}}
-\usepackage[x11names]{{xcolor}}
-\usepackage{{multicol}}
-\usepackage{{aurical}}
-\usepackage[default]{{frcursive}}
-
-\begin{{document}}
-\begin{{center}}
-{{
-    \Fontskrivan\bfseries\slshape
-    \fontsize{{40pt}}{{35pt}}\selectfont
-    \color{{blue}}
-    {}
-}} \\[0.5em]
-{{
-    \textcursive{{
-        \bfseries
-        \fontsize{{16pt}}{{12pt}}\selectfont
-        \color{{orange}}
-        {}
-    }}
-}}
-\end{{center}}
-\vspace{{1em}}
-
-\setmainfont{{Times New Roman}}
-\setlength{{\columnseprule}}{{0.4pt}}
-\begin{{multicols}}{{2}}
-{}
-\end{{multicols}}
-\end{{document}}
-"#,
-            song.info.title, song.info.author, lyrics_inputs
-        );
+        let lyrics_template_data =
+            serde_json::json!({"song": song_data, "lyrics_inputs": lyrics_inputs});
+        let lyrics_tex_content =
+            match handlebars.render_template(MAIN_LYRICS_TEMPLATE, &lyrics_template_data) {
+                Ok(content) => content,
+                Err(e) => {
+                    log::error!("Failed to render main-lyrics.tex template: {e}");
+                    return Err(ExpandError::Other(e.to_string()));
+                }
+            };
 
         if let Err(e) = std::fs::write(&lyrics_tex_full_path, &lyrics_tex_content) {
             log::error!("Failed to write lyrics/main.tex: {e}");
