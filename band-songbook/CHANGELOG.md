@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.9] - 2026-02-07
+
+### Added
+- Mandatory `--delivery` / `-d` CLI argument for specifying where final PDF files are copied
+- Delivery supports both local paths and S3 paths
+- Lambda now receives `srcdir`, `settings`, and `delivery` via invocation payload instead of environment variables
+
+### Changed
+- Sandbox is now always a local path (removed S3 sandbox support)
+- `--settings` / `-c` CLI argument is now mandatory
+- `make_all_with_storage` signature simplified: `sandbox` is now `&Path`, removed `local_sandbox` parameter
+- Lambda deployment only sets `RUST_LOG` env var; all other config is per-invocation
+
+### Removed
+- S3 sandbox upload logic
+- `deploy-lambda.sh` and `deploy-docker-lambda.sh` scripts (superseded by GitHub Actions workflow)
+- Default values for `SRCDIR`, `SETTINGS`, and `DELIVERY` in Lambda
+
 ## [0.0.8] - 2026-02-06
 
 ### Added
