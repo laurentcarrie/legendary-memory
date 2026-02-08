@@ -21,7 +21,10 @@
 \end{center}
 \vspace{1em}
 
-\setmainfont{TeX Gyre Termes}
+{{#if settings.lyrics_font}}
+\setmainfont{ {{~settings.lyrics_font~}} }
+{{/if}}
+\setstretch{1.2}
 \setlength{\columnseprule}{0.4pt}
 \begin{multicols}{2}
 {{{lyrics_inputs}}}

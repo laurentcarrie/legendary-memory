@@ -16,7 +16,8 @@ const SECTIONS_TEMPLATE: &str = include_str!("../resources/texfiles/sections.tex
 const CHORDS_TEX: &str = include_str!("../resources/texfiles/chords.tex");
 const DATA_TEMPLATE: &str = include_str!("../resources/texfiles/data.tex");
 const MACROS_LY_TEMPLATE: &str = include_str!("../resources/lyfiles/macros.ly");
-const MAIN_LYRICS_TEMPLATE: &str = include_str!("../resources/texfiles/main-lyrics.tex");
+const MAIN_LYRICS_1COL_TEMPLATE: &str = include_str!("../resources/texfiles/main-lyrics-1col.tex");
+const MAIN_LYRICS_2COL_TEMPLATE: &str = include_str!("../resources/texfiles/main-lyrics-2col.tex");
 
 pub struct SongYml {
     pub path: PathBuf,
@@ -275,14 +276,11 @@ impl GRootNode for SongYml {
             return Err(ExpandError::Other(e.to_string()));
         }
 
-        // Create lyrics/main.tex file with inputs for each Chords/Ref section
-        let lyrics_tex_path = parent_dir.join("lyrics").join("main.tex");
-        let lyrics_tex_full_path = sandbox.join(&lyrics_tex_path);
-        if let Some(parent) = lyrics_tex_full_path.parent() {
-            let _ = std::fs::create_dir_all(parent);
-        }
+        // Create lyrics tex files with inputs for each Chords/Ref section
+        let lyrics_dir_full = sandbox.join(parent_dir.join("lyrics"));
+        let _ = std::fs::create_dir_all(&lyrics_dir_full);
 
-        // Build the lyrics/main.tex content
+        // Build the lyrics_inputs content (shared by both 1col and 2col)
         let bar_map = barcount_map_of_structure(&song.structure);
         let mut lyrics_inputs = String::new();
         for item in &song.structure {
@@ -294,7 +292,7 @@ impl GRootNode for SongYml {
                         .map(|(rows, end)| (rows.first().copied().unwrap_or(1), end - 1))
                         .unwrap_or((1, 1));
                     lyrics_inputs.push_str(&format!(
-                        "\\noindent\\colorbox{{{}}}{{\\makebox[\\dimexpr\\columnwidth-2\\fboxsep][s]{{\\hfill \\Large\\textbf{{{}}} \\hfill {} $\\rightarrow$ {}}}}}\n\n\\input{{{}}}\n\\vspace{{1em}}\n\n",
+                        "\\basecouplet{{{}}}{{ {} ({} $\\rightarrow$ {}) }}{{\\input{{{}}}}}\n\n",
                         color, chords.title, first_bar, last_bar, item.id
                     ));
                 }
@@ -305,7 +303,7 @@ impl GRootNode for SongYml {
                         .map(|(rows, end)| (rows.first().copied().unwrap_or(1), end - 1))
                         .unwrap_or((1, 1));
                     lyrics_inputs.push_str(&format!(
-                        "\\noindent\\colorbox{{{}}}{{\\makebox[\\dimexpr\\columnwidth-2\\fboxsep][s]{{\\hfill \\Large\\textbf{{{}}} \\hfill {} $\\rightarrow$ {}}}}}\n\n\\input{{{}}}\n\\vspace{{1em}}\n\n",
+                        "\\basecouplet{{{}}}{{ {} ({} $\\rightarrow$ {}) }}{{\\input{{{}}}}}\n\n",
                         color, ref_section.title, first_bar, last_bar, item.id
                     ));
                 }
@@ -313,20 +311,26 @@ impl GRootNode for SongYml {
             }
         }
 
-        let lyrics_template_data =
-            serde_json::json!({"song": song_data, "lyrics_inputs": lyrics_inputs});
-        let lyrics_tex_content =
-            match handlebars.render_template(MAIN_LYRICS_TEMPLATE, &lyrics_template_data) {
+        let lyrics_template_data = serde_json::json!({"song": song_data, "lyrics_inputs": lyrics_inputs, "settings": settings});
+
+        // Render and write both 1-column and 2-column lyrics tex files
+        for (template, filename) in [
+            (MAIN_LYRICS_1COL_TEMPLATE, "main-1col.tex"),
+            (MAIN_LYRICS_2COL_TEMPLATE, "main-2col.tex"),
+        ] {
+            let tex_content = match handlebars.render_template(template, &lyrics_template_data) {
                 Ok(content) => content,
                 Err(e) => {
-                    log::error!("Failed to render main-lyrics.tex template: {e}");
+                    log::error!("Failed to render {filename} template: {e}");
                     return Err(ExpandError::Other(e.to_string()));
                 }
             };
 
-        if let Err(e) = std::fs::write(&lyrics_tex_full_path, &lyrics_tex_content) {
-            log::error!("Failed to write lyrics/main.tex: {e}");
-            return Err(ExpandError::Other(e.to_string()));
+            let tex_full_path = lyrics_dir_full.join(filename);
+            if let Err(e) = std::fs::write(&tex_full_path, &tex_content) {
+                log::error!("Failed to write lyrics/{filename}: {e}");
+                return Err(ExpandError::Other(e.to_string()));
+            }
         }
 
         // Create nodes (body.tex and lyrics files are added as root nodes in make_all)
@@ -338,7 +342,12 @@ impl GRootNode for SongYml {
         let chords_node = TexFile::new(chords_path);
         let data_node = TexFile::new(data_path);
         let macros_ly_node = LilypondFile::new(macros_ly_path);
-        let lyrics_tex_node = TexFile::new(lyrics_tex_path.clone());
+
+        // Lyrics nodes: 1-column and 2-column variants
+        let lyrics_1col_tex_path = parent_dir.join("lyrics").join("main-1col.tex");
+        let lyrics_2col_tex_path = parent_dir.join("lyrics").join("main-2col.tex");
+        let lyrics_1col_tex_node = TexFile::new(lyrics_1col_tex_path.clone());
+        let lyrics_2col_tex_node = TexFile::new(lyrics_2col_tex_path.clone());
 
         // Scan for lilypond files referenced in tex files
         let pdf_for_scan = PdfFile::new(pdf_path.clone());
@@ -350,9 +359,11 @@ impl GRootNode for SongYml {
         // Included .ly files (from \include) don't need LyTexFile/TexOfLilypond
         let ly_files = toplevel_ly;
 
-        // Create lyrics PDF path
-        let lyrics_pdf_path = parent_dir.join("lyrics").join("main.pdf");
-        let lyrics_pdf_node = PdfFile::new(lyrics_pdf_path.clone());
+        // Create lyrics PDF paths (1-column and 2-column)
+        let lyrics_1col_pdf_path = parent_dir.join("lyrics").join("main-1col.pdf");
+        let lyrics_2col_pdf_path = parent_dir.join("lyrics").join("main-2col.pdf");
+        let lyrics_1col_pdf_node = PdfFile::new(lyrics_1col_pdf_path.clone());
+        let lyrics_2col_pdf_node = PdfFile::new(lyrics_2col_pdf_path.clone());
 
         let mut nodes: Vec<Box<dyn GNode + Send + Sync>> = vec![
             Box::new(tex_node),
@@ -363,8 +374,10 @@ impl GRootNode for SongYml {
             Box::new(chords_node),
             Box::new(data_node),
             Box::new(macros_ly_node),
-            Box::new(lyrics_tex_node),
-            Box::new(lyrics_pdf_node),
+            Box::new(lyrics_1col_tex_node),
+            Box::new(lyrics_2col_tex_node),
+            Box::new(lyrics_1col_pdf_node),
+            Box::new(lyrics_2col_pdf_node),
         ];
 
         let mut edges: Vec<Edge> = vec![];
@@ -378,12 +391,19 @@ impl GRootNode for SongYml {
         };
         edges.push(main_edge);
 
-        // Edge: lyrics/main.tex -> lyrics/main.pdf
-        let lyrics_edge = Edge {
-            nfrom: Box::new(TexFile::new(lyrics_tex_path)),
-            nto: Box::new(PdfFile::new(lyrics_pdf_path)),
+        // Edge: lyrics/main-1col.tex -> lyrics/main-1col.pdf
+        let lyrics_1col_edge = Edge {
+            nfrom: Box::new(TexFile::new(lyrics_1col_tex_path)),
+            nto: Box::new(PdfFile::new(lyrics_1col_pdf_path)),
         };
-        edges.push(lyrics_edge);
+        edges.push(lyrics_1col_edge);
+
+        // Edge: lyrics/main-2col.tex -> lyrics/main-2col.pdf
+        let lyrics_2col_edge = Edge {
+            nfrom: Box::new(TexFile::new(lyrics_2col_tex_path)),
+            nto: Box::new(PdfFile::new(lyrics_2col_pdf_path)),
+        };
+        edges.push(lyrics_2col_edge);
 
         // Add LilypondFile -> LyTexFile -> PdfFile chain
         // Add LilypondFile -> TexOfLilypond -> PdfFile chain
