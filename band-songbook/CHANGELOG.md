@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.10] - 2026-02-08
+
+### Changed
+- Replace Times New Roman with TeX Gyre Termes in lyrics PDF template (Lambda compatible)
+
+### Removed
+- Stale `SRCDIR`, `SANDBOX`, `SETTINGS` env vars from Dockerfile
+- Obsolete `deploy-lambda.yml` workflow (superseded by `deploy-lambda-docker.yml`)
+
 ## [0.0.9] - 2026-02-07
 
 ### Added
