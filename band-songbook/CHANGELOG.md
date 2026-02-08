@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Replace Times New Roman with TeX Gyre Termes in lyrics PDF template (Lambda compatible)
+- Publish workflow now triggers automatically on push to `main` (replaces tag-based trigger)
+- Publish skips if the version is already on crates.io
+- Bump `Cargo.toml` version to match changelog; fix repository URL
 
 ### Removed
 - Stale `SRCDIR`, `SANDBOX`, `SETTINGS` env vars from Dockerfile
