@@ -57,9 +57,6 @@ ENV PATH="/opt/lilypond/bin:${PATH}"
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 ENV RUST_LOG=info
-ENV SRCDIR=s3://zik-laurent/songs
-ENV SANDBOX=s3://zik-laurent/sandbox
-ENV SETTINGS=s3://zik-laurent/songs/settings.yml
 
 # Lambda handler
 CMD [ "bootstrap" ]
