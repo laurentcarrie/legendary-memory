@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.11] - 2026-02-08
+
+### Added
+- Two lyrics PDF variants per song: 1-column and 2-column layouts
+  - Delivered to `pdf-lyrics-1-column/` and `pdf-lyrics-2-column/` directories
+- Bar number ranges displayed in lyrics section headers (e.g., "couplet 1 (9 -> 16)")
+- `settings.lyrics_font` now uses `\setmainfont` (fontspec) instead of `\fontfamily` (NFSS) for proper lualatex compatibility
+
+### Changed
+- `\basecouplet` title box now spans full column width
+- `\basecouplet` content starts on a new line below the title
+- Lyrics PDFs use `\basecouplet` macro (same as main PDF) for consistent font rendering
+- 1-column lyrics layout is centered; 2-column is left-aligned
+
+### Removed
+- Single `pdf-lyrics/` delivery directory (replaced by two variant directories)
+
 ## [0.0.10] - 2026-02-08
 
 ### Changed

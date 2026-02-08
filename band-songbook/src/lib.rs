@@ -94,10 +94,12 @@ pub fn make_all(
         log::error!("Failed to create pdf directory: {e}");
     }
 
-    // Create pdf-lyrics directory for copied lyrics PDFs
-    let pdf_lyrics_dir = sandbox.join("pdf-lyrics");
-    if let Err(e) = std::fs::create_dir_all(&pdf_lyrics_dir) {
-        log::error!("Failed to create pdf-lyrics directory: {e}");
+    // Create pdf-lyrics directories for copied lyrics PDFs (1-column and 2-column)
+    for dir in ["pdf-lyrics-1-column", "pdf-lyrics-2-column"] {
+        let pdf_lyrics_dir = sandbox.join(dir);
+        if let Err(e) = std::fs::create_dir_all(&pdf_lyrics_dir) {
+            log::error!("Failed to create {dir} directory: {e}");
+        }
     }
 
     for song_path in songs {
@@ -171,18 +173,22 @@ pub fn make_all(
                 g.add_edge(pdf_idx, pdf_copy_idx);
             }
 
-            // Create lyrics PdfFile node
-            let lyrics_pdf_path = parent_dir.join("lyrics").join("main.pdf");
-            let lyrics_pdf_node = PdfFile::new(lyrics_pdf_path.clone());
-            if let Ok(lyrics_pdf_idx) = g.add_node(lyrics_pdf_node) {
-                g.add_edge(song_idx, lyrics_pdf_idx);
+            // Create lyrics PdfFile nodes (1-column and 2-column)
+            for (filename, delivery_dir) in [
+                ("main-1col.pdf", "pdf-lyrics-1-column"),
+                ("main-2col.pdf", "pdf-lyrics-2-column"),
+            ] {
+                let lyrics_pdf_path = parent_dir.join("lyrics").join(filename);
+                let lyrics_pdf_node = PdfFile::new(lyrics_pdf_path.clone());
+                if let Ok(lyrics_pdf_idx) = g.add_node(lyrics_pdf_node) {
+                    g.add_edge(song_idx, lyrics_pdf_idx);
 
-                // Create PdfCopyFile node for lyrics PDF
-                let lyrics_copy_path = Path::new("../pdf-lyrics")
-                    .join(format!("{}-lyrics.pdf", song_data.info.pdf_name_of_song()));
-                let lyrics_copy_node = PdfCopyFile::new(lyrics_copy_path);
-                if let Ok(lyrics_copy_idx) = g.add_node(lyrics_copy_node) {
-                    g.add_edge(lyrics_pdf_idx, lyrics_copy_idx);
+                    let lyrics_copy_path = Path::new(&format!("../{delivery_dir}"))
+                        .join(format!("{}-lyrics.pdf", song_data.info.pdf_name_of_song()));
+                    let lyrics_copy_node = PdfCopyFile::new(lyrics_copy_path);
+                    if let Ok(lyrics_copy_idx) = g.add_node(lyrics_copy_node) {
+                        g.add_edge(lyrics_pdf_idx, lyrics_copy_idx);
+                    }
                 }
             }
         }
@@ -298,12 +304,7 @@ pub async fn make_all_with_storage(
     }
 
     // Run the build
-    let (success, g) = make_all(
-        &local_srcdir,
-        sandbox,
-        local_settings.as_deref(),
-        pattern,
-    );
+    let (success, g) = make_all(&local_srcdir, sandbox, local_settings.as_deref(), pattern);
 
     // Helper function to collect files recursively
     fn collect_files_recursive(dir: &std::path::Path, files: &mut Vec<std::path::PathBuf>) {
@@ -328,19 +329,24 @@ pub async fn make_all_with_storage(
             collect_files_recursive(&pdf_dir, &mut delivery_files);
         }
 
-        let pdf_lyrics_dir = sandbox.join("pdf-lyrics");
-        if pdf_lyrics_dir.exists() {
-            collect_files_recursive(&pdf_lyrics_dir, &mut delivery_files);
+        for dir in ["pdf-lyrics-1-column", "pdf-lyrics-2-column"] {
+            let pdf_lyrics_dir = sandbox.join(dir);
+            if pdf_lyrics_dir.exists() {
+                collect_files_recursive(&pdf_lyrics_dir, &mut delivery_files);
+            }
         }
 
-        log::info!("Uploading {} delivery files to {delivery}", delivery_files.len());
+        log::info!(
+            "Uploading {} delivery files to {delivery}",
+            delivery_files.len()
+        );
         storage::upload_paths_to_s3(&delivery_files, sandbox, &delivery_path).await?;
     } else {
         let local_delivery = delivery_path.as_local().unwrap();
         std::fs::create_dir_all(local_delivery)
             .map_err(|e| format!("Failed to create delivery directory: {e}"))?;
 
-        for subdir in &["pdf", "pdf-lyrics"] {
+        for subdir in &["pdf", "pdf-lyrics-1-column", "pdf-lyrics-2-column"] {
             let src_dir = sandbox.join(subdir);
             if !src_dir.exists() {
                 continue;

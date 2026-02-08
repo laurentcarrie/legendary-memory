@@ -127,9 +127,9 @@ fn test_yamake_build_song_with_lilypond() {
 
     // Verify interlude.ly is in the predecessor tree of main.pdf
     let predecessors = g.root_predecessors(pdf_idx);
-    let interlude_is_predecessor = predecessors.iter().any(|&idx| {
-        g.g[idx].pathbuf() == PathBuf::from("mademoiselle_K/ca_me_vexe/interlude.ly")
-    });
+    let interlude_is_predecessor = predecessors
+        .iter()
+        .any(|&idx| g.g[idx].pathbuf() == PathBuf::from("mademoiselle_K/ca_me_vexe/interlude.ly"));
     assert!(
         interlude_is_predecessor,
         "interlude.ly should be a predecessor of main.pdf"
