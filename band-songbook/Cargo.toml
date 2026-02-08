@@ -1,10 +1,10 @@
 [package]
 name = "band-songbook"
-version = "0.0.4"
+version = "0.0.10"
 edition = "2024"
 description = "Build system for generating PDF songbooks with chord charts and LilyPond music notation"
 license = "MIT"
-repository = "https://github.com/laurentcarrie/legendary-memory"
+repository = "https://github.com/laurentcarrie/songbook-lambda"
 readme = "../README.md"
 keywords = ["music", "songbook", "chords", "lilypond", "latex"]
 categories = ["command-line-utilities", "multimedia"]
