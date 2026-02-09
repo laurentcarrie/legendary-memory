@@ -292,7 +292,7 @@ impl GRootNode for SongYml {
                         .map(|(rows, end)| (rows.first().copied().unwrap_or(1), end - 1))
                         .unwrap_or((1, 1));
                     lyrics_inputs.push_str(&format!(
-                        "\\basecouplet{{{}}}{{ {} ({} $\\rightarrow$ {}) }}{{\\input{{{}}}}}\n\n",
+                        "\\basecouplet{{{}}}{{ \\hfill {} \\hfill \\llap{{\\fontsize{{12pt}}{{12pt}}\\selectfont ({} $\\rightarrow$ {})}} }}{{\\input{{{}}}}}\n\n",
                         color, chords.title, first_bar, last_bar, item.id
                     ));
                 }
@@ -303,7 +303,7 @@ impl GRootNode for SongYml {
                         .map(|(rows, end)| (rows.first().copied().unwrap_or(1), end - 1))
                         .unwrap_or((1, 1));
                     lyrics_inputs.push_str(&format!(
-                        "\\basecouplet{{{}}}{{ {} ({} $\\rightarrow$ {}) }}{{\\input{{{}}}}}\n\n",
+                        "\\basecouplet{{{}}}{{ \\hfill {} \\hfill \\llap{{\\fontsize{{12pt}}{{12pt}}\\selectfont ({} $\\rightarrow$ {})}} }}{{\\input{{{}}}}}\n\n",
                         color, ref_section.title, first_bar, last_bar, item.id
                     ));
                 }
