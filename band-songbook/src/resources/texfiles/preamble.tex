@@ -89,10 +89,11 @@
 
 
 \newcommand{\basecouplet}[3]{
-	\fcolorbox{gray}{#1}{\makebox[\dimexpr\columnwidth-2\fboxsep-2\fboxrule][c]{
+	\vspace{6pt}
+	\fcolorbox{gray}{#1}{\parbox{\dimexpr\columnwidth-2\fboxsep-2\fboxrule}{
 		\fontsize{18pt}{18pt}\selectfont
 		#2
-	}}\newline
+	}}\\[6pt]
 	{
 		{
 				\fontsize{16pt}{16pt}\selectfont
