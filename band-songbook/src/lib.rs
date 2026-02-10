@@ -12,7 +12,7 @@ pub use nodes::PdfFile;
 use model::{SectionItem, Song};
 use nodes::{PdfCopyFile, SongYml, TexFile};
 use object_store::ObjectStoreExt;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 pub use yamake::model::G;
 use yamake::model::GNode;
@@ -56,6 +56,7 @@ pub fn make_all(
     sandbox: &Path,
     settings_path: Option<&Path>,
     pattern: Option<&str>,
+    drum_patterns_dirs: &[PathBuf],
 ) -> (bool, G) {
     let songs = discover(srcdir);
     let songs_sandbox = sandbox.join("songs");
@@ -111,24 +112,26 @@ pub fn make_all(
 
         let parent_dir = rel_path.parent().unwrap_or(Path::new(""));
 
-        // Read song.yml to get structure for lyrics files
-        let song: Option<Song> = std::fs::read_to_string(&song_path)
+        // Read song.yml
+        let song: Song = match std::fs::read_to_string(&song_path)
             .ok()
-            .and_then(|content| serde_yaml::from_str(&content).ok());
+            .and_then(|content| serde_yaml::from_str(&content).ok())
+        {
+            Some(s) => s,
+            None => continue,
+        };
 
         // Filter by pattern if provided (fuzzy match against author + title)
         if let Some(pat) = pattern {
-            let matches = song.as_ref().is_some_and(|s| {
-                let search_str = format!("{} {}", s.info.author, s.info.title).to_lowercase();
-                fuzzy_match(&search_str, &pat.to_lowercase())
-            });
-            if !matches {
+            let search_str = format!("{} {}", song.info.author, song.info.title).to_lowercase();
+            if !fuzzy_match(&search_str, &pat.to_lowercase()) {
                 continue;
             }
         }
 
         // Create SongYml node
-        let song_node = SongYml::new(rel_path.clone());
+        let song_node = SongYml::new(rel_path.clone(), song.clone())
+            .with_drum_patterns_dirs(drum_patterns_dirs.to_vec());
         let song_idx = match g.add_root_node(song_node) {
             Ok(idx) => idx,
             Err(_) => continue,
@@ -140,17 +143,14 @@ pub fn make_all(
         let _ = g.add_root_node(body_node);
 
         // Add lyrics files as root nodes for each Chords and Ref section
-        if let Some(ref song_data) = song {
-            for item in &song_data.structure {
-                match &item.item {
-                    SectionItem::Chords(_) | SectionItem::Ref(_) => {
-                        let lyrics_path =
-                            parent_dir.join("lyrics").join(format!("{}.tex", item.id));
-                        let lyrics_node = TexFile::new(lyrics_path);
-                        let _ = g.add_root_node(lyrics_node);
-                    }
-                    _ => {}
+        for item in &song.structure {
+            match &item.item {
+                SectionItem::Chords(_) | SectionItem::Ref(_) => {
+                    let lyrics_path = parent_dir.join("lyrics").join(format!("{}.tex", item.id));
+                    let lyrics_node = TexFile::new(lyrics_path);
+                    let _ = g.add_root_node(lyrics_node);
                 }
+                _ => {}
             }
         }
 
@@ -165,30 +165,28 @@ pub fn make_all(
         g.add_edge(song_idx, pdf_idx);
 
         // Create PdfCopyFile node to copy the PDF to ../pdf/<author>--@--<title>.pdf
-        if let Some(ref song_data) = song {
-            let pdf_copy_path =
-                Path::new("../pdf").join(format!("{}.pdf", song_data.info.pdf_name_of_song()));
-            let pdf_copy_node = PdfCopyFile::new(pdf_copy_path);
-            if let Ok(pdf_copy_idx) = g.add_node(pdf_copy_node) {
-                g.add_edge(pdf_idx, pdf_copy_idx);
-            }
+        let pdf_copy_path =
+            Path::new("../pdf").join(format!("{}.pdf", song.info.pdf_name_of_song()));
+        let pdf_copy_node = PdfCopyFile::new(pdf_copy_path);
+        if let Ok(pdf_copy_idx) = g.add_node(pdf_copy_node) {
+            g.add_edge(pdf_idx, pdf_copy_idx);
+        }
 
-            // Create lyrics PdfFile nodes (1-column and 2-column)
-            for (filename, delivery_dir) in [
-                ("main-1col.pdf", "pdf-lyrics-1-column"),
-                ("main-2col.pdf", "pdf-lyrics-2-column"),
-            ] {
-                let lyrics_pdf_path = parent_dir.join("lyrics").join(filename);
-                let lyrics_pdf_node = PdfFile::new(lyrics_pdf_path.clone());
-                if let Ok(lyrics_pdf_idx) = g.add_node(lyrics_pdf_node) {
-                    g.add_edge(song_idx, lyrics_pdf_idx);
+        // Create lyrics PdfFile nodes (1-column and 2-column)
+        for (filename, delivery_dir) in [
+            ("main-1col.pdf", "pdf-lyrics-1-column"),
+            ("main-2col.pdf", "pdf-lyrics-2-column"),
+        ] {
+            let lyrics_pdf_path = parent_dir.join("lyrics").join(filename);
+            let lyrics_pdf_node = PdfFile::new(lyrics_pdf_path.clone());
+            if let Ok(lyrics_pdf_idx) = g.add_node(lyrics_pdf_node) {
+                g.add_edge(song_idx, lyrics_pdf_idx);
 
-                    let lyrics_copy_path = Path::new(&format!("../{delivery_dir}"))
-                        .join(format!("{}-lyrics.pdf", song_data.info.pdf_name_of_song()));
-                    let lyrics_copy_node = PdfCopyFile::new(lyrics_copy_path);
-                    if let Ok(lyrics_copy_idx) = g.add_node(lyrics_copy_node) {
-                        g.add_edge(lyrics_pdf_idx, lyrics_copy_idx);
-                    }
+                let lyrics_copy_path = Path::new(&format!("../{delivery_dir}"))
+                    .join(format!("{}-lyrics.pdf", song.info.pdf_name_of_song()));
+                let lyrics_copy_node = PdfCopyFile::new(lyrics_copy_path);
+                if let Ok(lyrics_copy_idx) = g.add_node(lyrics_copy_node) {
+                    g.add_edge(lyrics_pdf_idx, lyrics_copy_idx);
                 }
             }
         }
@@ -234,6 +232,7 @@ pub async fn make_all_with_storage(
     settings: Option<&str>,
     pattern: Option<&str>,
     delivery: &str,
+    drum_patterns_dirs: &[PathBuf],
 ) -> Result<(bool, G), String> {
     use storage::{StoragePath, download_to_local};
 
@@ -304,7 +303,13 @@ pub async fn make_all_with_storage(
     }
 
     // Run the build
-    let (success, g) = make_all(&local_srcdir, sandbox, local_settings.as_deref(), pattern);
+    let (success, g) = make_all(
+        &local_srcdir,
+        sandbox,
+        local_settings.as_deref(),
+        pattern,
+        drum_patterns_dirs,
+    );
 
     // Helper function to collect files recursively
     fn collect_files_recursive(dir: &std::path::Path, files: &mut Vec<std::path::PathBuf>) {

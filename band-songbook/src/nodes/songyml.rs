@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 use yamake::model::{Edge, ExpandError, ExpandResult, GNode, GRootNode};
 
-use super::{LilypondFile, LyTexFile, PdfFile, SongTikz, TexFile, TexOfLilypond};
+use super::{LilypondFile, LyTexFile, PdfFile, SongTikz, StrudelFile, TexFile, TexOfLilypond};
 use crate::chords::bar_numbering::barcount_map_of_structure;
 use crate::helpers::register_helpers;
 use crate::model::{SectionItem, Song};
@@ -21,11 +21,22 @@ const MAIN_LYRICS_2COL_TEMPLATE: &str = include_str!("../resources/texfiles/main
 
 pub struct SongYml {
     pub path: PathBuf,
+    pub song: Song,
+    pub drum_patterns_dirs: Vec<PathBuf>,
 }
 
 impl SongYml {
-    pub fn new(path: PathBuf) -> Self {
-        Self { path }
+    pub fn new(path: PathBuf, song: Song) -> Self {
+        Self {
+            path,
+            song,
+            drum_patterns_dirs: vec![],
+        }
+    }
+
+    pub fn with_drum_patterns_dirs(mut self, dirs: Vec<PathBuf>) -> Self {
+        self.drum_patterns_dirs = dirs;
+        self
     }
 }
 
@@ -42,21 +53,7 @@ impl GRootNode for SongYml {
         // Get the directory containing song.yml
         let parent_dir = self.path.parent().unwrap_or(Path::new(""));
 
-        // Read the song.yml file to get song data (needed for main.tex and templates)
-        let song_yml_path = sandbox.join(&self.path);
-        let mut song: Song = match std::fs::read_to_string(&song_yml_path) {
-            Ok(content) => match serde_yaml::from_str(&content) {
-                Ok(data) => data,
-                Err(e) => {
-                    log::error!("Failed to parse song.yml: {e}");
-                    return Err(ExpandError::Other(e.to_string()));
-                }
-            },
-            Err(e) => {
-                log::error!("Failed to read song.yml: {e}");
-                return Err(ExpandError::Other(e.to_string()));
-            }
-        };
+        let mut song = self.song.clone();
 
         // Load settings from settings.yml at sandbox root
         let settings = Settings::load(sandbox).map_err(ExpandError::Other)?;
@@ -465,6 +462,18 @@ impl GRootNode for SongYml {
             };
             edges.push(texofly_to_pdf_edge);
         }
+
+        // Create StrudelFile node
+        let strudel_path = parent_dir.join("strudel.html");
+        let libraries = self.drum_patterns_dirs.clone();
+        let strudel_node = StrudelFile::new(strudel_path.clone(), song.clone(), libraries.clone());
+        nodes.push(Box::new(strudel_node));
+
+        // Edge: song.yml -> strudel.html
+        edges.push(Edge {
+            nfrom: Box::new(SongYml::new(self.path.clone(), self.song.clone())),
+            nto: Box::new(StrudelFile::new(strudel_path, song, libraries)),
+        });
 
         Ok((nodes, edges))
     }

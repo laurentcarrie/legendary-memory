@@ -29,7 +29,11 @@ fn test_yamake_build_song() {
     let _ = g.add_root_node(colors_node);
 
     // SongYml is a root node (source file)
-    let song_node = SongYml::new(PathBuf::from("PJHarvey/Dress/song.yml"));
+    let song: Song = serde_yaml::from_str(
+        &std::fs::read_to_string("tests/data/PJHarvey/Dress/song.yml").unwrap(),
+    )
+    .unwrap();
+    let song_node = SongYml::new(PathBuf::from("PJHarvey/Dress/song.yml"), song);
     let song_idx = g.add_root_node(song_node).expect("Failed to add song node");
 
     // body.tex is a root node (source file from srcdir)
@@ -74,7 +78,11 @@ fn test_yamake_build_song_with_lilypond() {
     let _ = g.add_root_node(colors_node);
 
     // mademoiselle_K/ca_me_vexe - has lilypond files
-    let song_node = SongYml::new(PathBuf::from("mademoiselle_K/ca_me_vexe/song.yml"));
+    let song: Song = serde_yaml::from_str(
+        &std::fs::read_to_string("tests/data/mademoiselle_K/ca_me_vexe/song.yml").unwrap(),
+    )
+    .unwrap();
+    let song_node = SongYml::new(PathBuf::from("mademoiselle_K/ca_me_vexe/song.yml"), song);
     let song_idx = g.add_root_node(song_node).expect("Failed to add song node");
 
     let body_node = TexFile::new(PathBuf::from("mademoiselle_K/ca_me_vexe/body.tex"));
@@ -200,6 +208,7 @@ fn test_make_all() {
         sandbox.path(),
         Some(Path::new("tests/data/settings.yml")),
         None,
+        &[],
     );
     assert!(success, "make_all should succeed");
 
@@ -374,6 +383,7 @@ fn test_make_all_with_pattern() {
         sandbox.path(),
         Some(Path::new("tests/data/settings.yml")),
         Some("madkvex"),
+        &[],
     );
     assert!(success, "make_all with pattern should succeed");
 
@@ -419,8 +429,15 @@ async fn test_make_all_with_storage_local() {
     let delivery = tempfile::tempdir().expect("Failed to create delivery dir");
     let delivery_path = delivery.path().to_str().unwrap();
 
-    let result =
-        make_all_with_storage(srcdir, sandbox.path(), Some(settings), None, delivery_path).await;
+    let result = make_all_with_storage(
+        srcdir,
+        sandbox.path(),
+        Some(settings),
+        None,
+        delivery_path,
+        &[],
+    )
+    .await;
 
     assert!(result.is_ok(), "make_all_with_storage should succeed");
     let (success, _g) = result.unwrap();
@@ -455,7 +472,7 @@ async fn test_make_all_with_s3() {
     let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
 
     let result =
-        make_all_with_storage(srcdir, sandbox.path(), Some(settings), None, delivery).await;
+        make_all_with_storage(srcdir, sandbox.path(), Some(settings), None, delivery, &[]).await;
 
     match &result {
         Ok((success, _g)) => {

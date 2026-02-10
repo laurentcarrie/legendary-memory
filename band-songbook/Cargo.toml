@@ -17,8 +17,7 @@ log = "0.4"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 serde_yaml = "0.9"
-yamake = "0.1.9"
-#yamake = { path = "../../yamake" }
+yamake = "0.1.10"
 object_store = { version = "0.13", features = ["aws"] }
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 # Pin AWS SDK crates to versions compatible with Rust 1.85
@@ -27,6 +26,7 @@ aws-credential-types = "1.2"
 url = "2"
 futures = "0.3"
 tempfile = "3"
+strudel-of-lilypond = "0.4.1"
 
 # Lambda dependencies
 lambda_runtime = "0.13"

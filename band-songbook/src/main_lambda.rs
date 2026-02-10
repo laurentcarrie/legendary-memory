@@ -34,6 +34,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
         Some(req.settings.as_str()),
         None, // no pattern filter
         &req.delivery,
+        &[], // no drum patterns dirs
     )
     .await
     {
