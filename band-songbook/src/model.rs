@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Song {
     pub files: SongFiles,
     pub info: SongInfo,
@@ -8,7 +8,7 @@ pub struct Song {
     pub structure: Vec<StructureItem>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct SongFiles {
     #[serde(default)]
     pub lilypond: Vec<String>,
@@ -18,7 +18,7 @@ pub struct SongFiles {
     pub wav: Vec<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct SongInfo {
     pub title: String,
     pub author: String,
@@ -48,19 +48,19 @@ impl SongInfo {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct SongMeta {
     pub date: Option<String>,
     pub digest: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct StructureItem {
     pub id: String,
     pub item: SectionItem,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub enum SectionItem {
     Chords(ChordsSection),
     Ref(RefSection),
@@ -68,7 +68,7 @@ pub enum SectionItem {
     NewColumn,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct ChordsSection {
     pub title: String,
     #[serde(rename = "type")]
@@ -76,9 +76,18 @@ pub struct ChordsSection {
     pub section_body: Option<String>,
     pub color: Option<String>,
     pub rows: Vec<String>,
+    pub drum_sequence: Option<DrumSequence>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct DrumSequenceItem {
+    pub repeat: u32,
+    pub pattern: String,
+}
+
+pub type DrumSequence = Vec<DrumSequenceItem>;
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct RefSection {
     pub title: String,
     #[serde(rename = "type")]

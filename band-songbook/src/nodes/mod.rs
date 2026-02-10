@@ -4,6 +4,7 @@ pub mod pdf;
 pub mod pdfcopyfile;
 pub mod songtikz;
 pub mod songyml;
+pub mod strudel;
 pub mod tex;
 pub mod texoflilypond;
 
@@ -13,5 +14,6 @@ pub use pdf::PdfFile;
 pub use pdfcopyfile::PdfCopyFile;
 pub use songtikz::SongTikz;
 pub use songyml::SongYml;
+pub use strudel::StrudelFile;
 pub use tex::TexFile;
 pub use texoflilypond::TexOfLilypond;

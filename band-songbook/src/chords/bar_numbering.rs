@@ -70,6 +70,7 @@ mod tests {
                     section_body: None,
                     color: None,
                     rows: vec!["Am|G".to_string(), "F|E".to_string()], // 2 bars each row
+                    drum_sequence: None,
                 }),
             },
             StructureItem {
@@ -80,6 +81,7 @@ mod tests {
                     section_body: None,
                     color: None,
                     rows: vec!["C|G|Am|F".to_string(), "C|G|x2".to_string()], // 4 bars, then 2 bars x2
+                    drum_sequence: None,
                 }),
             },
             StructureItem {

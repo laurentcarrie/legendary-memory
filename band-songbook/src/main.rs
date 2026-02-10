@@ -24,10 +24,21 @@ struct Args {
     /// delivery directory for final files (local path or s3://bucket/prefix)
     #[argh(option, short = 'd')]
     delivery: String,
+
+    /// directory containing drum pattern YAML files (can be repeated)
+    #[argh(option)]
+    drum_patterns_dir: Vec<String>,
 }
+
+const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[tokio::main]
 async fn main() -> ExitCode {
+    if std::env::args().any(|a| a == "--version" || a == "-V") {
+        println!("band-songbook {VERSION}");
+        return ExitCode::SUCCESS;
+    }
+
     env_logger::init();
     let args: Args = argh::from_env();
 
@@ -42,12 +53,18 @@ async fn main() -> ExitCode {
         return ExitCode::from(1);
     }
 
+    let drum_patterns_dirs: Vec<std::path::PathBuf> = args
+        .drum_patterns_dir
+        .iter()
+        .map(std::path::PathBuf::from)
+        .collect();
     let result: Result<(bool, band_songbook::G), String> = make_all_with_storage(
         &args.srcdir,
         &sandbox,
         Some(args.settings.as_str()),
         args.pattern.as_deref(),
         &args.delivery,
+        &drum_patterns_dirs,
     )
     .await;
 
