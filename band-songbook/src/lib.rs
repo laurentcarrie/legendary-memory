@@ -1,9 +1,16 @@
+/// Chord parsing, bar numbering, and glyph rendering.
 pub mod chords;
+/// Song discovery by scanning directories for `song.yml` files.
 pub mod discover;
+/// Handlebars template helpers and song-to-sequence conversion.
 pub mod helpers;
+/// Data model for songs, sections, chords, and drum sequences.
 pub mod model;
+/// Build graph nodes for the yamake dependency system.
 pub mod nodes;
+/// Build settings loaded from `settings.yml`.
 pub mod settings;
+/// S3 and local filesystem storage operations.
 pub mod storage;
 
 pub use discover::discover;

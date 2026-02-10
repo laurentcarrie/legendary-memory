@@ -6,13 +6,19 @@ use strudel_of_lilypond::sequencer::lilypond::strudel_of_sequence;
 use crate::helpers::strudel_sequence_of_song;
 use crate::model::Song;
 
+/// Build node that generates an interactive Strudel HTML file from
+/// the song's drum pattern sequence.
 pub struct StrudelFile {
+    /// Output path for `strudel.html` relative to the song directory.
     pub path: PathBuf,
+    /// Song data used to derive the bar sequence.
     pub song: Song,
+    /// Drum pattern library directories for resolving pattern names.
     pub libraries: Vec<PathBuf>,
 }
 
 impl StrudelFile {
+    /// Creates a new `StrudelFile` node.
     pub fn new(path: PathBuf, song: Song, libraries: Vec<PathBuf>) -> Self {
         Self {
             path,

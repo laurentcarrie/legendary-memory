@@ -1,5 +1,6 @@
 use super::model::{Accidental, Alteration, BarItem};
 
+/// Renders a [`BarItem`] as a display string for TikZ chord charts.
 pub fn glyph_of_baritem(item: &BarItem) -> String {
     match item {
         BarItem::Chord(chord) => {

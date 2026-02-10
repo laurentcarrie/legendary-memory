@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use std::fmt;
 use std::path::Path;
 
+/// Global build settings loaded from `settings.yml`.
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Settings {
     #[serde(default)]

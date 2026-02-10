@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 use yamake::model::GRootNode;
 
+/// Root node representing a LilyPond source file (`.ly`).
 pub struct LilypondFile {
     pub path: PathBuf,
 }

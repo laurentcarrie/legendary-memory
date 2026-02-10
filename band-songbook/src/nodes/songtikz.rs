@@ -1,6 +1,7 @@
 use std::path::{Path, PathBuf};
 use yamake::model::GNode;
 
+/// Build node for the TikZ chord chart (`song.tikz`).
 pub struct SongTikz {
     pub path: PathBuf,
 }

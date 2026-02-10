@@ -2,6 +2,7 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 use yamake::model::GNode;
 
+/// Build node for the TeX output produced by LilyPond compilation.
 pub struct TexOfLilypond {
     pub path: PathBuf,
 }
