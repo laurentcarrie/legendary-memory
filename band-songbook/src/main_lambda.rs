@@ -7,6 +7,7 @@ struct Request {
     srcdir: String,
     settings: String,
     delivery: String,
+    pattern: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -32,7 +33,7 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
         &req.srcdir,
         sandbox,
         Some(req.settings.as_str()),
-        None, // no pattern filter
+        req.pattern.as_deref(),
         &req.delivery,
         &[], // no drum patterns dirs
     )

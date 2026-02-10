@@ -1,6 +1,7 @@
 use std::path::{Path, PathBuf};
 use yamake::model::GNode;
 
+/// Build node that copies a PDF to the delivery directory.
 pub struct PdfCopyFile {
     pub path: PathBuf,
 }

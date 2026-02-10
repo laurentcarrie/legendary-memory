@@ -1,6 +1,7 @@
 use std::path::{Path, PathBuf};
 use yamake::model::GNode;
 
+/// Build node for a `.lytex` file (LilyPond embedded in LaTeX).
 pub struct LyTexFile {
     pub path: PathBuf,
 }

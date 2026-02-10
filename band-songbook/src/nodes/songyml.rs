@@ -19,13 +19,19 @@ const MACROS_LY_TEMPLATE: &str = include_str!("../resources/lyfiles/macros.ly");
 const MAIN_LYRICS_1COL_TEMPLATE: &str = include_str!("../resources/texfiles/main-lyrics-1col.tex");
 const MAIN_LYRICS_2COL_TEMPLATE: &str = include_str!("../resources/texfiles/main-lyrics-2col.tex");
 
+/// Root node for `song.yml` that expands into the full build graph
+/// (TeX files, PDF, lyrics, LilyPond, and Strudel nodes).
 pub struct SongYml {
+    /// Path to the `song.yml` file relative to srcdir.
     pub path: PathBuf,
+    /// Parsed song data.
     pub song: Song,
+    /// Directories containing drum pattern library files.
     pub drum_patterns_dirs: Vec<PathBuf>,
 }
 
 impl SongYml {
+    /// Creates a new `SongYml` node with the given path and song data.
     pub fn new(path: PathBuf, song: Song) -> Self {
         Self {
             path,
@@ -34,6 +40,7 @@ impl SongYml {
         }
     }
 
+    /// Sets the drum pattern library directories (builder pattern).
     pub fn with_drum_patterns_dirs(mut self, dirs: Vec<PathBuf>) -> Self {
         self.drum_patterns_dirs = dirs;
         self

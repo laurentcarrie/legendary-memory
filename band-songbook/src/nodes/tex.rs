@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 use yamake::model::GRootNode;
 
+/// Root node representing a LaTeX source file (`.tex`).
 pub struct TexFile {
     pub path: PathBuf,
 }

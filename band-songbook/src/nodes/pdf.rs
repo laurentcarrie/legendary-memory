@@ -2,6 +2,7 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 use yamake::model::GNode;
 
+/// Build node that compiles a `.tex` file into a PDF using `lualatex`.
 pub struct PdfFile {
     pub path: PathBuf,
 }
