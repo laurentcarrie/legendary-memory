@@ -195,11 +195,10 @@ pub async fn upload_paths_to_s3(
     // Collect all files to upload (expand directories)
     let mut files_to_upload = Vec::new();
     for path in paths {
-        let full_path = base_dir.join(path);
-        if full_path.is_dir() {
-            files_to_upload.extend(walkdir(&full_path)?);
-        } else if full_path.is_file() {
-            files_to_upload.push(full_path);
+        if path.is_dir() {
+            files_to_upload.extend(walkdir(path)?);
+        } else if path.is_file() {
+            files_to_upload.push(path.clone());
         }
     }
 

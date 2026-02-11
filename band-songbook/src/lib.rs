@@ -342,6 +342,26 @@ pub async fn make_all_with_storage(
         _temp_settings = None;
     }
 
+    // Handle drum pattern directories - download from S3 if needed
+    let mut _temp_drum_dirs: Vec<tempfile::TempDir> = Vec::new();
+    let mut local_drum_dirs: Vec<PathBuf> = Vec::new();
+
+    for dir in drum_patterns_dirs {
+        let dir_str = dir.to_string_lossy();
+        let dp = StoragePath::parse(&dir_str)?;
+        if dp.is_s3() {
+            let temp = tempfile::tempdir()
+                .map_err(|e| format!("Failed to create temp drum patterns dir: {e}"))?;
+            let local_path = temp.path().to_path_buf();
+            log::info!("Downloading drum patterns from {dir_str} to {local_path:?}");
+            download_to_local(&dp, &local_path).await?;
+            local_drum_dirs.push(local_path);
+            _temp_drum_dirs.push(temp);
+        } else {
+            local_drum_dirs.push(dir.clone());
+        }
+    }
+
     // Build the world and run the build
     let world = world_of_srcdir(&local_srcdir);
     let (success, g) = make_all(
@@ -349,7 +369,7 @@ pub async fn make_all_with_storage(
         sandbox,
         local_settings.as_deref(),
         pattern,
-        drum_patterns_dirs,
+        &local_drum_dirs,
         &world,
     );
 
