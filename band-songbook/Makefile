@@ -1,6 +1,8 @@
 help: ## Show this help
 	@grep -E '^[a-zA-Z0-9_-]+:.*##' $(MAKEFILE_LIST) | awk -F ':.*## ' '{printf "  %-10s %s\n", $$1, $$2}'
 
+s3testpath=s3://zik-laurent/test
+
 clean: ## Remove delivery and sandbox directories
 	rm -rf delivery sandbox
 
@@ -16,12 +18,14 @@ open: ## Open strudel HTML for ca_me_vexe
 	open sandbox/songs/mademoiselle_K/ca_me_vexe/strudel.html
 
 s3: ## Build rasmus song from S3
+	aws s3 rm --recursive $(s3testpath)	
 	cargo run --bin band-songbook -- \
 		--srcdir s3://zik-laurent/songs \
 		--settings s3://zik-laurent/songs/settings.yml \
 		--sandbox sandbox \
-		--delivery delivery \
-		--pattern rasmus
+		--delivery $(s3testpath)/delivery \
+		--pattern rasmus \
+		--drum-patterns-dir s3://zik-laurent/drums
 
 run-all: ## Build songs from local
 	cargo run --bin band-songbook -- \
