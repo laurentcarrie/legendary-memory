@@ -101,36 +101,16 @@ jobs:
             --memory-size 2048 \
             --environment "Variables={RUST_LOG=info}" || true
 
-      - name: Setup S3 trigger (if not exists)
+      - name: Remove S3 trigger (if exists)
         run: |
-          # Add permission for S3 to invoke Lambda (ignore if exists)
-          aws lambda add-permission \
+          # Remove S3 bucket notification configuration
+          aws s3api put-bucket-notification-configuration --bucket zik-laurent --notification-configuration '{}'
+          echo "S3 notifications cleared"
+
+          # Remove S3 invoke permission (ignore if not exists)
+          aws lambda remove-permission \
             --function-name ${{ env.LAMBDA_FUNCTION_NAME }} \
-            --statement-id s3-trigger-permission \
-            --action lambda:InvokeFunction \
-            --principal s3.amazonaws.com \
-            --source-arn arn:aws:s3:::zik-laurent \
-            --source-account ${{ secrets.AWS_ACCOUNT_ID }} 2>/dev/null || echo "Permission already exists"
-
-          # Get Lambda ARN
-          LAMBDA_ARN=$(aws lambda get-function --function-name ${{ env.LAMBDA_FUNCTION_NAME }} --query 'Configuration.FunctionArn' --output text)
-
-          # Configure S3 bucket notification to trigger Lambda on object creation in songs/ prefix
-          aws s3api put-bucket-notification-configuration --bucket zik-laurent --notification-configuration "{
-            \"LambdaFunctionConfigurations\": [{
-              \"LambdaFunctionArn\": \"$LAMBDA_ARN\",
-              \"Events\": [\"s3:ObjectCreated:*\"],
-              \"Filter\": {
-                \"Key\": {
-                  \"FilterRules\": [{
-                    \"Name\": \"prefix\",
-                    \"Value\": \"songs/\"
-                  }]
-                }
-              }
-            }]
-          }"
-          echo "S3 trigger configured for songs/ prefix"
+            --statement-id s3-trigger-permission 2>/dev/null || echo "Permission already removed"
 
       - name: Print deployment info
         env:
