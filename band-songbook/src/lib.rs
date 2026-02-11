@@ -120,12 +120,19 @@ pub fn make_all(
         let parent_dir = rel_path.parent().unwrap_or(Path::new(""));
 
         // Read song.yml
-        let song: Song = match std::fs::read_to_string(&song_path)
-            .ok()
-            .and_then(|content| serde_yaml::from_str(&content).ok())
-        {
-            Some(s) => s,
-            None => continue,
+        let content = match std::fs::read_to_string(&song_path) {
+            Ok(c) => c,
+            Err(e) => {
+                log::error!("Failed to read {}: {e}", song_path.display());
+                return (false, g);
+            }
+        };
+        let song: Song = match serde_yaml::from_str(&content) {
+            Ok(s) => s,
+            Err(e) => {
+                log::error!("Failed to parse {}: {e}", song_path.display());
+                return (false, g);
+            }
         };
 
         // Filter by pattern if provided (fuzzy match against author + title)
