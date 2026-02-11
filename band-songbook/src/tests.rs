@@ -1,8 +1,8 @@
 use crate::chords::parse::parse;
 use crate::discover;
-use crate::make_all;
-use crate::model::Song;
+use crate::model::{Song, WorldItem};
 use crate::nodes::{PdfFile, SongYml, TexFile};
+use crate::{make_all, world_of_srcdir};
 use std::path::{Path, PathBuf};
 use yamake::model::{G, GNode};
 
@@ -202,6 +202,7 @@ fn test_discover() {
 fn test_make_all() {
     let srcdir = Path::new("tests/data");
     let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
+    let world = world_of_srcdir(srcdir);
 
     let (success, _g) = make_all(
         srcdir,
@@ -209,6 +210,7 @@ fn test_make_all() {
         Some(Path::new("tests/data/settings.yml")),
         None,
         &[],
+        &world,
     );
     assert!(success, "make_all should succeed");
 
@@ -226,6 +228,56 @@ fn test_make_all() {
         pdf2.exists(),
         "songs/mademoiselle_K/ca_me_vexe/main.pdf should be created"
     );
+}
+
+#[test]
+fn test_make_all_with_broken_song() {
+    let tmpdir = tempfile::tempdir().expect("Failed to create temp dir");
+    let srcdir = tmpdir.path();
+
+    // Create a valid song
+    let valid_dir = srcdir.join("good/song");
+    std::fs::create_dir_all(&valid_dir).expect("create dir");
+    std::fs::write(
+        valid_dir.join("song.yml"),
+        r#"
+files:
+  lilypond: []
+  tex: []
+  wav: []
+info:
+  title: Good Song
+  author: Good Author
+  tempo: 120
+meta:
+  date: null
+  digest: null
+structure: []
+"#,
+    )
+    .expect("write valid song.yml");
+
+    // Create a broken song
+    let broken_dir = srcdir.join("bad/song");
+    std::fs::create_dir_all(&broken_dir).expect("create dir");
+    std::fs::write(broken_dir.join("song.yml"), "this is broken")
+        .expect("write broken song.yml");
+
+    let world = world_of_srcdir(srcdir);
+    assert_eq!(world.items.len(), 2);
+
+    // One should be an error
+    let errors: Vec<_> = world
+        .items
+        .iter()
+        .filter(|(_, item)| matches!(item, WorldItem::Error(_)))
+        .collect();
+    assert_eq!(errors.len(), 1, "should have exactly one error");
+
+    // make_all should fail
+    let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
+    let (success, _g) = make_all(srcdir, sandbox.path(), None, None, &[], &world);
+    assert!(!success, "make_all should fail with a broken song");
 }
 
 #[test]
@@ -376,6 +428,7 @@ fn test_parse_chords() {
 fn test_make_all_with_pattern() {
     let srcdir = Path::new("tests/data");
     let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
+    let world = world_of_srcdir(srcdir);
 
     // Pattern "madkvex" should match "Mademoiselle K Ca me vexe"
     let (success, _g) = make_all(
@@ -384,6 +437,7 @@ fn test_make_all_with_pattern() {
         Some(Path::new("tests/data/settings.yml")),
         Some("madkvex"),
         &[],
+        &world,
     );
     assert!(success, "make_all with pattern should succeed");
 

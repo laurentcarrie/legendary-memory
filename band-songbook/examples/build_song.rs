@@ -1,4 +1,4 @@
-use band_songbook::make_all;
+use band_songbook::{make_all, world_of_srcdir};
 use std::path::Path;
 
 fn main() {
@@ -12,7 +12,8 @@ fn main() {
     std::fs::create_dir_all(sandbox).expect("Failed to create sandbox directory");
 
     println!("Building all songs...");
-    let (success, _g) = make_all(srcdir, sandbox, None, None, &[]);
+    let world = world_of_srcdir(srcdir);
+    let (success, _g) = make_all(srcdir, sandbox, None, None, &[], &world);
 
     if success {
         println!("Build succeeded!");

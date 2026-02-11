@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 use yamake::model::{Edge, ExpandError, ExpandResult, GNode, GRootNode};
 
-use super::{LilypondFile, LyTexFile, PdfFile, SongTikz, StrudelFile, TexFile, TexOfLilypond};
+use super::{CopyFile, LilypondFile, LyTexFile, PdfFile, SongTikz, StrudelFile, TexFile, TexOfLilypond};
 use crate::chords::bar_numbering::barcount_map_of_structure;
 use crate::helpers::register_helpers;
 use crate::model::{SectionItem, Song};
@@ -479,7 +479,19 @@ impl GRootNode for SongYml {
         // Edge: song.yml -> strudel.html
         edges.push(Edge {
             nfrom: Box::new(SongYml::new(self.path.clone(), self.song.clone())),
-            nto: Box::new(StrudelFile::new(strudel_path, song, libraries)),
+            nto: Box::new(StrudelFile::new(strudel_path.clone(), song.clone(), libraries.clone())),
+        });
+
+        // Create CopyFile node to copy strudel.html to ../tempo/<author>--@--<title>.html
+        let strudel_copy_path = Path::new("../tempo")
+            .join(format!("{}.html", song.info.file_stem_of_song()));
+        let strudel_copy_node = CopyFile::new(strudel_copy_path.clone(), "strudel".to_string());
+        nodes.push(Box::new(strudel_copy_node));
+
+        // Edge: strudel.html -> tempo/<name>.html
+        edges.push(Edge {
+            nfrom: Box::new(StrudelFile::new(strudel_path, song, libraries)),
+            nto: Box::new(CopyFile::new(strudel_copy_path, "strudel".to_string())),
         });
 
         Ok((nodes, edges))
