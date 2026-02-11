@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use serde::{Deserialize, Serialize};
 
 /// A complete song definition, deserialized from `song.yml`.
@@ -41,11 +43,11 @@ pub struct SongInfo {
 }
 
 impl SongInfo {
-    /// Returns a normalized PDF filename based on author and title.
+    /// Returns a normalized file stem based on author and title.
     /// Format: `{author}--@--{title}`
     /// - Capitals are replaced with lowercase
     /// - All characters which are not A-Za-z0-9 are replaced with '_'
-    pub fn pdf_name_of_song(&self) -> String {
+    pub fn file_stem_of_song(&self) -> String {
         let normalize = |s: &str| -> String {
             s.chars()
                 .map(|c| {
@@ -137,4 +139,20 @@ pub struct RefSection {
     pub color: Option<String>,
     /// ID of the [`ChordsSection`] this references.
     pub link: String,
+}
+
+/// An item in the world: either a successfully parsed song or an error.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum WorldItem {
+    /// A successfully parsed song.
+    Song(Song),
+    /// An error message from reading or parsing a song file.
+    Error(String),
+}
+
+/// The world: a collection of song paths and their parse results.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct World {
+    /// List of (relative path, world item) pairs.
+    pub items: Vec<(PathBuf, WorldItem)>,
 }

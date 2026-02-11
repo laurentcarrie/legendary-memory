@@ -16,8 +16,8 @@ pub mod storage;
 pub use discover::discover;
 pub use nodes::PdfFile;
 
-use model::{SectionItem, Song};
-use nodes::{PdfCopyFile, SongYml, TexFile};
+use model::{SectionItem, Song, World, WorldItem};
+use nodes::{CopyFile, SongYml, TexFile};
 use object_store::ObjectStoreExt;
 use std::path::{Path, PathBuf};
 
@@ -54,6 +54,35 @@ fn fuzzy_match(text: &str, pattern: &str) -> bool {
     true
 }
 
+/// Discovers all songs in the given directory and reads them into a [`World`].
+///
+/// Each discovered `song.yml` is read and parsed. Successfully parsed songs
+/// are stored as [`WorldItem::Song`], failures as [`WorldItem::Error`].
+pub fn world_of_srcdir(srcdir: &Path) -> World {
+    let song_paths = discover(srcdir);
+    let items = song_paths
+        .into_iter()
+        .filter_map(|song_path| {
+            let rel_path = song_path.strip_prefix(srcdir).ok()?.to_path_buf();
+            let item = match std::fs::read_to_string(&song_path) {
+                Ok(content) => match serde_yaml::from_str::<Song>(&content) {
+                    Ok(song) => WorldItem::Song(song),
+                    Err(e) => {
+                        log::error!("Failed to parse {}: {e}", song_path.display());
+                        WorldItem::Error(format!("Failed to parse {}: {e}", song_path.display()))
+                    }
+                },
+                Err(e) => {
+                    log::error!("Failed to read {}: {e}", song_path.display());
+                    WorldItem::Error(format!("Failed to read {}: {e}", song_path.display()))
+                }
+            };
+            Some((rel_path, item))
+        })
+        .collect();
+    World { items }
+}
+
 /// Discovers all songs in the given directory and builds them all.
 /// Returns (success, graph) where success is true if all builds succeeded.
 /// If settings_path is provided, it will be copied to sandbox/settings.yml.
@@ -64,8 +93,8 @@ pub fn make_all(
     settings_path: Option<&Path>,
     pattern: Option<&str>,
     drum_patterns_dirs: &[PathBuf],
+    world: &World,
 ) -> (bool, G) {
-    let songs = discover(srcdir);
     let songs_sandbox = sandbox.join("songs");
     let mut g = G::new(srcdir.to_path_buf(), songs_sandbox.clone());
 
@@ -92,14 +121,28 @@ pub fn make_all(
         }
     }
 
-    if songs.is_empty() {
+    if world.items.is_empty() {
         return (true, g);
+    }
+
+    // Check for any errors in the world
+    for (rel_path, item) in &world.items {
+        if let WorldItem::Error(msg) = item {
+            log::error!("{}: {msg}", rel_path.display());
+            return (false, g);
+        }
     }
 
     // Create pdf directory for copied PDFs
     let pdf_dir = sandbox.join("pdf");
     if let Err(e) = std::fs::create_dir_all(&pdf_dir) {
         log::error!("Failed to create pdf directory: {e}");
+    }
+
+    // Create tempo directory for copied strudel HTML files
+    let tempo_dir = sandbox.join("tempo");
+    if let Err(e) = std::fs::create_dir_all(&tempo_dir) {
+        log::error!("Failed to create tempo directory: {e}");
     }
 
     // Create pdf-lyrics directories for copied lyrics PDFs (1-column and 2-column)
@@ -110,23 +153,13 @@ pub fn make_all(
         }
     }
 
-    for song_path in songs {
-        // Convert absolute path to relative path from srcdir
-        let rel_path = match song_path.strip_prefix(srcdir) {
-            Ok(p) => p.to_path_buf(),
-            Err(_) => continue,
+    for (rel_path, item) in &world.items {
+        let song = match item {
+            WorldItem::Song(s) => s,
+            WorldItem::Error(_) => unreachable!(), // errors already checked above
         };
 
         let parent_dir = rel_path.parent().unwrap_or(Path::new(""));
-
-        // Read song.yml
-        let song: Song = match std::fs::read_to_string(&song_path)
-            .ok()
-            .and_then(|content| serde_yaml::from_str(&content).ok())
-        {
-            Some(s) => s,
-            None => continue,
-        };
 
         // Filter by pattern if provided (fuzzy match against author + title)
         if let Some(pat) = pattern {
@@ -171,10 +204,10 @@ pub fn make_all(
 
         g.add_edge(song_idx, pdf_idx);
 
-        // Create PdfCopyFile node to copy the PDF to ../pdf/<author>--@--<title>.pdf
+        // Create CopyFile node to copy the PDF to ../pdf/<author>--@--<title>.pdf
         let pdf_copy_path =
-            Path::new("../pdf").join(format!("{}.pdf", song.info.pdf_name_of_song()));
-        let pdf_copy_node = PdfCopyFile::new(pdf_copy_path);
+            Path::new("../pdf").join(format!("{}.pdf", song.info.file_stem_of_song()));
+        let pdf_copy_node = CopyFile::new(pdf_copy_path, "pdf".to_string());
         if let Ok(pdf_copy_idx) = g.add_node(pdf_copy_node) {
             g.add_edge(pdf_idx, pdf_copy_idx);
         }
@@ -190,8 +223,8 @@ pub fn make_all(
                 g.add_edge(song_idx, lyrics_pdf_idx);
 
                 let lyrics_copy_path = Path::new(&format!("../{delivery_dir}"))
-                    .join(format!("{}-lyrics.pdf", song.info.pdf_name_of_song()));
-                let lyrics_copy_node = PdfCopyFile::new(lyrics_copy_path);
+                    .join(format!("{}-lyrics.pdf", song.info.file_stem_of_song()));
+                let lyrics_copy_node = CopyFile::new(lyrics_copy_path, "pdf".to_string());
                 if let Ok(lyrics_copy_idx) = g.add_node(lyrics_copy_node) {
                     g.add_edge(lyrics_pdf_idx, lyrics_copy_idx);
                 }
@@ -309,13 +342,15 @@ pub async fn make_all_with_storage(
         _temp_settings = None;
     }
 
-    // Run the build
+    // Build the world and run the build
+    let world = world_of_srcdir(&local_srcdir);
     let (success, g) = make_all(
         &local_srcdir,
         sandbox,
         local_settings.as_deref(),
         pattern,
         drum_patterns_dirs,
+        &world,
     );
 
     // Helper function to collect files recursively
@@ -341,10 +376,10 @@ pub async fn make_all_with_storage(
             collect_files_recursive(&pdf_dir, &mut delivery_files);
         }
 
-        for dir in ["pdf-lyrics-1-column", "pdf-lyrics-2-column"] {
-            let pdf_lyrics_dir = sandbox.join(dir);
-            if pdf_lyrics_dir.exists() {
-                collect_files_recursive(&pdf_lyrics_dir, &mut delivery_files);
+        for dir in ["pdf-lyrics-1-column", "pdf-lyrics-2-column", "tempo"] {
+            let sub_dir = sandbox.join(dir);
+            if sub_dir.exists() {
+                collect_files_recursive(&sub_dir, &mut delivery_files);
             }
         }
 
@@ -358,7 +393,7 @@ pub async fn make_all_with_storage(
         std::fs::create_dir_all(local_delivery)
             .map_err(|e| format!("Failed to create delivery directory: {e}"))?;
 
-        for subdir in &["pdf", "pdf-lyrics-1-column", "pdf-lyrics-2-column"] {
+        for subdir in &["pdf", "pdf-lyrics-1-column", "pdf-lyrics-2-column", "tempo"] {
             let src_dir = sandbox.join(subdir);
             if !src_dir.exists() {
                 continue;

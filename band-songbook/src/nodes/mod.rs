@@ -5,7 +5,7 @@ pub mod lytex;
 /// PDF output node, built by running `lualatex`.
 pub mod pdf;
 /// Node that copies a built PDF to the delivery directory.
-pub mod pdfcopyfile;
+pub mod copyfile;
 /// TikZ chord chart node (`song.tikz`).
 pub mod songtikz;
 /// Song root node that expands `song.yml` into the build graph.
@@ -20,7 +20,7 @@ pub mod texoflilypond;
 pub use lilypond::LilypondFile;
 pub use lytex::LyTexFile;
 pub use pdf::PdfFile;
-pub use pdfcopyfile::PdfCopyFile;
+pub use copyfile::CopyFile;
 pub use songtikz::SongTikz;
 pub use songyml::SongYml;
 pub use strudel::StrudelFile;
