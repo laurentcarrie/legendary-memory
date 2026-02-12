@@ -83,6 +83,23 @@ pub fn world_of_srcdir(srcdir: &Path) -> World {
     World { items }
 }
 
+/// Returns a sorted, deduplicated list of all tags found across all songs in the world.
+pub fn tags_of_world(world: &World) -> Vec<String> {
+    let mut tags: Vec<String> = world
+        .items
+        .iter()
+        .filter_map(|(_, item)| match item {
+            WorldItem::Song(song) => Some(&song.info.tags),
+            WorldItem::Error(_) => None,
+        })
+        .flatten()
+        .cloned()
+        .collect();
+    tags.sort();
+    tags.dedup();
+    tags
+}
+
 /// Discovers all songs in the given directory and builds them all.
 /// Returns (success, graph) where success is true if all builds succeeded.
 /// If settings_path is provided, it will be copied to sandbox/settings.yml.
