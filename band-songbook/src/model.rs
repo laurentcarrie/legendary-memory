@@ -40,6 +40,9 @@ pub struct SongInfo {
     pub tempo: u16,
     /// Time signature (e.g. `"4/4"`), if specified.
     pub time_signature: Option<String>,
+    /// Free-form tags for categorizing the song.
+    #[serde(default)]
+    pub tags: Vec<String>,
 }
 
 impl SongInfo {
