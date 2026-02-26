@@ -74,6 +74,7 @@ jobs:
               --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/cargo-lambda-role-71626fb1-b25c-4726-88fc-cf2f0162918c \
               --timeout 900 \
               --memory-size 2048 \
+              --ephemeral-storage '{"Size": 2048}' \
               --environment "Variables={RUST_LOG=info}"
           else
             echo "Creating new function..."
@@ -84,6 +85,7 @@ jobs:
               --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/cargo-lambda-role-71626fb1-b25c-4726-88fc-cf2f0162918c \
               --timeout 900 \
               --memory-size 2048 \
+              --ephemeral-storage '{"Size": 2048}' \
               --environment "Variables={RUST_LOG=info}"
           fi
 
@@ -99,6 +101,7 @@ jobs:
             --function-name ${{ env.LAMBDA_FUNCTION_NAME }} \
             --timeout 900 \
             --memory-size 2048 \
+            --ephemeral-storage '{"Size": 2048}' \
             --environment "Variables={RUST_LOG=info}" || true
 
       - name: Remove S3 trigger (if exists)
