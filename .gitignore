@@ -22,3 +22,16 @@ indent.log
 
 # Local Netlify folder
 .netlify
+
+# macOS
+.DS_Store
+
+# band-songbook build artifacts
+band-songbook/target/
+band-songbook/sandbox/
+band-songbook/delivery/
+band-songbook/xxx/
+
+# Misc
+lhh.md
+.github/workflows/songbook-lambda.code-workspace
