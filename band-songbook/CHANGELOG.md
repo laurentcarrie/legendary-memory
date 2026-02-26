@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.20] - 2026-02-26
+
+### Added
+- Click track analysis node (`ClickYml`) that decodes an MP3, detects ticks via amplitude threshold, and outputs tick offsets as YAML (`clicks.yml`)
+- `Mp3` root node for MP3 audio files
+- `clicks` optional field in `song.yml` files section to specify a click track MP3 (e.g. `clicks: clicks.mp3`)
+- `minimp3` dependency for pure-Rust MP3 decoding
+- Integration test for full build graph with click track
+
 ## [0.0.11] - 2026-02-08
 
 ### Added

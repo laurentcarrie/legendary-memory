@@ -27,6 +27,9 @@ pub struct SongFiles {
     /// Audio files (`.wav`).
     #[serde(default)]
     pub wav: Vec<String>,
+    /// Click track MP3 file (e.g. `"clicks.mp3"`).
+    #[serde(default)]
+    pub clicks: Option<String>,
 }
 
 /// Core song metadata: title, author, tempo, and time signature.

@@ -3,7 +3,10 @@ use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 use yamake::model::{Edge, ExpandError, ExpandResult, GNode, GRootNode};
 
-use super::{CopyFile, LilypondFile, LyTexFile, PdfFile, SongTikz, StrudelFile, TexFile, TexOfLilypond};
+use super::{
+    ClickYml, CopyFile, LilypondFile, LyTexFile, Mp3, PdfFile, SongTikz, StrudelFile, TexFile,
+    TexOfLilypond,
+};
 use crate::chords::bar_numbering::barcount_map_of_structure;
 use crate::helpers::register_helpers;
 use crate::model::{SectionItem, Song};
@@ -479,12 +482,16 @@ impl GRootNode for SongYml {
         // Edge: song.yml -> strudel.html
         edges.push(Edge {
             nfrom: Box::new(SongYml::new(self.path.clone(), self.song.clone())),
-            nto: Box::new(StrudelFile::new(strudel_path.clone(), song.clone(), libraries.clone())),
+            nto: Box::new(StrudelFile::new(
+                strudel_path.clone(),
+                song.clone(),
+                libraries.clone(),
+            )),
         });
 
         // Create CopyFile node to copy strudel.html to ../tempo/<author>--@--<title>.html
-        let strudel_copy_path = Path::new("../tempo")
-            .join(format!("{}.html", song.info.file_stem_of_song()));
+        let strudel_copy_path =
+            Path::new("../tempo").join(format!("{}.html", song.info.file_stem_of_song()));
         let strudel_copy_node = CopyFile::new(strudel_copy_path.clone(), "strudel".to_string());
         nodes.push(Box::new(strudel_copy_node));
 
@@ -493,6 +500,23 @@ impl GRootNode for SongYml {
             nfrom: Box::new(StrudelFile::new(strudel_path, song, libraries)),
             nto: Box::new(CopyFile::new(strudel_copy_path, "strudel".to_string())),
         });
+
+        // Create ClickYml node if a click track MP3 is specified
+        if let Some(ref clicks_file) = self.song.files.clicks {
+            let mp3_path = parent_dir.join(clicks_file);
+            let clicks_yml_path = parent_dir.join("clicks.yml");
+
+            let mp3_node = Mp3::new(mp3_path.clone());
+            let click_yml_node = ClickYml::new(clicks_yml_path.clone());
+            nodes.push(Box::new(mp3_node));
+            nodes.push(Box::new(click_yml_node));
+
+            // Edge: mp3 -> clicks.yml
+            edges.push(Edge {
+                nfrom: Box::new(Mp3::new(mp3_path)),
+                nto: Box::new(ClickYml::new(clicks_yml_path)),
+            });
+        }
 
         Ok((nodes, edges))
     }
