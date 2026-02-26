@@ -34,3 +34,13 @@ run-all: ## Build songs from local
 		--sandbox sandbox \
 		--delivery delivery \
 		--pattern u2
+
+refresh-and-reset: ## Reset work branch to main (fetch, reset, force push)
+	@branch=$$(git rev-parse --abbrev-ref HEAD); \
+	if [ "$$branch" != "work" ]; then echo "Error: not on work branch (on $$branch)"; exit 1; fi
+	@if [ -n "$$(git status --porcelain)" ]; then echo "Error: uncommitted changes"; git status --short; exit 1; fi
+	git fetch origin main:main
+	@local=$$(git rev-parse HEAD); remote=$$(git rev-parse main); \
+	if [ "$$local" != "$$remote" ]; then echo "Error: work and main differ (work has unmerged commits)"; git log --oneline main..HEAD; exit 1; fi
+	git reset --hard main
+	git push --force
