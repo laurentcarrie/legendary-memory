@@ -27,9 +27,12 @@ pub struct SongFiles {
     /// Audio files (`.wav`).
     #[serde(default)]
     pub wav: Vec<String>,
-    /// Click track MP3 file (e.g. `"clicks.mp3"`).
+    /// Whether this song has a click track (`clicks.mp3`).
     #[serde(default)]
-    pub clicks: Option<String>,
+    pub has_clicks: bool,
+    /// Whether this song has a song recording (`song.mp3`).
+    #[serde(default)]
+    pub has_song: bool,
 }
 
 /// Core song metadata: title, author, tempo, and time signature.
@@ -154,6 +157,13 @@ pub enum WorldItem {
     Song(Song),
     /// An error message from reading or parsing a song file.
     Error(String),
+}
+
+/// Tick offsets parsed from `clicks.yml`.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ClicksDefinition {
+    /// Absolute time offsets (in seconds) of each detected tick from the start of the audio.
+    pub ticks: Vec<f64>,
 }
 
 /// The world: a collection of song paths and their parse results.

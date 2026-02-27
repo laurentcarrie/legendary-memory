@@ -17,7 +17,7 @@ pub use discover::discover;
 pub use nodes::PdfFile;
 
 use model::{SectionItem, Song, World, WorldItem};
-use nodes::{CopyFile, SongYml, TexFile};
+use nodes::{ClickYml, CopyFile, SongYml, TexFile};
 use object_store::ObjectStoreExt;
 use std::path::{Path, PathBuf};
 
@@ -198,6 +198,20 @@ pub fn make_all(
         let body_path = parent_dir.join("body.tex");
         let body_node = TexFile::new(body_path);
         let _ = g.add_root_node(body_node);
+
+        // Add clicks.yml as validated root node if has_clicks is true
+        if song.files.has_clicks {
+            let clicks_yml_path = parent_dir.join("clicks.yml");
+            match ClickYml::new(clicks_yml_path, srcdir) {
+                Ok(clicks_node) => {
+                    let _ = g.add_root_node(clicks_node);
+                }
+                Err(e) => {
+                    log::error!("{e}");
+                    return (false, g);
+                }
+            }
+        }
 
         // Add lyrics files as root nodes for each Chords and Ref section
         for item in &song.structure {
