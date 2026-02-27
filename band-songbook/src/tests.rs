@@ -513,13 +513,12 @@ async fn test_make_all_with_storage_local() {
 }
 
 #[test]
-fn test_yamake_build_click_yml() {
-    // Create a temp srcdir with a minimal song that has a click track
+fn test_make_all_has_clicks_and_has_song() {
+    // Create a temp srcdir with a song that has both has_clicks and has_song
     let srcdir = tempfile::tempdir().expect("Failed to create srcdir");
     let song_dir = srcdir.path().join("TestArtist/ClickSong");
     std::fs::create_dir_all(&song_dir).expect("create song dir");
 
-    // Write a minimal song.yml with click field
     std::fs::write(
         song_dir.join("song.yml"),
         r#"
@@ -527,7 +526,8 @@ files:
   lilypond: []
   tex: []
   wav: []
-  clicks: clicks.mp3
+  has_clicks: true
+  has_song: true
 info:
   title: Click Song
   author: Test Artist
@@ -540,18 +540,19 @@ structure: []
     )
     .expect("write song.yml");
 
-    // Write a minimal body.tex
     std::fs::write(
         song_dir.join("body.tex"),
         "\\input{song.tikz}\n\\newpage\n\\songlyrics\n",
     )
     .expect("write body.tex");
 
-    // Copy the test click track MP3
+    // Provide clicks.mp3, clicks.yml, and song.mp3
     std::fs::copy("tests/data/click/clicks.mp3", song_dir.join("clicks.mp3"))
         .expect("copy clicks.mp3");
+    std::fs::write(song_dir.join("clicks.yml"), "ticks:\n- 0.0\n- 0.5\n")
+        .expect("write clicks.yml");
+    std::fs::copy("tests/data/click/clicks.mp3", song_dir.join("song.mp3")).expect("copy song.mp3");
 
-    // Copy settings.yml
     std::fs::copy(
         "tests/data/settings.yml",
         srcdir.path().join("settings.yml"),
@@ -559,77 +560,49 @@ structure: []
     .expect("copy settings.yml");
 
     let sandbox = tempfile::tempdir().expect("Failed to create sandbox");
-    let mut g = G::new(srcdir.path().to_path_buf(), sandbox.path().to_path_buf());
+    let world = world_of_srcdir(srcdir.path());
 
-    // Add settings.yml as root node
-    let settings_node = TexFile::new(PathBuf::from("settings.yml"));
-    let _ = g.add_root_node(settings_node);
+    let (success, g) = make_all(
+        srcdir.path(),
+        sandbox.path(),
+        Some(Path::new(&srcdir.path().join("settings.yml"))),
+        None,
+        &[],
+        &world,
+    );
+    assert!(success, "make_all should succeed");
 
-    // Add SongYml root node
-    let song: Song =
-        serde_yaml::from_str(&std::fs::read_to_string(song_dir.join("song.yml")).unwrap()).unwrap();
-    let song_node = SongYml::new(PathBuf::from("TestArtist/ClickSong/song.yml"), song);
-    let song_idx = g.add_root_node(song_node).expect("Failed to add song node");
-
-    // Add body.tex as root node
-    let body_node = TexFile::new(PathBuf::from("TestArtist/ClickSong/body.tex"));
-    let _ = g.add_root_node(body_node);
-
-    // Add PdfFile (needed so expand can wire up edges)
-    let pdf_node = PdfFile::new(PathBuf::from("TestArtist/ClickSong/main.pdf"));
-    let pdf_idx = g.add_node(pdf_node).expect("Failed to add pdf node");
-    g.add_edge(song_idx, pdf_idx);
-
-    let success = g.make();
-    assert!(success, "Build should succeed");
-
-    // Verify clicks.yml was created
-    let clicks_path = sandbox.path().join("TestArtist/ClickSong/clicks.yml");
+    // Verify clicks.mp3 was mounted in sandbox
+    let clicks_mp3_path = sandbox.path().join("songs/TestArtist/ClickSong/clicks.mp3");
     assert!(
-        clicks_path.exists(),
-        "clicks.yml should be created in sandbox"
+        clicks_mp3_path.exists(),
+        "clicks.mp3 should be mounted in sandbox"
     );
 
-    // Parse and verify content
-    #[derive(serde::Deserialize)]
-    struct ClickData {
-        ticks: Vec<f64>,
-    }
+    // Verify clicks.yml was mounted in sandbox
+    let clicks_yml_path = sandbox.path().join("songs/TestArtist/ClickSong/clicks.yml");
+    assert!(
+        clicks_yml_path.exists(),
+        "clicks.yml should be mounted in sandbox"
+    );
 
-    let yaml = std::fs::read_to_string(&clicks_path).unwrap();
-    let data: ClickData = serde_yaml::from_str(&yaml).unwrap();
+    // Verify song.mp3 was mounted in sandbox
+    let song_mp3_path = sandbox.path().join("songs/TestArtist/ClickSong/song.mp3");
+    assert!(
+        song_mp3_path.exists(),
+        "song.mp3 should be mounted in sandbox"
+    );
 
-    assert_eq!(data.ticks.len(), 4, "should detect 4 ticks");
-    assert_eq!(data.ticks[0], 0.0, "first tick offset should be 0");
-
-    // Verify tick intervals are ~0.5s
-    for i in 1..data.ticks.len() {
-        let interval = data.ticks[i] - data.ticks[i - 1];
-        assert!(
-            (interval - 0.5).abs() < 0.05,
-            "tick interval {} ({:.4}s) should be ~0.5s",
-            i,
-            interval
-        );
-    }
-
-    // Verify the click.yml node exists in the graph with correct tag
-    let click_yml_found = g.g.node_indices().any(|idx| {
+    // Verify clicks.yml node exists with correct tag
+    let clicks_yml_found = g.g.node_indices().any(|idx| {
         let node = &g.g[idx];
         node.pathbuf() == PathBuf::from("TestArtist/ClickSong/clicks.yml")
             && node.tag() == "clicks.yml"
     });
     assert!(
-        click_yml_found,
+        clicks_yml_found,
         "clicks.yml node should exist with tag 'clicks.yml'"
     );
-
-    // Verify mp3 node exists in the graph
-    let mp3_found = g.g.node_indices().any(|idx| {
-        let node = &g.g[idx];
-        node.pathbuf() == PathBuf::from("TestArtist/ClickSong/clicks.mp3") && node.tag() == "mp3"
-    });
-    assert!(mp3_found, "click.mp3 node should exist with tag 'mp3'");
 }
 
 /// Integration test for S3 storage.

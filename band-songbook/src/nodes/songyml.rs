@@ -4,8 +4,7 @@ use std::path::{Path, PathBuf};
 use yamake::model::{Edge, ExpandError, ExpandResult, GNode, GRootNode};
 
 use super::{
-    ClickYml, CopyFile, LilypondFile, LyTexFile, Mp3, PdfFile, SongTikz, StrudelFile, TexFile,
-    TexOfLilypond,
+    CopyFile, LilypondFile, LyTexFile, Mp3, PdfFile, SongTikz, StrudelFile, TexFile, TexOfLilypond,
 };
 use crate::chords::bar_numbering::barcount_map_of_structure;
 use crate::helpers::register_helpers;
@@ -501,21 +500,17 @@ impl GRootNode for SongYml {
             nto: Box::new(CopyFile::new(strudel_copy_path, "strudel".to_string())),
         });
 
-        // Create ClickYml node if a click track MP3 is specified
-        if let Some(ref clicks_file) = self.song.files.clicks {
-            let mp3_path = parent_dir.join(clicks_file);
-            let clicks_yml_path = parent_dir.join("clicks.yml");
+        // Mount clicks.mp3 if has_clicks is true
+        // (clicks.yml is added as a ClickYml root node in make_all)
+        if self.song.files.has_clicks {
+            let clicks_mp3_path = parent_dir.join("clicks.mp3");
+            nodes.push(Box::new(Mp3::new(clicks_mp3_path)));
+        }
 
-            let mp3_node = Mp3::new(mp3_path.clone());
-            let click_yml_node = ClickYml::new(clicks_yml_path.clone());
-            nodes.push(Box::new(mp3_node));
-            nodes.push(Box::new(click_yml_node));
-
-            // Edge: mp3 -> clicks.yml
-            edges.push(Edge {
-                nfrom: Box::new(Mp3::new(mp3_path)),
-                nto: Box::new(ClickYml::new(clicks_yml_path)),
-            });
+        // Mount song.mp3 if has_song is true
+        if self.song.files.has_song {
+            let song_mp3_path = parent_dir.join("song.mp3");
+            nodes.push(Box::new(Mp3::new(song_mp3_path)));
         }
 
         Ok((nodes, edges))
