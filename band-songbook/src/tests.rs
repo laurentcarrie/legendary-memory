@@ -1,7 +1,7 @@
 use crate::chords::parse::parse;
 use crate::discover;
 use crate::model::{Song, WorldItem};
-use crate::nodes::{PdfFile, SongYml, TexFile};
+use crate::nodes::{ClickYml, PdfFile, SongYml, TexFile};
 use crate::{make_all, world_of_srcdir};
 use std::path::{Path, PathBuf};
 use yamake::model::{G, GNode};
@@ -87,6 +87,14 @@ fn test_yamake_build_song_with_lilypond() {
 
     let body_node = TexFile::new(PathBuf::from("mademoiselle_K/ca_me_vexe/body.tex"));
     let _ = g.add_root_node(body_node);
+
+    // Add clicks.yml as root node (has_clicks is true)
+    let clicks_node = ClickYml::new(
+        PathBuf::from("mademoiselle_K/ca_me_vexe/clicks.yml"),
+        Path::new("tests/data"),
+    )
+    .expect("load clicks.yml");
+    let _ = g.add_root_node(clicks_node);
 
     // Add lyrics files as root nodes (like make_all does)
     let lyrics_files = [
@@ -571,13 +579,6 @@ structure: []
         &world,
     );
     assert!(success, "make_all should succeed");
-
-    // Verify clicks.mp3 was mounted in sandbox
-    let clicks_mp3_path = sandbox.path().join("songs/TestArtist/ClickSong/clicks.mp3");
-    assert!(
-        clicks_mp3_path.exists(),
-        "clicks.mp3 should be mounted in sandbox"
-    );
 
     // Verify clicks.yml was mounted in sandbox
     let clicks_yml_path = sandbox.path().join("songs/TestArtist/ClickSong/clicks.yml");

@@ -4,7 +4,8 @@ use std::path::{Path, PathBuf};
 use yamake::model::{Edge, ExpandError, ExpandResult, GNode, GRootNode};
 
 use super::{
-    CopyFile, LilypondFile, LyTexFile, Mp3, PdfFile, SongTikz, StrudelFile, TexFile, TexOfLilypond,
+    ClickCheckMp3, ClickYml, CopyFile, LilypondFile, LyTexFile, Mp3, PdfFile, SongTikz,
+    StrudelFile, TexFile, TexOfLilypond,
 };
 use crate::chords::bar_numbering::barcount_map_of_structure;
 use crate::helpers::register_helpers;
@@ -500,11 +501,36 @@ impl GRootNode for SongYml {
             nto: Box::new(CopyFile::new(strudel_copy_path, "strudel".to_string())),
         });
 
-        // Mount clicks.mp3 if has_clicks is true
-        // (clicks.yml is added as a ClickYml root node in make_all)
+        // Mount click-related nodes if has_clicks is true
+        if self.song.files.has_clicks && !self.song.files.has_song {
+            return Err(ExpandError::Other(format!(
+                "{}: has_clicks is true but has_song is false — song.mp3 is required for click overlay",
+                self.path.display()
+            )));
+        }
         if self.song.files.has_clicks {
-            let clicks_mp3_path = parent_dir.join("clicks.mp3");
-            nodes.push(Box::new(Mp3::new(clicks_mp3_path)));
+            let clicks_yml_path = parent_dir.join("clicks.yml");
+            let click_yml_node =
+                ClickYml::new(clicks_yml_path.clone(), sandbox).map_err(ExpandError::Other)?;
+            nodes.push(Box::new(click_yml_node));
+
+            let check_mp3_path = parent_dir.join("song-with-click.mp3");
+            nodes.push(Box::new(ClickCheckMp3::new(check_mp3_path.clone())));
+
+            // Edge: clicks.yml -> song-with-click.mp3
+            edges.push(Edge {
+                nfrom: Box::new(
+                    ClickYml::new(clicks_yml_path, sandbox).map_err(ExpandError::Other)?,
+                ),
+                nto: Box::new(ClickCheckMp3::new(check_mp3_path.clone())),
+            });
+
+            // Edge: song.mp3 -> song-with-click.mp3
+            let song_mp3_path = parent_dir.join("song.mp3");
+            edges.push(Edge {
+                nfrom: Box::new(Mp3::new(song_mp3_path)),
+                nto: Box::new(ClickCheckMp3::new(check_mp3_path)),
+            });
         }
 
         // Mount song.mp3 if has_song is true
