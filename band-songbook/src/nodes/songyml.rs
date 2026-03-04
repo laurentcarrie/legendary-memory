@@ -502,9 +502,9 @@ impl GRootNode for SongYml {
         });
 
         // Mount click-related nodes if has_clicks is true
-        if self.song.files.has_clicks && !self.song.files.has_song {
+        if self.song.files.has_clicks && !self.song.files.has_mp3 {
             return Err(ExpandError::Other(format!(
-                "{}: has_clicks is true but has_song is false — song.mp3 is required for click overlay",
+                "{}: has_clicks is true but has_mp3 is false — song.mp3 is required for click overlay",
                 self.path.display()
             )));
         }
@@ -533,8 +533,8 @@ impl GRootNode for SongYml {
             });
         }
 
-        // Mount song.mp3 if has_song is true
-        if self.song.files.has_song {
+        // Mount song.mp3 if has_mp3 is true
+        if self.song.files.has_mp3 {
             let song_mp3_path = parent_dir.join("song.mp3");
             nodes.push(Box::new(Mp3::new(song_mp3_path)));
         }

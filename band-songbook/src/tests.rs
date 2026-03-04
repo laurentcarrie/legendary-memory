@@ -521,8 +521,8 @@ async fn test_make_all_with_storage_local() {
 }
 
 #[test]
-fn test_make_all_has_clicks_and_has_song() {
-    // Create a temp srcdir with a song that has both has_clicks and has_song
+fn test_make_all_has_clicks_and_has_mp3() {
+    // Create a temp srcdir with a song that has both has_clicks and has_mp3
     let srcdir = tempfile::tempdir().expect("Failed to create srcdir");
     let song_dir = srcdir.path().join("TestArtist/ClickSong");
     std::fs::create_dir_all(&song_dir).expect("create song dir");
@@ -535,7 +535,7 @@ files:
   tex: []
   wav: []
   has_clicks: true
-  has_song: true
+  has_mp3: true
 info:
   title: Click Song
   author: Test Artist
