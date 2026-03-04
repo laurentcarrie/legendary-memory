@@ -32,7 +32,7 @@ pub struct SongFiles {
     pub has_clicks: bool,
     /// Whether this song has a song recording (`song.mp3`).
     #[serde(default)]
-    pub has_song: bool,
+    pub has_mp3: bool,
 }
 
 /// Core song metadata: title, author, tempo, and time signature.

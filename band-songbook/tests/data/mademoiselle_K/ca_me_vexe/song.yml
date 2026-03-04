@@ -8,7 +8,7 @@ files:
     - body.tex
   wav: []
   has_clicks: true
-  has_song: true
+  has_mp3: true
 info:
   title: Ca me vexe
   author: Mademoiselle K
