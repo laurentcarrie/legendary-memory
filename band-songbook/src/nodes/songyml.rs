@@ -473,6 +473,9 @@ impl GRootNode for SongYml {
             edges.push(texofly_to_pdf_edge);
         }
 
+        // Pre-compute file stem for delivery copy nodes (before song is moved)
+        let file_stem = song.info.file_stem_of_song();
+
         // Create StrudelFile node
         let strudel_path = parent_dir.join("strudel.html");
         let libraries = self.drum_patterns_dirs.clone();
@@ -490,8 +493,7 @@ impl GRootNode for SongYml {
         });
 
         // Create CopyFile node to copy strudel.html to ../tempo/<author>--@--<title>.html
-        let strudel_copy_path =
-            Path::new("../tempo").join(format!("{}.html", song.info.file_stem_of_song()));
+        let strudel_copy_path = Path::new("../tempo").join(format!("{}.html", file_stem));
         let strudel_copy_node = CopyFile::new(strudel_copy_path.clone(), "strudel".to_string());
         nodes.push(Box::new(strudel_copy_node));
 
@@ -520,7 +522,7 @@ impl GRootNode for SongYml {
             // Edge: clicks.yml -> song-with-click.mp3
             edges.push(Edge {
                 nfrom: Box::new(
-                    ClickYml::new(clicks_yml_path, sandbox).map_err(ExpandError::Other)?,
+                    ClickYml::new(clicks_yml_path.clone(), sandbox).map_err(ExpandError::Other)?,
                 ),
                 nto: Box::new(ClickCheckMp3::new(check_mp3_path.clone())),
             });
@@ -529,14 +531,52 @@ impl GRootNode for SongYml {
             let song_mp3_path = parent_dir.join("song.mp3");
             edges.push(Edge {
                 nfrom: Box::new(Mp3::new(song_mp3_path)),
-                nto: Box::new(ClickCheckMp3::new(check_mp3_path)),
+                nto: Box::new(ClickCheckMp3::new(check_mp3_path.clone())),
+            });
+
+            // Copy song-with-click.mp3 to ../mp3-with-clicks/<name>.mp3
+            let click_mp3_copy_path =
+                Path::new("../mp3-with-clicks").join(format!("{}-with-clicks.mp3", file_stem));
+            let click_mp3_copy_node =
+                CopyFile::new(click_mp3_copy_path.clone(), "click_check_mp3".to_string());
+            nodes.push(Box::new(click_mp3_copy_node));
+
+            edges.push(Edge {
+                nfrom: Box::new(ClickCheckMp3::new(check_mp3_path)),
+                nto: Box::new(CopyFile::new(
+                    click_mp3_copy_path,
+                    "click_check_mp3".to_string(),
+                )),
+            });
+
+            // Copy clicks.yml to ../clicks/<name>-clicks.yml
+            let clicks_copy_path = Path::new("../clicks").join(format!("{}-clicks.yml", file_stem));
+            let clicks_copy_node =
+                CopyFile::new(clicks_copy_path.clone(), "clicks.yml".to_string());
+            nodes.push(Box::new(clicks_copy_node));
+
+            edges.push(Edge {
+                nfrom: Box::new(
+                    ClickYml::new(clicks_yml_path, sandbox).map_err(ExpandError::Other)?,
+                ),
+                nto: Box::new(CopyFile::new(clicks_copy_path, "clicks.yml".to_string())),
             });
         }
 
         // Mount song.mp3 if has_mp3 is true
         if self.song.files.has_mp3 {
             let song_mp3_path = parent_dir.join("song.mp3");
-            nodes.push(Box::new(Mp3::new(song_mp3_path)));
+            nodes.push(Box::new(Mp3::new(song_mp3_path.clone())));
+
+            // Copy song.mp3 to ../mp3/<name>.mp3
+            let mp3_copy_path = Path::new("../mp3").join(format!("{}.mp3", file_stem));
+            let mp3_copy_node = CopyFile::new(mp3_copy_path.clone(), "mp3".to_string());
+            nodes.push(Box::new(mp3_copy_node));
+
+            edges.push(Edge {
+                nfrom: Box::new(Mp3::new(song_mp3_path)),
+                nto: Box::new(CopyFile::new(mp3_copy_path, "mp3".to_string())),
+            });
         }
 
         Ok((nodes, edges))

@@ -163,9 +163,16 @@ pub fn make_all(
     }
 
     // Create pdf-lyrics directories for copied lyrics PDFs (1-column and 2-column)
-    for dir in ["pdf-lyrics-1-column", "pdf-lyrics-2-column"] {
-        let pdf_lyrics_dir = sandbox.join(dir);
-        if let Err(e) = std::fs::create_dir_all(&pdf_lyrics_dir) {
+    // and mp3/clicks directories for audio delivery
+    for dir in [
+        "pdf-lyrics-1-column",
+        "pdf-lyrics-2-column",
+        "mp3",
+        "mp3-with-clicks",
+        "clicks",
+    ] {
+        let sub_dir = sandbox.join(dir);
+        if let Err(e) = std::fs::create_dir_all(&sub_dir) {
             log::error!("Failed to create {dir} directory: {e}");
         }
     }
@@ -427,7 +434,14 @@ pub async fn make_all_with_storage(
             collect_files_recursive(&pdf_dir, &mut delivery_files);
         }
 
-        for dir in ["pdf-lyrics-1-column", "pdf-lyrics-2-column", "tempo"] {
+        for dir in [
+            "pdf-lyrics-1-column",
+            "pdf-lyrics-2-column",
+            "tempo",
+            "mp3",
+            "mp3-with-clicks",
+            "clicks",
+        ] {
             let sub_dir = sandbox.join(dir);
             if sub_dir.exists() {
                 collect_files_recursive(&sub_dir, &mut delivery_files);
@@ -444,7 +458,15 @@ pub async fn make_all_with_storage(
         std::fs::create_dir_all(local_delivery)
             .map_err(|e| format!("Failed to create delivery directory: {e}"))?;
 
-        for subdir in &["pdf", "pdf-lyrics-1-column", "pdf-lyrics-2-column", "tempo"] {
+        for subdir in &[
+            "pdf",
+            "pdf-lyrics-1-column",
+            "pdf-lyrics-2-column",
+            "tempo",
+            "mp3",
+            "mp3-with-clicks",
+            "clicks",
+        ] {
             let src_dir = sandbox.join(subdir);
             if !src_dir.exists() {
                 continue;
