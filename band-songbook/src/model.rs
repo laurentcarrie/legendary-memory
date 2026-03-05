@@ -166,9 +166,48 @@ pub struct ClicksDefinition {
     pub ticks: Vec<f64>,
 }
 
+const TICKS_PER_BAR: usize = 4;
+
+/// Returns the start time (in seconds) of bar `bar` (1-based).
+///
+/// If `clicks` is provided, the time is looked up from the ticks array (4 ticks per bar).
+/// Otherwise, it is computed from the tempo: `(bar - 1) * 4 * 60.0 / tempo`.
+pub fn time_of_bar(bar: u32, tempo: u16, clicks: Option<&ClicksDefinition>) -> f64 {
+    match clicks {
+        Some(cd) => {
+            let tick_index = (bar as usize - 1) * TICKS_PER_BAR;
+            cd.ticks[tick_index]
+        }
+        None => (bar as f64 - 1.0) * TICKS_PER_BAR as f64 * 60.0 / tempo as f64,
+    }
+}
+
 /// The world: a collection of song paths and their parse results.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct World {
     /// List of (relative path, world item) pairs.
     pub items: Vec<(PathBuf, WorldItem)>,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_time_of_bar_without_clicks() {
+        // 120 BPM, 4 ticks per bar => each bar = 4 * 60/120 = 2.0 seconds
+        assert!((time_of_bar(1, 120, None) - 0.0).abs() < 1e-9);
+        assert!((time_of_bar(2, 120, None) - 2.0).abs() < 1e-9);
+        assert!((time_of_bar(3, 120, None) - 4.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn test_time_of_bar_with_clicks() {
+        // 8 ticks = 2 bars of 4 ticks each
+        let clicks = ClicksDefinition {
+            ticks: vec![0.0, 0.428, 0.857, 1.285, 1.714, 2.142, 2.571, 3.0],
+        };
+        assert!((time_of_bar(1, 140, Some(&clicks)) - 0.0).abs() < 1e-9);
+        assert!((time_of_bar(2, 140, Some(&clicks)) - 1.714).abs() < 1e-9);
+    }
 }
