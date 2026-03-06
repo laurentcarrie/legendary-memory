@@ -15,6 +15,7 @@
 %\tikzset{declare
 %function={Gauss(\x,mu,\sig)=1/(\sig*sqrt(2*pi))*exp(-0.5*((\x-\mu)/\sig)^2);}}
 
+\begin{adjustbox}{max width=\textwidth}
 \begin{tikzpicture}[]
     \usetikzlibrary{arrows.meta}
 
@@ -101,3 +102,4 @@
 {{/each}}
 
 \end{tikzpicture}
+\end{adjustbox}
