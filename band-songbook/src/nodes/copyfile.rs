@@ -50,15 +50,15 @@ impl GNode for CopyFile {
         let dest_path = sandbox.join(&self.path);
 
         // Create parent directory if needed
-        if let Some(parent) = dest_path.parent() {
-            if let Err(e) = std::fs::create_dir_all(parent) {
-                log::error!(
-                    "Failed to create directory for {}: {}",
-                    self.path.display(),
-                    e
-                );
-                return false;
-            }
+        if let Some(parent) = dest_path.parent()
+            && let Err(e) = std::fs::create_dir_all(parent)
+        {
+            log::error!(
+                "Failed to create directory for {}: {}",
+                self.path.display(),
+                e
+            );
+            return false;
         }
 
         if let Err(e) = std::fs::copy(&src_path, &dest_path) {

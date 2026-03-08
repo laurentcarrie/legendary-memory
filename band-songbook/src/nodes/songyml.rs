@@ -512,18 +512,14 @@ impl GRootNode for SongYml {
         }
         if self.song.files.has_clicks {
             let clicks_yml_path = parent_dir.join("clicks.yml");
-            let click_yml_node =
-                ClickYml::new(clicks_yml_path.clone(), sandbox).map_err(ExpandError::Other)?;
-            nodes.push(Box::new(click_yml_node));
+            nodes.push(Box::new(ClickYml::new(clicks_yml_path.clone())));
 
             let check_mp3_path = parent_dir.join("song-with-click.mp3");
             nodes.push(Box::new(ClickCheckMp3::new(check_mp3_path.clone())));
 
             // Edge: clicks.yml -> song-with-click.mp3
             edges.push(Edge {
-                nfrom: Box::new(
-                    ClickYml::new(clicks_yml_path.clone(), sandbox).map_err(ExpandError::Other)?,
-                ),
+                nfrom: Box::new(ClickYml::new(clicks_yml_path.clone())),
                 nto: Box::new(ClickCheckMp3::new(check_mp3_path.clone())),
             });
 
@@ -556,9 +552,7 @@ impl GRootNode for SongYml {
             nodes.push(Box::new(clicks_copy_node));
 
             edges.push(Edge {
-                nfrom: Box::new(
-                    ClickYml::new(clicks_yml_path, sandbox).map_err(ExpandError::Other)?,
-                ),
+                nfrom: Box::new(ClickYml::new(clicks_yml_path)),
                 nto: Box::new(CopyFile::new(clicks_copy_path, "clicks.yml".to_string())),
             });
         }

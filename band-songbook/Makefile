@@ -35,10 +35,6 @@ run-all: ## Build songs from local
 		--delivery delivery \
 		--pattern u2
 
-publish: ## Publish crate to crates.io via GitHub Actions
-	gh workflow run "Publish band-songbook" -f dry_run=false
-	@echo "Triggered publish workflow. Monitor with: gh run list --workflow='Publish band-songbook' --limit 1"
-
 refresh-and-reset: ## Reset work branch to main (fetch, reset, force push)
 	@branch=$$(git rev-parse --abbrev-ref HEAD); \
 	if [ "$$branch" != "work" ]; then echo "Error: not on work branch (on $$branch)"; exit 1; fi

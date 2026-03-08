@@ -17,7 +17,7 @@ pub use discover::discover;
 pub use nodes::PdfFile;
 
 use model::{SectionItem, Song, World, WorldItem};
-use nodes::{ClickYml, CopyFile, SongYml, TexFile};
+use nodes::{ClickDef, ClickYml, CopyFile, SongYml, TexFile};
 use object_store::ObjectStoreExt;
 use std::path::{Path, PathBuf};
 
@@ -66,7 +66,7 @@ pub fn world_of_srcdir(srcdir: &Path) -> World {
             let rel_path = song_path.strip_prefix(srcdir).ok()?.to_path_buf();
             let item = match std::fs::read_to_string(&song_path) {
                 Ok(content) => match serde_yaml::from_str::<Song>(&content) {
-                    Ok(song) => WorldItem::Song(song),
+                    Ok(song) => WorldItem::Song(Box::new(song)),
                     Err(e) => {
                         log::error!("Failed to parse {}: {e}", song_path.display());
                         WorldItem::Error(format!("Failed to parse {}: {e}", song_path.display()))
@@ -194,7 +194,7 @@ pub fn make_all(
         }
 
         // Create SongYml node
-        let song_node = SongYml::new(rel_path.clone(), song.clone())
+        let song_node = SongYml::new(rel_path.clone(), *song.clone())
             .with_drum_patterns_dirs(drum_patterns_dirs.to_vec());
         let song_idx = match g.add_root_node(song_node) {
             Ok(idx) => idx,
@@ -206,12 +206,20 @@ pub fn make_all(
         let body_node = TexFile::new(body_path);
         let _ = g.add_root_node(body_node);
 
-        // Add clicks.yml as validated root node if has_clicks is true
+        // Add clicks-def and clicks.yml nodes if has_clicks is true
         if song.files.has_clicks {
-            let clicks_yml_path = parent_dir.join("clicks.yml");
-            match ClickYml::new(clicks_yml_path, srcdir) {
-                Ok(clicks_node) => {
-                    let _ = g.add_root_node(clicks_node);
+            let clicks_def_path = parent_dir.join("clicks-def.yml");
+            match ClickDef::new(clicks_def_path.clone(), srcdir) {
+                Ok(def_node) => {
+                    let def_idx = match g.add_root_node(def_node) {
+                        Ok(idx) => idx,
+                        Err(_) => continue,
+                    };
+                    let clicks_yml_path = parent_dir.join("clicks.yml");
+                    let clicks_node = ClickYml::new(clicks_yml_path);
+                    if let Ok(clicks_idx) = g.add_node(clicks_node) {
+                        g.add_edge(def_idx, clicks_idx);
+                    }
                 }
                 Err(e) => {
                     log::error!("{e}");
@@ -272,13 +280,14 @@ pub fn make_all(
 
     let success = g.make();
 
-    // Move make-report.yml from songs_sandbox to sandbox root
+    // Copy make-report.yml from songs_sandbox to sandbox root
+    // (keep the original so yamake can use it for incremental builds)
     let report_src = songs_sandbox.join("make-report.yml");
     let report_dest = sandbox.join("make-report.yml");
-    if report_src.exists() {
-        if let Err(e) = std::fs::rename(&report_src, &report_dest) {
-            log::error!("Failed to move make-report.yml: {e}");
-        }
+    if report_src.exists()
+        && let Err(e) = std::fs::copy(&report_src, &report_dest)
+    {
+        log::error!("Failed to copy make-report.yml: {e}");
     }
 
     // Move logs directory from songs_sandbox to sandbox root
@@ -287,10 +296,10 @@ pub fn make_all(
     if logs_dest.exists() {
         let _ = std::fs::remove_dir_all(&logs_dest);
     }
-    if logs_src.exists() {
-        if let Err(e) = std::fs::rename(&logs_src, &logs_dest) {
-            log::error!("Failed to move logs directory: {e}");
-        }
+    if logs_src.exists()
+        && let Err(e) = std::fs::rename(&logs_src, &logs_dest)
+    {
+        log::error!("Failed to move logs directory: {e}");
     }
 
     (success, g)

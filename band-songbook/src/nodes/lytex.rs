@@ -47,15 +47,15 @@ impl GNode for LyTexFile {
         let full_path = sandbox.join(&self.path);
 
         // Create parent directory if needed
-        if let Some(parent) = full_path.parent() {
-            if let Err(e) = std::fs::create_dir_all(parent) {
-                log::error!(
-                    "Failed to create directory for {}: {}",
-                    self.path.display(),
-                    e
-                );
-                return false;
-            }
+        if let Some(parent) = full_path.parent()
+            && let Err(e) = std::fs::create_dir_all(parent)
+        {
+            log::error!(
+                "Failed to create directory for {}: {}",
+                self.path.display(),
+                e
+            );
+            return false;
         }
 
         let content = format!("\\lilypondfile{{{ly_filename}}}\n");

@@ -154,16 +154,35 @@ pub struct RefSection {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum WorldItem {
     /// A successfully parsed song.
-    Song(Song),
+    Song(Box<Song>),
     /// An error message from reading or parsing a song file.
     Error(String),
 }
 
-/// Tick offsets parsed from `clicks.yml`.
+/// Click offsets parsed from `clicks.yml`.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Clicks {
+    /// Absolute time offsets (in seconds) of each detected click from the start of the audio.
+    #[serde(alias = "ticks")]
+    pub clicks: Vec<f64>,
+}
+
+/// A single click event with its beat number, time, and description.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Click {
+    /// Beat number (1-based).
+    pub beat_number: u32,
+    /// Absolute time in seconds from the start of the audio.
+    pub time: f64,
+    /// Description of this click (e.g. bar number, section name).
+    pub description: String,
+}
+
+/// A full click track definition with all click events.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ClicksDefinition {
-    /// Absolute time offsets (in seconds) of each detected tick from the start of the audio.
-    pub ticks: Vec<f64>,
+    /// Ordered list of click events.
+    pub clicks: Vec<Click>,
 }
 
 const TICKS_PER_BAR: usize = 4;
@@ -172,11 +191,11 @@ const TICKS_PER_BAR: usize = 4;
 ///
 /// If `clicks` is provided, the time is looked up from the ticks array (4 ticks per bar).
 /// Otherwise, it is computed from the tempo: `(bar - 1) * 4 * 60.0 / tempo`.
-pub fn time_of_bar(bar: u32, tempo: u16, clicks: Option<&ClicksDefinition>) -> f64 {
+pub fn time_of_bar(bar: u32, tempo: u16, clicks: Option<&Clicks>) -> f64 {
     match clicks {
         Some(cd) => {
             let tick_index = (bar as usize - 1) * TICKS_PER_BAR;
-            cd.ticks[tick_index]
+            cd.clicks[tick_index]
         }
         None => (bar as f64 - 1.0) * TICKS_PER_BAR as f64 * 60.0 / tempo as f64,
     }
@@ -204,8 +223,8 @@ mod tests {
     #[test]
     fn test_time_of_bar_with_clicks() {
         // 8 ticks = 2 bars of 4 ticks each
-        let clicks = ClicksDefinition {
-            ticks: vec![0.0, 0.428, 0.857, 1.285, 1.714, 2.142, 2.571, 3.0],
+        let clicks = Clicks {
+            clicks: vec![0.0, 0.428, 0.857, 1.285, 1.714, 2.142, 2.571, 3.0],
         };
         assert!((time_of_bar(1, 140, Some(&clicks)) - 0.0).abs() < 1e-9);
         assert!((time_of_bar(2, 140, Some(&clicks)) - 1.714).abs() < 1e-9);

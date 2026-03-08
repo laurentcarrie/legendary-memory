@@ -41,15 +41,15 @@ impl GNode for StrudelFile {
         let sequence = strudel_sequence_of_song(&self.song.structure, self.song.info.tempo);
 
         let dest = sandbox.join(&self.path);
-        if let Some(parent) = dest.parent() {
-            if let Err(e) = std::fs::create_dir_all(parent) {
-                log::error!(
-                    "Failed to create directory for {}: {}",
-                    self.path.display(),
-                    e
-                );
-                return false;
-            }
+        if let Some(parent) = dest.parent()
+            && let Err(e) = std::fs::create_dir_all(parent)
+        {
+            log::error!(
+                "Failed to create directory for {}: {}",
+                self.path.display(),
+                e
+            );
+            return false;
         }
 
         if sequence.sequence.is_empty() {

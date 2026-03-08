@@ -1,0 +1,10 @@
+clicks:
+- beat_number: 1
+  time: 0.0
+  description: bar 1
+- beat_number: 5
+  time: 1.714
+  description: bar 2
+- beat_number: 9
+  time: 3.428
+  description: end
