@@ -1,7 +1,7 @@
 use crate::chords::parse::parse;
 use crate::discover;
 use crate::model::{Song, WorldItem};
-use crate::nodes::{ClickYml, PdfFile, SongYml, TexFile};
+use crate::nodes::{ClickDef, ClickYml, PdfFile, SongYml, TexFile};
 use crate::{make_all, world_of_srcdir};
 use std::path::{Path, PathBuf};
 use yamake::model::{G, GNode};
@@ -88,13 +88,17 @@ fn test_yamake_build_song_with_lilypond() {
     let body_node = TexFile::new(PathBuf::from("mademoiselle_K/ca_me_vexe/body.tex"));
     let _ = g.add_root_node(body_node);
 
-    // Add clicks.yml as root node (has_clicks is true)
-    let clicks_node = ClickYml::new(
-        PathBuf::from("mademoiselle_K/ca_me_vexe/clicks.yml"),
+    // Add clicks-def as root node and clicks.yml as build node (has_clicks is true)
+    let clicks_def_node = ClickDef::new(
+        PathBuf::from("mademoiselle_K/ca_me_vexe/clicks-def.yml"),
         Path::new("tests/data"),
     )
-    .expect("load clicks.yml");
-    let _ = g.add_root_node(clicks_node);
+    .expect("load clicks definition");
+    let def_idx = g.add_root_node(clicks_def_node).expect("add clicks-def");
+
+    let clicks_node = ClickYml::new(PathBuf::from("mademoiselle_K/ca_me_vexe/clicks.yml"));
+    let clicks_idx = g.add_node(clicks_node).expect("add clicks.yml");
+    g.add_edge(def_idx, clicks_idx);
 
     // Add lyrics files as root nodes (like make_all does)
     let lyrics_files = [
@@ -554,11 +558,14 @@ structure: []
     )
     .expect("write body.tex");
 
-    // Provide clicks.mp3, clicks.yml, and song.mp3
+    // Provide clicks.mp3, clicks-def.yml, and song.mp3
     std::fs::copy("tests/data/click/clicks.mp3", song_dir.join("clicks.mp3"))
         .expect("copy clicks.mp3");
-    std::fs::write(song_dir.join("clicks.yml"), "ticks:\n- 0.0\n- 0.5\n")
-        .expect("write clicks.yml");
+    std::fs::write(
+        song_dir.join("clicks-def.yml"),
+        "clicks:\n- beat_number: 1\n  time: 0.0\n  description: start\n- beat_number: 3\n  time: 0.5\n  description: end\n",
+    )
+    .expect("write clicks-def.yml");
     std::fs::copy("tests/data/click/clicks.mp3", song_dir.join("song.mp3")).expect("copy song.mp3");
 
     std::fs::copy(

@@ -1,7 +1,7 @@
 use std::path::{Path, PathBuf};
 use yamake::model::GNode;
 
-use crate::model::ClicksDefinition;
+use crate::model::Clicks;
 
 /// Build node that overlays click sounds onto a song MP3 at tick positions
 /// from `clicks.yml`, producing `overlay.mp3` for manual verification.
@@ -71,7 +71,7 @@ impl GNode for ClickCheckMp3 {
                 return false;
             }
         };
-        let clicks: ClicksDefinition = match serde_yaml::from_str(&yaml) {
+        let clicks: Clicks = match serde_yaml::from_str(&yaml) {
             Ok(c) => c,
             Err(e) => {
                 log::error!("Failed to parse {}: {}", clicks_yml_path.display(), e);
@@ -79,7 +79,7 @@ impl GNode for ClickCheckMp3 {
             }
         };
 
-        if clicks.ticks.is_empty() {
+        if clicks.clicks.is_empty() {
             log::error!("No ticks in {}", clicks_yml_path.display());
             return false;
         }
@@ -129,7 +129,7 @@ impl GNode for ClickCheckMp3 {
 
         // Overlay clicks onto song samples at each tick position
         let total_frames = song_samples.len() / channels;
-        for &tick in &clicks.ticks {
+        for &tick in &clicks.clicks {
             let frame_idx = (tick * sample_rate as f64) as usize;
             for (i, &click_sample) in click.iter().enumerate() {
                 let frame = frame_idx + i;
@@ -167,15 +167,15 @@ impl GNode for ClickCheckMp3 {
 
         // Create output directory
         let out_path = sandbox.join(&self.path);
-        if let Some(parent) = out_path.parent() {
-            if let Err(e) = std::fs::create_dir_all(parent) {
-                log::error!(
-                    "Failed to create directory for {}: {}",
-                    self.path.display(),
-                    e
-                );
-                return false;
-            }
+        if let Some(parent) = out_path.parent()
+            && let Err(e) = std::fs::create_dir_all(parent)
+        {
+            log::error!(
+                "Failed to create directory for {}: {}",
+                self.path.display(),
+                e
+            );
+            return false;
         }
 
         // Convert WAV to MP3 with ffmpeg
@@ -206,7 +206,7 @@ impl GNode for ClickCheckMp3 {
 
         log::info!(
             "Created overlay MP3 with {} ticks at {}",
-            clicks.ticks.len(),
+            clicks.clicks.len(),
             out_path.display()
         );
 
@@ -285,7 +285,7 @@ mod tests {
         )
         .unwrap();
 
-        let clicks_node = ClickYml::new(PathBuf::from("clicks.yml"), srcdir.path()).unwrap();
+        let clicks_node = ClickYml::new(PathBuf::from("clicks.yml"));
         let mp3_node = Mp3::new(PathBuf::from("song.mp3"));
         let check_node = ClickCheckMp3::new(PathBuf::from("overlay.mp3"));
 

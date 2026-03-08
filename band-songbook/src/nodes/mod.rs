@@ -1,5 +1,7 @@
 /// Node that overlays click sounds onto a song MP3 for verification.
 pub mod clickcheckmp3;
+/// Clicks definition node with beat-level click events.
+pub mod clickdef;
 /// Click track analysis node that detects ticks in an MP3 and outputs tick offsets as YAML.
 pub mod clickyml;
 /// Node that copies a built PDF to the delivery directory.
@@ -24,6 +26,7 @@ pub mod tex;
 pub mod texoflilypond;
 
 pub use clickcheckmp3::ClickCheckMp3;
+pub use clickdef::ClickDef;
 pub use clickyml::ClickYml;
 pub use copyfile::CopyFile;
 pub use lilypond::LilypondFile;
