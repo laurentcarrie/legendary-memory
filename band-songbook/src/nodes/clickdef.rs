@@ -44,7 +44,7 @@ mod tests {
         let def_path = srcdir.path().join("clicks-def.yml");
         std::fs::write(
             &def_path,
-            "clicks:\n- beat_number: 1\n  time: 0.0\n  description: bar 1\n- beat_number: 5\n  time: 1.714\n  description: bar 2\n",
+            "clicks:\n- bar_number: 1\n  beat_in_bar_number: 1\n  time: \"0:0.0\"\n  description: bar 1\n- bar_number: 2\n  beat_in_bar_number: 1\n  time: \"0:1.714\"\n  description: bar 2\n",
         )
         .unwrap();
 
@@ -53,10 +53,11 @@ mod tests {
 
         let node = node.unwrap();
         assert_eq!(node.data.clicks.len(), 2);
-        assert_eq!(node.data.clicks[0].beat_number, 1);
+        assert_eq!(node.data.clicks[0].bar_number, 1);
+        assert_eq!(node.data.clicks[0].beat_in_bar_number, 1);
         assert!((node.data.clicks[0].time - 0.0).abs() < 1e-9);
         assert_eq!(node.data.clicks[0].description, "bar 1");
-        assert_eq!(node.data.clicks[1].beat_number, 5);
+        assert_eq!(node.data.clicks[1].bar_number, 2);
         assert_eq!(node.tag(), "clicks-def");
     }
 

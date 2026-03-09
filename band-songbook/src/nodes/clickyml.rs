@@ -1,7 +1,7 @@
 use std::path::{Path, PathBuf};
 use yamake::model::GNode;
 
-use crate::model::{Clicks, ClicksDefinition};
+use crate::model::{Click, Clicks, ClicksDefinition};
 
 /// Build node for `clicks.yml` that generates click times by linear interpolation
 /// from a `ClickDef` predecessor.
@@ -15,11 +15,17 @@ impl ClickYml {
     }
 }
 
+/// Compute the absolute beat number (1-based) from bar and beat-in-bar.
+/// Uses 4 beats per bar: `(bar_number - 1) * 4 + beat_in_bar_number`.
+fn absolute_beat(click: &Click) -> u32 {
+    (click.bar_number - 1) * 4 + click.beat_in_bar_number
+}
+
 /// Interpolate click times from a `ClicksDefinition`.
 ///
 /// For each pair of consecutive Click entries, linearly interpolates
-/// the beat times between them. For example, if beat 1 is at 0.0s and
-/// beat 5 is at 2.0s, beats 1–4 will be at 0.0, 0.5, 1.0, 1.5.
+/// the beat times between them. For example, if bar 1 beat 1 is at 0.0s and
+/// bar 2 beat 1 is at 2.0s, the 4 intermediate beats will be at 0.0, 0.5, 1.0, 1.5.
 fn interpolate(def: &ClicksDefinition) -> Vec<f64> {
     if def.clicks.is_empty() {
         return vec![];
@@ -32,7 +38,7 @@ fn interpolate(def: &ClicksDefinition) -> Vec<f64> {
     for window in def.clicks.windows(2) {
         let from = &window[0];
         let to = &window[1];
-        let n_beats = to.beat_number - from.beat_number;
+        let n_beats = absolute_beat(to) - absolute_beat(from);
         for i in 0..n_beats {
             let t = from.time + (to.time - from.time) * (i as f64) / (n_beats as f64);
             result.push(t);
@@ -123,45 +129,50 @@ mod tests {
     use crate::nodes::ClickDef;
     #[test]
     fn test_interpolate_two_points() {
+        // bar 1 beat 1 (abs=1) at 10s, bar 3 beat 3 (abs=11) at 20s → 10 intervals of 1s
         let def = ClicksDefinition {
             clicks: vec![
                 Click {
-                    beat_number: 1,
-                    time: 0.0,
+                    bar_number: 1,
+                    beat_in_bar_number: 1,
+                    time: 10.0,
                     description: "bar 1".to_string(),
                 },
                 Click {
-                    beat_number: 5,
-                    time: 2.0,
-                    description: "bar 2".to_string(),
+                    bar_number: 3,
+                    beat_in_bar_number: 3,
+                    time: 20.0,
+                    description: "bar 3 beat 3".to_string(),
                 },
             ],
         };
         let result = interpolate(&def);
-        assert_eq!(result.len(), 5); // beats 1,2,3,4,5
-        assert!((result[0] - 0.0).abs() < 1e-9);
-        assert!((result[1] - 0.5).abs() < 1e-9);
-        assert!((result[2] - 1.0).abs() < 1e-9);
-        assert!((result[3] - 1.5).abs() < 1e-9);
-        assert!((result[4] - 2.0).abs() < 1e-9);
+        assert_eq!(result.len(), 11); // beats 1..=11
+        assert!((result[0] - 10.0).abs() < 1e-9);
+        assert!((result[2] - 12.0).abs() < 1e-9); // beat 3 at 12s
+        assert!((result[10] - 20.0).abs() < 1e-9);
     }
 
     #[test]
     fn test_interpolate_three_points() {
+        // bar1:beat1 (abs=1) at 0s, bar1:beat3 (abs=3) at 1s, bar2:beat1 (abs=5) at 3s
         let def = ClicksDefinition {
             clicks: vec![
                 Click {
-                    beat_number: 1,
+                    bar_number: 1,
+                    beat_in_bar_number: 1,
                     time: 0.0,
                     description: "bar 1".to_string(),
                 },
                 Click {
-                    beat_number: 3,
+                    bar_number: 1,
+                    beat_in_bar_number: 3,
                     time: 1.0,
                     description: "bar 1 beat 3".to_string(),
                 },
                 Click {
-                    beat_number: 5,
+                    bar_number: 2,
+                    beat_in_bar_number: 1,
                     time: 3.0,
                     description: "bar 2".to_string(),
                 },
@@ -186,7 +197,8 @@ mod tests {
     fn test_interpolate_single() {
         let def = ClicksDefinition {
             clicks: vec![Click {
-                beat_number: 1,
+                bar_number: 1,
+                beat_in_bar_number: 1,
                 time: 0.0,
                 description: "start".to_string(),
             }],
@@ -205,7 +217,7 @@ mod tests {
         // Write a clicks-def.yml
         std::fs::write(
             song_dir.join("clicks-def.yml"),
-            "clicks:\n- beat_number: 1\n  time: 0.0\n  description: bar 1\n- beat_number: 5\n  time: 2.0\n  description: bar 2\n",
+            "clicks:\n- bar_number: 1\n  beat_in_bar_number: 1\n  time: \"0:0.0\"\n  description: bar 1\n- bar_number: 2\n  beat_in_bar_number: 1\n  time: \"0:2.0\"\n  description: bar 2\n",
         )
         .unwrap();
 

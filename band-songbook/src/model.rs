@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 /// A complete song definition, deserialized from `song.yml`.
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -167,15 +167,41 @@ pub struct Clicks {
     pub clicks: Vec<f64>,
 }
 
-/// A single click event with its beat number, time, and description.
+/// A single click event with its bar/beat position, time, and description.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Click {
-    /// Beat number (1-based).
-    pub beat_number: u32,
+    /// Bar number (1-based).
+    pub bar_number: u32,
+    /// Beat within the bar (1-based, e.g. 1–4 for 4/4 time).
+    pub beat_in_bar_number: u32,
     /// Absolute time in seconds from the start of the audio.
+    /// Deserialized from `"mm:ss.ms"` format (e.g. `"1:30.5"` = 90.5 seconds).
+    #[serde(deserialize_with = "deserialize_time")]
     pub time: f64,
     /// Description of this click (e.g. bar number, section name).
     pub description: String,
+}
+
+/// Parse a time string in `"mm:ss.ms"` format into seconds.
+fn parse_time(s: &str) -> Result<f64, String> {
+    let (minutes, rest) = s
+        .split_once(':')
+        .ok_or_else(|| format!("expected mm:ss.ms format, got {s}"))?;
+    let minutes: f64 = minutes
+        .parse()
+        .map_err(|e| format!("invalid minutes in {s}: {e}"))?;
+    let seconds: f64 = rest
+        .parse()
+        .map_err(|e| format!("invalid seconds in {s}: {e}"))?;
+    Ok(minutes * 60.0 + seconds)
+}
+
+fn deserialize_time<'de, D>(deserializer: D) -> Result<f64, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = String::deserialize(deserializer)?;
+    parse_time(&s).map_err(serde::de::Error::custom)
 }
 
 /// A full click track definition with all click events.
