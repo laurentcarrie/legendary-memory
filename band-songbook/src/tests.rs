@@ -563,7 +563,7 @@ structure: []
         .expect("copy clicks.mp3");
     std::fs::write(
         song_dir.join("clicks-def.yml"),
-        "clicks:\n- beat_number: 1\n  time: 0.0\n  description: start\n- beat_number: 3\n  time: 0.5\n  description: end\n",
+        "clicks:\n- bar_number: 1\n  beat_in_bar_number: 1\n  time: \"0:0.0\"\n  description: start\n- bar_number: 1\n  beat_in_bar_number: 3\n  time: \"0:0.5\"\n  description: end\n",
     )
     .expect("write clicks-def.yml");
     std::fs::copy("tests/data/click/clicks.mp3", song_dir.join("song.mp3")).expect("copy song.mp3");

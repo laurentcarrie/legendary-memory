@@ -1,10 +1,13 @@
 clicks:
-- beat_number: 1
-  time: 0.0
+- bar_number: 1
+  beat_in_bar_number: 1
+  time: "0:0.0"
   description: bar 1
-- beat_number: 5
-  time: 1.714
+- bar_number: 2
+  beat_in_bar_number: 1
+  time: "0:1.714"
   description: bar 2
-- beat_number: 9
-  time: 3.428
+- bar_number: 3
+  beat_in_bar_number: 1
+  time: "0:3.428"
   description: end

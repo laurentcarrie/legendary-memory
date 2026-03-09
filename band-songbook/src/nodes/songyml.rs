@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use yamake::model::{Edge, ExpandError, ExpandResult, GNode, GRootNode};
 
 use super::{
-    ClickCheckMp3, ClickYml, CopyFile, LilypondFile, LyTexFile, Mp3, PdfFile, SongTikz,
+    ClickYml, CopyFile, LilypondFile, LyTexFile, Mp3, PdfFile, SongTikz,
     StrudelFile, TexFile, TexOfLilypond,
 };
 use crate::chords::bar_numbering::barcount_map_of_structure;
@@ -514,36 +514,30 @@ impl GRootNode for SongYml {
             let clicks_yml_path = parent_dir.join("clicks.yml");
             nodes.push(Box::new(ClickYml::new(clicks_yml_path.clone())));
 
-            let check_mp3_path = parent_dir.join("song-with-click.mp3");
-            nodes.push(Box::new(ClickCheckMp3::new(check_mp3_path.clone())));
-
-            // Edge: clicks.yml -> song-with-click.mp3
-            edges.push(Edge {
-                nfrom: Box::new(ClickYml::new(clicks_yml_path.clone())),
-                nto: Box::new(ClickCheckMp3::new(check_mp3_path.clone())),
-            });
-
-            // Edge: song.mp3 -> song-with-click.mp3
-            let song_mp3_path = parent_dir.join("song.mp3");
-            edges.push(Edge {
-                nfrom: Box::new(Mp3::new(song_mp3_path)),
-                nto: Box::new(ClickCheckMp3::new(check_mp3_path.clone())),
-            });
-
-            // Copy song-with-click.mp3 to ../mp3-with-clicks/<name>.mp3
-            let click_mp3_copy_path =
-                Path::new("../mp3-with-clicks").join(format!("{}-with-clicks.mp3", file_stem));
-            let click_mp3_copy_node =
-                CopyFile::new(click_mp3_copy_path.clone(), "click_check_mp3".to_string());
-            nodes.push(Box::new(click_mp3_copy_node));
-
-            edges.push(Edge {
-                nfrom: Box::new(ClickCheckMp3::new(check_mp3_path)),
-                nto: Box::new(CopyFile::new(
-                    click_mp3_copy_path,
-                    "click_check_mp3".to_string(),
-                )),
-            });
+            // TODO: re-enable song-with-click.mp3 generation
+            // let check_mp3_path = parent_dir.join("song-with-click.mp3");
+            // nodes.push(Box::new(ClickCheckMp3::new(check_mp3_path.clone())));
+            // edges.push(Edge {
+            //     nfrom: Box::new(ClickYml::new(clicks_yml_path.clone())),
+            //     nto: Box::new(ClickCheckMp3::new(check_mp3_path.clone())),
+            // });
+            // let song_mp3_path = parent_dir.join("song.mp3");
+            // edges.push(Edge {
+            //     nfrom: Box::new(Mp3::new(song_mp3_path)),
+            //     nto: Box::new(ClickCheckMp3::new(check_mp3_path.clone())),
+            // });
+            // let click_mp3_copy_path =
+            //     Path::new("../mp3-with-clicks").join(format!("{}-with-clicks.mp3", file_stem));
+            // let click_mp3_copy_node =
+            //     CopyFile::new(click_mp3_copy_path.clone(), "click_check_mp3".to_string());
+            // nodes.push(Box::new(click_mp3_copy_node));
+            // edges.push(Edge {
+            //     nfrom: Box::new(ClickCheckMp3::new(check_mp3_path)),
+            //     nto: Box::new(CopyFile::new(
+            //         click_mp3_copy_path,
+            //         "click_check_mp3".to_string(),
+            //     )),
+            // });
 
             // Copy clicks.yml to ../clicks/<name>-clicks.yml
             let clicks_copy_path = Path::new("../clicks").join(format!("{}-clicks.yml", file_stem));
