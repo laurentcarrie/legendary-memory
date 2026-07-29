@@ -10,6 +10,7 @@ pub struct Song {
     /// Title, author, tempo, and time signature.
     pub info: SongInfo,
     /// Optional metadata such as date and content digest.
+    #[serde(default)]
     pub meta: SongMeta,
     /// Ordered list of sections that make up the song structure.
     pub structure: Vec<StructureItem>,
@@ -74,11 +75,13 @@ impl SongInfo {
 }
 
 /// Optional metadata for a song (date, content digest).
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct SongMeta {
     /// Date the song was added or last modified.
+    #[serde(default)]
     pub date: Option<String>,
     /// MD5 digest of the song content for change detection.
+    #[serde(default)]
     pub digest: Option<String>,
 }
 

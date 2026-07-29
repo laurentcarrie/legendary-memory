@@ -34,4 +34,6 @@ band-songbook/xxx/
 
 # Misc
 lhh.md
+COMMIT_LOG.md
+commit_msg.md
 .github/workflows/songbook-lambda.code-workspace
