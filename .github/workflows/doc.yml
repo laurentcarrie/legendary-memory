@@ -26,20 +26,20 @@ jobs:
           curl -sSL $url -o mdbook.tar.gz
           tar xzf mdbook.tar.gz --directory=./mdbook
           echo `pwd`/mdbook >> $GITHUB_PATH
+      - name: Install mdbook-mermaid
+        run: cargo install mdbook-mermaid
       - name: Build Book
         run: |
           cd doc/srs
           mdbook build
       - name: Build cargo doc
         run: |
-          ( cd software && cargo +nightly doc )
-          src=software/target/doc
+          ( cd band-songbook && cargo doc --no-deps )
+          src=band-songbook/target/doc
           target=doc/srs/book
           mkdir -p $target
           cp -R $src/static.files $target/.
-          cp -R $src/songbook $target/.
-          cp -R software/others $target/.
-          find  $target/others -type f  | while read f ; do echo $f ; cp $f $f.txt ; done
+          cp -R $src/band_songbook $target/.
           ls -R $target
 
       - name: Setup Pages
