@@ -72,7 +72,7 @@ jobs:
       - name: Check if version is already published
         id: check_published
         run: |
-          if cargo search band-songbook --limit 1 | grep -q "^band-songbook = \"${{ steps.crate_version.outputs.version }}\""; then
+          if cargo search --color never band-songbook --limit 1 | grep -q "^band-songbook = \"${{ steps.crate_version.outputs.version }}\""; then
             echo "already_published=true" >> "$GITHUB_OUTPUT"
             echo "Version ${{ steps.crate_version.outputs.version }} is already published on crates.io"
           else
