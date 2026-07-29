@@ -1,14 +1,14 @@
 
 % import preamble first
-\def\songtitle{ {{{title}}} }
-\def\songauthor{ {{{author}}} }
-\def\songtempo{ {{{tempo}}} }
+\def\songtitle{ {{{song.info.title}}} }
+\def\songauthor{ {{{song.info.author}}} }
+\def\songtempo{ {{{song.info.tempo}}} }
 
 \setlength{\columnsep}{1.5cm}
 \setlength{\columnseprule}{0.2pt}
 
 \renewcommand{\makesongtitle}{\xxmakesongtitle{\songtitle}{\songauthor}{\songtempo} }
-\renewcommand{\songlastupdate}{ {{date}} }
+\renewcommand{\songlastupdate}{ {{{song.meta.date}}} }
 
 \xxcfoot{\songauthor}{\songtitle}
 
