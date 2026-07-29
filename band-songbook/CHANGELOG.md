@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.31] - 2026-07-29
+
+### Fixed
+- Song title and author now appear in the PDF footer: `data.tex` read `{{{title}}}`/`{{{author}}}`/`{{{tempo}}}`, but the handlebars context nests these under `song.info`, so `\xxcfoot` was fed empty strings
+- The footer's `dernière modif le` date now comes from `song.meta.date` instead of the non-existent `{{date}}`, and the whole clause is omitted when a song has no date
+
+### Changed
+- `meta` and its `date`/`digest` fields are now `#[serde(default)]`, so a `song.yml` with a partial or missing `meta:` block still parses
+
 ## [0.0.20] - 2026-02-26
 
 ### Added

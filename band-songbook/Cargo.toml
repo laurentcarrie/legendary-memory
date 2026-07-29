@@ -1,6 +1,7 @@
 [package]
 name = "band-songbook"
-version = "0.0.30"
+
+version = "0.0.31"
 edition = "2024"
 description = "Build system for generating PDF songbooks with chord charts and LilyPond music notation"
 license = "MIT"
