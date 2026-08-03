@@ -64,7 +64,7 @@
     % BPM indicator
     \coordinate (BPM) at (-\titlexoffset-.7,-\yr*.1) ;
     \draw (BPM) [draw,dotted,rotate=0,fill=red!20,opacity=100] rectangle ++(\xr,\yr/2) node[midway,color=black]{
-        140 BPM
+        {{{song.info.tempo}}} BPM
     } ;
 
     % Structure items

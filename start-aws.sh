@@ -40,9 +40,9 @@ repo() {
 	mkdir $HOME/work || true
 	(
 	cd $HOME/work ;
-	rm -rf legendary-memory ;
-	git clone git@mygit:laurentcarrie/legendary-memory.git ;
-	cd legendary-memory ;
+	rm -rf songbook-lambda ;
+	git clone git@mygit:laurentcarrie/songbook-lambda.git ;
+	cd songbook-lambda ;
 	git checkout work ;
 	mkdir $HOME/.fonts ;
 	cp software/fonts/*.ttf $HOME/.fonts/. ;

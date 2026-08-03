@@ -1,3 +1,3 @@
 navigate to the mdbook documentation :
 
-[https://laurentcarrie.github.io/legendary-memory/]
+[https://laurentcarrie.github.io/songbook-lambda/]

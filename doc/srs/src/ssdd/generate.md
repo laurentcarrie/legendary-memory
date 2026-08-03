@@ -83,48 +83,48 @@ automatically are :
 ### <a id="OMakeroot"/> OMakeroot
 
 omake requires to have a OMakeroot file, (see omake doc)
-the code is a handle bar template, [others/makefiles/omakeroot](/legendary-memory/others/makefiles/omakeroot.txt)
+the code is a handle bar template, [others/makefiles/omakeroot](/songbook-lambda/others/makefiles/omakeroot.txt)
 
 ### <a id="root-omakefile"/> root OMakefile
 
 this is the root makefile. Here we define some phony targets,
-the code is a handle bar template, [others/makefiles/root_omakefile](/legendary-memory/others/makefiles/root_omakefile.txt)
+the code is a handle bar template, [others/makefiles/root_omakefile](/songbook-lambda/others/makefiles/root_omakefile.txt)
 
 ### <a id="song-omakefile"/> song OMakefile
 
 this is the makefile you find in every song directory,
-the code is a handle bar template, [others/makefiles/omakefile](/legendary-memory/others/makefiles/omakefile.txt)
+the code is a handle bar template, [others/makefiles/omakefile](/songbook-lambda/others/makefiles/omakefile.txt)
 
 
 ### <a id="book-omakefile"/> book OMakefile
 
 this is the makefile you find in every book directory,
-the code is a handle bar template, [others/makefiles/omakefile_book](/legendary-memory/others/makefiles/omakefile_book.txt)
+the code is a handle bar template, [others/makefiles/omakefile_book](/songbook-lambda/others/makefiles/omakefile_book.txt)
 
 
 ### <a id="main.tex"/> main.tex
 
 this is the main.tex file, where the latex document is declared. This is file is the input of the ``lualatex`` command.
-the code is a handle bar template, [others/texfiles/main.tex](/legendary-memory/others/texfiles/main.tex.txt)
+the code is a handle bar template, [others/texfiles/main.tex](/songbook-lambda/others/texfiles/main.tex.txt)
 
 We have here the input of other generated files, and the input of the user's code : ``body.tex``
 
 ### <a id="preamble.tex"/> preamble.tex
 
 this is where we define the latex preamble, that is the require of all latex packages we need.
-[others/texfiles/preamble.tex](/legendary-memory/others/texfiles/preamble.tex.txt)
+[others/texfiles/preamble.tex](/songbook-lambda/others/texfiles/preamble.tex.txt)
 
 ### <a id="sections.tex"/> sections.tex
 
 This is where, for each section type `xxx`, we define the latex macro ``\songbooksectionxxx`` and ``\\songbookcolor``
 that can be reused in latex code
-[others/texfiles/sections.tex](/legendary-memory/others/texfiles/sections.tex.txt)
+[others/texfiles/sections.tex](/songbook-lambda/others/texfiles/sections.tex.txt)
 
 
 ### <a id="struct.tex"/> data.tex
 
 This is where, using the data from master file ``song.json``, latex macros are defined :
-[others/texfiles/data.tex](/legendary-memory/others/texfiles/data.tex.txt)
+[others/texfiles/data.tex](/songbook-lambda/others/texfiles/data.tex.txt)
 
 1. ```\songtitle```
 2. ```\songauthor```
@@ -141,7 +141,7 @@ see the [fonts section](fonts.md#top)
 Our design is to define our fonts to display chords, so there will be one glyph per chord, for instance D flat 7 will be one glyph.
 
 In this file we define marcros that map chords to glyphs :
-[others/texfiles/chords.tex](/legendary-memory/others/texfiles/chords.tex.txt).
+[others/texfiles/chords.tex](/songbook-lambda/others/texfiles/chords.tex.txt).
 For instance, we have for D flat 7 :
 
     \newcommand\chordDfsept{{\songbookfontflat\fontsize{18pt}{18pt}\selectfont R ~ }}
