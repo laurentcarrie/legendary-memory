@@ -256,7 +256,7 @@ fn test_make_all_with_broken_song() {
 files:
   lilypond: []
   tex: []
-  wav: []
+  mp3: []
 info:
   title: Good Song
   author: Good Author
@@ -537,7 +537,7 @@ fn test_make_all_has_clicks_and_has_mp3() {
 files:
   lilypond: []
   tex: []
-  wav: []
+  mp3: []
   has_clicks: true
   has_mp3: true
 info:

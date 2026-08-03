@@ -88,18 +88,33 @@
 % \usepackage{arydshln}
 
 
+% #3 is always \input{lyrics/<section>}, and that file is empty for a section
+% whose lyrics are not written yet. Typeset it into a scratch box first: when it
+% comes out empty, skip both the line break and the 16pt block, so a run of
+% lyric-less sections stacks its colour bars tightly instead of leaving a blank
+% line under each one. The box is measured only, then thrown away and #3 is
+% typeset for real.
+\newsavebox{\basecoupletprobe}
+
 \newcommand{\basecouplet}[3]{
 	\vspace{6pt}
 	\fcolorbox{gray}{#1}{\parbox{\dimexpr\columnwidth-2\fboxsep-2\fboxrule}{
 		\fontsize{18pt}{18pt}\selectfont
 		#2
-	}}\\[6pt]
-	{
+	}}%
+	\setbox\basecoupletprobe=\vbox{\hsize=\columnwidth
+		\fontsize{16pt}{16pt}\selectfont
+		#3
+	}%
+	\ifdim\ht\basecoupletprobe>0pt
+		\\[6pt]
 		{
-				\fontsize{16pt}{16pt}\selectfont
-				#3
-			}
-	}
+			{
+					\fontsize{16pt}{16pt}\selectfont
+					#3
+				}
+		}
+	\fi
 }
 
 

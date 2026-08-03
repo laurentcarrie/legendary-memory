@@ -168,8 +168,10 @@ pub fn make_all(
         "pdf-lyrics-1-column",
         "pdf-lyrics-2-column",
         "mp3",
+        "mp3-renders",
         "mp3-with-clicks",
         "clicks",
+        "pdf-snippets",
     ] {
         let sub_dir = sandbox.join(dir);
         if let Err(e) = std::fs::create_dir_all(&sub_dir) {
@@ -195,7 +197,8 @@ pub fn make_all(
 
         // Create SongYml node
         let song_node = SongYml::new(rel_path.clone(), *song.clone())
-            .with_drum_patterns_dirs(drum_patterns_dirs.to_vec());
+            .with_drum_patterns_dirs(drum_patterns_dirs.to_vec())
+            .with_srcdir(srcdir);
         let song_idx = match g.add_root_node(song_node) {
             Ok(idx) => idx,
             Err(_) => continue,
@@ -448,8 +451,10 @@ pub async fn make_all_with_storage(
             "pdf-lyrics-2-column",
             "tempo",
             "mp3",
+            "mp3-renders",
             "mp3-with-clicks",
             "clicks",
+            "pdf-snippets",
         ] {
             let sub_dir = sandbox.join(dir);
             if sub_dir.exists() {
@@ -473,8 +478,10 @@ pub async fn make_all_with_storage(
             "pdf-lyrics-2-column",
             "tempo",
             "mp3",
+            "mp3-renders",
             "mp3-with-clicks",
             "clicks",
+            "pdf-snippets",
         ] {
             let src_dir = sandbox.join(subdir);
             if !src_dir.exists() {

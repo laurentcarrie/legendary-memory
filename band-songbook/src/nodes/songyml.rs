@@ -4,8 +4,8 @@ use std::path::{Path, PathBuf};
 use yamake::model::{Edge, ExpandError, ExpandResult, GNode, GRootNode};
 
 use super::{
-    ClickYml, CopyFile, LilypondFile, LyTexFile, Mp3, PdfFile, SongTikz,
-    StrudelFile, TexFile, TexOfLilypond,
+    ClickYml, CopyFile, LilypondFile, LyTexFile, MidiOfLilypond, Mp3, Mp3Render, PdfFile,
+    PdfOfLilypond, SongTikz, StrudelFile, TexFile, TexOfLilypond,
 };
 use crate::chords::bar_numbering::barcount_map_of_structure;
 use crate::helpers::register_helpers;
@@ -31,6 +31,9 @@ pub struct SongYml {
     pub song: Song,
     /// Directories containing drum pattern library files.
     pub drum_patterns_dirs: Vec<PathBuf>,
+    /// Root directory where source files live. Empty when unset, in which case
+    /// declared source files are looked up in the sandbox instead.
+    pub srcdir: PathBuf,
 }
 
 impl SongYml {
@@ -40,6 +43,7 @@ impl SongYml {
             path,
             song,
             drum_patterns_dirs: vec![],
+            srcdir: PathBuf::new(),
         }
     }
 
@@ -47,6 +51,23 @@ impl SongYml {
     pub fn with_drum_patterns_dirs(mut self, dirs: Vec<PathBuf>) -> Self {
         self.drum_patterns_dirs = dirs;
         self
+    }
+
+    /// Sets the source directory (builder pattern).
+    pub fn with_srcdir(mut self, srcdir: &Path) -> Self {
+        self.srcdir = srcdir.to_path_buf();
+        self
+    }
+
+    /// Whether a file declared in `song.yml` exists. Looks in srcdir when it is
+    /// known, and in the sandbox otherwise (the source has not been mounted yet
+    /// the first time a newly declared file is seen).
+    fn source_exists(&self, sandbox: &Path, rel: &Path) -> bool {
+        if self.srcdir.as_os_str().is_empty() {
+            sandbox.join(rel).is_file()
+        } else {
+            self.srcdir.join(rel).is_file()
+        }
     }
 }
 
@@ -364,7 +385,58 @@ impl GRootNode for SongYml {
 
         // Only use top-level .ly files (from \lyfile{} or \songly{}) for LyTexFile nodes
         // Included .ly files (from \include) don't need LyTexFile/TexOfLilypond
-        let ly_files = toplevel_ly;
+        let mut ly_files = toplevel_ly;
+
+        // Files listed under `files.lilypond` in song.yml are dependencies too.
+        // The scan above only sees .ly reachable from the tex sources, so a file
+        // the song declares explicitly would otherwise never rebuild when edited.
+        // A declared file that is not on disk is skipped with a warning rather
+        // than failing the build: the field was ignored for a long time, so
+        // song.yml files in the wild still carry stale names.
+        for declared in &self.song.files.lilypond {
+            let name = if declared.ends_with(".ly") {
+                declared.clone()
+            } else {
+                format!("{declared}.ly")
+            };
+            let ly_path = parent_dir.join(name);
+            if !self.source_exists(sandbox, &ly_path) {
+                log::warn!(
+                    "{}: files.lilypond lists '{declared}' but {} does not exist - ignoring",
+                    self.path.display(),
+                    ly_path.display()
+                );
+                continue;
+            }
+            if !ly_files.contains(&ly_path) {
+                ly_files.push(ly_path);
+            }
+        }
+
+        // Audio renders declared under `files.mp3`: <stem>.mp3 is synthesised
+        // from <stem>.ly via LilyPond's MIDI output. Declaring a render does not
+        // put the score in the PDF - only files.lilypond and \songly{} do that,
+        // so remember whether this .ly already has a LilypondFile node.
+        let mut render_targets: Vec<(PathBuf, PathBuf, PathBuf, bool)> = vec![];
+        for declared in &self.song.files.mp3 {
+            let stem = declared.strip_suffix(".mp3").unwrap_or(declared);
+            let ly_path = parent_dir.join(format!("{stem}.ly"));
+            if !self.source_exists(sandbox, &ly_path) {
+                log::warn!(
+                    "{}: files.mp3 lists '{declared}' but {} does not exist - ignoring",
+                    self.path.display(),
+                    ly_path.display()
+                );
+                continue;
+            }
+            let already_mounted = ly_files.contains(&ly_path);
+            render_targets.push((
+                ly_path,
+                parent_dir.join(format!("{stem}.midi")),
+                parent_dir.join(format!("{stem}.mp3")),
+                already_mounted,
+            ));
+        }
 
         // Create lyrics PDF paths (1-column and 2-column)
         let lyrics_1col_pdf_path = parent_dir.join("lyrics").join("main-1col.pdf");
@@ -411,6 +483,10 @@ impl GRootNode for SongYml {
             nto: Box::new(PdfFile::new(lyrics_2col_pdf_path)),
         };
         edges.push(lyrics_2col_edge);
+
+        // Kept for the snippet-PDF chain below, which needs the same list after
+        // this loop has consumed it.
+        let snippet_sources = ly_files.clone();
 
         // Add LilypondFile -> LyTexFile -> PdfFile chain
         // Add LilypondFile -> TexOfLilypond -> PdfFile chain
@@ -475,6 +551,78 @@ impl GRootNode for SongYml {
 
         // Pre-compute file stem for delivery copy nodes (before song is moved)
         let file_stem = song.info.file_stem_of_song();
+
+        // Add LilypondFile -> PdfOfLilypond chain: one standalone cropped PDF per
+        // LilyPond file, delivered so each score can be shown on its own.
+        for ly_path in snippet_sources {
+            let section = ly_path
+                .file_stem()
+                .and_then(|s| s.to_str())
+                .unwrap_or("unknown")
+                .to_string();
+            let snippet_pdf_path = ly_path.with_extension("pdf");
+            nodes.push(Box::new(PdfOfLilypond::new(snippet_pdf_path.clone())));
+
+            // Edge: LilypondFile -> PdfOfLilypond
+            edges.push(Edge {
+                nfrom: Box::new(LilypondFile::new(ly_path)),
+                nto: Box::new(PdfOfLilypond::new(snippet_pdf_path.clone())),
+            });
+
+            // Copy to ../pdf-snippets/<name>-<section>.pdf
+            let snippet_copy_path =
+                Path::new("../pdf-snippets").join(format!("{file_stem}-{section}.pdf"));
+            nodes.push(Box::new(CopyFile::new(
+                snippet_copy_path.clone(),
+                "pdfsnippet".to_string(),
+            )));
+
+            // Edge: PdfOfLilypond -> pdf-snippets/<name>-<section>.pdf
+            edges.push(Edge {
+                nfrom: Box::new(PdfOfLilypond::new(snippet_pdf_path)),
+                nto: Box::new(CopyFile::new(snippet_copy_path, "pdfsnippet".to_string())),
+            });
+        }
+
+        // Add LilypondFile -> MidiOfLilypond -> Mp3Render chain for files.mp3
+        for (ly_path, midi_path, mp3_render_path, already_mounted) in render_targets {
+            if !already_mounted {
+                nodes.push(Box::new(LilypondFile::new(ly_path.clone())));
+            }
+            nodes.push(Box::new(MidiOfLilypond::new(midi_path.clone())));
+            nodes.push(Box::new(Mp3Render::new(mp3_render_path.clone())));
+
+            // Edge: LilypondFile -> MidiOfLilypond
+            edges.push(Edge {
+                nfrom: Box::new(LilypondFile::new(ly_path)),
+                nto: Box::new(MidiOfLilypond::new(midi_path.clone())),
+            });
+
+            // Edge: MidiOfLilypond -> Mp3Render
+            edges.push(Edge {
+                nfrom: Box::new(MidiOfLilypond::new(midi_path)),
+                nto: Box::new(Mp3Render::new(mp3_render_path.clone())),
+            });
+
+            // Copy the render to ../mp3-renders/<name>-<section>.mp3. A song can
+            // have several, so the section name is part of the delivered name.
+            let section = mp3_render_path
+                .file_stem()
+                .and_then(|s| s.to_str())
+                .unwrap_or("unknown");
+            let render_copy_path =
+                Path::new("../mp3-renders").join(format!("{file_stem}-{section}.mp3"));
+            nodes.push(Box::new(CopyFile::new(
+                render_copy_path.clone(),
+                "mp3render".to_string(),
+            )));
+
+            // Edge: Mp3Render -> mp3-renders/<name>-<section>.mp3
+            edges.push(Edge {
+                nfrom: Box::new(Mp3Render::new(mp3_render_path)),
+                nto: Box::new(CopyFile::new(render_copy_path, "mp3render".to_string())),
+            });
+        }
 
         // Create StrudelFile node
         let strudel_path = parent_dir.join("strudel.html");

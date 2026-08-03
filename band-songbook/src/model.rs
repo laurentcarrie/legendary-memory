@@ -25,9 +25,9 @@ pub struct SongFiles {
     /// LaTeX source files (`.tex`).
     #[serde(default)]
     pub tex: Vec<String>,
-    /// Audio files (`.wav`).
+    /// Audio renders (`.mp3`), synthesised from the matching `.ly`.
     #[serde(default)]
-    pub wav: Vec<String>,
+    pub mp3: Vec<String>,
     /// Whether this song has a click track (`clicks.mp3`).
     #[serde(default)]
     pub has_clicks: bool,
@@ -56,18 +56,33 @@ impl SongInfo {
     /// Returns a normalized file stem based on author and title.
     /// Format: `{author}--@--{title}`
     /// - Capitals are replaced with lowercase
-    /// - All characters which are not A-Za-z0-9 are replaced with '_'
+    /// - Accented Latin letters fold to their ASCII base (é -> e, ß -> ss)
+    /// - All remaining characters which are not a-z0-9 are replaced with '_'
     pub fn file_stem_of_song(&self) -> String {
+        // Accented letters fold to their ASCII base rather than to '_', so
+        // "Noir Désir" is noir_desir and not noir_d_sir.
         let normalize = |s: &str| -> String {
-            s.chars()
-                .map(|c| {
-                    if c.is_ascii_alphanumeric() {
-                        c.to_ascii_lowercase()
-                    } else {
-                        '_'
-                    }
-                })
-                .collect()
+            let mut out = String::with_capacity(s.len());
+            for c in s.to_lowercase().chars() {
+                match c {
+                    'a'..='z' | '0'..='9' => out.push(c),
+                    'à' | 'á' | 'â' | 'ã' | 'ä' | 'å' => out.push('a'),
+                    'ç' => out.push('c'),
+                    'è' | 'é' | 'ê' | 'ë' => out.push('e'),
+                    'ì' | 'í' | 'î' | 'ï' => out.push('i'),
+                    'ñ' => out.push('n'),
+                    'ò' | 'ó' | 'ô' | 'õ' | 'ö' | 'ø' => out.push('o'),
+                    'ù' | 'ú' | 'û' | 'ü' => out.push('u'),
+                    'ý' | 'ÿ' => out.push('y'),
+                    'ð' => out.push('d'),
+                    'æ' => out.push_str("ae"),
+                    'œ' => out.push_str("oe"),
+                    'ß' => out.push_str("ss"),
+                    'þ' => out.push_str("th"),
+                    _ => out.push('_'),
+                }
+            }
+            out
         };
 
         format!("{}--@--{}", normalize(&self.author), normalize(&self.title))
@@ -185,6 +200,39 @@ pub struct Click {
     pub description: String,
 }
 
+/// A raw click event as read from `clicks-def.yml`, before section-id resolution.
+///
+/// The bar position can be specified either as an explicit `bar_number` or as a
+/// `section_id` referencing a section in `song.yml` (resolved to its first bar).
+/// Exactly one of `bar_number` or `section_id` must be set.
+#[derive(Debug, Clone, Deserialize)]
+pub struct RawClick {
+    /// Explicit bar number (1-based). Mutually exclusive with `section_id`.
+    pub bar_number: Option<u32>,
+    /// Section id whose first bar is used. Mutually exclusive with `bar_number`.
+    pub section_id: Option<String>,
+    /// Beat within the bar (1-based, e.g. 1–4 for 4/4 time). Defaults to 1 if omitted.
+    #[serde(default = "default_beat_in_bar_number")]
+    pub beat_in_bar_number: u32,
+    /// Absolute time in seconds from the start of the audio.
+    #[serde(deserialize_with = "deserialize_time")]
+    pub time: f64,
+    /// Description of this click (optional, defaults to empty string).
+    #[serde(default)]
+    pub description: String,
+}
+
+/// A full click track definition as read from `clicks-def.yml` (before resolution).
+#[derive(Debug, Clone, Deserialize)]
+pub struct RawClicksDefinition {
+    /// Ordered list of raw click events.
+    pub clicks: Vec<RawClick>,
+}
+
+fn default_beat_in_bar_number() -> u32 {
+    1
+}
+
 /// Parse a time string in `"mm:ss.ms"` format into seconds.
 fn parse_time(s: &str) -> Result<f64, String> {
     let (minutes, rest) = s
@@ -207,7 +255,7 @@ where
     parse_time(&s).map_err(serde::de::Error::custom)
 }
 
-/// A full click track definition with all click events.
+/// A full click track definition with all click events (bar numbers resolved).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ClicksDefinition {
     /// Ordered list of click events.
@@ -240,6 +288,36 @@ pub struct World {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn stem(author: &str, title: &str) -> String {
+        SongInfo {
+            title: title.to_string(),
+            author: author.to_string(),
+            tempo: 120,
+            time_signature: None,
+            tags: vec![],
+        }
+        .file_stem_of_song()
+    }
+
+    #[test]
+    fn test_file_stem_folds_accents_to_ascii() {
+        assert_eq!(stem("Noir Désir", "Marlène"), "noir_desir--@--marlene");
+        assert_eq!(
+            stem("Axel Bauer", "Eteins La Lumière"),
+            "axel_bauer--@--eteins_la_lumiere"
+        );
+        assert_eq!(stem("Motörhead", "Ça Ira"), "motorhead--@--ca_ira");
+    }
+
+    #[test]
+    fn test_file_stem_keeps_ascii_behaviour() {
+        assert_eq!(
+            stem("Oasis", "Rock 'N Roll Star"),
+            "oasis--@--rock__n_roll_star"
+        );
+        assert_eq!(stem("Maroon5", "This Love"), "maroon5--@--this_love");
+    }
 
     #[test]
     fn test_time_of_bar_without_clicks() {

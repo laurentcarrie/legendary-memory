@@ -10,10 +10,16 @@ pub mod copyfile;
 pub mod lilypond;
 /// LilyPond-to-TeX intermediate file node (`.lytex`).
 pub mod lytex;
+/// MIDI output of LilyPond compilation (`.midi`).
+pub mod midi;
 /// MP3 audio file node (`.mp3`).
 pub mod mp3;
+/// MP3 render synthesised from LilyPond MIDI (`.mp3`).
+pub mod mp3render;
 /// PDF output node, built by running `lualatex`.
 pub mod pdf;
+/// Standalone cropped PDF of one LilyPond file (`.pdf`).
+pub mod pdfoflilypond;
 /// TikZ chord chart node (`song.tikz`).
 pub mod songtikz;
 /// Song root node that expands `song.yml` into the build graph.
@@ -31,8 +37,11 @@ pub use clickyml::ClickYml;
 pub use copyfile::CopyFile;
 pub use lilypond::LilypondFile;
 pub use lytex::LyTexFile;
+pub use midi::MidiOfLilypond;
 pub use mp3::Mp3;
+pub use mp3render::Mp3Render;
 pub use pdf::PdfFile;
+pub use pdfoflilypond::PdfOfLilypond;
 pub use songtikz::SongTikz;
 pub use songyml::SongYml;
 pub use strudel::StrudelFile;

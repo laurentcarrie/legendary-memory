@@ -10,6 +10,10 @@ pub struct Settings {
     pub colors: SectionColors,
     #[serde(default)]
     pub lyrics_font: String,
+    /// Path to the SoundFont used to synthesise `.mp3` renders from LilyPond
+    /// MIDI. Falls back to `BAND_SONGBOOK_SOUNDFONT` then the system defaults.
+    #[serde(default)]
+    pub soundfont: Option<String>,
 }
 
 impl Settings {
