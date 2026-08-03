@@ -222,6 +222,11 @@ pub fn make_all(
                     let clicks_node = ClickYml::new(clicks_yml_path);
                     if let Ok(clicks_idx) = g.add_node(clicks_node) {
                         g.add_edge(def_idx, clicks_idx);
+                        // clicks.yml also depends on song.yml: `section_id`
+                        // anchors resolve to bar numbers through the song
+                        // structure, so editing a section's length must
+                        // re-pin the clicks.
+                        g.add_edge(song_idx, clicks_idx);
                     }
                 }
                 Err(e) => {

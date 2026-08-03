@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.33] - 2026-08-03
+
+### Fixed
+- A negative click time lost its sign when the minutes were zero: `-00:02.00` parsed as `+2.0` seconds, because the minutes field was parsed on its own and `-00` is just `-0`. The sign is now taken from the whole string before splitting, so `-00:02.00` is -2 s. A sign inside the value (`00:-02.00`) is rejected with a message pointing at the `-mm:ss.ms` form, and surrounding whitespace is trimmed
+- `clicks.yml` did not depend on `song.yml` in the build graph, so a `section_id` anchor kept its old bar number after the section it points at changed length. The edge is now declared and the clicks are re-pinned on rebuild
+
+### Removed
+- `go.sh`, `start-aws.sh` and `start.json`: local dev helpers that still referred to the `software/` directory and the `legendary-memory` repository, neither of which exists
+
 ## [0.0.32] - 2026-08-03
 
 ### Added
