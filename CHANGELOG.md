@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.33]
+
+### Fixed
+
+- A negative click time lost its sign when the minutes were zero: `-00:02.00`
+  parsed as `+2.0` seconds, because the minutes field was parsed on its own and
+  `-00` is just `-0`. The sign is now taken from the whole string before
+  splitting, so `-00:02.00` is -2 s. A sign inside the value (`00:-02.00`) is
+  rejected with a message pointing at the `-mm:ss.ms` form, and surrounding
+  whitespace is trimmed.
+
+- `clicks.yml` did not depend on `song.yml` in the build graph, so a
+  `section_id` anchor kept its old bar number after the section it points at
+  changed length. The edge is now declared and the clicks are re-pinned on
+  rebuild.
+
+### Removed
+
+- `go.sh`, `start-aws.sh` and `start.json`: local dev helpers that still
+  referred to the `software/` directory and the `legendary-memory` repository,
+  neither of which exists.
+
 ## [0.0.32]
 
 ### Added
@@ -85,6 +107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - serde/serde_yaml for configuration parsing
 - argh for CLI argument parsing
 
-[Unreleased]: https://github.com/laurentcarrie/songbook-lambda/compare/band-songbook-v0.0.32...HEAD
+[Unreleased]: https://github.com/laurentcarrie/songbook-lambda/compare/band-songbook-v0.0.33...HEAD
+[0.0.33]: https://github.com/laurentcarrie/songbook-lambda/releases/tag/band-songbook-v0.0.33
 [0.0.32]: https://github.com/laurentcarrie/songbook-lambda/releases/tag/band-songbook-v0.0.32
 [0.0.1]: https://github.com/laurentcarrie/songbook-lambda/releases/tag/band-songbook-v0.0.1
