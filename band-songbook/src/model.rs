@@ -235,7 +235,14 @@ fn default_beat_in_bar_number() -> u32 {
 
 /// Parse a time string in `"mm:ss.ms"` format into seconds.
 fn parse_time(s: &str) -> Result<f64, String> {
-    let (minutes, rest) = s
+    let trimmed = s.trim();
+    // A leading '-' negates the whole value: "-00:02.00" is -2 s. Parsing the
+    // minutes on their own would lose the sign, since "-00" is just -0.
+    let (sign, body) = match trimmed.strip_prefix('-') {
+        Some(rest) => (-1.0, rest),
+        None => (1.0, trimmed),
+    };
+    let (minutes, rest) = body
         .split_once(':')
         .ok_or_else(|| format!("expected mm:ss.ms format, got {s}"))?;
     let minutes: f64 = minutes
@@ -244,7 +251,12 @@ fn parse_time(s: &str) -> Result<f64, String> {
     let seconds: f64 = rest
         .parse()
         .map_err(|e| format!("invalid seconds in {s}: {e}"))?;
-    Ok(minutes * 60.0 + seconds)
+    if minutes < 0.0 || seconds < 0.0 {
+        return Err(format!(
+            "negative component in {s}: put the sign before the minutes, as -mm:ss.ms"
+        ));
+    }
+    Ok(sign * (minutes * 60.0 + seconds))
 }
 
 fn deserialize_time<'de, D>(deserializer: D) -> Result<f64, D::Error>
@@ -317,6 +329,22 @@ mod tests {
             "oasis--@--rock__n_roll_star"
         );
         assert_eq!(stem("Maroon5", "This Love"), "maroon5--@--this_love");
+    }
+
+    #[test]
+    fn test_parse_time_negative_applies_to_whole_value() {
+        // the sign must survive a zero minutes field
+        assert_eq!(parse_time("-00:02.00"), Ok(-2.0));
+        assert_eq!(parse_time("-01:30.5"), Ok(-90.5));
+        assert_eq!(parse_time("00:02.00"), Ok(2.0));
+        assert_eq!(parse_time("1:30.5"), Ok(90.5));
+        assert_eq!(parse_time(" 0:0.0 "), Ok(0.0));
+    }
+
+    #[test]
+    fn test_parse_time_rejects_inner_sign() {
+        assert!(parse_time("00:-02.00").is_err());
+        assert!(parse_time("nope").is_err());
     }
 
     #[test]
