@@ -26,5 +26,6 @@ pub fn glyph_of_baritem(item: &BarItem) -> String {
             s
         }
         BarItem::Rest(_) => "\\chordHRest".to_string(),
+        BarItem::HalfBar => "HALFBAR".to_string(),
     }
 }

@@ -40,11 +40,13 @@ pub struct Repeat {
     pub n: u32,
 }
 
-/// An item in a bar: either a chord or a rest
+/// An item in a bar: either a chord, a rest, or a half-bar marker (2/4)
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum BarItem {
     Chord(Chord),
     Rest(Rest),
+    /// Half-bar marker: the right triangle of the cell is grayed out.
+    HalfBar,
 }
 
 /// Represents a bar (measure) containing chords with their durations

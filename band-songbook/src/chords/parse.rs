@@ -26,6 +26,11 @@ fn parse_item(s: &str) -> Result<BarItem, ParseError> {
         return Ok(BarItem::Rest(Rest { duration: 1 }));
     }
 
+    // Check for half-bar marker
+    if s == "2/4" {
+        return Ok(BarItem::HalfBar);
+    }
+
     let mut chars = s.chars().peekable();
 
     // First letter must be A-G
