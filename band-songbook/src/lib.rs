@@ -13,11 +13,12 @@ pub mod settings;
 /// S3 and local filesystem storage operations.
 pub mod storage;
 
-pub use discover::discover;
+pub use discover::{discover, discover_books};
 pub use nodes::PdfFile;
 
-use model::{SectionItem, Song, World, WorldItem};
-use nodes::{ClickDef, ClickYml, CopyFile, SongYml, TexFile};
+use model::{Book, BookItem, SectionItem, Song, World, WorldItem};
+use nodes::bookyml::BOOKS_DIR;
+use nodes::{BookSong, BookYml, ClickDef, ClickYml, CopyFile, SongYml, TexFile};
 use object_store::ObjectStoreExt;
 use std::path::{Path, PathBuf};
 
@@ -57,7 +58,8 @@ fn fuzzy_match(text: &str, pattern: &str) -> bool {
 /// Discovers all songs in the given directory and reads them into a [`World`].
 ///
 /// Each discovered `song.yml` is read and parsed. Successfully parsed songs
-/// are stored as [`WorldItem::Song`], failures as [`WorldItem::Error`].
+/// are stored as [`WorldItem::Song`], failures as [`WorldItem::Error`]. The
+/// returned world has no books; read those with [`books_of_srcdir`].
 pub fn world_of_srcdir(srcdir: &Path) -> World {
     let song_paths = discover(srcdir);
     let items = song_paths
@@ -80,7 +82,39 @@ pub fn world_of_srcdir(srcdir: &Path) -> World {
             Some((rel_path, item))
         })
         .collect();
-    World { items }
+
+    World {
+        items,
+        books: Vec::new(),
+    }
+}
+
+/// Reads every yaml file of the given books directory into a book item.
+///
+/// Successfully parsed books are stored as [`BookItem::Book`], failures as
+/// [`BookItem::Error`]. Each item is keyed by the file name of the book, which
+/// is the name it is mounted under in the sandbox.
+pub fn books_of_srcdir(books_srcdir: &Path) -> Vec<(PathBuf, BookItem)> {
+    discover_books(books_srcdir)
+        .into_iter()
+        .filter_map(|book_path| {
+            let file_name = PathBuf::from(book_path.file_name()?);
+            let item = match std::fs::read_to_string(&book_path) {
+                Ok(content) => match serde_yaml::from_str::<Book>(&content) {
+                    Ok(book) => BookItem::Book(Box::new(book)),
+                    Err(e) => {
+                        log::error!("Failed to parse {}: {e}", book_path.display());
+                        BookItem::Error(format!("Failed to parse {}: {e}", book_path.display()))
+                    }
+                },
+                Err(e) => {
+                    log::error!("Failed to read {}: {e}", book_path.display());
+                    BookItem::Error(format!("Failed to read {}: {e}", book_path.display()))
+                }
+            };
+            Some((file_name, item))
+        })
+        .collect()
 }
 
 /// Returns a sorted, deduplicated list of all tags found across all songs in the world.
@@ -100,18 +134,22 @@ pub fn tags_of_world(world: &World) -> Vec<String> {
     tags
 }
 
-/// Discovers all songs in the given directory and builds them all.
+/// Builds every song of the world, and every book that collates them.
 /// Returns (success, graph) where success is true if all builds succeeded.
 /// If settings_path is provided, it will be copied to sandbox/settings.yml.
 /// If pattern is provided, only songs matching the pattern will be built.
+/// `books_srcdir` is where the book yaml files of the world are read from;
+/// they are copied into the sandbox next to the directories they build in.
 pub fn make_all(
-    srcdir: &Path,
+    songs_srcdir: &Path,
+    books_srcdir: Option<&Path>,
     sandbox: &Path,
     settings_path: Option<&Path>,
     pattern: Option<&str>,
     drum_patterns_dirs: &[PathBuf],
     world: &World,
 ) -> (bool, G) {
+    let srcdir = songs_srcdir;
     let songs_sandbox = sandbox.join("songs");
     let mut g = G::new(srcdir.to_path_buf(), songs_sandbox.clone());
 
@@ -138,13 +176,19 @@ pub fn make_all(
         }
     }
 
-    if world.items.is_empty() {
+    if world.items.is_empty() && world.books.is_empty() {
         return (true, g);
     }
 
     // Check for any errors in the world
     for (rel_path, item) in &world.items {
         if let WorldItem::Error(msg) = item {
+            log::error!("{}: {msg}", rel_path.display());
+            return (false, g);
+        }
+    }
+    for (rel_path, item) in &world.books {
+        if let BookItem::Error(msg) = item {
             log::error!("{}: {msg}", rel_path.display());
             return (false, g);
         }
@@ -178,6 +222,10 @@ pub fn make_all(
             log::error!("Failed to create {dir} directory: {e}");
         }
     }
+
+    // Directory and PDF node of every song that made it into the graph, by
+    // normalized stem, so the books below can collate them.
+    let mut built_songs = std::collections::HashMap::new();
 
     for (rel_path, item) in &world.items {
         let song = match item {
@@ -257,6 +305,10 @@ pub fn make_all(
         };
 
         g.add_edge(song_idx, pdf_idx);
+        built_songs.insert(
+            song.info.file_stem_of_song(),
+            (parent_dir.to_path_buf(), pdf_idx, song.info.clone()),
+        );
 
         // Create CopyFile node to copy the PDF to ../pdf/<author>--@--<title>.pdf
         let pdf_copy_path =
@@ -283,6 +335,120 @@ pub fn make_all(
                     g.add_edge(lyrics_pdf_idx, lyrics_copy_idx);
                 }
             }
+        }
+    }
+
+    // Every song of the world, whether or not the pattern kept it, so a book
+    // listing a song that exists but was filtered out is told apart from a book
+    // listing a song that does not exist at all.
+    let known_songs: std::collections::HashSet<String> = world
+        .items
+        .iter()
+        .filter_map(|(_, item)| match item {
+            WorldItem::Song(song) => Some(song.info.file_stem_of_song()),
+            WorldItem::Error(_) => None,
+        })
+        .collect();
+
+    let books_srcdir = match books_srcdir {
+        Some(dir) => dir,
+        None => {
+            if !world.books.is_empty() {
+                log::error!("the world has books but no books source directory was given");
+                return (false, g);
+            }
+            Path::new("")
+        }
+    };
+
+    for (file_name, item) in &world.books {
+        let book = match item {
+            BookItem::Book(b) => b,
+            BookItem::Error(_) => unreachable!(), // errors already checked above
+        };
+        let rel_path = Path::new(BOOKS_DIR).join(file_name);
+
+        // Resolve the songs of the book. A song that is missing from the graph
+        // because of the pattern makes the book unbuildable, but not the build:
+        // building one song is a normal thing to ask for.
+        let mut songs: Vec<BookSong> = Vec::new();
+        let mut song_pdf_indices = Vec::new();
+        let mut filtered_out = false;
+        for stem in &book.songs {
+            match built_songs.get(stem) {
+                Some((dir, pdf_idx, info)) => {
+                    songs.push(BookSong {
+                        dir: dir.clone(),
+                        author: info.author.clone(),
+                        title: info.title.clone(),
+                    });
+                    song_pdf_indices.push(*pdf_idx);
+                }
+                None if known_songs.contains(stem) => {
+                    log::info!(
+                        "{}: song '{stem}' is filtered out by the pattern, skipping the book",
+                        rel_path.display()
+                    );
+                    filtered_out = true;
+                    break;
+                }
+                None => {
+                    log::error!("{}: no song named '{stem}'", rel_path.display());
+                    return (false, g);
+                }
+            }
+        }
+        if filtered_out {
+            continue;
+        }
+
+        // The books are not under srcdir, so yamake cannot mount them: copy the
+        // yaml into the sandbox, where the mount step picks it up as a file it
+        // did not have to fetch, and digests it for change detection as usual.
+        let sandbox_path = songs_sandbox.join(&rel_path);
+        if let Some(parent) = sandbox_path.parent()
+            && let Err(e) = std::fs::create_dir_all(parent)
+        {
+            log::error!("Failed to create {}: {e}", parent.display());
+            return (false, g);
+        }
+        if let Err(e) = std::fs::copy(books_srcdir.join(file_name), &sandbox_path) {
+            log::error!(
+                "Failed to copy {} to the sandbox: {e}",
+                books_srcdir.join(file_name).display()
+            );
+            return (false, g);
+        }
+
+        let book_node = BookYml::new(rel_path.clone(), *book.clone(), songs);
+        let pdf_path = book_node.pdf_path();
+        let delivery_path = book_node.delivery_path();
+        let book_idx = match g.add_root_node(book_node) {
+            Ok(idx) => idx,
+            Err(e) => {
+                log::error!("{}: {e}", rel_path.display());
+                return (false, g);
+            }
+        };
+
+        // The book PDF is pre-added with Initial status, as for songs, and is
+        // built after every song it collates: it imports their build directory.
+        let pdf_idx = match g.add_node(PdfFile::new(pdf_path)) {
+            Ok(idx) => idx,
+            Err(e) => {
+                log::error!("{}: {e}", rel_path.display());
+                return (false, g);
+            }
+        };
+        g.add_edge(book_idx, pdf_idx);
+        for song_pdf_idx in song_pdf_indices {
+            g.add_edge(song_pdf_idx, pdf_idx);
+        }
+
+        // Create CopyFile node to copy the PDF to ../pdf/book-<name>.pdf
+        let copy_node = CopyFile::new(delivery_path, "pdf".to_string());
+        if let Ok(copy_idx) = g.add_node(copy_node) {
+            g.add_edge(pdf_idx, copy_idx);
         }
     }
 
@@ -313,16 +479,18 @@ pub fn make_all(
     (success, g)
 }
 
-/// Async version of make_all that supports S3 paths for srcdir, settings, and delivery.
+/// Async version of make_all that supports S3 paths for the source directories,
+/// settings, and delivery.
 ///
 /// This function:
-/// - Downloads S3 srcdir to temp directory if needed
+/// - Downloads S3 songs and books source directories to temp directories if needed
 /// - Downloads S3 settings to temp file if needed
 /// - Calls existing `make_all()` with local paths
 /// - Copies delivery files (pdf/, pdf-lyrics/) to the delivery path (local or S3)
 /// - Cleans up temp directories
 pub async fn make_all_with_storage(
-    srcdir: &str,
+    songs_srcdir: &str,
+    books_srcdir: Option<&str>,
     sandbox: &Path,
     settings: Option<&str>,
     pattern: Option<&str>,
@@ -331,6 +499,7 @@ pub async fn make_all_with_storage(
 ) -> Result<(bool, G), String> {
     use storage::{StoragePath, download_to_local};
 
+    let srcdir = songs_srcdir;
     let srcdir_path = StoragePath::parse(srcdir)?;
     let settings_path = settings.map(StoragePath::parse).transpose()?;
     let delivery_path = StoragePath::parse(delivery)?;
@@ -351,6 +520,29 @@ pub async fn make_all_with_storage(
     } else {
         _temp_srcdir = None;
         local_srcdir = srcdir_path.as_local().unwrap().clone();
+    }
+
+    // Handle books srcdir, the same way as the songs srcdir
+    let _temp_books: Option<tempfile::TempDir>;
+    let local_books: Option<PathBuf>;
+    match books_srcdir.map(StoragePath::parse).transpose()? {
+        Some(books_path) if books_path.is_s3() => {
+            let temp =
+                tempfile::tempdir().map_err(|e| format!("Failed to create temp booksdir: {e}"))?;
+            let local = temp.path().to_path_buf();
+            _temp_books = Some(temp);
+            log::info!("Downloading books from {books_srcdir:?} to {local:?}");
+            download_to_local(&books_path, &local).await?;
+            local_books = Some(local);
+        }
+        Some(books_path) => {
+            _temp_books = None;
+            local_books = Some(books_path.as_local().unwrap().clone());
+        }
+        None => {
+            _temp_books = None;
+            local_books = None;
+        }
     }
 
     // Create local sandbox if it doesn't exist
@@ -418,9 +610,13 @@ pub async fn make_all_with_storage(
     }
 
     // Build the world and run the build
-    let world = world_of_srcdir(&local_srcdir);
+    let mut world = world_of_srcdir(&local_srcdir);
+    if let Some(books) = &local_books {
+        world.books = books_of_srcdir(books);
+    }
     let (success, g) = make_all(
         &local_srcdir,
+        local_books.as_deref(),
         sandbox,
         local_settings.as_deref(),
         pattern,

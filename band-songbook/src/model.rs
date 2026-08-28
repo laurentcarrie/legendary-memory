@@ -52,40 +52,45 @@ pub struct SongInfo {
     pub tags: Vec<String>,
 }
 
+/// Normalizes a name for use in a file name.
+/// - Capitals are replaced with lowercase
+/// - Accented Latin letters fold to their ASCII base (é -> e, ß -> ss)
+/// - All remaining characters which are not a-z0-9 are replaced with '_'
+pub fn normalize_name(s: &str) -> String {
+    // Accented letters fold to their ASCII base rather than to '_', so
+    // "Noir Désir" is noir_desir and not noir_d_sir.
+    let mut out = String::with_capacity(s.len());
+    for c in s.to_lowercase().chars() {
+        match c {
+            'a'..='z' | '0'..='9' => out.push(c),
+            'à' | 'á' | 'â' | 'ã' | 'ä' | 'å' => out.push('a'),
+            'ç' => out.push('c'),
+            'è' | 'é' | 'ê' | 'ë' => out.push('e'),
+            'ì' | 'í' | 'î' | 'ï' => out.push('i'),
+            'ñ' => out.push('n'),
+            'ò' | 'ó' | 'ô' | 'õ' | 'ö' | 'ø' => out.push('o'),
+            'ù' | 'ú' | 'û' | 'ü' => out.push('u'),
+            'ý' | 'ÿ' => out.push('y'),
+            'ð' => out.push('d'),
+            'æ' => out.push_str("ae"),
+            'œ' => out.push_str("oe"),
+            'ß' => out.push_str("ss"),
+            'þ' => out.push_str("th"),
+            _ => out.push('_'),
+        }
+    }
+    out
+}
+
 impl SongInfo {
     /// Returns a normalized file stem based on author and title.
-    /// Format: `{author}--@--{title}`
-    /// - Capitals are replaced with lowercase
-    /// - Accented Latin letters fold to their ASCII base (é -> e, ß -> ss)
-    /// - All remaining characters which are not a-z0-9 are replaced with '_'
+    /// Format: `{author}--@--{title}`, each part normalized by [`normalize_name`].
     pub fn file_stem_of_song(&self) -> String {
-        // Accented letters fold to their ASCII base rather than to '_', so
-        // "Noir Désir" is noir_desir and not noir_d_sir.
-        let normalize = |s: &str| -> String {
-            let mut out = String::with_capacity(s.len());
-            for c in s.to_lowercase().chars() {
-                match c {
-                    'a'..='z' | '0'..='9' => out.push(c),
-                    'à' | 'á' | 'â' | 'ã' | 'ä' | 'å' => out.push('a'),
-                    'ç' => out.push('c'),
-                    'è' | 'é' | 'ê' | 'ë' => out.push('e'),
-                    'ì' | 'í' | 'î' | 'ï' => out.push('i'),
-                    'ñ' => out.push('n'),
-                    'ò' | 'ó' | 'ô' | 'õ' | 'ö' | 'ø' => out.push('o'),
-                    'ù' | 'ú' | 'û' | 'ü' => out.push('u'),
-                    'ý' | 'ÿ' => out.push('y'),
-                    'ð' => out.push('d'),
-                    'æ' => out.push_str("ae"),
-                    'œ' => out.push_str("oe"),
-                    'ß' => out.push_str("ss"),
-                    'þ' => out.push_str("th"),
-                    _ => out.push('_'),
-                }
-            }
-            out
-        };
-
-        format!("{}--@--{}", normalize(&self.author), normalize(&self.title))
+        format!(
+            "{}--@--{}",
+            normalize_name(&self.author),
+            normalize_name(&self.title)
+        )
     }
 }
 
@@ -166,6 +171,37 @@ pub struct RefSection {
     pub color: Option<String>,
     /// ID of the [`ChordsSection`] this references.
     pub link: String,
+}
+
+/// A book: a named, ordered selection of songs, deserialized from a yaml
+/// file in the `books/` directory of the source tree.
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct Book {
+    /// Book name, used for the delivered file name (`book-<name>.pdf`).
+    pub name: String,
+    /// Free-form tags for categorizing the book.
+    #[serde(default)]
+    pub tags: Vec<String>,
+    /// Songs in the book, in the order they are collated, each given by its
+    /// normalized stem (`{author}--@--{title}`, see [`SongInfo::file_stem_of_song`]).
+    #[serde(default)]
+    pub songs: Vec<String>,
+}
+
+impl Book {
+    /// Returns the normalized file stem of the book: `book-{name}`.
+    pub fn file_stem_of_book(&self) -> String {
+        format!("book-{}", normalize_name(&self.name))
+    }
+}
+
+/// An item in the world's book list: either a successfully parsed book or an error.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum BookItem {
+    /// A successfully parsed book.
+    Book(Box<Book>),
+    /// An error message from reading or parsing a book file.
+    Error(String),
 }
 
 /// An item in the world: either a successfully parsed song or an error.
@@ -290,11 +326,15 @@ pub fn time_of_bar(bar: u32, tempo: u16, clicks: Option<&Clicks>) -> f64 {
     }
 }
 
-/// The world: a collection of song paths and their parse results.
+/// The world: a collection of song paths and their parse results,
+/// together with the books that collate them.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct World {
     /// List of (relative path, world item) pairs.
     pub items: Vec<(PathBuf, WorldItem)>,
+    /// List of (relative path, book item) pairs, one per yaml file in `books/`.
+    #[serde(default)]
+    pub books: Vec<(PathBuf, BookItem)>,
 }
 
 #[cfg(test)]

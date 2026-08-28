@@ -1,100 +1,44 @@
-%\documentclass[a4paper, 12 pt, showframe, french]{scrartcl}
-\documentclass[a4paper, 10 pt]{article}
-\usepackage[left=1cm,right=1cm,top=1cm,bottom=2cm]{geometry}
+% Master file of a book: collates the songs listed in the book yaml.
+% Each song is imported from its own build directory, so the \input commands
+% inside body.tex (song.tikz, lyrics/*.tex) resolve in that directory.
+\documentclass{article}
+\PassOptionsToPackage{x11names}{xcolor}
+\usepackage{tikz}
 \usepackage{import}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
-\usepackage[default]{frcursive}
-\usepackage{graphicx}
-\usepackage{etoolbox}
-\pagestyle{fancy}
-\fancyhf{}
-\newcommand{\makesongtitle}{}
-\newcommand{\songlastupdate}{}
-\newcommand{\songtoday}{}
-\newcommand{\xxcfoot}[2]{}
-
-\newtoggle{lyricsonly}
-\settoggle{lyricsonly}{ {{~lyrics_only~}} } % 
-
-
 \input{preamble}
-\input{sections}
 \input{chords}
+\input{sections}
+% Room under the body for the navigation line, which sits above the foot rule:
+% the default footskip leaves it grazing the last line of a page full of lyrics.
+\geometry{footskip=46pt}
 \begin{document}
 
-{{#if cover_image}}
-\begin{titlepage}
-	\vspace*{\fill}
-	\begin{center}
-		{%
-			%\Fontskrivan\bfseries\slshape%
-			\cursive\bfseries%
-			\fontsize{25pt}{25pt}\selectfont%
-			\color{orange}%
-			( {{ helper_tex_sanitize title }}) %
-		}%
-
-		%   {Huge [[Book]]}\\[0.5cm]
-		%   {Large [[author}\\[0.4cm]
-		%   [[date]]
-		\includegraphics[width=15cm]{../myguitar.jpg}
-	\end{center}
-
-
-	\vspace*{\fill}
-\end{titlepage}
-{{/if}}
-
-\label{top}
-% \tableofcontents
-{{#each offsets}}
-{{#with this}}
-\vspace*{\fill}
-\input{ {{this}} }
-\vspace*{\fill}
-\newpage
-{{/with}}
-{{/each}}
-
-
-
-\newcounter{xxxrowcount}
-\newcounter{xxxsectioncount}
-\newcounter{xxxsectionrefcount}
-\newcounter{xxxcolumncount}
-
-{{!-- Each song --}}
-
-{{#each songs}}
-
-{{#with this}}
-\setcounter{xxxrowcount}{0}
-\setcounter{xxxsectioncount}{0}
-\setcounter{xxxsectionrefcount}{0}
-\setcounter{xxxcolumncount}{0}
-
-\import{ {{~this.path~}} }{data.tex}
-\fakesection{ \songauthor / \songtitle }
-
-\iftoggle{lyricsonly}
+% The setlist is an enumerate rather than a tabular or a titlepage: a book of
+% any length keeps its numbering and breaks over as many pages as it needs.
+\thispagestyle{empty}
+\phantomsection\label{book:top}
+\begin{center}
+	{
+		\cursive\bfseries
+		\fontsize{40pt}{40pt}\selectfont
+		\color{blue}
+		{{{book.name}}}
+	}
+\end{center}
+\vspace{2em}
+% The entries link to the page their song starts on. linkcolor is black for
+% the whole document, so it is turned up for the setlist only, and put back
+% afterwards: hypersetup does not respect grouping.
+\hypersetup{linkcolor=blue}
 {
-	\makesongtitle
-
+	\fontsize{14pt}{22pt}\selectfont
+	\begin{enumerate}
+{{{setlist}}}
+	\end{enumerate}
 }
-{
-}
+\hypersetup{linkcolor=black}
+\clearpage
 
-
-\hyperref[top]{
-	\color{blue}(haut)
-}
-\label{book:song:{{@../index}}}
-%\lfoot{ \songauthor / \songtitle }
-%\makesongtitle
-\import{ {{~path~}} }{body.tex}
-\newpage
-{{/with}}
-{{/each}}
+{{{songs_body}}}
 
 \end{document}

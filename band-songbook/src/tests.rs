@@ -1,7 +1,7 @@
 use crate::chords::parse::parse;
-use crate::discover;
-use crate::model::{Song, WorldItem};
+use crate::model::{BookItem, Song, WorldItem};
 use crate::nodes::{ClickDef, ClickYml, PdfFile, SongYml, TexFile};
+use crate::{books_of_srcdir, discover, discover_books};
 use crate::{make_all, world_of_srcdir};
 use std::path::{Path, PathBuf};
 use yamake::model::{G, GNode};
@@ -218,6 +218,7 @@ fn test_make_all() {
 
     let (success, _g) = make_all(
         srcdir,
+        None,
         sandbox.path(),
         Some(Path::new("tests/data/settings.yml")),
         None,
@@ -287,7 +288,7 @@ structure: []
 
     // make_all should fail
     let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
-    let (success, _g) = make_all(srcdir, sandbox.path(), None, None, &[], &world);
+    let (success, _g) = make_all(srcdir, None, sandbox.path(), None, None, &[], &world);
     assert!(!success, "make_all should fail with a broken song");
 }
 
@@ -444,6 +445,7 @@ fn test_make_all_with_pattern() {
     // Pattern "madkvex" should match "Mademoiselle K Ca me vexe"
     let (success, _g) = make_all(
         srcdir,
+        Some(Path::new("tests/data/books")),
         sandbox.path(),
         Some(Path::new("tests/data/settings.yml")),
         Some("madkvex"),
@@ -496,6 +498,7 @@ async fn test_make_all_with_storage_local() {
 
     let result = make_all_with_storage(
         srcdir,
+        Some("tests/data/books"),
         sandbox.path(),
         Some(settings),
         None,
@@ -579,6 +582,7 @@ structure: []
 
     let (success, g) = make_all(
         srcdir.path(),
+        None,
         sandbox.path(),
         Some(Path::new(&srcdir.path().join("settings.yml"))),
         None,
@@ -625,8 +629,16 @@ async fn test_make_all_with_s3() {
     let delivery = "s3://zik-laurent/delivery";
     let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
 
-    let result =
-        make_all_with_storage(srcdir, sandbox.path(), Some(settings), None, delivery, &[]).await;
+    let result = make_all_with_storage(
+        srcdir,
+        None,
+        sandbox.path(),
+        Some(settings),
+        None,
+        delivery,
+        &[],
+    )
+    .await;
 
     match &result {
         Ok((success, _g)) => {
@@ -637,4 +649,92 @@ async fn test_make_all_with_s3() {
             panic!("make_all_with_storage failed: {e}");
         }
     }
+}
+
+#[test]
+fn test_discover_books() {
+    let books = discover_books(Path::new("tests/data/books"));
+    assert_eq!(books.len(), 1);
+    assert!(books[0].ends_with("books/test-book.yml"));
+
+    let books = books_of_srcdir(Path::new("tests/data/books"));
+    assert_eq!(books.len(), 1);
+    assert_eq!(books[0].0, PathBuf::from("test-book.yml"));
+    let book = match &books[0].1 {
+        BookItem::Book(b) => b,
+        BookItem::Error(e) => panic!("book should parse: {e}"),
+    };
+    assert_eq!(book.name, "Test Book");
+    assert_eq!(book.tags, vec!["test", "rock"]);
+    assert_eq!(book.songs.len(), 2);
+    assert_eq!(book.file_stem_of_book(), "book-test_book");
+}
+
+#[test]
+fn test_make_all_with_unknown_song_in_book() {
+    let tmpdir = tempfile::tempdir().expect("Failed to create temp dir");
+    let srcdir = tmpdir.path();
+
+    std::fs::create_dir_all(srcdir.join("books")).expect("create books dir");
+    std::fs::write(
+        srcdir.join("books/empty.yml"),
+        "name: Empty\nsongs:\n  - nobody--@--nothing\n",
+    )
+    .expect("write book");
+
+    let books_dir = srcdir.join("books");
+    let mut world = world_of_srcdir(srcdir);
+    world.books = books_of_srcdir(&books_dir);
+    assert_eq!(world.books.len(), 1);
+
+    let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
+    let (success, _g) = make_all(
+        srcdir,
+        Some(&books_dir),
+        sandbox.path(),
+        None,
+        None,
+        &[],
+        &world,
+    );
+    assert!(
+        !success,
+        "make_all should fail on a book with an unknown song"
+    );
+}
+
+#[test]
+fn test_make_all_book() {
+    let srcdir = Path::new("tests/data");
+    let books_srcdir = Path::new("tests/data/books");
+    let sandbox = tempfile::tempdir().expect("Failed to create temp dir");
+    let mut world = world_of_srcdir(srcdir);
+    world.books = books_of_srcdir(books_srcdir);
+
+    let (success, _g) = make_all(
+        srcdir,
+        Some(books_srcdir),
+        sandbox.path(),
+        Some(Path::new("tests/data/settings.yml")),
+        None,
+        &[],
+        &world,
+    );
+    assert!(success, "make_all should succeed");
+
+    // The book collates both songs of the test data
+    let tex = sandbox.path().join("songs/books/test_book/main.tex");
+    assert!(tex.exists(), "the book main.tex should be created");
+    let content = std::fs::read_to_string(&tex).expect("read book main.tex");
+    assert!(content.contains("\\import{../../PJHarvey/Dress/}{body.tex}"));
+    assert!(content.contains("\\import{../../mademoiselle_K/ca_me_vexe/}{body.tex}"));
+
+    let pdf = sandbox.path().join("songs/books/test_book/main.pdf");
+    assert!(pdf.exists(), "the book main.pdf should be built");
+
+    let delivered = sandbox.path().join("pdf/book-test_book.pdf");
+    assert!(
+        delivered.exists(),
+        "pdf/book-test_book.pdf should be delivered"
+    );
 }

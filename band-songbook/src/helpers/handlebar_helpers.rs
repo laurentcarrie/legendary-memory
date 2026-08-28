@@ -1,6 +1,6 @@
 use crate::chords::bar_numbering::barcount_map_of_structure;
 use crate::chords::glyph::glyph_of_baritem;
-use crate::chords::model::{BarItem, Bar};
+use crate::chords::model::{Bar, BarItem};
 use crate::chords::parse::parse;
 use crate::model::StructureItem;
 use handlebars::{
@@ -159,32 +159,32 @@ fn render_bar(i: usize, bar: &Bar, color: &str, out: &mut dyn Output) -> Result<
     let items = &bar.items;
 
     // Case: [Chord, HalfBar] — chord in upper-left triangle, right triangle grayed out
-    if items.len() == 2 {
-        if let (Some(first), Some(BarItem::HalfBar)) = (items.first(), items.get(1)) {
-            let chord_glyph = glyph_of_baritem(first);
-            // Draw the full rectangle
-            let draw_cmd = format!(
-                "    \\draw[draw=black, fill={color}] (\\columnleft + {i}*\\xr, \\currentline) rectangle ++(\\xr, -\\yr);\n"
-            );
-            out.write(&draw_cmd)?;
-            // Fill the lower-right triangle with gray
-            let gray_cmd = format!(
-                "    \\fill[fill=black!30] (\\columnleft + {i}*\\xr + \\xr, \\currentline) -- ++(0, -\\yr) -- ++(-\\xr, 0) -- cycle;\n"
-            );
-            out.write(&gray_cmd)?;
-            // Draw the diagonal line
-            let oblique_cmd = format!(
-                "    \\draw[draw=black] (\\columnleft + {i}*\\xr + \\xr, \\currentline) -- ++(-\\xr, -\\yr);\n"
-            );
-            out.write(&oblique_cmd)?;
-            // Place chord in the upper-left triangle
-            let chord_cmd = format!(
-                "    \\node at (\\columnleft + {}*\\xr + 0.4*\\xr, \\currentline - 0.3*\\yr) {{ {chord_glyph} }};\n",
-                i
-            );
-            out.write(&chord_cmd)?;
-            return Ok(());
-        }
+    if items.len() == 2
+        && let (Some(first), Some(BarItem::HalfBar)) = (items.first(), items.get(1))
+    {
+        let chord_glyph = glyph_of_baritem(first);
+        // Draw the full rectangle
+        let draw_cmd = format!(
+            "    \\draw[draw=black, fill={color}] (\\columnleft + {i}*\\xr, \\currentline) rectangle ++(\\xr, -\\yr);\n"
+        );
+        out.write(&draw_cmd)?;
+        // Fill the lower-right triangle with gray
+        let gray_cmd = format!(
+            "    \\fill[fill=black!30] (\\columnleft + {i}*\\xr + \\xr, \\currentline) -- ++(0, -\\yr) -- ++(-\\xr, 0) -- cycle;\n"
+        );
+        out.write(&gray_cmd)?;
+        // Draw the diagonal line
+        let oblique_cmd = format!(
+            "    \\draw[draw=black] (\\columnleft + {i}*\\xr + \\xr, \\currentline) -- ++(-\\xr, -\\yr);\n"
+        );
+        out.write(&oblique_cmd)?;
+        // Place chord in the upper-left triangle
+        let chord_cmd = format!(
+            "    \\node at (\\columnleft + {}*\\xr + 0.4*\\xr, \\currentline - 0.3*\\yr) {{ {chord_glyph} }};\n",
+            i
+        );
+        out.write(&chord_cmd)?;
+        return Ok(());
     }
 
     if items.len() >= 2 {

@@ -22,3 +22,26 @@ fn discover_recursive(dir: &Path, results: &mut Vec<PathBuf>) {
         }
     }
 }
+
+/// Discovers all book yaml files directly in the given books directory.
+/// Returns them sorted by path, so the build graph is stable.
+pub fn discover_books(dir: &Path) -> Vec<PathBuf> {
+    let entries = match std::fs::read_dir(dir) {
+        Ok(entries) => entries,
+        Err(_) => return Vec::new(),
+    };
+
+    let mut results: Vec<PathBuf> = entries
+        .flatten()
+        .map(|entry| entry.path())
+        .filter(|path| {
+            path.is_file()
+                && path
+                    .extension()
+                    .map(|e| e == "yml" || e == "yaml")
+                    .unwrap_or(false)
+        })
+        .collect();
+    results.sort();
+    results
+}
