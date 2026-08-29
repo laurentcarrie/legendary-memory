@@ -21,7 +21,9 @@ struct Args {
     #[argh(option, short = 'c')]
     settings: String,
 
-    /// pattern to filter songs (e.g. "black_keys" or "red_hot*")
+    /// fuzzy filter, matched as a subsequence against "<author> <title>" from
+    /// song.yml (not the directory name), case-insensitive but accent-sensitive:
+    /// "black keys" and "finist" match, "black_keys" and "finistere" do not
     #[argh(option, short = 'p')]
     pattern: Option<String>,
 

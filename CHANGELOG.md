@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.37]
+
+### Fixed
+
+- A `.ly` file reached only through `\include` was never mounted into the
+  sandbox, so lilypond could not resolve the include and the build died with
+  "unknown escaped string" on whatever the included file defined. The includes
+  are now collected from the sources - the sandbox is still empty when the
+  graph is built, so scanning it there finds nothing - and mounted as source
+  nodes, without the lytex/PDF chain they have no `\score` for.
+
 ## [0.0.36]
 
 ### Added
