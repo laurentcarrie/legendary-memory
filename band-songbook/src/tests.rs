@@ -1,6 +1,6 @@
 use crate::chords::parse::parse;
 use crate::model::{BookItem, Song, WorldItem};
-use crate::nodes::{ClickDef, ClickYml, PdfFile, SongYml, TexFile};
+use crate::nodes::{ClickDef, ClickYml, LilypondFile, PdfFile, SongYml, TexFile};
 use crate::{books_of_srcdir, discover, discover_books};
 use crate::{make_all, world_of_srcdir};
 use std::path::{Path, PathBuf};
@@ -76,6 +76,12 @@ fn test_yamake_build_song_with_lilypond() {
     // Add settings.yml as root node so it gets copied to sandbox
     let colors_node = TexFile::new(PathBuf::from("settings.yml"));
     let _ = g.add_root_node(colors_node);
+
+    // songbook.ily is the corpus library that the generated macros.ly includes
+    // as ../../songbook.ily; make_all mirrors it into the songs sandbox, and
+    // here the sandbox root plays that part.
+    let library_node = LilypondFile::new(PathBuf::from("songbook.ily"));
+    let _ = g.add_root_node(library_node);
 
     // mademoiselle_K/ca_me_vexe - has lilypond files
     let song: Song = serde_yaml::from_str(

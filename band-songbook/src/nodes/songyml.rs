@@ -62,6 +62,54 @@ impl SongYml {
     /// Whether a file declared in `song.yml` exists. Looks in srcdir when it is
     /// known, and in the sandbox otherwise (the source has not been mounted yet
     /// the first time a newly declared file is seen).
+    /// Reads a source file the same way [`Self::source_exists`] locates it.
+    fn read_source(&self, sandbox: &Path, rel: &Path) -> Option<String> {
+        let base = if self.srcdir.as_os_str().is_empty() {
+            sandbox
+        } else {
+            self.srcdir.as_path()
+        };
+        std::fs::read_to_string(base.join(rel)).ok()
+    }
+
+    /// Collects the `\include "..."` targets of `roots`, following them
+    /// recursively. Reads the SOURCES, not the sandbox copies: on a clean build
+    /// the sandbox is still empty when the graph is built, so scanning it there
+    /// finds nothing and the first build fails before converging on the second.
+    fn included_ly_of(&self, sandbox: &Path, roots: &[PathBuf]) -> Vec<PathBuf> {
+        let mut found: Vec<PathBuf> = vec![];
+        let mut seen: Vec<PathBuf> = vec![];
+        let mut queue: Vec<PathBuf> = roots.to_vec();
+        while let Some(cur) = queue.pop() {
+            if seen.contains(&cur) {
+                continue;
+            }
+            seen.push(cur.clone());
+            let Some(content) = self.read_source(sandbox, &cur) else {
+                continue;
+            };
+            let parent = cur.parent().unwrap_or(Path::new("")).to_path_buf();
+            for line in content.lines() {
+                if line.trim_start().starts_with('%') {
+                    continue;
+                }
+                let Some(pos) = line.find("\\include") else {
+                    continue;
+                };
+                let rest = &line[pos + 8..];
+                let Some(q1) = rest.find('"') else { continue };
+                let after = &rest[q1 + 1..];
+                let Some(q2) = after.find('"') else { continue };
+                let target = parent.join(&after[..q2]);
+                if !found.contains(&target) {
+                    found.push(target.clone());
+                }
+                queue.push(target);
+            }
+        }
+        found
+    }
+
     fn source_exists(&self, sandbox: &Path, rel: &Path) -> bool {
         if self.srcdir.as_os_str().is_empty() {
             sandbox.join(rel).is_file()
@@ -380,7 +428,7 @@ impl GRootNode for SongYml {
         // Scan for lilypond files referenced in tex files
         let pdf_for_scan = PdfFile::new(pdf_path.clone());
         let predecessors: Vec<&(dyn GNode + Send + Sync)> = vec![&tex_node];
-        let (_, _scanned_inputs, toplevel_ly) =
+        let (_, scanned_inputs, toplevel_ly) =
             pdf_for_scan.scan_with_toplevel_ly(sandbox, &predecessors);
 
         // Only use top-level .ly files (from \lyfile{} or \songly{}) for LyTexFile nodes
@@ -410,6 +458,36 @@ impl GRootNode for SongYml {
             }
             if !ly_files.contains(&ly_path) {
                 ly_files.push(ly_path);
+            }
+        }
+
+        // .ly files reached only through `\include`. They must be mounted into the
+        // sandbox, or lilypond cannot resolve the include and the build dies with
+        // "unknown escaped string" on whatever the included file defines. They get
+        // a LilypondFile node and nothing else: unlike ly_files they carry no
+        // \score of their own, so giving them the lytex/PDF chain would fail with
+        // "lilypond produced no cropped PDF".
+        // Two lists, because the two uses do not overlap:
+        //   included_ly  - files to MOUNT, so only those that exist in the
+        //                  sources; a generated one is already in the sandbox.
+        //   included_dep - files to hang DEPENDENCY EDGES on, which must also
+        //                  cover generated ones. macros.ly is the case that
+        //                  matters: it carries songtempo from song.yml, so
+        //                  editing the tempo has to invalidate the .midi and
+        //                  the .mp3 rendered from it.
+        let mut included_ly: Vec<PathBuf> = vec![];
+        let mut included_dep: Vec<PathBuf> = vec![];
+        let from_sources = self.included_ly_of(sandbox, &ly_files);
+        for input in scanned_inputs.iter().chain(from_sources.iter()) {
+            if !input.extension().map(|e| e == "ly").unwrap_or(false) || ly_files.contains(input) {
+                continue;
+            }
+            let in_source = self.source_exists(sandbox, input);
+            if in_source && !included_ly.contains(input) {
+                included_ly.push(input.clone());
+            }
+            if (in_source || sandbox.join(input).is_file()) && !included_dep.contains(input) {
+                included_dep.push(input.clone());
             }
         }
 
@@ -458,6 +536,11 @@ impl GRootNode for SongYml {
             Box::new(lyrics_1col_pdf_node),
             Box::new(lyrics_2col_pdf_node),
         ];
+
+        // Mount the \include-only .ly files (see above): source nodes, no chain.
+        for inc in &included_ly {
+            nodes.push(Box::new(LilypondFile::new(inc.clone())));
+        }
 
         let mut edges: Vec<Edge> = vec![];
 
@@ -512,6 +595,15 @@ impl GRootNode for SongYml {
             nodes.push(Box::new(ly_node));
             nodes.push(Box::new(lytex_node));
             nodes.push(Box::new(texofly_node));
+
+            // Same reasoning as for MidiOfLilypond below: an included file has
+            // to invalidate the snippet chain of the score that includes it.
+            for inc in &included_dep {
+                edges.push(Edge {
+                    nfrom: Box::new(LilypondFile::new(inc.clone())),
+                    nto: Box::new(LyTexFile::new(lytex_path.clone())),
+                });
+            }
 
             // Edge: LilypondFile -> LyTexFile
             let ly_to_lytex_edge = Edge {
@@ -597,6 +689,17 @@ impl GRootNode for SongYml {
                 nfrom: Box::new(LilypondFile::new(ly_path)),
                 nto: Box::new(MidiOfLilypond::new(midi_path.clone())),
             });
+
+            // Edges: every \include-d .ly -> MidiOfLilypond. Without these a
+            // change to a definitions file leaves the .midi - and the .mp3
+            // rendered from it - stale: MidiOfLilypond declares no scan() of
+            // its own, so the graph only knows about the score file itself.
+            for inc in &included_dep {
+                edges.push(Edge {
+                    nfrom: Box::new(LilypondFile::new(inc.clone())),
+                    nto: Box::new(MidiOfLilypond::new(midi_path.clone())),
+                });
+            }
 
             // Edge: MidiOfLilypond -> Mp3Render
             edges.push(Edge {
