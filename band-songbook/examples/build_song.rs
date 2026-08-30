@@ -13,7 +13,7 @@ fn main() {
 
     println!("Building all songs...");
     let world = world_of_srcdir(srcdir);
-    let (success, _g) = make_all(srcdir, sandbox, None, None, &[], &world);
+    let (success, _g) = make_all(srcdir, None, sandbox, None, None, &[], &world);
 
     if success {
         println!("Build succeeded!");

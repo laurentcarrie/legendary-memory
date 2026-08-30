@@ -4,7 +4,10 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Debug)]
 struct Request {
-    srcdir: String,
+    #[serde(alias = "srcdir")]
+    songs_srcdir: String,
+    #[serde(default)]
+    books_srcdir: Option<String>,
     settings: String,
     delivery: String,
     pattern: Option<String>,
@@ -23,13 +26,15 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Response, Error
 
     let sandbox = tempfile::tempdir()?;
 
-    log::info!("srcdir: {}", &req.srcdir);
+    log::info!("songs srcdir: {}", &req.songs_srcdir);
+    log::info!("books srcdir: {:?}", &req.books_srcdir);
     log::info!("settings: {}", &req.settings);
     log::info!("delivery: {}", &req.delivery);
     log::info!("sandbox: {}", sandbox.path().display());
 
     match make_all_with_storage(
-        &req.srcdir,
+        &req.songs_srcdir,
+        req.books_srcdir.as_deref(),
         sandbox.path(),
         Some(req.settings.as_str()),
         req.pattern.as_deref(),

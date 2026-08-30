@@ -7,7 +7,11 @@ use std::process::ExitCode;
 struct Args {
     /// source directory containing song.yml files (local path or s3://bucket/prefix)
     #[argh(option, short = 's')]
-    srcdir: String,
+    songs_srcdir: String,
+
+    /// source directory containing the book yaml files (local path or s3://bucket/prefix)
+    #[argh(option, short = 'b')]
+    books_srcdir: Option<String>,
 
     /// local output directory for built files
     #[argh(option, short = 'o')]
@@ -59,7 +63,8 @@ async fn main() -> ExitCode {
         .map(std::path::PathBuf::from)
         .collect();
     let result: Result<(bool, band_songbook::G), String> = make_all_with_storage(
-        &args.srcdir,
+        &args.songs_srcdir,
+        args.books_srcdir.as_deref(),
         &sandbox,
         Some(args.settings.as_str()),
         args.pattern.as_deref(),

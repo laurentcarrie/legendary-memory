@@ -131,8 +131,13 @@ impl GNode for PdfFile {
                 return false;
             }
 
-            // Check if we need to rerun for references
-            let needs_rerun = stdout_content.contains("Rerun to get the references right");
+            // Check if we need to rerun for references. LaTeX phrases this
+            // several ways ("Rerun to get cross-references right", "Rerun to
+            // get the bars right", "Rerun LaTeX"), so match on the stem: a
+            // missed rerun ships a document a pass stale, which is how a book
+            // ends up numbering its pages against the previous build.
+            let needs_rerun =
+                stdout_content.contains("Rerun to get") || stdout_content.contains("Rerun LaTeX");
 
             if !needs_rerun {
                 log::info!("LaTeX completed after {run} run(s)");

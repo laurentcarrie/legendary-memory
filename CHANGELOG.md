@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.36]
+
+### Added
+
+- Books. A yaml file in the directory given by the new `--books-srcdir` lists a
+  `name`, its `tags` and its `songs`, each song given by its normalized
+  `<author>--@--<title>` stem. Each book builds a `main.tex` in the sandbox that
+  imports the listed songs from their own build directories, and delivers
+  `pdf/book-<name>.pdf`. A book whose songs are not all built (because of
+  `--pattern`) is skipped; a book listing an unknown song fails the build. No
+  books are built when `--books-srcdir` is not given.
+- A book opens on its setlist, whose entries link to the page their song starts
+  on, and every song page carries `précédent` / `table des matières` /
+  `suivant` links in the footer. The first and last songs grey out the link
+  they have no target for.
+
+### Changed
+
+- `--srcdir` is now `--songs-srcdir`, next to the new `--books-srcdir`. The
+  lambda request field is `songs_srcdir`, still accepting `srcdir` as an alias.
+
+### Fixed
+
+- lualatex was never run a second time: the rerun check looked for "Rerun to get
+  the references right", which LaTeX does not print — it says "Rerun to get
+  cross-references right". Any document needing two passes was delivered a pass
+  stale, which is how a book came out numbering its pages against the previous
+  build.
+
 ## [0.0.33]
 
 ### Fixed
