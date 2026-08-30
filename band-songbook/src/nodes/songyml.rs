@@ -467,15 +467,27 @@ impl GRootNode for SongYml {
         // a LilypondFile node and nothing else: unlike ly_files they carry no
         // \score of their own, so giving them the lytex/PDF chain would fail with
         // "lilypond produced no cropped PDF".
+        // Two lists, because the two uses do not overlap:
+        //   included_ly  - files to MOUNT, so only those that exist in the
+        //                  sources; a generated one is already in the sandbox.
+        //   included_dep - files to hang DEPENDENCY EDGES on, which must also
+        //                  cover generated ones. macros.ly is the case that
+        //                  matters: it carries songtempo from song.yml, so
+        //                  editing the tempo has to invalidate the .midi and
+        //                  the .mp3 rendered from it.
         let mut included_ly: Vec<PathBuf> = vec![];
+        let mut included_dep: Vec<PathBuf> = vec![];
         let from_sources = self.included_ly_of(sandbox, &ly_files);
         for input in scanned_inputs.iter().chain(from_sources.iter()) {
-            if input.extension().map(|e| e == "ly").unwrap_or(false)
-                && !ly_files.contains(input)
-                && !included_ly.contains(input)
-                && self.source_exists(sandbox, input)
-            {
+            if !input.extension().map(|e| e == "ly").unwrap_or(false) || ly_files.contains(input) {
+                continue;
+            }
+            let in_source = self.source_exists(sandbox, input);
+            if in_source && !included_ly.contains(input) {
                 included_ly.push(input.clone());
+            }
+            if (in_source || sandbox.join(input).is_file()) && !included_dep.contains(input) {
+                included_dep.push(input.clone());
             }
         }
 
@@ -584,6 +596,15 @@ impl GRootNode for SongYml {
             nodes.push(Box::new(lytex_node));
             nodes.push(Box::new(texofly_node));
 
+            // Same reasoning as for MidiOfLilypond below: an included file has
+            // to invalidate the snippet chain of the score that includes it.
+            for inc in &included_dep {
+                edges.push(Edge {
+                    nfrom: Box::new(LilypondFile::new(inc.clone())),
+                    nto: Box::new(LyTexFile::new(lytex_path.clone())),
+                });
+            }
+
             // Edge: LilypondFile -> LyTexFile
             let ly_to_lytex_edge = Edge {
                 nfrom: Box::new(LilypondFile::new(ly_path.clone())),
@@ -668,6 +689,17 @@ impl GRootNode for SongYml {
                 nfrom: Box::new(LilypondFile::new(ly_path)),
                 nto: Box::new(MidiOfLilypond::new(midi_path.clone())),
             });
+
+            // Edges: every \include-d .ly -> MidiOfLilypond. Without these a
+            // change to a definitions file leaves the .midi - and the .mp3
+            // rendered from it - stale: MidiOfLilypond declares no scan() of
+            // its own, so the graph only knows about the score file itself.
+            for inc in &included_dep {
+                edges.push(Edge {
+                    nfrom: Box::new(LilypondFile::new(inc.clone())),
+                    nto: Box::new(MidiOfLilypond::new(midi_path.clone())),
+                });
+            }
 
             // Edge: MidiOfLilypond -> Mp3Render
             edges.push(Edge {

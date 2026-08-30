@@ -176,6 +176,22 @@ pub fn make_all(
         }
     }
 
+    // songbook.ily is the corpus-wide LilyPond library: a real versioned file
+    // beside settings.yml, unlike the generated macros.ly. Mirroring it here
+    // means `\include "../../songbook.ily"` resolves to the same content from
+    // songs/<artist>/<song>/ and from its sandbox copy - so a .ly compiles in
+    // the editor with the real macros rather than a stand-in. Absent is fine:
+    // a corpus that does not use the library simply never includes it.
+    {
+        let src = songs_srcdir.join("songbook.ily");
+        if src.is_file() {
+            let dest = songs_sandbox.join("songbook.ily");
+            if let Err(e) = std::fs::copy(&src, &dest) {
+                log::error!("Failed to copy songbook.ily to sandbox: {e}");
+            }
+        }
+    }
+
     if world.items.is_empty() && world.books.is_empty() {
         return (true, g);
     }

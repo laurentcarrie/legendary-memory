@@ -23,15 +23,23 @@ impl GNode for LyTexFile {
 
     fn build(&self, sandbox: &Path, predecessors: &[&(dyn GNode + Send + Sync)]) -> bool {
         // Find predecessors of type "lilypond"
+        // Several lilypond predecessors are legitimate: the score itself plus
+        // every file it \include-s, which are wired in so that editing a
+        // definitions file invalidates this node. Pick the one whose stem
+        // matches our own - that is the score this output is built from.
+        let want = self.path.file_stem().and_then(|s| s.to_str());
         let ly_predecessors: Vec<_> = predecessors
             .iter()
             .filter(|p| p.tag() == "lilypond")
+            .filter(|p| p.pathbuf().file_stem().and_then(|s| s.to_str()) == want)
             .collect();
 
         if ly_predecessors.len() != 1 {
             log::error!(
-                "LyTexFile {} expects exactly one lilypond predecessor, found {}",
+                "{} {} expects one lilypond predecessor named {}, found {}",
+                "LyTexFile",
                 self.path.display(),
+                want.unwrap_or("?"),
                 ly_predecessors.len()
             );
             return false;
